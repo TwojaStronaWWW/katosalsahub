@@ -1,11 +1,51 @@
-name: Deploy to LH
+name: CI + Deploy to LH
 on:
   push:
     branches: [ "main", "staging" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
+  test:
+    name: Testy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Walidacja HTML
+        run: |
+          npm install -g htmlhint
+          htmlhint "katosalsahub.pl/**/*.html" --config .htmlhintrc
+          htmlhint "dancepuls.pl/**/*.html" --config .htmlhintrc
+
+      - name: Sprawdzanie linków
+        run: |
+          for dir in katosalsahub.pl dancepuls.pl; do
+            echo "🔍 Sprawdzanie referencji w $dir..."
+            for html_file in $dir/*.html; do
+              [ -f "$html_file" ] || continue
+              base=$(dirname "$html_file")
+              grep -oP '(?:src|href)="(?!https?://|#|javascript:|mailto:|tel:)([^"]+)"' "$html_file" | \
+              sed 's/.*="\(.*\)"/\1/' | sed 's/?.*//' | \
+              while read -r ref; do
+                if [ ! -f "$base/$ref" ] && [ ! -d "$base/$ref" ]; then
+                  echo "❌ BRAK: $html_file → $ref"
+                fi
+              done
+            done
+          done
+          echo "✅ Sprawdzanie linków zakończone"
+
   deploy:
     name: Deploy na serwer (${{ github.ref_name }})
+    needs: test
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       MAIN_PATH: ${{ github.ref_name == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
