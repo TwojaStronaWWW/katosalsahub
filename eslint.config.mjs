@@ -1,0 +1,67 @@
+export default [
+  {
+    files: ["**/*.js"],
+    languageOptions: {
+      ecmaVersion: 2025,
+      sourceType: "module",
+      globals: {
+        // Browser globals
+        window: "readonly",
+        document: "readonly",
+        navigator: "readonly",
+        console: "readonly",
+        setTimeout: "readonly",
+        setInterval: "readonly",
+        clearTimeout: "readonly",
+        clearInterval: "readonly",
+        fetch: "readonly",
+        alert: "readonly",
+        confirm: "readonly",
+        prompt: "readonly",
+        localStorage: "readonly",
+        sessionStorage: "readonly",
+        location: "readonly",
+        history: "readonly",
+        HTMLElement: "readonly",
+        Event: "readonly",
+        Audio: "readonly",
+        FormData: "readonly",
+        URLSearchParams: "readonly",
+        URL: "readonly",
+        AbortController: "readonly",
+        MutationObserver: "readonly",
+        IntersectionObserver: "readonly",
+        requestAnimationFrame: "readonly",
+        cancelAnimationFrame: "readonly",
+        CustomEvent: "readonly",
+        ClipboardEvent: "readonly",
+        DOMParser: "readonly",
+        XMLSerializer: "readonly",
+        Blob: "readonly",
+        FileReader: "readonly",
+        btoa: "readonly",
+        atob: "readonly",
+      },
+    },
+    rules: {
+      // Błędy krytyczne
+      "no-undef": "warn",
+      "no-dupe-keys": "error",
+      "no-dupe-args": "error",
+      "no-duplicate-case": "error",
+      "no-unreachable": "warn",
+      "no-constant-condition": "warn",
+      "no-empty": "warn",
+      "use-isnan": "error",
+      "valid-typeof": "error",
+
+      // Logika
+      "no-self-assign": "error",
+      "no-self-compare": "error",
+      "eqeqeq": ["warn", "smart"],
+
+      // Nie wymuszaj stylu
+      "no-unused-vars": "off",
+    },
+  },
+];

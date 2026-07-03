@@ -21,7 +21,6 @@ jobs:
       - name: Walidacja HTML
         run: |
           npm install -g htmlhint
-          # Waliduj tylko pełne strony (z DOCTYPE), pomijaj partiale SPA
           for file in katosalsahub.pl/*.html dancepuls.pl/*.html; do
             [ -f "$file" ] || continue
             if head -5 "$file" | grep -qi 'doctype'; then
@@ -31,6 +30,13 @@ jobs:
               echo "⏭️ Pomijam partial: $file"
             fi
           done
+
+      - name: ESLint - analiza JavaScript
+        run: |
+          npm install -g eslint
+          npx eslint --config eslint.config.mjs \
+            "katosalsahub.pl/assets/js/**/*.js" \
+            "dancepuls.pl/js/**/*.js"
 
       - name: Sprawdzanie linków
         run: |
@@ -50,9 +56,40 @@ jobs:
           done
           echo "✅ Sprawdzanie linków zakończone"
 
+  backup:
+    name: 💾 Backup produkcji
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      MAIN_PATH: ${{ github.ref_name == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
+      DANCE_PATH: ${{ github.ref_name == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
+    steps:
+      - name: Pobierz aktualną wersję z serwera
+        run: |
+          sudo apt-get install -y -qq lftp > /dev/null 2>&1
+          mkdir -p backup/katosalsahub backup/dancepuls
+          lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
+            -p 40022 \
+            sftp://${{ secrets.FTP_SERVER }} \
+            -e "
+              set net:timeout 60;
+              set sftp:auto-confirm yes;
+              mirror --verbose /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }} ./backup/katosalsahub;
+              mirror --verbose /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }} ./backup/dancepuls;
+              quit
+            "
+
+      - name: Zapisz backup jako artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: backup-${{ github.ref_name }}-${{ github.run_number }}
+          path: backup/
+          retention-days: 7
+
   deploy:
     name: 🚀 Deploy na serwer (${{ github.ref_name }})
-    needs: test
+    needs: backup
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
