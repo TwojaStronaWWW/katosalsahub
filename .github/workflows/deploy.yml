@@ -1,0 +1,41 @@
+name: Deploy to LH
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy-main:
+    name: Deploy katosalsahub.pl
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload katosalsahub.pl via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.FTP_SERVER }}
+          port: 40022
+          local_path: './katosalsahub.pl/*'
+          remote_path: '/home/platne/serwer417204/public_html/katosalsahub.pl'
+          sftp_args: '-o ConnectTimeout=60'
+
+  deploy-dancepuls:
+    name: Deploy dancepuls.katosalsahub.pl
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload dancepuls.pl via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.FTP_SERVER }}
+          port: 40022
+          local_path: './dancepuls.pl/*'
+          remote_path: '/home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl'
+          sftp_args: '-o ConnectTimeout=60'
