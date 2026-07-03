@@ -1,12 +1,15 @@
 name: Deploy to LH
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "staging" ]
 
 jobs:
   deploy:
-    name: Deploy wszystko na serwer
+    name: Deploy na serwer (${{ github.ref_name }})
     runs-on: ubuntu-latest
+    env:
+      MAIN_PATH: ${{ github.ref_name == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
+      DANCE_PATH: ${{ github.ref_name == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,7 +23,7 @@ jobs:
             -e "
               set net:timeout 60;
               set sftp:auto-confirm yes;
-              mirror -R --verbose ./katosalsahub.pl /home/platne/serwer417204/public_html/katosalsahub.pl;
-              mirror -R --verbose ./dancepuls.pl /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl;
+              mirror -R --verbose ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
+              mirror -R --verbose ./dancepuls.pl /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }};
               quit
             "
