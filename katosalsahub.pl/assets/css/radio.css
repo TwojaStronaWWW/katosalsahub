@@ -1,0 +1,133 @@
+/* =====================================================
+   RADIO.CSS
+   Timba Nation Radio Component & Visualizations
+   ===================================================== */
+
+/* --- Vinyl Components --- */
+.vinyl-disc {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #1a1a1a 30%, #000 31%, #1a1a1a 32%, #000 33%);
+    position: relative;
+    animation: spin 4s linear infinite paused;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: width .3s ease, height .3s ease;
+}
+
+/* Vinyl Center - reserved for future use */
+
+/* Vinyl rotates when global state is playing */
+body.radio-playing .vinyl-disc {
+  animation-play-state: running;
+}
+
+@media (min-width: 968px) {
+    .vinyl-disc {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+/* --- Sound Wave Visualization --- */
+.sound-wave span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 3px;
+  background: var(--yellow);
+  border-radius: 50%;
+  animation: pulse 1.2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+
+.sound-wave span:nth-child(2) { animation-delay: .1s; }
+.sound-wave span:nth-child(3) { animation-delay: .2s; }
+.sound-wave span:nth-child(4) { animation-delay: .3s; }
+.sound-wave span:nth-child(5) { animation-delay: .4s; }
+
+/* Dots dance when global state is playing */
+body.radio-playing .sound-wave span {
+  animation-play-state: running;
+}
+
+/* --- Header Interactions --- */
+.nav-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Header Radio Button */
+.header-radio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  background: rgba(255, 211, 42, 0.15);
+  color: var(--yellow);
+
+  border: 1px solid rgba(255, 211, 42, 0.4);
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.header-radio-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 211, 42, 0.25);
+  box-shadow: 0 6px 20px rgba(255, 211, 42, 0.4);
+}
+
+.header-radio-btn svg,
+.header-radio-btn i {
+  transition: transform .3s ease, opacity .3s ease;
+  font-size: 16px; /* Ensure icon fits nicely */
+}
+
+/* Playing State */
+body.radio-playing .header-radio-btn {
+  background: linear-gradient(
+    135deg,
+    var(--yellow),
+    var(--orange)
+  );
+  color: #000;
+  box-shadow: 0 0 25px rgba(255, 211, 42, 0.6);
+  animation: breathe 1.5s infinite ease-in-out;
+  border-color: transparent; /* Clean look with full fill */
+}
+
+body.radio-playing .header-radio-btn svg,
+body.radio-playing .header-radio-btn i {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+/* --- Controls --- */
+/* Radio Play Button State */
+body.radio-playing .btn-radio {
+  background: linear-gradient(135deg, var(--green), var(--yellow));
+  color: #000;
+}
+
+/* --- Animations --- */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: .5; }
+  50% { transform: scale(1.8); opacity: 1; }
+}

@@ -1,0 +1,96 @@
+/* =====================================================
+   WIKI.CSS
+   Salsopedia specific layout
+   ===================================================== */
+
+.wiki-header {
+  padding: 80px 16px 40px;
+  text-align: center;
+  background:
+    linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)),
+    url('../../assets/images/hero-bg.jpg') center/cover;
+}
+
+.wiki-header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: .5rem;
+  background: linear-gradient(135deg, var(--orange), var(--red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.wiki-main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+.wiki-sidebar {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.category-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.category-list li {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.05);
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: .9rem;
+}
+
+.category-list li.active {
+  background: var(--red);
+}
+
+.wiki-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Wiki Card Internals (layout bits that are specific to wiki card content) */
+.wiki-card h3 {
+  margin: 0 0 .5rem;
+}
+
+.definition {
+  margin: 1rem 0;
+  color: var(--fg-muted);
+}
+
+.wiki-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: .75rem;
+}
+
+@media (min-width: 768px) {
+  .wiki-main-container {
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .wiki-sidebar {
+    width: 260px;
+    position: sticky;
+    top: 100px;
+  }
+
+  .wiki-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}

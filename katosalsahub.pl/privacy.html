@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polityka Prywatności - Kato Salsa Hub</title>
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/sections.css">
+    <style>
+        .privacy-content {
+            padding: 150px 0 100px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy-content h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, var(--cuban-red), var(--cuban-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .privacy-section {
+            margin-bottom: 40px;
+            background: var(--dark-card);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .privacy-section h2 {
+            color: var(--cuban-orange);
+            margin-bottom: 20px;
+        }
+
+        .privacy-section p {
+            color: var(--text-gray);
+            margin-bottom: 15px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: var(--cuban-orange);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="animated-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="nav-bar">
+        <div class="nav-brand-group">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-text">KATO SALSA HUB</span>
+                <span class="logo-emoji">🔥</span>
+            </a>
+            <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+        <div class="nav-links">
+            <a href="index.html#hero">Start</a>
+            <a href="index.html#onas">O nas</a>
+            <a href="index.html#style">Style</a>
+            <a href="salsopedia.html" data-page="wiki">Salsopedia</a>
+            <a href="index.html#radio">Radio</a>
+            <a href="index.html#mapa">Lokacja</a>
+            <a href="index.html#kontakt" class="cta-link">Kontakt</a>
+        </div>
+        <div class="burger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="privacy-content">
+            <a href="index.html" class="back-link">← Wróć do strony głównej</a>
+            <h1>Polityka Prywatności</h1>
+
+            <div class="privacy-section">
+                <h2>1. Informacje ogólne</h2>
+                <p>Niniejsza polityka prywatności określa zasady przetwarzania i ochrony danych osobowych przekazywanych
+                    przez użytkowników w związku z korzystaniem z serwisu katosalsahub.pl.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2>2. Pliki Cookies</h2>
+                <p>Serwis korzysta z plików cookies (tzw. „ciasteczka”), które są danymi informatycznymi, w
+                    szczególności plikami tekstowymi, przechowywanymi w urządzeniu końcowym użytkownika.</p>
+                <p>Wykorzystujemy pliki cookies w celu:</p>
+                <ul>
+                    <li>Dostosowania zawartości strony do preferencji użytkownika.</li>
+                    <li>Tworzenia anonimowych statystyk, które pomagają zrozumieć, w jaki sposób użytkownicy korzystają
+                        ze strony.</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h2>3. Formularz kontaktowy</h2>
+                <p>Dane podawane w formularzu kontaktowym są przetwarzane wyłącznie w celu udzielenia odpowiedzi na
+                    przesłane zapytanie.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2>4. Kontakt</h2>
+                <p>W razie pytań dotyczących polityki prywatności, prosimy o kontakt poprzez formularz na stronie
+                    głównej.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>KATO SALSA HUB 🔥</h3>
+                <p>Kubańska energia w sercu Śląska</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html#hero">Start</a>
+                <a href="index.html#onas">O nas</a>
+                <a href="index.html#style">Style</a>
+                <a href="index.html#kontakt">Kontakt</a>
+                <a href="privacy.html">Polityka Prywatności</a>
+                <a href="https://dancepuls.katosalsahub.pl/" target="_blank">DancePuls Generator</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
+                    target="_blank">TwojaStronaWWW</a></p>
+            <p style="margin-top:10px;"><a href="javascript:void(0);" id="showPendingBtn"
+                    onclick="if(window.fetchPendingTerms) fetchPendingTerms(); else if(window.initWiki) window.initWiki();"
+                    style="color:#555; text-decoration:none; font-size:0.8rem;">[Moderacja]</a></p>
+        </div>
+    </footer>
+
+    <!-- Cookie Banner -->
+    <div id="cookie-banner" class="cookie-banner">
+        <div class="cookie-content">
+            <h4>🍪 Ciasteczka i Prywatność</h4>
+            <p>Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
+                    href="privacy.html">Politykę Prywatności</a>.</p>
+        </div>
+        <div class="cookie-actions">
+            <button id="accept-cookies" class="btn btn-primary">Akceptuję</button>
+        </div>
+    </div>
+
+    <script src="assets/js/cookies.js"></script>
+    <script>
+        // Rok w footerze
+        document.getElementById("rok").textContent = new Date().getFullYear();
+
+        // Burger menu integration
+        const burger = document.querySelector('.burger-menu');
+        const navLinks = document.querySelector('.nav-links');
+        if (burger && navLinks) {
+            burger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                burger.classList.toggle('active');
+            });
+        }
+    </script>
+    <script src="assets/js/radio.js"></script>
+</body>
+
+</html>

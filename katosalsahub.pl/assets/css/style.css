@@ -1,0 +1,142 @@
+/* =====================================================
+   STYLE.CSS
+   Base, Variables, Reset, Utilities
+   ===================================================== */
+
+/* --- Variables --- */
+:root {
+  /* Midnight Lounge Theme (Lighter & Warmer) */
+  --bg: #13141f;       /* Deep warm navy/charcoal instead of pitch black */
+  --card: #1e202f;     /* Slightly lighter tint for cards */
+
+  --fg: #e2e8f0;       /* Soft slate white */
+  --fg-muted: #94a3b8; /* Muted slate */
+
+  /* Warmer Accents */
+  --red: #fb7185;      /* Rose-400 (softer than #ff4757) */
+  --orange: #fbbf24;   /* Amber-400 (warmer than #ffa502) */
+  --yellow: #fcd34d;   /* Amber-300 (sunnier than #ffd32a) */
+  --green: #34d399;    /* Emerald-400 */
+  --blue: #60a5fa;     /* Blue-400 */
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background:
+    radial-gradient(
+      circle at 25% 45%,
+      rgba(251, 191, 36, 0.14), /* złoto */
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at 75% 65%,
+      rgba(251, 113, 133, 0.10), /* ciepła czerwień */
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(30, 32, 47, 0.85),
+      rgba(19, 20, 31, 1)
+    ),
+    var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+    /* Basic reset that doesn't kill accessibility - enforced in components.css too, but good as fallback */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}
+
+/* --- Utilities --- */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 16px; /* Mobile padding */
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: 5%;
+  }
+}
+
+.section-header {
+  margin-bottom: 40px;
+}
+
+.section-header.center {
+  text-align: center;
+}
+
+.section-tag {
+  display: inline-block;
+  background: rgba(255, 165, 2, 0.1);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--fg-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--red), var(--orange), var(--yellow));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block; /* Fix for some browsers */
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

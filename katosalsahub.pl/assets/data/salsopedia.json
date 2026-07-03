@@ -1,0 +1,1012 @@
+[
+  {
+    "id": "term_1",
+    "term": "Abanico",
+    "definition": "Figura w stylu Casino, której nazwa oznacza 'wachlarz'. Rozpoczyna się od otwarcia partnerki, a następnie partner prowadzi ją w ruchu przypominającym otwieranie i zamykanie wachlarza ręką. Jest to fundament wielu bardziej złożonych kombinacji w Ruedzie.",
+    "category": ["figures"],
+    "source": "Rueda Standard",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_2",
+    "term": "Adelante",
+    "definition": "Podstawowa komenda oznaczająca krok do przodu ('Forward'). W Rueda de Casino często używana do zasygnalizowania ruchu po kole w kierunku przeciwnym do wskazówek zegara (dla partnerów) lub wejścia do środka koła.",
+    "category": ["steps"],
+    "source": "Salsa Terminology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_3",
+    "term": "Alarde",
+    "definition": "Ozdobnik, styling lub popisowy ruch, który nie zmienia struktury figury, ale dodaje jej wyrazu. Męskie alarde często obejmuje poprawianie koszuli, dotykanie głowy lub gesty rękami. Damskie alarde to praca włosami, biodrami czy dłońmi.",
+    "category": ["dance", "styles"],
+    "source": "Cuban Dance Culture",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_4",
+    "term": "Atrás",
+    "definition": "Krok do tyłu. W Ruedzie oznacza wycofanie się na zewnątrz koła lub ruch po okręgu zgodnie z ruchem wskazówek zegara. Kluczowy element orientacji przestrzennej w tańcu.",
+    "category": ["steps"],
+    "source": "Salsa Terminology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_5",
+    "term": "Bachata",
+    "definition": "Gatunek muzyczny i taniec pochodzący z Dominikany. Charakteryzuje się smutną, romantyczną tematyką piosenek (amargue) i charakterystycznym ruchem bioder na czwartym uderzeniu. Obecnie wyróżniamy style: Dominicana, Sensual i Moderna.",
+    "category": ["music", "dance", "styles"],
+    "source": "History of Latin Music",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_6",
+    "term": "Balsero",
+    "definition": "Figura w Ruedzie, której nazwa nawiązuje do kubańskich uchodźców ('balseros') uciekających na tratwach. Ruchy rąk w tej figurze imitują wiosłowanie, ma silny kontekst kulturowy i historyczny.",
+    "category": ["figures", "history"],
+    "source": "Rueda de Casino Figures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_7",
+    "term": "Básico (Guapea)",
+    "definition": "Krok podstawowy w salsie kubańskiej w parze. W odróżnieniu od stylu liniowego (przód-tył), Guapea polega na lustrzanym odbiciu partnerów, którzy odpychają się od siebie na '1' i przyciągają na '5'.",
+    "category": ["steps", "dance"],
+    "source": "Casino Basics",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_8",
+    "term": "Botella",
+    "definition": "Figura w Ruedzie, oznaczająca 'butelkę'. Tancerze zbliżają się do środka koła, często wydając charakterystyczny dźwięk lub wykonując ruch picia. Jest to element zabawy i integracji grupy.",
+    "category": ["figures"],
+    "source": "Rueda Fun Moves",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_9",
+    "term": "Bullsca",
+    "definition": "Zawołanie w Ruedzie sygnalizujące chaotyczną lub energiczną wymianę. Często łączy się z okrzykami i tupaniem, podkreślając 'improwizowany' charakter ulicznej Ruedy.",
+    "category": ["figures"],
+    "source": "Cuban Slang",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_10",
+    "term": "Cadena",
+    "definition": "'Łańcuch' - sekwencja zmian partnerów w Ruedzie, gdzie tancerze przemieszczają się kolejno od jednej partnerki do drugiej, nie wracając do pozycji zamkniętej przez dłuższy czas.",
+    "category": ["figures"],
+    "source": "Rueda Structures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_11",
+    "term": "Camina",
+    "definition": "'Idź' - polecenie dla prowadzących (Hombres) by szli do przodu po kole (przeciwnie do zegara), trzymając partnerki w pozycji zamkniętej lub otwartej (Paseala).",
+    "category": ["figures"],
+    "source": "Rueda Commands",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_12",
+    "term": "Candado",
+    "definition": "'Kłódka'. Zatrzymanie ruchu koła w Ruedzie lub zablokowanie partnerki w specyficznej pozycji (często z rękami skrzyżowanymi). Może też oznaczać powrót do pozycji zamkniętej.",
+    "category": ["figures"],
+    "source": "Rueda Vocabulary",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_13",
+    "term": "Casino",
+    "definition": "Właściwa nazwa kubańskiej salsy tańczonej w parze. Wywodzi się z 'Casino Deportivos' w Hawanie lat 50. Charakteryzuje się ruchem po okręgu, skomplikowanymi węzłami rąk i spontanicznością.",
+    "category": ["dance", "styles", "history"],
+    "source": "History of Casino",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_14",
+    "term": "Caminando Arriba",
+    "definition": "Chodzenie w górę (czyli do przodu w Ruedzie - przeciwnie do ruchu wskazówek zegara). Podstawowy sposób przemieszczania się całej grupy w kole.",
+    "category": ["steps"],
+    "source": "Rueda Navigation",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_15",
+    "term": "Cero / Zero",
+    "definition": "Figura 'zero'. Często oznacza reset, powrót do pozycji wyjściowej lub specyficzny obrót, po którym tancerze są gotowi na nową sekwencję.",
+    "category": ["figures"],
+    "source": "Rueda Signs",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_16",
+    "term": "Clave (Instrument)",
+    "definition": "Dwa drewniane patyki, instrument perkusyjny wyznaczający rytm. Serce muzyki kubańskiej.",
+    "category": ["instruments", "music"],
+    "source": "Music Theory",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+      "id": "term_16b",
+      "term": "Clave (Rytm)",
+      "definition": "Schemat rytmiczny (2-3 lub 3-2), podstawa salsy.",
+      "category": ["music", "dance"],
+      "source": "Music Theory",
+      "status": "unverified",
+      "verification_count": 0,
+      "author": "Community"
+  },
+  {
+    "id": "term_17",
+    "term": "Coca-Cola",
+    "definition": "Popularna figura, w której partnerka wykonuje obrót pod lewą ręką partnera, przypominający otwieranie puszki. Często wykonywana w trakcie przemieszczania się po kole.",
+    "category": ["figures"],
+    "source": "Casino Classics",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_18",
+    "term": "Columbia",
+    "definition": "Jeden z trzech stylów Rumby Kubańskiej (obok Yambu i Guaguanco). Tańczony tradycyjnie przez mężczyzn (solowo), bardzo szybki, akrobatyczny, z elementami rywalizacji z bębniarzem (Quinto).",
+    "category": ["dance", "styles", "history"],
+    "source": "Afro-Cuban Traditions",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_19",
+    "term": "Conga (Instrument)",
+    "definition": "Wysoki, wąski bęben używany w muzyce afrokubańskiej. W salsie i timbie zestaw cong (tumbadoras) tworzy podstawę rytmiczną ('marcha').",
+    "category": ["instruments", "music"],
+    "source": "Instruments of Salsa",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_20",
+    "term": "Consubeme",
+    "definition": "'Podciągnij mnie' - komenda w Ruedzie. Często połączona z 'Bajame' (opuść mnie). Może odnosić się do rąk lub energii tańca.",
+    "category": ["figures"],
+    "source": "Rueda Commands",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_21",
+    "term": "Cruzado",
+    "definition": "Krok krzyżny lub styl tańczenia 'na krzyż' (Salseta). W salsie liniowej oznacza co innego niż w kubańskiej. W Casino często używane przy 'Dile Que No'.",
+    "category": ["steps", "dance"],
+    "source": "Step Variations",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_22",
+    "term": "Cuban Motion",
+    "definition": "Charakterystyczny dla stylów latynoskich ruch ciała. Izolacja klatki piersiowej, praca bioder wynikająca z przenoszenia ciężaru ciała i uginania kolan. To nie jest kręcenie biodrami, a wynik biomechaniki kroku.",
+    "category": ["dance", "styles"],
+    "source": "Dance Technique",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_23",
+    "term": "Dame",
+    "definition": "'Daj mi' - najpopularniejsza komenda w Ruedzie. Oznacza zmianę partnerki na następną (tę po prawej). Wykonywana na '5, 6, 7' po otwarciu Dile Que No.",
+    "category": ["figures"],
+    "source": "Rueda 101",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_24",
+    "term": "Dame Dos",
+    "definition": "Wariacja komendy Dame. Zmieniamy partnerkę, pomijając jedną (idziemy do drugiej w kolejności).",
+    "category": ["figures"],
+    "source": "Rueda Variations",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_25",
+    "term": "Dame Una Arriba",
+    "definition": "Zmiana partnerki w przeciwnym kierunku (do tyłu, 'pod prąd'). Wymaga dużej uwagi, by nie zderzyć się z sąsiadami.",
+    "category": ["figures"],
+    "source": "Advanced Rueda",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_26",
+    "term": "Dedo",
+    "definition": "'Palec'. Figura rozpoczynająca się od obrotu partnerki trzymanej tylko jednym palcem (zazwyczaj wskazującym). Wymaga dobrego 'connection' i napięcia w ramie.",
+    "category": ["figures"],
+    "source": "Rueda Figures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_27",
+    "term": "Despelote",
+    "definition": "Styl tańca w Timba, szczególnie popularny wśród kobiet. Polega na swobodnym, często prowokacyjnym i energicznym potrząsaniu ciałem (ramiona, biodra, głowa) w momentach kulminacyjnych muzyki (Climax).",
+    "category": ["dance", "styles", "music"],
+    "source": "Timba Culture",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_28",
+    "term": "Dile Que No",
+    "definition": "'Powiedz jej nie'. Najważniejsze przejście w Casino. Pozwala parze wrócić z pozycji otwartej (lub innej figury) do pozycji podstawowej Guapea. Oparta na technice Cross Body Lead.",
+    "category": ["figures", "steps"],
+    "source": "Casino Fundamentals",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_29",
+    "term": "Dile Que Si",
+    "definition": "Odwrotność Dile Que No. Wejście do pozycji zamkniętej lub rozpoczęcie figury. Czasem używane jako żartobliwa komenda.",
+    "category": ["figures"],
+    "source": "Casino Variations",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_30",
+    "term": "Directo",
+    "definition": "Komenda oznaczająca wykonanie figury bezpośrednio, bez wstępnego przygotowania lub obrotu. Często stosowana przy 'Enchufla Directo'.",
+    "category": ["figures"],
+    "source": "Rueda Terminology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_31",
+    "term": "Echevarria",
+    "definition": "Złożona figura w Ruedzie de Casino. Nazwa pochodzi prawdopodobnie od nazwiska jej twórcy lub znanego tancerza. Zawiera serię obrotów i zmian rąk.",
+    "category": ["figures"],
+    "source": "Rueda History",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_32",
+    "term": "Enchufla",
+    "definition": "'Wtyczka'. Podstawowy obrót i zamiana miejsc w Ruedzie. Partner prowadzi partnerkę pod swoją ręką na '1, 2, 3', a następnie zmienia miejsce na '5, 6, 7', często zmieniając partnerkę przy okazji (w Ruedzie).",
+    "category": ["figures", "steps"],
+    "source": "Rueda Basics",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_33",
+    "term": "Enchufla Doble",
+    "definition": "Podwójne Enchufla. Zamiast jednej zmiany miejsc, wykonujemy dwie sekwencje bez puszczania rąk lub z szybkim przechwytem.",
+    "category": ["figures"],
+    "source": "Rueda Basics",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_34",
+    "term": "Exhíbela (Sacala)",
+    "definition": "'Pochwal się nią'. Partner prowadzi partnerkę w obrocie (zazwyczaj double spin) przed sobą, prezentując ją 'publiczności' lub innym tancerzom w Ruedzie.",
+    "category": ["figures", "dance"],
+    "source": "Casino Moves",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_35",
+    "term": "Festival de Pelota",
+    "definition": "Zabawna figura w Ruedzie, naśladująca rzucanie piłką (baseball jest sportem narodowym Kuby). Tancerze klaszczą i wykonują gesty miotacza/pałkarza.",
+    "category": ["figures", "history"],
+    "source": "Cultural References",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_36",
+    "term": "Fly",
+    "definition": "Krótki, dynamiczny gest klaśnięcia rękami w górze, często wykonywany w Ruedzie na sygnał. Imituje łapanie muchy (stąd nazwa).",
+    "category": ["figures"],
+    "source": "Rueda Fun",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_37",
+    "term": "Guaguancó",
+    "definition": "Najpopularniejszy styl Rumby Kubańskiej. Taniec godowy, pełen gry 'koguta i kury'. Mężczyzna stara się wykonać 'vacunao' (gest zapłodnienia), kobieta się zasłania.",
+    "category": ["dance", "styles", "music", "history"],
+    "source": "Afro-Cuban Rumba",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_38",
+    "term": "Guapea",
+    "definition": "Patrz: Básico. Krok podstawowy w Casino, dosłownie 'odważ się' lub 'pokaż, co potrafisz'.",
+    "category": ["steps", "dance"],
+    "source": "Casino Basics",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_39",
+    "term": "Chango",
+    "definition": "Orisha (bóstwo) w religii Santería, władca ognia, piorunów i bębnów. W tańcu afrokubańskim jego ruchy są silne, męskie, pełne skoków i obrotów. Jego kolory to czerwień i biel.",
+    "category": ["gods", "history", "dance"],
+    "source": "Santería Mythology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_40",
+    "term": "Eleggua",
+    "definition": "Pierwszy i najważniejszy Orisha, strażnik dróg i skrzyżowań. Otwiera i zamyka każdą ceremonię. W tańcu używa garabato (haka), jego ruchy są psotne, zmienne, niskie przy ziemi. Kolory: czerń i czerwień.",
+    "category": ["gods", "history", "dance"],
+    "source": "Santería Mythology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_41",
+    "term": "Yemaya",
+    "definition": "Matka wszystkich Orishas, bogini oceanu. Jej taniec naśladuje ruch fal, jest płynny, szeroki, pełen obrotów (jak wiry wodne). Kolory: niebieski i biały.",
+    "category": ["gods", "history", "dance"],
+    "source": "Santería Mythology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_42",
+    "term": "Oshun",
+    "definition": "Bogini miłości, piękna, słodkich wód (rzek) i złota. Najmłodsza Orisha. Jej taniec jest zmysłowy, kokieteryjny, pełen śmiechu i dzwonienia bransoletkami. Kolor: żółty/złoty.",
+    "category": ["gods", "history", "dance"],
+    "source": "Santería Mythology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_43",
+    "term": "Instruktorzy",
+    "definition": "Osoby nauczające salsy. W Katowicach i na Śląsku działa wielu pasjonatów, którzy promują styl kubański.",
+    "category": ["instructors"],
+    "source": "Kato Salsa Hub",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_45",
+    "term": "La Flor",
+    "definition": "'Kwiat'. Urocza figura w Ruedzie, gdzie tancerze zbliżają się do środka z rękami w górze, tworząc kształt otwierającego się kwiata.",
+    "category": ["figures"],
+    "source": "Rueda Imagery",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_46",
+    "term": "Mambo",
+    "definition": "1. Gatunek muzyczny stworzony przez braci Lopez. 2. Część utworu (sekcja dęta). 3. Styl salsy (New York Style - On2).",
+    "category": ["music", "dance", "styles", "history"],
+    "source": "Music History",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_47",
+    "term": "Manos",
+    "definition": "Ręce. Ważny element prowadzenia ('framing') i stylingu. W Casino prowadzenie wynika z ramy, a nie z 'ciągnięcia' rękami.",
+    "category": ["dance", "steps"],
+    "source": "Technique",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_48",
+    "term": "Mantel",
+    "definition": "'Obrus'. Figura, w której 'zarzucamy' rękę partnerki jak obrus na stół. Wymaga precyzji, by nie uderzyć partnerki.",
+    "category": ["figures"],
+    "source": "Rueda Figures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_49",
+    "term": "Mariposa",
+    "definition": "'Motyl'. Figura wykorzystująca skrzyżowane ręce i ruch przypominający skrzydła motyla.",
+    "category": ["figures"],
+    "source": "Rueda Figures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_50",
+    "term": "Martillo",
+    "definition": "'Młotek'. Charakterystyczny ruch ręką (blokada) lub nazwa wariacji kroku w niektórych szkołach.",
+    "category": ["figures", "steps"],
+    "source": "Variations",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_51",
+    "term": "Montuno",
+    "definition": "Sekcja utworu w sonie i salsie, oparta na schemacie 'Call & Response' (chór odpowiada soliście). To tutaj dzieje się najwięcej improwizacji (soneos).",
+    "category": ["music", "history"],
+    "source": "Music Structure",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_52",
+    "term": "Ni Pa Ti Ni Pa Mi",
+    "definition": "'Ani dla Ciebie, ani dla Mnie'. Wariacja Enchufla, gdzie tancerze 'drażnią się', nie kończąc figury od razu, lecz wykonując dodatkowe ruchy.",
+    "category": ["figures"],
+    "source": "Rueda Play",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_53",
+    "term": "Ochenta y Cuatro",
+    "definition": "'84'. Bardzo rozbudowana figura w Ruedzie, będąca kombinacją 'Setenta' (70) i innych elementów. Dla zaawansowanych.",
+    "category": ["figures"],
+    "source": "Advanced Rueda",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_54",
+    "term": "Fania All-Stars",
+    "definition": "Legenda. Supergrupa założona w 1968 roku w Nowym Jorku przez wytwórnię Fania Records. To oni spopularyzowali termin 'Salsa' na świecie. Celia Cruz, Hector Lavoe, Willie Colon...",
+    "category": ["history", "music", "bands"],
+    "source": "Salsa History",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_55",
+    "term": "Los Van Van",
+    "definition": "Najważniejszy zespół w historii Kuby (założony przez Juana Formella w 1969). Twórcy stylu Songo, prekursorzy Timby. 'The Rolling Stones of Cuba'.",
+    "category": ["bands", "music", "history"],
+    "source": "Cuban Music Legends",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_56",
+    "term": "Havana D'Primera",
+    "definition": "Współczesna gwiazda Timby, dowodzona przez Alexandra Abreu (wokalistę i trębacza). Ich muzyka łączy wirtuozerię jazzową z korzeniami kubańskimi. Znani z hitów 'Me Dicen Cuba' czy 'Pasaporte'.",
+    "category": ["bands", "music"],
+    "source": "Timba Bands",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_57",
+    "term": "Maykel Blanco y Su Salsa Mayor",
+    "definition": "Mocna, energiczna Timba ('La Maquina de Cuba'). Idealna do tańca, z bardzo wyraźnym rytmem i sekcją dętą.",
+    "category": ["bands", "music"],
+    "source": "Timba Bands",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_58",
+    "term": "Panque",
+    "definition": "'Naleśnik'. W Ruedzie oznacza opuszczenie rąk nisko (jakby spłaszczanie ciasta) i przejście pod nimi.",
+    "category": ["figures"],
+    "source": "Rueda Imagery",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_59",
+    "term": "Para Abajo",
+    "definition": "'W dół'. Polecenie zejścia nisko w tańcu (np. w środku Ruedy) lub wykonania ruchu biodrami ku dołowi.",
+    "category": ["steps", "dance"],
+    "source": "Rueda Commands",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_60",
+    "term": "Para Arriba",
+    "definition": "'W górę'. Przeciwieństwo Para Abajo, lub komenda ruchu (patrz: Camina Arriba).",
+    "category": ["steps", "dance"],
+    "source": "Rueda Commands",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_61",
+    "term": "Para Los Dos",
+    "definition": "'Dla dwojga'. Oznacza, że figura ma być wykonana jednocześnie przez kobietę i mężczyznę (często lustrzanie).",
+    "category": ["figures"],
+    "source": "Rueda Logic",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_62",
+    "term": "Paseala",
+    "definition": "'Spaceruj z nią'. Prowadzenie partnerki wokół siebie (lub chodzenie z nią w pozycji otwartej) w rytm muzyki. Elegancki element 'odpoczynku' między figurami.",
+    "category": ["figures", "steps"],
+    "source": "Casino Elegance",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_63",
+    "term": "Pelota",
+    "definition": "'Piłka'. Patrz: Festival de Pelota. Może też oznaczać zabawę rytmiczną w muzyce.",
+    "category": ["figures"],
+    "source": "Rueda Figures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_64",
+    "term": "Policia",
+    "definition": "Figura w Ruedzie z elementem 'przeszukania' (partner klepie partnerkę jak przy aresztowaniu). Element humorystyczny.",
+    "category": ["figures"],
+    "source": "Rueda Humor",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_65",
+    "term": "Prima",
+    "definition": "'Kuzynka'. Wariacja Enchufla, często nazywana 'Adios' w stylu LA. Ważny element rodziny figur 'Familia'.",
+    "category": ["figures"],
+    "source": "Rueda Basics",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_66",
+    "term": "Prima con Hermana",
+    "definition": "'Kuzynka z siostrą'. Rozbudowana wersja Primy, zawierająca dodatkowe obroty lub węzły.",
+    "category": ["figures"],
+    "source": "Rueda Variations",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_67",
+    "term": "Quedate",
+    "definition": "'Zostań'. Komenda, by nie zmieniać partnera/partnerki po wykonaniu figury, tylko zostać z tym samym.",
+    "category": ["figures", "steps"],
+    "source": "Rueda Logic",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_68",
+    "term": "Rueda de Casino",
+    "definition": "Spektakularny styl tańca w kole. Pary wykonują te same figury na komendę lidera ('Cantante'). Wymaga synchronizacji, uwagi i dystansu do siebie. Świetna zabawa socjalna.",
+    "category": ["styles", "dance", "history"],
+    "source": "General Knowledge",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_69",
+    "term": "Rumba (Guaguanco, Yambu, Columbia)",
+    "definition": "Korzeń salsy. Afrokubański taniec o bogatej historii. Jego elementy (ruch ciała, gesty, kroki) są powszechnie wplatane w Timbę i Casino jako styling.",
+    "category": ["styles", "dance", "history"],
+    "source": "Afro-Cuban Roots",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_70",
+    "term": "Sacala",
+    "definition": "Inna nazwa na Exhibela. 'Wyprowadź ją'. Pokaż ją światu.",
+    "category": ["figures"],
+    "source": "Synonyms",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_71",
+    "term": "Saloneo",
+    "definition": "Gra ciałem, flirt, styling. Sposób poruszania się po parkiecie, który wykracza poza same kroki, a dodaje charakteru.",
+    "category": ["dance", "styles"],
+    "source": "Dance Attitude",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_72",
+    "term": "Salsa",
+    "definition": "'Sos'. Termin ukuty w Nowym Jorku na określenie mieszanki rytmów karaibskich (Son, Mambo, Cha Cha, Guaracha) z amerykańskim Jazzem i Funk'iem. Globalny fenomen.",
+    "category": ["music", "dance", "history"],
+    "source": "General Definition",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_73",
+    "term": "Setenta",
+    "definition": "'70'. Klasyczna, ikoniczna figura w Casino. Charakteryzuje się wieloma obrotami partnerki i 'precelkami' rąk. Musi ją znać każdy Casinero.",
+    "category": ["figures"],
+    "source": "Must-know Figures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_74",
+    "term": "Setenta Complicado",
+    "definition": "'Skomplikowana 70-tka'. Jak sama nazwa wskazuje - Setenta z dodatkowymi utrudnieniami i węzłami.",
+    "category": ["figures"],
+    "source": "Advanced Moves",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_75",
+    "term": "Sombrero",
+    "definition": "'Kapelusz'. Figura kończąca się charakterystycznym ułożeniem rąk na głowach partnerów (jakby zakładali kapelusze). Zwykle następuje po Vacilala.",
+    "category": ["figures"],
+    "source": "Rueda Classics",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_76",
+    "term": "Son Cubano",
+    "definition": "Ojciec Salsy. Tradycyjny styl z regionu Oriente. Tańczony 'na kontrazas' (On2/Contra-tiempo). Elegancki, spokojniejszy, skupiony na rytmie i 'cadencia'.",
+    "category": ["styles", "history", "music", "dance"],
+    "source": "Roots of Salsa",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_77",
+    "term": "Suena",
+    "definition": "'Dźwięk' lub 'Graj!'. Okrzyk zachęcający muzyków do mocniejszego grania lub tancerzy do tupania (zapateo).",
+    "category": ["music", "figures"],
+    "source": "Musical Cues",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_78",
+    "term": "Tarro",
+    "definition": "'Rogi'. W slangu kubańskim oznacza zdradę ('przyprawić rogi'). W Ruedzie figura symbolizująca zdradzanie partnerki.",
+    "category": ["figures", "history"],
+    "source": "Cuban Slang",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_79",
+    "term": "Tiempo España",
+    "definition": "Wyjątek w Ruedzie - krok tańczony w rytmie charakterystycznym dla walca czy paso doble, z rękami w górze. Chwilowe wyjście z rytmu salsy.",
+    "category": ["figures", "styles"],
+    "source": "Rueda Oddities",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_80",
+    "term": "Timba",
+    "definition": "'Salsa na sterydach'. Ewolucja salsy kubańskiej od lat 90. Agresywna sekcja dęta, skomplikowane bębny, elementy funku i rapu. Muzyka, do której tańczy się dzisiejsze Casino.",
+    "category": ["music", "styles", "history", "dance"],
+    "source": "Modern Cuban Music",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_81",
+    "term": "Tumba Francesa",
+    "definition": "Historyczny styl tańca i muzyki na Kubie, powstały pod wpływem imigrantów z Haiti (kolonii francuskiej). Mieszanka elegancji daworu francuskiego z afrykańskimi bębnami.",
+    "category": ["history", "dance", "styles"],
+    "source": "Cuban Heritage",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_82",
+    "term": "Una Bulla",
+    "definition": "'Hałas!'. Komenda lidera w Ruedzie, by wszyscy krzyknęli (np. 'Hey!'). Buduje energię i integruje grupę.",
+    "category": ["figures"],
+    "source": "Rueda Energy",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_83",
+    "term": "Un Fly",
+    "definition": "Patrz: Fly. Klaśnięcie.",
+    "category": ["figures"],
+    "source": "Synonyms",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_84",
+    "term": "Vacilala",
+    "definition": "'Niech się bawi', 'Spójrz na nią'. Lider puszcza partnerkę, a ona wykonuje obrót (free spin), często ze stylingiem. Lider w tym czasie podziwia ją ('Vacila').",
+    "category": ["figures", "steps"],
+    "source": "Casino Essentials",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_85",
+    "term": "Vacunao",
+    "definition": "Charakterystyczny dla Rumby Guaguanco gest miednicą ('szczepionka'), wykonywany przez mężczyznę w stronę kobiety. Symbolizuje akt seksualny. Kobieta musi go unikać.",
+    "category": ["dance", "styles"],
+    "source": "Rueda Guaguanco",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_86",
+    "term": "Vasigal",
+    "definition": "Błędna/fonetyczna pisownia Vacilala.",
+    "category": ["figures"],
+    "source": "Common Mistakes",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_87",
+    "term": "Vuelta",
+    "definition": "Ogóle słowo oznaczające 'obrót'. Vuelta Izquierda (w lewo), Vuelta Derecha (w prawo).",
+    "category": ["steps", "dance"],
+    "source": "Spanish Terms",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_88",
+    "term": "Yambu",
+    "definition": "Najstarszy i najwolniejszy styl Rumby. Często nazywany 'Rumbą staruszków'. Nie ma tu Vacunao, jest elegancja i powolny rytm.",
+    "category": ["dance", "styles", "history"],
+    "source": "Afro-Cuban Roots",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_89",
+    "term": "Yogurt",
+    "definition": "Figura w Ruedzie, często żartobliwa lub myląca ('zrób jej z mózgu jogurt').",
+    "category": ["figures"],
+    "source": "Rueda Figures",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_90",
+    "term": "Obatala",
+    "definition": "Orisha bieli, pokoju, mądrości i czystości. Stwórca ludzkich ciał. Jego taniec jest powolny, dostojny, zgarbiony (jako starzec). Kolor: biały.",
+    "category": ["gods", "history", "dance"],
+    "source": "Santería Mythology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_91",
+    "term": "Oya",
+    "definition": "Wojownicza Orisha wiatrów, burz i cmentarzy. Ukochana Chango. Jej taniec jest dziki, szybki, wymachuje 'iruke' (biczem z końskiego ogona). Kolory: tęcza/bordo.",
+    "category": ["gods", "history", "dance"],
+    "source": "Santería Mythology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_92",
+    "term": "Ogun",
+    "definition": "Orisha żelaza, wojny i pracy. Samotnik mieszkający w lesie. W tańcu naśladuje rąbanie maczetą. Kolory: zielony i czarny.",
+    "category": ["gods", "history", "dance"],
+    "source": "Santería Mythology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_93",
+    "term": "Bomba",
+    "definition": "Portorykański taniec i rytm, często mylony z pleną. Ma wpływ na salsę, zwłaszcza w stylach z Puerto Rico.",
+    "category": ["music", "dance", "history"],
+    "source": "Caribbean Culture",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_94",
+    "term": "Plena",
+    "definition": "'Śpiewana gazeta' z Portoryko. Radosna muzyka grana na bębnach ręcznych (panderetas).",
+    "category": ["music", "history"],
+    "source": "Caribbean Culture",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_95",
+    "term": "Salsera / Salsero",
+    "definition": "Tancerka / Tancerz Salsy.",
+    "category": ["dance"],
+    "source": "Terminology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_96",
+    "term": "Rumbera / Rumbero",
+    "definition": "Tancerka / Tancerz Rumby.",
+    "category": ["dance"],
+    "source": "Terminology",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_97",
+    "term": "Timbero / Timbera",
+    "definition": "Fanatyk muzyki Timba.",
+    "category": ["music"],
+    "source": "Slang",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_98",
+    "term": "Tumbao",
+    "definition": "Podstawowy rytm grany na conga (lub basie) w salsie. To ten 'kołyszący' rytm, który sprawia, że chcemy tańczyć.",
+    "category": ["music", "dance"],
+    "source": "Music Theory",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_99",
+    "term": "Ocho Cortado",
+    "definition": "Figura zapożyczona z Tango, zaadaptowana do Salsy. Zatrzymanie ruchu i zmiana kierunku.",
+    "category": ["figures"],
+    "source": "Fusion",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_100",
+    "term": "El Gran Combo de Puerto Rico",
+    "definition": "Legendarny zespół z Portoryko ('Uniwersytet Salsy'). Grają klasyczną, soczystą salsę od ponad 50 lat.",
+    "category": ["bands", "music", "history"],
+    "source": "Salsa Legends",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  },
+  {
+    "id": "term_101",
+    "term": "Calle Real",
+    "definition": "Szwedzki zespół grający Timbę na światowym poziomie. Udowodnili, że Timba to muzyka globalna. Hity: 'Ya Lo Se', 'Abreme La Puerta'.",
+    "category": ["bands", "music"],
+    "source": "Modern Timba",
+    "status": "unverified",
+    "verification_count": 0,
+    "author": "Community"
+  }
+]

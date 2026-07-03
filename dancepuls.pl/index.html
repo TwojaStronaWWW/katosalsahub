@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dance Puls - Generator Zestawienia Imprez</title>
+  <link rel="stylesheet" href="css/style.css?v=20260205_v16">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+</head>
+
+<body>
+  <div style="position: relative; text-align: center;">
+    <div id="weather-widget"
+      style="position: absolute; left: 0; top: 0; display: flex; gap: 8px; font-size: 0.85em; text-align: left;">
+      <!-- Weather loaded via JS -->
+    </div>
+    <h2 style="display: inline-block;">🕺Dance Puls - Generator</h2>
+    <button id="help-btn">❓ Pomoc</button>
+    <a href="https://twojastronawww.pl/" target="_blank"
+      style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-size: 0.75em; color: #666; text-decoration: none; opacity: 0.7; transition: opacity 0.2s;"
+      onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">by TwojaStronaWWW</a>
+  </div>
+
+
+  <div class="app-container">
+
+    <!-- LEFT COLUMN: Inputs & Forms -->
+    <div class="col-left">
+      <div class="filters" style="background: #e3f2fd; border-color: #2196f3; padding: 10px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h3 style="margin: 0; font-size: 1em;">📬 Skrzynka (CSV)</h3>
+          <button id="check-inbox-btn"
+            style="background: #2196f3; color: white; border: none; padding: 5px 10px; font-size: 0.9em; cursor: pointer;">🔄
+            Sprawdź</button>
+        </div>
+        <div id="inbox-container"></div>
+      </div>
+
+      <div class="filters" style="margin-bottom: 20px;">
+        <label for="filter-select">Widok:</label>
+        <select id="filter-select">
+          <option value="thisweek">Ten tydzień</option>
+          <option value="all">Wszystkie 14 dni</option>
+          <option value="weekend">Najbliższe dni</option>
+        </select>
+      </div>
+
+      <!-- Rząd 1: Linki zewnętrzne -->
+      <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+        <button id="open-fb-links-btn" class="btn-primary" style="flex: 1; font-size: 0.8em; padding: 5px;">
+          🌐 Otwórz zakładki
+        </button>
+        <button id="open-ksh-btn" class="btn-primary" style="flex: 1; font-size: 0.8em; padding: 5px;">
+          🏠 Otwórz KSH
+        </button>
+      </div>
+
+      <!-- Rząd 2: Narzędzia importu -->
+      <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+        <button id="copy-scraper-btn" class="btn-danger" style="flex: 1; font-size: 0.8em; padding: 5px;">
+          📋 Kopiuj Skraper
+        </button>
+        <button id="import-btn" class="btn-primary" style="flex: 1; font-size: 0.8em; padding: 5px;"
+          title="Próbuje zaimportować wydarzenia z danych w schowku">
+          📥 Wklej i Importuj
+        </button>
+      </div>
+
+      <!-- Rząd 3: Czyszczenie i Reset -->
+      <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+        <button id="reset-history-btn" class="btn-neutral" style="flex: 1; font-size: 0.75em; padding: 4px;"
+          onclick="if(confirm('Na pewno wyczyścić historię zatwierdzonych zgłoszeń?')) { localStorage.removeItem('party_inbox_done'); location.reload(); }">
+          🗑️ Reset Historii
+        </button>
+        <button class="btn-neutral" style="flex: 1; font-size: 0.75em; padding: 4px;"
+          onclick="if(confirm('Na pewno wyczyścić cały formularz?')) { localStorage.removeItem('party_generator_stan'); location.reload(); }">
+          🧹 Wyczyść Formularz
+        </button>
+      </div>
+
+      <div id="form"></div>
+    </div>
+
+    <!-- MIDDLE COLUMN: Post Content (Sticky) -->
+    <div class="col-middle sticky-col">
+      <div style="margin-bottom: 20px;">
+        <button onclick="kopiujTytul()"
+          style="width: 100%; padding: 10px; font-weight: bold; background: #2196f3; color: white; border: 1px solid #1976d2;">📋
+          KOPIUJ SZKIELET ZESTAWIENIA DO POSTA FB</button>
+      </div>
+
+      <h3>📋 Podsumowanie:</h3>
+      <textarea id="wynik" rows="25"
+        style="width: 100%; font-family: monospace; font-size: 0.9em; white-space: pre-wrap; margin-bottom: 5px;"></textarea>
+
+      <div id="event-counter"
+        style="font-weight: bold; margin-bottom: 10px; text-align: right; color: #d32f2f; font-size: 0.9em;">Liczba
+        wgranych wydarzeń: 0</div>
+
+      <div style="margin-bottom: 10px; margin-top: 10px;">
+        <label>Hashtagi (doklejają się na końcu):</label><br>
+        <input id="hashtagi" style="width: 100%;" value="#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice">
+      </div>
+
+      <button onclick="kopiujWynik()"
+        style="width: 100%; margin-bottom: 20px; padding: 10px; font-weight: bold; background: #2196f3; color: white; border: 1px solid #1976d2;">📋
+        KOPIUJ PODSUMOWANIE DO KOMENTARZA NA FB</button>
+    </div>
+
+    <!-- RIGHT COLUMN: Poll Buttons (Sticky) -->
+    <div class="col-right sticky-col">
+      <h3 style="font-size: 1em; margin-bottom: 10px;">🔢 Kliknij, aby skopiować linię ankiety:</h3>
+      <div id="kopiuj-ankiete-container"></div>
+    </div>
+
+
+    <!-- HELP MODAL -->
+    <div id="help-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>📖 Instrukcja Obsługi</h2>
+
+        <div class="instruction-step">
+          <h3>1. Pobieranie wydarzeń z Facebooka (Pełny Automat)</h3>
+          <p>Prosta metoda skopiuj-wklej:</p>
+          <ol>
+            <li>Kliknij <strong>📋 Kopiuj Skraper</strong> (ten czerwony przycisk).</li>
+            <li>Wejdź na Facebooka (zakładka Wydarzenia).</li>
+            <li>Otwórz konsolę (F12 lub Prawy przycisk -> Zbadaj -> Konsola).</li>
+            <li>Wklej skrypt (Ctrl+V) i naciśnij Enter.</li>
+            <li>Skopiuj wynikowy tekst (CTRL+C).</li>
+          </ol>
+          <p><em>Skraper automatycznie skopiuje się ponownie do schowka po "wklejeniu" go w konsolę FB, żebyś mógł/a od
+              razu działać dalej!</em></p>
+        </div>
+
+        <div class="instruction-step">
+          <h3>2. Importowanie do Generatora</h3>
+          <p>Gdy tylko wrócisz na tę stronę (przełączysz kartę), generator <strong>automatycznie</strong> wykryje dane w
+            schowku i je załaduje.</p>
+          <p>Nie musisz nic klikać – po prostu wróć tutaj, a wydarzenia pojawią się na liście.</p>
+        </div>
+
+        <div class="instruction-step">
+          <h3>3. Wybór i Edycja</h3>
+          <ul>
+            <li>Zaznacz ☑️ checkbox przy wydarzeniu, aby dodać je do posta.</li>
+            <li>Wybierz <strong>Miasto</strong> i <strong>Miejsce</strong> (lub wpisz własne).</li>
+            <li>Zaznacz style taneczne (Salsa, Bachata itp.).</li>
+            <li>Pole <strong>Link</strong> jest wypełnione automatycznie.</li>
+            <li>Pole <strong>Krótki opis</strong> jest opcjonalne (dla Ciebie).</li>
+          </ul>
+        </div>
+
+        <div class="instruction-step">
+          <h3>4. Generowanie Posta na FB</h3>
+          <p>Generator działa w dwóch krokach, zgodnie z najlepszymi praktykami FB:</p>
+          <ol>
+            <li><strong>📋 KOPIUJ SZKIELET ZESTAWIENIA DO POSTA FB</strong> - Kopiuje pogrubiony tytuł tygodnia,
+              nagłówki dni (Piątek-Niedziela), info "linki w komentarzu" oraz hashtagi. To wklejasz jako główny post.
+            </li>
+            <li><strong>📋 KOPIUJ PODSUMOWANIE DO KOMENTARZA NA FB</strong> - Kopiuje szczegółową listę wszystkich
+              imprez z linkami. To wklejasz w pierwszym komentarzu pod postem (lepsze zasięgi!).</li>
+          </ol>
+          <p><em>💡 Dlaczego dwa przyciski? Facebook lepiej promuje posty z krótkimi nagłówkami i linkami w
+              komentarzach.</em></p>
+        </div>
+
+        <div class="instruction-step">
+          <h3>5. 📬 Skrzynka Odbiorcza (CSV)</h3>
+          <p>Jeśli wydarzenia są zgłaszane przez formularz Google, pojawią się w "Skrzynce" (lewa kolumna, góra).</p>
+          <ul>
+            <li>Kliknij <strong>🔄 Sprawdź</strong>, aby pobrać najnowsze zgłoszenia.</li>
+            <li>Jeśli pojawi się nowe wydarzenie, kliknij <strong>Zatwierdź</strong>, aby przenieść je do głównej listy
+              edycji.</li>
+            <li>Przycisk <strong>🗑️ Reset Historii</strong> pozwala "zapomnieć", które zgłoszenia już zatwierdziłeś/aś.
+            </li>
+          </ul>
+        </div>
+
+        <div class="instruction-step">
+          <h3>6. 🔢 Szybka Ankieta (Prawa kolumna)</h3>
+          <p>To pomocnik do tworzenia ankiet na grupie FB. Lista w prawej kolumnie zawiera gotowe opcje (z datami).</p>
+          <ul>
+            <li>Kliknij dowolny przycisk (np. "Poniedziałek - Salsa..."), a tekst <strong>skopiuje się do
+                schowka</strong>.</li>
+            <li>Wklej go jako opcję w ankiecie na Facebooku.</li>
+          </ul>
+        </div>
+
+        <div class="tip-box"
+          style="background: #FFF9C4; padding: 10px; border-radius: 8px; border-left: 4px solid #FFC107;">
+          <strong>💡 Wskazówka:</strong> Użyj przycisku <strong>🗑️ Reset Historii</strong>, aby wyczyścić listę
+          "odhaczonych" wcześniej wydarzeń.
+        </div>
+      </div>
+
+      <!-- MOBILE WARNING MODAL -->
+      <div id="mobile-warning-modal" class="modal-glass">
+        <div class="glass-content">
+          <h2>📱 Wersja Desktopowa</h2>
+          <p>Cześć! Wygląda na to, że korzystasz z telefonu.</p>
+          <p>Ze względu na specyfikę Generatora (kopiowanie, edycja, skrypty), został on zaprojektowany
+            <strong>wyłącznie do użytku na komputerach</strong>.
+          </p>
+          <p>Możesz spróbować używać go na telefonie, ale wygoda i działanie niektórych funkcji mogą być ograniczone.
+          </p>
+          <button id="mobile-warning-close" class="glass-btn">Rozumiem, chcę tylko popatrzeć</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer style="text-align: center; padding: 20px; color: #666; font-size: 0.85em;">
+    Stworzone przez <a href="https://twojastronawww.pl/" target="_blank"
+      style="color: #2196f3; text-decoration: none; font-weight: bold;">TwojaStronaWWW</a>
+  </footer>
+</body>
+
+<script type="module" src="js/app.js?v=20260205_v17"></script>
+
+</html>
+
+<!-- DEPLOY TESppT[]; l->

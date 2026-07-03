@@ -1,0 +1,163 @@
+<main id="app-content">
+
+    <!-- Salsopedia Header -->
+    <header class="wiki-header">
+        <div class="wiki-header-content">
+            <h1>Salsopedia</h1>
+            <p>Twoja encyklopedia wiedzy o salsie kubańskiej, muzyce i kulturze.</p>
+
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" class="search-input"
+                    placeholder="Szukaj pojęcia (np. Vacilala, Timba)...">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="wiki-main-container">
+
+        <!-- Sidebar Navigation -->
+        <aside class="wiki-sidebar">
+            <h3>Kategorie</h3>
+            <ul class="category-list" id="categoryList">
+                <li data-category="all" class="active">Wszystkie</li>
+                <li data-category="steps">Kroki (Podstawy)</li>
+                <li data-category="figures">Figury (Pary)</li>
+                <li data-category="instruments">Instrumenty</li>
+                <li data-category="music">Muzyka</li>
+                <li data-category="dance">Taniec</li>
+                <li data-category="styles">Style Tańca</li>
+                <li data-category="history">Historia</li>
+                <li data-category="gods">Bogowie (Orishas)</li>
+                <li data-category="instructors">Instruktorzy</li>
+                <li data-category="schools">Szkoły Tańca</li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button id="showPendingBtn" class="btn-text">
+                    <i class="fas fa-history"></i> Oczekujące zmiany
+                </button>
+            </div>
+        </aside>
+
+        <!-- Terms Grid -->
+        <section class="wiki-content">
+            <!-- Loading Spinner -->
+            <div id="loading" class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+
+            <!-- Terms Grid -->
+            <div id="wikiGrid" class="wiki-grid"></div>
+
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results hidden">
+                <i class="fas fa-search"></i>
+                <p>Nie znaleziono takiego hasła.</p>
+                <button class="btn-add-inline" onclick="openModal()">Dodaj je!</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Floating Action Button (Moved inside main for SPA routing) -->
+    <button id="addTermBtn" class="fab-add" onclick="openModal()" title="Dodaj nowe hasło">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Modal for Adding/Editing Terms (Moved inside main for SPA routing) -->
+    <div id="wikiModal" class="modal-overlay">
+        <div class="modal-content wiki-modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modalTitle">Dodaj hasło</h2>
+
+            <form id="wikiForm">
+                <input type="hidden" id="termId" name="id">
+                <input type="hidden" id="isVerification" name="verification_request">
+
+                <div class="form-group">
+                    <label for="termInput">Hasło</label>
+                    <input type="text" id="termInput" name="term" required placeholder="np. Enchufla">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kategorie Główne</label>
+                        <div id="catSelectContainer" class="custom-select-container"></div>
+                        <select id="catSelect" name="category" multiple style="display:none">
+                            <option value="steps">Kroki</option>
+                            <option value="figures">Figury</option>
+                            <option value="instruments">Instrumenty</option>
+                            <option value="music">Muzyka</option>
+                            <option value="dance" selected>Taniec</option>
+                            <option value="styles">Style</option>
+                            <option value="history">Historia</option>
+                            <option value="gods">Bogowie</option>
+                            <option value="instructors">Instruktorzy</option>
+                            <option value="schools">Szkoły</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Podkategorie</label>
+                        <div id="subSelectContainer" class="custom-select-container"></div>
+                        <select id="subSelect" name="subcategory" multiple style="display:none">
+                            <option value="lead">Prowadzenie</option>
+                            <option value="follow">Podążanie</option>
+                            <option value="partnerwork">W parach</option>
+                            <option value="shines">Solo (Shines)</option>
+                            <option value="technique">Technika</option>
+                            <option value="rhythm">Rytmika</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top:15px">
+                    <label>Proponowana nowa kategoria (opcjonalne)</label>
+                    <input type="text" id="userCategoryInput" name="user_category"
+                        placeholder="Np. Stroje, Festiwale...">
+                </div>
+
+                <div class="form-group">
+                    <label>Źródła (Link, Książka, Instruktor)</label>
+                    <div id="sourceContainer">
+                        <!-- Source rows injected via JS -->
+                    </div>
+                    <button type="button" class="btn-add-inline" onclick="addSourceRow()">+ Dodaj kolejne
+                        źródło</button>
+                </div>
+
+                <div class="form-group auth-group">
+                    <div>
+                        <label for="authorInput">Twój Podpis (Ksywka)*</label>
+                        <input type="text" id="authorInput" name="author" required placeholder="Jak mamy Cię podpisać?">
+                    </div>
+                    <div>
+                        <label for="authorLinkInput">Twój Facebook/Insta (Link)</label>
+                        <input type="url" id="authorLinkInput" name="author_link"
+                            placeholder="https://facebook.com/...">
+                    </div>
+                </div>
+
+                <p class="form-note">
+                    <i class="fas fa-info-circle"></i> Zgłoszenia trafiają do moderacji i systemu oczekujących.
+                </p>
+
+                <div class="form-group">
+                    <label for="definitionInput">Definicja</label>
+                    <textarea id="definitionInput" name="definition" rows="5" required
+                        placeholder="Opisz to pojęcie..."></textarea>
+                </div>
+
+                <!-- Honeypot -->
+                <input type="text" name="surname" style="display:none">
+
+                <button type="submit" class="btn-submit">Wyślij do moderacji</button>
+            </form>
+            <div id="formMessage"></div>
+        </div>
+    </div>
+
+</main>

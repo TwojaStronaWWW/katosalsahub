@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kato Salsa Hub ⚡ Kubańska Energia w Katowicach</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/radio.css">
+  <link rel="stylesheet" href="assets/css/wiki.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;800&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Animowane tło z kubańskimi kolorami -->
+  <div class="animated-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Sticky Navigation -->
+  <nav class="nav-bar">
+    <div class="nav-brand-group">
+      <a href="#" class="nav-logo">
+        <span class="logo-text">KATO SALSA HUB</span>
+        <span class="logo-emoji">🔥</span>
+      </a>
+      <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio">
+        <i class="fas fa-play"></i>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="#hero">Start</a>
+      <a href="#onas">O nas</a>
+      <a href="#style">Style</a>
+      <a href="salsopedia.html" data-page="wiki">Salsopedia</a>
+      <a href="#radio">Radio</a>
+      <a href="#mapa">Lokacja</a>
+      <a href="#kontakt" class="cta-link">Kontakt</a>
+    </div>
+    <div class="burger-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <!-- Main Content Wrapper for SPA -->
+  <main id="app-content">
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="hero-badge-wrapper">
+            <div class="hero-badge">🌴 Kubańska Energia w Sercu Śląska 🌴</div>
+          </span>
+          <span class="title-line">Zatańcz</span>
+          <span class="title-line glow">z nami</span>
+          <span class="title-line">salsę</span>
+        </h1>
+        <p class="hero-subtitle">Tańczymy razem. Na luzie. Po prostu wpadaj. 💃🕺</p>
+        <div class="hero-buttons">
+          <a href="https://www.facebook.com/groups/519446499987373" target="_blank" class="btn btn-primary">
+            <span>Bądź na bieżąco z wydarzeniami</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+          <a href="#mapa" class="btn btn-secondary">Gdzie i kiedy tańczymy</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/images/hero.png" alt="Kato Salsa Hub - Taniec w Katowicach" class="hero-image">
+      </div>
+    </section>
+
+    <!-- O nas Section -->
+    <section id="onas" class="section-onas">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-tag">Kim jesteśmy</span>
+          <h2 class="section-title">Społeczność Pełna Pasji</h2>
+        </div>
+        <div class="onas-grid">
+          <div class="card card--interactive onas-card">
+            <div class="card-icon">🌟</div>
+            <h3>Otwarta Społeczność</h3>
+            <p>Każdy jest mile widziany - od początkujących po zaawansowanych tancerzy. Tutaj poznasz ludzi, którzy
+              kochają kubańskie rytmy tak samo jak Ty!</p>
+          </div>
+          <div class="card card--interactive onas-card">
+            <div class="card-icon">🎵</div>
+            <h3>Autentyczny Klimat</h3>
+            <p>Nie tylko taniec - to styl życia! Kubańska energia, prawdziwa muzyka i niepowtarzalna atmosfera Karaibów
+              w
+              Katowicach.</p>
+          </div>
+          <div class="card card--interactive onas-card">
+            <div class="card-icon">🔥</div>
+            <h3>Regularne Eventy</h3>
+            <p>Spotykamy się na otwartych wydarzeniach, warsztatach i imprezach tanecznych. Dołącz do nas i poczuj
+              kubański vibe!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Style Section -->
+    <section id="style" class="section-style">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-tag">Co tańczymy</span>
+          <h2 class="section-title">Style Tańca</h2>
+        </div>
+        <div class="style-grid">
+          <!-- 1. Salsa Cubana (Featured) -->
+          <div class="card card--interactive style-card featured salsa">
+            <h3>Salsa Cubana <span class="style-icon">💫</span></h3>
+            <p>To nie tylko taniec, to rozmowa ciał! Żywiołowa, pełna radości improwizacja w parze (Casino), gdzie
+              skomplikowane węzły rąk przeplatają się z kubańskim "sabor". Podstawa, od której zaczyna się Twoja
+              przygoda!</p>
+          </div>
+          <div class="card card--interactive style-card timba">
+            <h3>Timba <span class="style-icon">⚡</span></h3>
+            <p>Kubańska odmiana salsy z dużą dawką ekspresji, szybkim tempem i niesamowitą energią!</p>
+          </div>
+          <div class="card card--interactive style-card rueda">
+            <h3>Rueda de Casino <span class="style-icon">⭐</span></h3>
+            <p>Taniec w kole z wywoływanymi figurami. Energia grupy, synchronizacja i mnóstwo zabawy!</p>
+          </div>
+          <div class="card card--interactive style-card likiowa">
+            <h3>Salsa Liniowa <span class="style-icon">💃</span></h3>
+            <p>Elegancki styl tańczony w linii, znany z efektownych obrotów i precyzyjnego prowadzenia.</p>
+          </div>
+          <div class="card card--interactive style-card son">
+            <h3>Son Cubano <span class="style-icon">🎩</span></h3>
+            <p>Ojciec salsy. Elegancki, rytmiczny, tańczony "na kontrazas". Klasyka, styl i tradycja.</p>
+          </div>
+          <div class="card card--interactive style-card rumba-afro">
+            <h3>Rumba Cubana <span class="style-icon">🥁</span></h3>
+            <p>Afrykańskie korzenie. Guaguancó, Yambú, Columbia. Gra uwodzenia, czyste emocje i rytm bębnów.</p>
+          </div>
+          <div class="card card--interactive style-card afro">
+            <h3>Afro Cubano <span class="style-icon">🗿</span></h3>
+            <p>Święte tańce Orishas (Yoruba). Eleggua, Chango, Ochun. Pierwotna energia, kontakt z ziemią i duchowość
+              zaklęta w ruchu.</p>
+          </div>
+          <div class="card card--interactive style-card reggaeton">
+            <h3>Reggaeton / Reparto <span class="style-icon">🧢</span></h3>
+            <p>Ulica Hawany! Nowoczesna, drapieżna energia Kuby. Izolacje ciała, mocny beat i nieskrępowana ekspresja "a
+              lo cubano".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Radio Section -->
+    <section id="radio" class="section-radio">
+      <div class="container">
+        <div class="radio-wrapper">
+          <div class="radio-visual">
+            <div class="vinyl-disc">
+              <div class="vinyl-center"></div>
+            </div>
+            <div class="sound-wave">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="radio-content">
+            <span class="section-tag">Posłuchaj</span>
+            <h2 class="section-title">Timba Nation Radio 🎺</h2>
+            <p class="radio-desc">Najlepsze kubańskie rytmy non-stop! Puść muzykę i poczuj klimat Hawany w swoim domu.
+            </p>
+            <button id="radio-play" class="btn btn-radio">▶ Włącz radio</button>
+            <!-- Radio Player hidden logic using Audio API -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mapa Section -->
+    <section id="mapa" class="section-mapa">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-tag">Znajdź nas</span>
+          <h2 class="section-title">Gdzie <span class="text-gradient">Tańczymy?</span> 📍</h2>
+          <p class="section-subtitle">Najczęściej spotykamy się na Dolinie Trzech Stawów - serce tanecznego Katowic!</p>
+        </div>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/d/u/1/embed?mid=19lozCUSx249XISvWjEG65y_0ohpWQ3Q&ehbc=2E312F&noprof=1"
+            allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontakt Section -->
+    <section id="kontakt" class="section-kontakt">
+      <div class="container">
+        <div class="kontakt-grid">
+          <div class="kontakt-info">
+            <span class="section-tag">Napisz do nas</span>
+            <h2 class="section-title">Skontaktuj się z nami</h2>
+            <p>Masz pytania? Chcesz dołączyć do społeczności? A może organizujesz event i potrzebujesz tancerzy? Napisz!
+            </p>
+            <div class="contact-details">
+              <div class="contact-item">
+                <span class="contact-icon">📍</span>
+                <span>Katowice, Dolina Trzech Stawów</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-icon">👥</span>
+                <a href="https://www.facebook.com/groups/519446499987373" target="_blank">Facebook Group</a>
+              </div>
+            </div>
+          </div>
+          <div class="kontakt-form">
+            <form name="contact" id="contactForm" action="assets/php/contact.php" method="POST">
+              <input type="hidden" name="form-name" value="contact" />
+              <!-- Honeypot field (hidden for users, visible to bots) -->
+              <div style="display:none;">
+                <label for="hp_chk">Nie wypełniaj tego pola:</label>
+                <input type="text" id="hp_chk" name="hp_chk" autocomplete="off" />
+              </div>
+              <div class="form-group">
+                <label for="name">Imię i nazwisko</label>
+                <input type="text" id="name" name="name" required placeholder="Jan Kowalski" />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="jan@example.com" />
+              </div>
+              <div class="form-group">
+                <label for="message">Wiadomość</label>
+                <textarea id="message" name="message" required placeholder="Twoja wiadomość..." rows="5"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary full-width">
+                <span>Wyślij wiadomość</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>KATO SALSA HUB 🔥</h3>
+        <p>Kubańska energia w sercu Śląska</p>
+      </div>
+      <div class="footer-links">
+        <a href="#hero">Start</a>
+        <a href="#onas">O nas</a>
+        <a href="#style">Style</a>
+        <a href="#kontakt">Kontakt</a>
+        <a href="privacy.html">Polityka Prywatności</a>
+        <a href="https://dancepuls.katosalsahub.pl/" target="_blank">DancePuls Generator</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
+          target="_blank">TwojaStronaWWW</a></p>
+      <p style="margin-top:10px;"><a href="javascript:void(0);" id="showPendingBtn"
+          onclick="if(window.fetchPendingTerms) fetchPendingTerms(); else if(window.initWiki) window.initWiki();"
+          style="color:#555; text-decoration:none; font-size:0.8rem;">[Moderacja]</a></p>
+    </div>
+  </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner">
+    <div class="cookie-content">
+      <h4>🍪 Ciasteczka i Prywatność</h4>
+      <p>Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
+          href="privacy.html">Politykę Prywatności</a>.</p>
+    </div>
+    <div class="cookie-actions">
+      <button id="accept-cookies" class="btn btn-primary">Akceptuję</button>
+    </div>
+  </div>
+
+  <script src="assets/js/contact.js?v=cleanup"></script>
+  <script src="assets/js/cookies.js"></script>
+  <script>
+    // Rok w footerze
+    document.getElementById("rok").textContent = new Date().getFullYear();
+
+    // Burger menu
+    const burger = document.querySelector('.burger-menu');
+    const navLinks = document.querySelector('.nav-links');
+    burger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      burger.classList.toggle('active');
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          navLinks.classList.remove('active');
+          burger.classList.remove('active');
+        }
+      });
+    });
+  </script>
+  <script src="assets/js/wiki.js?v=cleanup"></script>
+  <script src="assets/js/radio.js?v=debug"></script>
+  <script src="assets/js/home.js"></script>
+  <script src="assets/js/router.js"></script>
+</body>
+
+</html>
+
+<!-- estkl  l-->
