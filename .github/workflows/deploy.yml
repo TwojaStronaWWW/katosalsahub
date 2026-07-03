@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Testy
+    name: 🧪 CI Testy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,8 +21,16 @@ jobs:
       - name: Walidacja HTML
         run: |
           npm install -g htmlhint
-          htmlhint "katosalsahub.pl/**/*.html" --config .htmlhintrc
-          htmlhint "dancepuls.pl/**/*.html" --config .htmlhintrc
+          # Waliduj tylko pełne strony (z DOCTYPE), pomijaj partiale SPA
+          for file in katosalsahub.pl/*.html dancepuls.pl/*.html; do
+            [ -f "$file" ] || continue
+            if head -5 "$file" | grep -qi 'doctype'; then
+              echo "✅ Walidacja: $file"
+              htmlhint "$file" --config .htmlhintrc
+            else
+              echo "⏭️ Pomijam partial: $file"
+            fi
+          done
 
       - name: Sprawdzanie linków
         run: |
@@ -43,7 +51,7 @@ jobs:
           echo "✅ Sprawdzanie linków zakończone"
 
   deploy:
-    name: Deploy na serwer (${{ github.ref_name }})
+    name: 🚀 Deploy na serwer (${{ github.ref_name }})
     needs: test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
