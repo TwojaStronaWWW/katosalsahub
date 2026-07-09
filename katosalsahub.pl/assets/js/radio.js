@@ -6,19 +6,14 @@
 let radioInitialized = false;
 
 function initRadioOnce() {
-    console.log('RadioJS: initRadioOnce called', { radioInitialized });
     if (radioInitialized) {
-        // UI Update Loop for Navigation
-        // Even if initialized, DOM buttons might be new.
-        if(window.updateGlobalRadioUI) window.updateGlobalRadioUI();
-        return; 
+        if (window.updateGlobalRadioUI) window.updateGlobalRadioUI();
+        return;
     }
-    
+
     radioInitialized = true;
     initRadio();
 }
-
-// Listeners are handled at the end of file for singleton pattern
 
 // Audio Object Scope
 const streamUrl = 'https://stream.zeno.fm/g0zpm0pypuhvv';
@@ -31,13 +26,11 @@ function initRadio() {
     // Make update function global for re-use
     window.updateGlobalRadioUI = updateGlobalUI;
     updateGlobalUI();
-}
-    
+
     // Global Click Listener (Event Delegation) - Handles dynamic elements
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('#header-radio-play, #radio-play');
         if (btn) {
-            console.log('RadioJS: Play button clicked', btn.id);
             e.preventDefault();
             toggleRadio();
         }
@@ -65,10 +58,7 @@ function initRadio() {
         isLoading = false;
         isPlaying = false;
         updateGlobalUI();
-        // Don't alert on simple stream errors to annoying user? Or use toast?
-        // alert("Nie udało się połączyć z radiem.");
     });
-
 
     function updateGlobalUI() {
         const headerPlayBtn = document.getElementById('header-radio-play');
@@ -96,11 +86,10 @@ function initRadio() {
 
     // Update UI based on state
     function updateUI(headerBtn, sectionBtn, vinyl, waves) {
-        // defined states
         const state = isLoading ? 'loading' : (isPlaying ? 'playing' : 'stopped');
         const sectionRadio = document.querySelector('.section-radio');
 
-        // 0. Global State (Single Source of Truth)
+        // Global State (Single Source of Truth)
         document.body.classList.toggle('radio-playing', isPlaying);
 
         // 1. Update Section Button
@@ -120,50 +109,41 @@ function initRadio() {
 
         // 2. Update Header Button
         if (headerBtn) {
-             // Reset classes
             headerBtn.classList.remove('playing', 'loading');
-            headerBtn.innerHTML = ''; // Clear icon
+            headerBtn.innerHTML = '';
 
             if (state === 'loading') {
                 headerBtn.classList.add('loading');
-                // Spinner (FontAwesome)
                 headerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             } else if (state === 'playing') {
                 headerBtn.classList.add('playing');
-                // Stop (FontAwesome)
                 headerBtn.innerHTML = '<i class="fas fa-stop"></i>';
             } else {
-                // Play (FontAwesome)
                 headerBtn.innerHTML = '<i class="fas fa-play"></i>';
             }
             headerBtn.title = state === 'playing' ? "Zatrzymaj radio" : "Włącz radio";
         }
 
         // 3. Update Animations via CSS Context
-        // NOW HANDLED BY global .radio-playing class on body
-        // Legacy support if needed, but cleaner to remove if CSS is updated
         if (sectionRadio) {
-            if (state === 'playing') {
-                sectionRadio.classList.add('playing');
-            } else {
-                sectionRadio.classList.remove('playing');
-            }
+            sectionRadio.classList.toggle('playing', state === 'playing');
         }
     }
+} // <- initRadio() ends here
 
-    // Expose for debugging if needed
-    window.initRadio = initRadioOnce;
+// Expose for debugging
+window.initRadio = initRadioOnce;
 
-    // Run initially (Singleton Pattern)
-    if(document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initRadioOnce);
-    } else {
-        initRadioOnce();
+// Run initially (Singleton Pattern)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRadioOnce);
+} else {
+    initRadioOnce();
+}
+
+// UI Update on Navigation (Radio persists, UI changes)
+document.addEventListener('page:loaded', () => {
+    if (radioInitialized && window.updateGlobalRadioUI) {
+        window.updateGlobalRadioUI();
     }
-    
-    // UI Update on Navigation (Radio persists, UI changes)
-    document.addEventListener('page:loaded', () => {
-        if (radioInitialized && window.updateGlobalRadioUI) {
-            window.updateGlobalRadioUI();
-        }
-    });
+});

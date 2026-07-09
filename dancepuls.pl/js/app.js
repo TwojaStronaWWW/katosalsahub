@@ -149,6 +149,11 @@ document.addEventListener('DOMContentLoaded', function () {
 			inputLink.className = 'link'
 			inputLink.placeholder = 'Link'
 
+			const inputOpis = document.createElement('input')
+			inputOpis.type = 'text'
+			inputOpis.className = 'opis'
+			inputOpis.placeholder = 'Krótki opis (opcjonalnie)'
+
 			const styleBox = document.createElement('div')
 			styleBox.className = 'checkboxes'
 
@@ -280,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			updateMiejscaOptions(selectMiasto.value)
 
-			eventBlock.append(selectMiasto, inputMiastoInne, selectMiejsce, inputMiejsceInne, inputLink)
+			eventBlock.append(selectMiasto, inputMiastoInne, selectMiejsce, inputMiejsceInne, inputLink, inputOpis)
 			container.append(toggle, eventBlock)
 
 			// Styl dla headera, żeby checkbox był w linii z resztą
@@ -356,8 +361,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 
-	// Buttons
-	// document.getElementById('generuj-btn').addEventListener('click', generujPost) // USUWAMY
 
 	// NEW BUTTONS LISTENERS
 	const btnReset = document.getElementById('reset-history-btn')
@@ -370,16 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 	}
 
-	const btnClear = document.getElementById('clear-import-btn')
-	if (btnClear) {
-		btnClear.addEventListener('click', () => {
-			document.getElementById('import-fb-data').value = ''
-			// Optional: maybe clear form events? No, logic says "Clear Field".
-			// If user meant "Clear Form", that is "wyczysc formularz" which was already in header?
-			// User said "reset historii zgloszen i wyczysc skrypt".
-			// "Wyczysc skrypt" probably means the JSON field.
-		})
-	}
 
 	const btnCopyScraper = document.getElementById('copy-scraper-btn')
 	if (btnCopyScraper) {
@@ -817,14 +810,15 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function updateEventCounter() {
-		const count = document.querySelectorAll('.event-block[style*="display: block"]').length
+		const activeBlocks = document.querySelectorAll('.event-block')
+		let count = 0
+		activeBlocks.forEach(eb => {
+			if (eb.style.display === 'block') count++
+		})
 		const counterEl = document.getElementById('event-counter')
 		if (counterEl) counterEl.textContent = `Liczba wgranych wydarzeń: ${count}`
 	}
 
-	// Obsługa Enter i Auto-Paste w textarea - USUNIĘTE (brak pola tekstowego)
-	// const importArea = document.getElementById('import-fb-data');
-	// ... logic removed ...
 
 	// --- HELP MODAL ---
 	const modal = document.getElementById('help-modal')
@@ -1345,8 +1339,6 @@ function generujPost() {
 		'☕️ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
 	wynik += document.getElementById('hashtagi').value
 	document.getElementById('wynik').value = wynik
-	document.getElementById('wynik').value = wynik
-	// document.getElementById('ankieta').value = wynikAnkieta // USUNIĘTE: User nie chce pola tekstowego, tylko guziki
 
 	const ankietaDiv = document.getElementById('kopiuj-ankiete') || document.createElement('div')
 	ankietaDiv.id = 'kopiuj-ankiete'

@@ -3,3 +3,16 @@ AddType 'text/html; charset=UTF-8' html
 AddType 'text/css; charset=UTF-8' css
 AddType 'application/javascript; charset=UTF-8' js
 AddType 'application/json; charset=UTF-8' json
+
+# Bezpieczeństwo
+Options -Indexes
+
+# Blokada dostępu do logów i konfiguracji
+<FilesMatch "\.(log|local\.php)$">
+    Require all denied
+</FilesMatch>
+
+# Blokada dostępu do plików danych (salsopedia.json, pending_edits.json)
+<FilesMatch "^(salsopedia|pending_edits)\.json$">
+    Require all denied
+</FilesMatch>

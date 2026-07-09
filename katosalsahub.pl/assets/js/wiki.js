@@ -1,4 +1,4 @@
-console.error('WIKI.JS LOADED — TOP OF FILE');
+
 /**
  * Salsopedia Wiki Logic v12
  * Event-Driven Architecture (Router -> page:loaded -> mountWiki)
@@ -9,12 +9,29 @@ const API_URL = 'assets/php/wiki.php';
 
 const AppState = {
     terms: [],
-    pending: [], // Global cache for moderation
+    pending: [],
     ui: {
         loading: null, 
         selects: {}
     }
 };
+
+// --- Helpers (Security) ---
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function sanitizeUrl(url) {
+    if (!url) return '#';
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (['http:', 'https:'].includes(parsed.protocol)) return url;
+    } catch { /* invalid URL */ }
+    return '#';
+}
 
 // --- Lifecycle ---
 // (Listeners are handled at the bottom of the file)
@@ -159,8 +176,8 @@ function renderTerms(terms, isPendingMode = false) {
         if (sources.length > 0) {
              sourceHtml = '<div class="source-link">';
              sources.forEach(s => {
-                 const name = s.name || 'Link';
-                 const url = s.url || '#';
+                 const name = escapeHtml(s.name || 'Link');
+                 const url = sanitizeUrl(s.url);
                  if(url && url !== '#') sourceHtml += `<a href="${url}" target="_blank">${name}</a> `;
                  else sourceHtml += `<span>${name}</span> `;
              });
@@ -189,18 +206,18 @@ function renderTerms(terms, isPendingMode = false) {
 
         card.innerHTML = `
             <div class="wiki-card-header">
-                <h3>${term.term}</h3>
+                <h3>${escapeHtml(term.term)}</h3>
                 ${statusBadge}
             </div>
             <div class="badges">
                 ${catsHtml}
             </div>
             <div class="definition">
-                ${term.definition}
+                ${escapeHtml(term.definition)}
             </div>
             ${sourceHtml}
             <div class="wiki-card-footer">
-                <span style="font-size:0.8rem; color:#666;">Autor: ${term.author}</span>
+                <span style="font-size:0.8rem; color:#666;">Autor: ${escapeHtml(term.author)}</span>
                 ${actionBtn}
             </div>
         `;
@@ -301,19 +318,13 @@ async function processModeration(id, action) {
 // --- Modal & UI Helpers ---
 
 window.openModal = function() {
-    const modal = document.getElementById('modal'); // "wikiModal" in HTML? Check ID.
-    // HTML in salsopedia.html says id="wikiModal", but class="modal-overlay".
-    // Wait, let's target .modal-overlay if id is unsure, or rely on id from HTML view.
-    // HTML view step 1694: id="wikiModal".
-    // I should fix this to match HTML.
-    const realModal = document.getElementById('wikiModal');
-    if(realModal) {
-        realModal.classList.add('open');
-        document.getElementById('modalTitle').innerText = 'Dodaj nowe hasło';
-        const form = document.getElementById('wikiForm'); // id="wikiForm" in HTML
-        if(form) form.reset();
-        addSourceRow();
-    }
+    const modal = document.getElementById('wikiModal');
+    if (!modal) return;
+    modal.classList.add('open');
+    document.getElementById('modalTitle').innerText = 'Dodaj nowe hasło';
+    const form = document.getElementById('wikiForm');
+    if (form) form.reset();
+    addSourceRow();
 };
 
 window.closeModal = function() {

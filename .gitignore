@@ -1,0 +1,14 @@
+# Konfiguracja lokalna (hasła, sekrety)
+**/config.local.php
+
+# Logi
+*.log
+email_debug.log
+
+# IDE
+.vscode/
+.idea/
+
+# System
+.DS_Store
+Thumbs.db

@@ -40,6 +40,7 @@ jobs:
 
       - name: Sprawdzanie linków
         run: |
+          ERRORS=0
           for dir in katosalsahub.pl dancepuls.pl; do
             echo "🔍 Sprawdzanie referencji w $dir..."
             for html_file in $dir/*.html; do
@@ -50,10 +51,15 @@ jobs:
               while read -r ref; do
                 if [ ! -f "$base/$ref" ] && [ ! -d "$base/$ref" ]; then
                   echo "❌ BRAK: $html_file → $ref"
+                  ERRORS=$((ERRORS+1))
                 fi
               done
             done
           done
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "❌ Znaleziono $ERRORS brakujących referencji!"
+            exit 1
+          fi
           echo "✅ Sprawdzanie linków zakończone"
 
   backup:

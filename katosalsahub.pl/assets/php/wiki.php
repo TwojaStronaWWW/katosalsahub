@@ -1,19 +1,20 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-header('Content-Type: application/json; charset=utf-8');
-
 /**
- * Salsopedia Unified Backend (v9)
+ * Salsopedia Unified Backend (v10)
  * Single source of truth for List, Pending, Submit, Moderate.
- * Implements User's strict architecture and data model.
  */
 
 // Headers
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *'); 
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
+
+// Konfiguracja lokalna (hasło admina, poza Git)
+$adminPassword = null;
+$configPath = __DIR__ . '/config.local.php';
+if (file_exists($configPath)) {
+    $adminPassword = require $configPath;
+}
 
 // Paths
 $salsopediaFile = '../data/salsopedia.json';
@@ -57,7 +58,7 @@ function readJSON($file) {
 }
 
 function saveJSON($file, $data) {
-    return file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    return file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
 }
 
 function respond($data) {
@@ -165,7 +166,7 @@ function handleModeration() {
 
     // Security Check
     $pass = $input['password'] ?? $_GET['password'] ?? null;
-    if ($pass !== 'katoAdmin2024') error('Brak autoryzacji');
+    if (!$adminPassword || $pass !== $adminPassword) error('Brak autoryzacji');
 
     $id = $input['id'] ?? null;
     $action = $input['action'] ?? null;

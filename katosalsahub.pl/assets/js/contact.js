@@ -35,7 +35,7 @@ document.addEventListener('submit', async function(e) {
             
             const result = await response.json();
             
-            if (response.ok) {
+            if (result.success) {
                 showMessage(messageArea, result.message, 'success');
                 form.reset(); // Wyczyść formularz
             } else {
