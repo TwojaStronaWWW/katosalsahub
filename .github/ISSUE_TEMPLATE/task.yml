@@ -1,0 +1,61 @@
+name: 🎯 Nowe Zadanie (Task)
+description: Zgłoszenie zadania deweloperskiego, ulepszenia lub refaktoryzacji
+title: "[TASK] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Dziękujemy za wkład w rozwój Kato Salsa Hub & DancePuls! Wypełnij poniższy szablon.
+  - type: dropdown
+    id: sprint
+    attributes:
+      label: Sprint / Obszar
+      options:
+        - "Sprint 1: Bezpieczeństwo i Kredencjały"
+        - "Sprint 2: RODO & Nowoczesne CI/CD"
+        - "Sprint 3: Automatyzacja DancePuls & Moderacja"
+        - "Sprint 4: Radio Player, Multimedia & PWA"
+        - "Inny / Dług techniczny"
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorytet
+      options:
+        - "CRITICAL 🔴"
+        - "HIGH 🟠"
+        - "MEDIUM 🟡"
+        - "LOW 🟢"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Opis zadania i uzasadnienie
+      description: Co dokładnie ma zostać zrobione i dlaczego?
+      placeholder: Opisz kontekst, cel biznesowy lub techniczny...
+    validations:
+      required: true
+  - type: textarea
+    id: implementation_steps
+    attributes:
+      label: Kroki implementacji
+      description: Jakie pliki i komponenty należy zmienić?
+      value: |
+        1. 
+        2. 
+        3. 
+    validations:
+      required: true
+  - type: textarea
+    id: dod
+    attributes:
+      label: Kryteria Akceptacji (Definition of Done)
+      value: |
+        - [ ] Kod przeszedł walidację HTML oraz ESLint (`npm run test`)
+        - [ ] Zmiany przetestowane lokalnie w przeglądarce
+        - [ ] Brak regresji w działaniu radia i SPA
+    validations:
+      required: true

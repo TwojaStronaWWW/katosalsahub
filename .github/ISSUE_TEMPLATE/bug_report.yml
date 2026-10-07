@@ -1,0 +1,46 @@
+name: 🐛 Zgłoszenie Błędu (Bug Report)
+description: Zgłoś problem lub regresję w działaniu Kato Salsa Hub lub DancePuls
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Opisz błąd, abyśmy mogli go szybko zreprodukować i naprawić.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Moduł dotknięty błędem
+      options:
+        - "Kato Salsa Hub: Strona główna / SPA"
+        - "Kato Salsa Hub: Salsopedia (Wiki)"
+        - "Kato Salsa Hub: Radio Player"
+        - "Kato Salsa Hub: Formularz kontaktowy"
+        - "DancePuls: Generator postów / Wczytywanie bazy"
+        - "CI/CD & Pipeline deployu"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Oczekiwane zachowanie
+      placeholder: Co powinno się wydarzyć?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Aktualne zachowanie (Błąd)
+      placeholder: Co dzieje się w rzeczywistości? Załącz błędy z konsoli (DevTools F12).
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Kroki do zreplikowania
+      value: |
+        1. Wejdź na...
+        2. Kliknij w...
+        3. Zaobserwuj błąd...
+    validations:
+      required: true
