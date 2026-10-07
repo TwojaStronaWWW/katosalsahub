@@ -7,10 +7,10 @@ import {
 	adresMiastoSztywne,
 	styleKeywords,
 	FB_QUICK_LINKS,
-} from './config.js?v=20260205_v17'
-import { parsujDateFB, formatujDatePL, toYMD, dodajDni, generujDniOdJutra } from './utils.js?v=20260205_v17'
-import { initWeather } from './weather.js?v=20260205_v17'
-import { parseClipboardData } from './parser.js?v=20260205_v17'
+} from './config.js?v=20261005_v1'
+import { parsujDateFB, formatujDatePL, toYMD, dodajDni, generujDniOdJutra } from './utils.js?v=20261005_v1'
+import { initWeather } from './weather.js?v=20261005_v1'
+import { parseClipboardData } from './parser.js?v=20261005_v1'
 
 document.addEventListener('DOMContentLoaded', function () {
 	console.log('[DancePuls] Inicjalizacja wersji 20260205...')
@@ -288,6 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			return container
 		}
+		block._createEventContainer = createEventContainer
 
 		// Generuj 1 domyślne wydarzenie (kolejne dodają się dynamicznie)
 		for (let i = 0; i < 1; i++) {
@@ -451,17 +452,16 @@ document.addEventListener('DOMContentLoaded', function () {
 				const promote = container.querySelector('.promowane').checked
 				const eventBlock = container.querySelector('.event-block')
 
-				const miasto = eventBlock.querySelector('.miasto').value
-				const miastoInne = eventBlock.querySelector('.miasto-inne').value
-				const miejsce = eventBlock.querySelector('.miejsce').value
-				const miejsceInne = eventBlock.querySelector('.miejsce-inne').value
-				const opis = eventBlock.querySelector('.opis').value
-				const link = eventBlock.querySelector('.link').value
+				const miasto = eventBlock.querySelector('.miasto')?.value || ''
+				const miastoInne = eventBlock.querySelector('.miasto-inne')?.value || ''
+				const miejsce = eventBlock.querySelector('.miejsce')?.value || ''
+				const miejsceInne = eventBlock.querySelector('.miejsce-inne')?.value || ''
+				const link = eventBlock.querySelector('.link')?.value || ''
 
 				const styleActive = Array.from(container.querySelectorAll('input.styl:checked')).map(cb => cb.value)
 
 				// Zapisujemy tylko jeśli cokolwiek jest zmienione/zaznaczone, żeby nie puchło
-				if (isChecked || link || opis || miasto !== 'Katowice') {
+				if (isChecked || link || miasto !== 'Katowice') {
 					events.push({
 						checked: isChecked,
 						promote: promote,
@@ -469,7 +469,6 @@ document.addEventListener('DOMContentLoaded', function () {
 						miastoInne,
 						miejsce,
 						miejsceInne,
-						opis,
 						link,
 						style: styleActive,
 					})
@@ -489,8 +488,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * Wczytuje stan formularza z localStorage i przywraca wartości pól.
 	 * Obsługuje dynamiczne pokazywanie/ukrywanie sekcji "Inne".
 	 */
-	function wczytajStan() {
-		const saved = localStorage.getItem('party_generator_stan')
+	function wczytajStan(customStan = null) {
+		const saved = customStan ? JSON.stringify(customStan) : localStorage.getItem('party_generator_stan')
 		if (!saved) return
 
 		try {
@@ -502,10 +501,18 @@ document.addEventListener('DOMContentLoaded', function () {
 				const targetBlock = Array.from(blocks).find(b => b.dataset.date === dayData.date)
 				if (!targetBlock) return // Może data już minęła
 
+				// Dynamicznie utwórz brakujące kontenery, jeśli wydarzeń jest więcej niż 1
+				if (targetBlock._createEventContainer && dayData.events) {
+					while (targetBlock.querySelectorAll('.event-container').length < dayData.events.length) {
+						const newIdx = targetBlock.querySelectorAll('.event-container').length
+						targetBlock.appendChild(targetBlock._createEventContainer(targetBlock, newIdx))
+					}
+				}
+
 				const containers = targetBlock.querySelectorAll('.event-container')
 
 				dayData.events.forEach((ev, index) => {
-					if (index >= containers.length) return // Więcej eventów niż slotów (max 5)
+					if (index >= containers.length) return // Więcej eventów niż slotów
 
 					const container = containers[index]
 					const eventBlock = container.querySelector('.event-block')
@@ -524,30 +531,49 @@ document.addEventListener('DOMContentLoaded', function () {
 					eventBlock.style.display = ev.checked ? 'block' : 'none'
 
 					// Pola
-					eventBlock.querySelector('.miasto').value = ev.miasto
-					eventBlock.querySelector('.miasto-inne').value = ev.miastoInne || ''
-					eventBlock.querySelector('.miejsce').value = ev.miejsce
-					eventBlock.querySelector('.miejsce-inne').value = ev.miejsceInne || ''
-					eventBlock.querySelector('.opis').value = ev.opis || ''
-					eventBlock.querySelector('.link').value = ev.link || ''
-
-					// Trigger change dla selectów, żeby pokazać/ukryć pola "Inne"
 					const miastoSelect = eventBlock.querySelector('.miasto')
+					const miastoInne = eventBlock.querySelector('.miasto-inne')
 					const miejsceSelect = eventBlock.querySelector('.miejsce')
+					const miejsceInne = eventBlock.querySelector('.miejsce-inne')
+					const linkInput = eventBlock.querySelector('.link')
 
-					// Ręczne wywołanie logiki updateMiejscaOptions (musimy ją wywołać, bo HTML selectów się nie zmienia sam)
-					// Ale funkcja updateMiejscaOptions jest w scope pętli generującej... ups.
-					// Musimy wyzwolić event 'change' na selectach.
+					const city = ev.miasto || 'Katowice'
+					const place = ev.miejsce || ''
 
+					if (miejscaWgMiasta[city]) {
+						miastoSelect.value = city
+						miastoInne.style.display = 'none'
+						miastoInne.value = ''
+					} else {
+						miastoSelect.value = 'Inne'
+						miastoInne.style.display = 'block'
+						miastoInne.value = city || ev.miastoInne || ''
+					}
 					miastoSelect.dispatchEvent(new Event('change'))
-					// Po zmianie miasta, updateuje się miejsce. Musimy ponownie ustawić wartość miejsca, bo resetuje się do pierwszego.
-					miejsceSelect.value = ev.miejsce
+
+					const knownPlaces = miejscaWgMiasta[city] || []
+					if (knownPlaces.includes(place)) {
+						miejsceSelect.value = place
+						miejsceInne.style.display = 'none'
+						miejsceInne.value = ''
+					} else {
+						miejsceSelect.value = 'Inne'
+						miejsceInne.style.display = 'block'
+						miejsceInne.value = ev.miejsceInne || place
+					}
 					miejsceSelect.dispatchEvent(new Event('change'))
+
+					if (linkInput) {
+						linkInput.value = ev.link || ''
+					}
 
 					// Style
 					const styleCbs = container.querySelectorAll('input.styl')
+					const eventStyles = Array.isArray(ev.style) ? ev.style : (ev.styles ? ev.styles.split(/[\/,]/) : [])
+					const lowerStyles = eventStyles.map(s => s.trim().toLowerCase())
 					styleCbs.forEach(cb => {
-						cb.checked = ev.style && ev.style.includes(cb.value)
+						const cbVal = cb.value.toLowerCase()
+						cb.checked = lowerStyles.some(s => s === cbVal || cbVal.includes(s) || s.includes(cbVal))
 					})
 				})
 			})
@@ -557,6 +583,31 @@ document.addEventListener('DOMContentLoaded', function () {
 		} catch (e) {
 			console.error('Błąd wczytywania stanu:', e)
 		}
+	}
+
+	async function zaladujZPlikuJSON() {
+		try {
+			const res = await fetch('data/events.json?v=' + Date.now())
+			if (!res.ok) return
+			const data = await res.json()
+			if (Array.isArray(data) && data.length > 0) {
+				wczytajStan(data)
+				zapiszStan()
+				console.log('✅ Pomyślnie załadowano bazę z data/events.json (' + data.length + ' dni)')
+			}
+		} catch (e) {
+			console.warn('Nie udało się załadować data/events.json:', e)
+		}
+	}
+
+	const btnLoadDb = document.getElementById('load-db-btn')
+	if (btnLoadDb) {
+		btnLoadDb.addEventListener('click', async () => {
+			if (confirm('Czy chcesz wczytać aktualne wydarzenia z pliku data/events.json? Nadpisze to obecny formularz.')) {
+				await zaladujZPlikuJSON()
+				alert('✅ Pomyślnie wczytano wydarzenia z bazy!')
+			}
+		})
 	}
 
 	function nasluchujZmian() {
@@ -580,10 +631,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Odpalamy
 	nasluchujZmian()
-	wczytajStan()
-	// ZAWSZE generuj post na starcie, nawet jak nie ma zapisanego stanu (żeby pokazać nagłówek i stopkę)
-	if (!localStorage.getItem('party_generator_stan')) {
-		generujPost()
+	if (localStorage.getItem('party_generator_stan')) {
+		wczytajStan()
+	} else {
+		zaladujZPlikuJSON().then(() => {
+			generujPost()
+		})
 	}
 
 	// PRE-FETCH SCRAPER SCRIPT FOR CLIPBOARD
@@ -1336,6 +1389,114 @@ function generujPost() {
 		if (dzienWiersz) wynik += `🗓️ ${dzienTekst}:\n${dzienWiersz}\n`
 	})
 
+	// Generowanie gotowego opisu posta
+	function budujOpisDlaDnia(events) {
+		if (!events || events.length === 0) return 'Na razie brak potwierdzonych ogłoszeń.'
+
+		const katowice = []
+		const region = []
+		const krakow = []
+
+		events.forEach(e => {
+			const c = (e.miasto || '').toLowerCase()
+			if (c === 'katowice') katowice.push(e)
+			else if (c === 'kraków' || c === 'krakow') krakow.push(e)
+			else region.push(e)
+		})
+
+		const phrases = []
+
+		if (katowice.length > 0) {
+			const k = katowice[0]
+			phrases.push(`w Katowicach tańczymy w ${k.miejsce} (${k.style || 'Salsa/Bachata'})`)
+		}
+
+		if (region.length > 0) {
+			const r = region[0]
+			if (katowice.length === 0) {
+				phrases.push(`${r.miasto} zaprasza do ${r.miejsce} (${r.style})`)
+			} else {
+				phrases.push(`w regionie ${r.miasto} zaprasza do ${r.miejsce} (${r.style})`)
+			}
+			if (region.length > 1) {
+				const r2 = region[1]
+				phrases.push(`w ${r2.miasto} parkiet rozgrzewa ${r2.miejsce}`)
+			}
+		}
+
+		if (krakow.length > 0) {
+			const kr = krakow[0]
+			if (katowice.length === 0 && region.length === 0) {
+				phrases.push(`w Krakowie parkiet przejmuje ${kr.miejsce} (${kr.style})`)
+			} else {
+				phrases.push(`a w Krakowie tańczymy w ${kr.miejsce} (${kr.style})`)
+			}
+		}
+
+		if (phrases.length === 0) return 'Na razie brak potwierdzonych ogłoszeń.'
+		let s = phrases.join(', ') + '.'
+		return s.charAt(0).toUpperCase() + s.slice(1)
+	}
+
+	const dayEvents = {}
+	blocks.forEach(block => {
+		if (block.style.display === 'none') return
+		const containers = block.querySelectorAll('.event-block')
+		const dzienTekst = block.querySelector('h3').textContent
+		dayEvents[dzienTekst] = []
+
+		containers.forEach(eventBlock => {
+			const toggleLabel = eventBlock.previousElementSibling
+			const checkbox = toggleLabel ? toggleLabel.querySelector('input[type=checkbox]') : null
+			if (!checkbox || !checkbox.checked) return
+
+			const miasto = eventBlock.querySelector('.miasto')
+			const miastoInne = eventBlock.querySelector('.miasto-inne')
+			const miejsce = eventBlock.querySelector('.miejsce')
+			const miejsceInne = eventBlock.querySelector('.miejsce-inne')
+			const container = eventBlock.parentElement
+			const styleCbs = container.querySelectorAll('input.styl:checked')
+
+			const finalMiasto = miasto.value === 'Inne' ? miastoInne.value.trim() : miasto.value
+			const finalMiejsce = miejsce.value === 'Inne' ? miejsceInne.value.trim() : miejsce.value
+			const styleTekst = [...styleCbs].map(cb => cb.value).join('/')
+
+			dayEvents[dzienTekst].push({
+				miasto: finalMiasto,
+				miejsce: finalMiejsce,
+				style: styleTekst
+			})
+		})
+	})
+
+	const ptKey = Object.keys(dayEvents).find(k => k.includes('PIĄTEK'))
+	const sbKey = Object.keys(dayEvents).find(k => k.includes('SOBOTA'))
+	const ndKey = Object.keys(dayEvents).find(k => k.includes('NIEDZIELA'))
+
+	const opisPt = budujOpisDlaDnia(dayEvents[ptKey])
+	const opisSb = budujOpisDlaDnia(dayEvents[sbKey])
+	const opisNd = budujOpisDlaDnia(dayEvents[ndKey])
+
+	let gotowyPost = `🎉 Gdzie tańczymy w ten weekend?
+
+🗓️ PIĄTEK
+${opisPt}
+
+🗓️ SOBOTA
+${opisSb}
+
+🗓️ NIEDZIELA
+${opisNd}
+
+🔗 Pełna lista imprez z linkami w pierwszym komentarzu! 👇
+
+${document.getElementById('hashtagi').value}`
+
+	const postOpisElem = document.getElementById('post-opis')
+	if (postOpisElem) {
+		postOpisElem.value = gotowyPost
+	}
+
 	wynik += '@wszyscy Do zobaczenia na parkiecie! 💃🕺\n\n'
 	wynik +=
 		'📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649\n\n'
@@ -1345,20 +1506,16 @@ function generujPost() {
 		'☕️ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
 	wynik += document.getElementById('hashtagi').value
 	document.getElementById('wynik').value = wynik
-	document.getElementById('wynik').value = wynik
-	// document.getElementById('ankieta').value = wynikAnkieta // USUNIĘTE: User nie chce pola tekstowego, tylko guziki
 
 	const ankietaDiv = document.getElementById('kopiuj-ankiete') || document.createElement('div')
 	ankietaDiv.id = 'kopiuj-ankiete'
-	// Clear previous
-	ankietaDiv.innerHTML = '' // CZYŚCIMY, nagłówek jest w HTML
+	ankietaDiv.innerHTML = ''
 
-	// ZMIANA: Append to sidebar container instead of body
 	const sidebarContainer = document.getElementById('kopiuj-ankiete-container')
 	if (sidebarContainer) {
 		sidebarContainer.appendChild(ankietaDiv)
 	} else {
-		document.body.appendChild(ankietaDiv) // Fallback
+		document.body.appendChild(ankietaDiv)
 	}
 
 	wynikAnkieta
@@ -1375,9 +1532,7 @@ function generujPost() {
 			btn.onclick = () => {
 				navigator.clipboard.writeText(l)
 				btn.textContent = '✅ Skopiowano!'
-
 				btn.classList.add('clicked-poll')
-
 				setTimeout(() => {
 					btn.textContent = '✅ ' + l
 				}, 1000)
@@ -1387,6 +1542,18 @@ function generujPost() {
 		})
 }
 
+function kopiujGotowyPost() {
+	const postOpisElem = document.getElementById('post-opis')
+	const tekst = postOpisElem ? postOpisElem.value : ''
+	if (!tekst) {
+		alert('Brak wygenerowanego opisu posta!')
+		return
+	}
+	navigator.clipboard.writeText(tekst).then(() => {
+		alert('✅ Skopiowano gotowy post na FB z opisem do schowka!')
+	})
+}
+
 function kopiujWynik() {
 	const text = document.getElementById('wynik').value
 	navigator.clipboard.writeText(text)
@@ -1394,6 +1561,7 @@ function kopiujWynik() {
 }
 
 // Eksportujemy funkcje do window, aby były dostępne w HTML onclick
+window.kopiujGotowyPost = kopiujGotowyPost
 window.kopiujTytul = kopiujTytul
 window.kopiujWynik = kopiujWynik
 window.generujPost = generujPost

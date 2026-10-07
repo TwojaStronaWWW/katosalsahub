@@ -1,0 +1,19 @@
+{
+  "name": "katosalsahub",
+  "version": "1.0.0",
+  "description": "Kato Salsa Hub & DancePuls Event Automation Platform",
+  "scripts": {
+    "report": "node dancepuls.pl/tools/sync_engine.js",
+    "sync": "node dancepuls.pl/tools/sync_engine.js"
+  },
+  "keywords": [
+    "salsa",
+    "bachata",
+    "kizomba",
+    "katowice",
+    "slask",
+    "krakow"
+  ],
+  "author": "Kato Salsa Hub Team",
+  "license": "ISC"
+}

@@ -1,0 +1,161 @@
+[
+  {
+    "date": "2026-10-06",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (Kraków, Konopnickiej29)",
+        "opis": "Praktis - Forum Tańca",
+        "link": "https://www.facebook.com/events/2039466050043342/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Zaraz Wracam Tu",
+        "miejsceInne": "Zaraz Wracam Tu (Kraków)",
+        "opis": "Salsunia - VivaSalsa",
+        "link": "https://www.facebook.com/events/1792821655476260/",
+        "style": [
+          "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-09",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Piekary Śląskie",
+        "miastoInne": "",
+        "miejsce": "Dwór Hubertus",
+        "miejsceInne": "Dwór Hubertus (Sala Myśliwska, Inwalidów Wojennych72)",
+        "opis": "Pumpkin Latino Fiesta,warsztaty/potańcówka - 18–22; Dwór Hubertus/Śląska Szkoła Tańca Dariusz Kurzeja; FB odczytany",
+        "link": "https://www.facebook.com/events/1823534535342983/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Mambo",
+          "Rumba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "PROMINENT",
+        "miejsceInne": "PROMINENT (Kraków, Kamienna17)",
+        "opis": "Bachata Flow with DJ Palejandro - bachatowy.social; 21:00 z opisu, FB nieodnaleziony",
+        "link": "https://onlydanceapp.com/event/782dd4ab392e44369a5d",
+        "style": [
+          "Bachata",
+          "Sensual Impro"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-10",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Rybnik",
+        "miastoInne": "",
+        "miejsce": "El Pachanguero",
+        "miejsceInne": "El Pachanguero (Grunwaldzka46)",
+        "opis": "PACHANGUERÓWKA - ROMAN PARTY EDITION - 21:15 CEST; El Pachanguero - Akademia Tańca; nowość 05.10 w rotacji Rybnik",
+        "link": "https://www.facebook.com/events/",
+        "style": [
+          "Salsa",
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Częstochowa",
+        "miastoInne": "",
+        "miejsce": "Este Loco–Dance with passion",
+        "miejsceInne": "Este Loco–Dance with passion (Dekabrystów35B)",
+        "opis": "Impreza taneczna - Este Loco–Dance with passion; 21:00; dane z Danzly View Original Event",
+        "link": "https://www.facebook.com/events/1098620145954289/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (Kraków, Konopnickiej29)",
+        "opis": "Przygarnij świeżaka - Forum Tańca",
+        "link": "https://www.facebook.com/events/1613694100136407/",
+        "style": [
+          "Bachata",
+          "Salsa"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-11",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Sabrosa Dance Studio",
+        "miejsceInne": "Sabrosa Dance Studio (Kraków, rondo Mogilskie1)",
+        "opis": "warsztaty Korzenie salsy–Son Cubano & Rumba - 12–16; Sabrosa",
+        "link": "https://www.facebook.com/events/1086127587260589/",
+        "style": [
+          "Son Cubano",
+          "Rumba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Sabrosa Dance Studio",
+        "miejsceInne": "Sabrosa Dance Studio (Kraków, rondo Mogilskie1)",
+        "opis": "warsztaty Bachata before the drop - Sabrosa",
+        "link": "https://salsasabrosa.pl/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Mykhailo Burdeinyi",
+        "miejsceInne": "Mykhailo Burdeinyi (Kraków, Mojitos, Mikołajska13)",
+        "opis": "Bachata at Mojitos–First Test - Mojitos/Mykhailo Burdeinyi",
+        "link": "https://onlydanceapp.com/event/tIHBDVVqeaXb24RpjGzl",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  }
+]

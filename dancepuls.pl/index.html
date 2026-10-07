@@ -69,6 +69,9 @@
 
       <!-- Rząd 3: Czyszczenie i Reset -->
       <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+        <button id="load-db-btn" class="btn-primary" style="flex: 1; font-size: 0.75em; padding: 4px;">
+          🔄 Wczytaj Bazę
+        </button>
         <button id="reset-history-btn" class="btn-neutral" style="flex: 1; font-size: 0.75em; padding: 4px;"
           onclick="if(confirm('Na pewno wyczyścić historię zatwierdzonych zgłoszeń?')) { localStorage.removeItem('party_inbox_done'); location.reload(); }">
           🗑️ Reset Historii
@@ -84,28 +87,37 @@
 
     <!-- MIDDLE COLUMN: Post Content (Sticky) -->
     <div class="col-middle sticky-col">
-      <div style="margin-bottom: 20px;">
+      <div style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px;">
+        <button onclick="kopiujGotowyPost()"
+          style="width: 100%; padding: 10px; font-weight: bold; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+          📋 1. KOPIUJ GOTOWY POST NA FB (Z OPISEM)
+        </button>
         <button onclick="kopiujTytul()"
-          style="width: 100%; padding: 10px; font-weight: bold; background: #2196f3; color: white; border: 1px solid #1976d2;">📋
-          KOPIUJ SZKIELET ZESTAWIENIA DO POSTA FB</button>
+          style="width: 100%; padding: 5px; font-size: 0.75em; background: #f0f0f0; color: #555; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
+          📋 Kopiuj sam pusty szkielet
+        </button>
       </div>
 
-      <h3>📋 Podsumowanie:</h3>
-      <textarea id="wynik" rows="25"
-        style="width: 100%; font-family: monospace; font-size: 0.9em; white-space: pre-wrap; margin-bottom: 5px;"></textarea>
+      <h3 style="font-size: 0.95em; margin-bottom: 4px;">✍️ Gotowy Post na FB (Opis):</h3>
+      <textarea id="post-opis" rows="8"
+        style="width: 100%; font-family: system-ui, -apple-system, sans-serif; font-size: 0.88em; padding: 8px; box-sizing: border-box; margin-bottom: 12px; border-radius: 4px; border: 1px solid #ccc;"></textarea>
+
+      <h3 style="font-size: 0.95em; margin-bottom: 4px;">📋 Podsumowanie do Komentarza:</h3>
+      <textarea id="wynik" rows="16"
+        style="width: 100%; font-family: monospace; font-size: 0.88em; white-space: pre-wrap; margin-bottom: 5px;"></textarea>
 
       <div id="event-counter"
-        style="font-weight: bold; margin-bottom: 10px; text-align: right; color: #d32f2f; font-size: 0.9em;">Liczba
+        style="font-weight: bold; margin-bottom: 8px; text-align: right; color: #d32f2f; font-size: 0.85em;">Liczba
         wgranych wydarzeń: 0</div>
 
-      <div style="margin-bottom: 10px; margin-top: 10px;">
-        <label>Hashtagi (doklejają się na końcu):</label><br>
-        <input id="hashtagi" style="width: 100%;" value="#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice">
+      <div style="margin-bottom: 10px;">
+        <label style="font-size: 0.85em;">Hashtagi (doklejają się na końcu):</label><br>
+        <input id="hashtagi" style="width: 100%; font-size: 0.85em;" value="#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice">
       </div>
 
       <button onclick="kopiujWynik()"
-        style="width: 100%; margin-bottom: 20px; padding: 10px; font-weight: bold; background: #2196f3; color: white; border: 1px solid #1976d2;">📋
-        KOPIUJ PODSUMOWANIE DO KOMENTARZA NA FB</button>
+        style="width: 100%; margin-bottom: 20px; padding: 10px; font-weight: bold; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+        📋 2. KOPIUJ PODSUMOWANIE DO KOMENTARZA NA FB</button>
     </div>
 
     <!-- RIGHT COLUMN: Poll Buttons (Sticky) -->
@@ -219,6 +231,6 @@
   </footer>
 </body>
 
-<script type="module" src="js/app.js?v=20260205_v17"></script>
+<script type="module" src="js/app.js?v=20261005_v2"></script>
 
 </html>
