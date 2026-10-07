@@ -1,4 +1,6 @@
 // Contact Form Logic with Event Delegation for SPA
+const pageLoadedAt = Date.now();
+
 document.addEventListener('submit', async function(e) {
     if (e.target && (e.target.name === 'contact' || e.target.id === 'contactForm')) {
         e.preventDefault();
@@ -14,6 +16,11 @@ document.addEventListener('submit', async function(e) {
         // Pobieranie wartości
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
+        
+        // Anti-bot time and JS validation
+        const elapsedSec = Math.round((Date.now() - pageLoadedAt) / 1000);
+        formData.append('submission_seconds', elapsedSec.toString());
+        formData.append('js_check', 'passed');
         
         // Prosta validacja po stronie klienta
         if (!data.name || !data.email || !data.message) {

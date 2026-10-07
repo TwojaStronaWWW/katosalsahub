@@ -227,9 +227,11 @@
             <form name="contact" id="contactForm" action="assets/php/contact.php" method="POST">
               <input type="hidden" name="form-name" value="contact" />
               <!-- Honeypot field (hidden for users, visible to bots) -->
-              <div style="display:none;">
+              <div style="display:none !important; position:absolute; left:-9999px; opacity:0; pointer-events:none;" aria-hidden="true">
                 <label for="hp_chk">Nie wypełniaj tego pola:</label>
-                <input type="text" id="hp_chk" name="hp_chk" autocomplete="off" />
+                <input type="text" id="hp_chk" name="hp_chk" autocomplete="off" tabindex="-1" />
+                <input type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
+                <input type="text" id="website_url" name="website_url" autocomplete="off" tabindex="-1" />
               </div>
               <div class="form-group">
                 <label for="name">Imię i nazwisko</label>
