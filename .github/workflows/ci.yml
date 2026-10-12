@@ -68,8 +68,9 @@ jobs:
               [ -f "$html_file" ] || continue
               base=$(dirname "$html_file")
               grep -oP '(?:src|href)="(?!https?://|#|javascript:|mailto:|tel:)([^"]+)"' "$html_file" | \
-              sed 's/.*="\(.*\)"/\1/' | sed 's/?.*//' | \
+              sed 's/.*="\(.*\)"/\1/' | sed 's/[?#].*//' | \
               while read -r ref; do
+                [ -z "$ref" ] && continue
                 if [ ! -f "$base/$ref" ] && [ ! -d "$base/$ref" ]; then
                   echo "❌ BRAK ZASOBU: $html_file → $ref"
                   exit 1
