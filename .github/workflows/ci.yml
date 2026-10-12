@@ -1,0 +1,105 @@
+name: CI & Quality Gate
+
+on:
+  push:
+    branches:
+      - staging
+      - main
+  pull_request:
+    branches:
+      - staging
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: 1. Quality Gate & Testy Jednostkowe
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1.1 Pobranie kodu repozytorium
+        uses: actions/checkout@v4
+
+      # 1. Sprawdź pliki wejściowe obu portali
+      - name: 1.2 Sprawdzenie plików wejściowych (Kato Salsa Hub & DancePuls)
+        run: |
+          if [ ! -f katosalsahub.pl/index.html ] || [ ! -f dancepuls.pl/index.html ]; then
+            echo "❌ Brak pliku wejściowego katosalsahub.pl/index.html lub dancepuls.pl/index.html!"
+            exit 1
+          fi
+
+      # 2. Ochrona przed wyciekiem sekretów
+      - name: 1.3 Ochrona przed wyciekiem sekretów (.env, secrets.php, .htpasswd)
+        run: |
+          if git ls-files | grep -E "(\.env|config/secrets\.php|\.htpasswd)$"; then
+            echo "❌ Wykryto plik z wrażliwymi danymi w repozytorium!"
+            exit 1
+          fi
+
+      # 3. Walidacja składni PHP
+      - name: 1.4 Walidacja składni PHP
+        run: |
+          if find . -type f -name "*.php" | grep -q .; then
+            echo "Sprawdzanie składni PHP..."
+            find . -type f -name "*.php" -print0 | xargs -0 -n1 php -l
+          else
+            echo "Brak plików PHP, pomijanie walidacji PHP."
+          fi
+
+      # 4. Konfiguracja Node.js
+      - name: 1.5 Konfiguracja środowiska Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # 5. Weryfikacja składni JavaScript
+      - name: 1.6 Weryfikacja składni JavaScript
+        run: npm run check:syntax
+
+      # 6. Sprawdzanie integralności relatywnych linków i zasobów
+      - name: 1.7 Sprawdzanie referencji lokalnych linków i zasobów
+        run: |
+          for dir in katosalsahub.pl dancepuls.pl; do
+            echo "🔍 Sprawdzanie referencji w $dir..."
+            for html_file in $dir/*.html; do
+              [ -f "$html_file" ] || continue
+              base=$(dirname "$html_file")
+              grep -oP '(?:src|href)="(?!https?://|#|javascript:|mailto:|tel:)([^"]+)"' "$html_file" | \
+              sed 's/.*="\(.*\)"/\1/' | sed 's/?.*//' | \
+              while read -r ref; do
+                if [ ! -f "$base/$ref" ] && [ ! -d "$base/$ref" ]; then
+                  echo "❌ BRAK ZASOBU: $html_file → $ref"
+                  exit 1
+                fi
+              done
+            done
+          done
+          echo "✅ Sprawdzanie referencji zakończone pomyślnie."
+
+      # 7. Testy jednostkowe z raportem pokrycia (node:test)
+      - name: 1.8 Uruchomienie testów jednostkowych (node:test)
+        run: npm test -- --experimental-test-coverage
+
+  lighthouse:
+    name: 2. Audyt Lighthouse CI (a11y, SEO, Best Practices)
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 2.1 Pobranie kodu repozytorium
+        uses: actions/checkout@v4
+
+      - name: 2.2 Konfiguracja środowiska Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 2.3 Audyt jakościowy Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: './.lighthouserc.json'

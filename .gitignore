@@ -4,10 +4,19 @@ package-lock.json
 
 # Environment variables & secrets
 .env
-.env.local
+.env.*
+!.env.example
 *.local.php
 
-# Logs
+# Test coverage & builds
+coverage/
+dist/
+.wrangler/
+
+# PHP sessions, logs & local cache (ISO 27001 / Zero Data Leakage)
+api/sessions/*
+api/rate_limits/*.json
+api/leads_*.csv
 *.log
 npm-debug.log*
 

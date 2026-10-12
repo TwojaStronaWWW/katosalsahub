@@ -2,15 +2,23 @@
   "name": "katosalsahub",
   "version": "1.0.0",
   "description": "Kato Salsa Hub & DancePuls Event Automation Platform",
+  "main": "katosalsahub.pl/assets/js/router.js",
   "scripts": {
     "test": "node --test tests/**/*.test.js",
     "test:unit": "node --test tests/unit/*.test.js",
     "test:coverage": "node --test --experimental-test-coverage tests/**/*.test.js",
-    "check:syntax": "node --check dancepuls.pl/tools/sync_engine.js",
+    "test:watch": "node --test --watch tests/**/*.test.js",
+    "check:syntax": "node --check dancepuls.pl/tools/sync_engine.js scripts/serve.js katosalsahub.pl/assets/js/contact.js katosalsahub.pl/assets/js/radio.js katosalsahub.pl/assets/js/router.js katosalsahub.pl/assets/js/wiki.js",
     "check": "npm run check:syntax && npm test",
+    "serve": "node scripts/serve.js",
+    "dev": "node scripts/serve.js",
     "prepare": "git config core.hooksPath .githooks || true",
+    "audit:lighthouse": "lhci autorun",
     "report": "node dancepuls.pl/tools/sync_engine.js",
     "sync": "node dancepuls.pl/tools/sync_engine.js"
+  },
+  "devDependencies": {
+    "@lhci/cli": "^0.14.0"
   },
   "keywords": [
     "salsa",
@@ -18,7 +26,8 @@
     "kizomba",
     "katowice",
     "slask",
-    "krakow"
+    "krakow",
+    "dancepuls"
   ],
   "author": "Kato Salsa Hub Team",
   "license": "ISC"

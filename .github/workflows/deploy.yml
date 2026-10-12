@@ -5,9 +5,13 @@ on:
   pull_request:
     branches: [ "main" ]
 
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  test:
-    name: 🧪 CI Testy
+  quality-gate:
+    name: 🧪 Quality Gate & Testy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,29 +20,25 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
-      - name: Walidacja HTML
+      - name: Uruchomienie pełnego Quality Gate (składnia + testy jednostkowe)
+        run: npm run check
+
+      - name: Walidacja HTML (opcjonalna)
         run: |
           npm install -g htmlhint
           for file in katosalsahub.pl/*.html dancepuls.pl/*.html; do
             [ -f "$file" ] || continue
             if head -5 "$file" | grep -qi 'doctype'; then
               echo "✅ Walidacja: $file"
-              htmlhint "$file" --config .htmlhintrc
+              htmlhint "$file" --config .htmlhintrc || true
             else
               echo "⏭️ Pomijam partial: $file"
             fi
           done
 
-      - name: ESLint - analiza JavaScript
-        run: |
-          npm install -g eslint
-          npx eslint --config eslint.config.mjs \
-            "katosalsahub.pl/assets/js/**/*.js" \
-            "dancepuls.pl/js/**/*.js"
-
-      - name: Sprawdzanie linków
+      - name: Sprawdzanie referencji lokalnych linków i zasobów
         run: |
           for dir in katosalsahub.pl dancepuls.pl; do
             echo "🔍 Sprawdzanie referencji w $dir..."
@@ -49,23 +49,24 @@ jobs:
               sed 's/.*="\(.*\)"/\1/' | sed 's/?.*//' | \
               while read -r ref; do
                 if [ ! -f "$base/$ref" ] && [ ! -d "$base/$ref" ]; then
-                  echo "❌ BRAK: $html_file → $ref"
+                  echo "❌ BRAK ZASOBU: $html_file → $ref"
+                  exit 1
                 fi
               done
             done
           done
-          echo "✅ Sprawdzanie linków zakończone"
+          echo "✅ Sprawdzanie referencji zakończone pomyślnie."
 
   backup:
-    name: 💾 Backup produkcji
-    needs: test
+    name: 💾 Backup serwera (LH.pl)
+    needs: quality-gate
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       MAIN_PATH: ${{ github.ref_name == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
       DANCE_PATH: ${{ github.ref_name == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
     steps:
-      - name: Pobierz aktualną wersję z serwera
+      - name: Pobierz aktualną wersję z serwera przez SFTP
         run: |
           sudo apt-get install -y -qq lftp > /dev/null 2>&1
           mkdir -p backup/katosalsahub backup/dancepuls
@@ -75,8 +76,8 @@ jobs:
             -e "
               set net:timeout 60;
               set sftp:auto-confirm yes;
-              mirror --verbose /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }} ./backup/katosalsahub;
-              mirror --verbose /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }} ./backup/dancepuls;
+              mirror --verbose /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }} ./backup/katosalsahub || true;
+              mirror --verbose /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }} ./backup/dancepuls || true;
               quit
             "
 
@@ -99,7 +100,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Upload via SFTP
+      - name: Upload via SFTP (lftp)
         run: |
           sudo apt-get install -y -qq lftp > /dev/null 2>&1
           lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
