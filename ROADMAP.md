@@ -41,6 +41,7 @@ Wszystkie zadania są synchronizowane z **GitHub Issues** oraz **GitHub Mileston
 - [x] **#24: [CICD] Wdrożenie Zero-Dependency Test Runner (node:test) i pre-commit hooków (Wzorzec Enterprise Template)** *(ZREALIZOWANO: 14 testów jednostkowych)*
 - [x] **#25: [QUALITY] Konfiguracja audytu Lighthouse CI (.lighthouserc.json) z progami asercji** *(ZREALIZOWANO)*
 - [x] **#26: [AGENTS] Wdrożenie ram sterowania agentami AI (AGENTS.md & GEMINI.md)** *(ZREALIZOWANO)*
+- [ ] **#27: [CICD] Wdrożenie potoku GitHub Actions (ci.yml) dla testów jednostkowych i audytu Lighthouse CI w chmurze**
 - [ ] **#6: [PRIVACY] Zmiana pola w formularzu na „Imię lub pseudonim” (Minimalizacja RODO)**
   - *Priorytet:* `HIGH` | *Etykiety:* `gdpr`, `frontend`
   - *Opis:* Rezygnacja z wymagania pełnego nazwiska w kontakcie.
