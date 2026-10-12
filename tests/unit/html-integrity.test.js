@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const ROOT_DIR = path.resolve(__dirname, '..', '..');
 const KSH_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'index.html');
+const SALSOPEDIA_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'salsopedia.html');
 const DANCEPULS_HTML = path.join(ROOT_DIR, 'dancepuls.pl', 'index.html');
 
 describe('Integralność semantyczna i SEO (HTML)', () => {
@@ -29,6 +30,19 @@ describe('Integralność semantyczna i SEO (HTML)', () => {
 
     it('powinien zawierać przycisk odtwarzacza radiowego z atrybutem aria-label', () => {
       assert.match(html, /id="header-radio-play"[^>]*aria-label="[^"]+"/i);
+    });
+  });
+
+  describe('Salsopedia (katosalsahub.pl/salsopedia.html)', () => {
+    it('plik salsopedia.html powinien posiadać poprawny szkielet HTML5 i elementy wiki', () => {
+      assert.ok(fs.existsSync(SALSOPEDIA_HTML));
+      const html = fs.readFileSync(SALSOPEDIA_HTML, 'utf-8');
+      assert.match(html, /<!DOCTYPE html>/i);
+      assert.match(html, /<html\s+lang="pl">/i);
+      assert.match(html, /<title>.*Salsopedia.*<\/title>/i);
+      assert.match(html, /id="wikiGrid"/i);
+      assert.match(html, /id="wikiModal"/i);
+      assert.match(html, /id="adminToolbar"/i);
     });
   });
 

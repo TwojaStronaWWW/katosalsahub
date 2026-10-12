@@ -1,96 +1,850 @@
 /* =====================================================
-   WIKI.CSS
-   Salsopedia specific layout
+   WIKI.CSS - SALSOPEDIA EXPANDED & REFACTORED
+   Architektura UI dla Bazy Wiedzy, Wyszukiwarki i Moderacji
    ===================================================== */
 
+/* --- Admin Toolbar (Panel Moderatora) --- */
+.admin-toolbar {
+  background: linear-gradient(90deg, rgba(30, 20, 10, 0.95), rgba(40, 25, 15, 0.95));
+  border-bottom: 2px solid var(--yellow);
+  padding: 12px 20px;
+  position: sticky;
+  top: 70px;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.admin-toolbar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-badge {
+  background: var(--yellow);
+  color: #000;
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-info {
+  font-size: 0.85rem;
+  color: var(--fg-muted, #aaa);
+}
+
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-tab-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.admin-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.admin-tab-btn.active {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: #000;
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid rgba(255, 71, 87, 0.5);
+  color: var(--red);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 71, 87, 0.2);
+}
+
+/* --- Salsopedia Header --- */
 .wiki-header {
-  padding: 80px 16px 40px;
+  padding: 80px 20px 40px;
   text-align: center;
   background:
-    linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)),
-    url('../../assets/images/hero-bg.jpg') center/cover;
+    linear-gradient(rgba(10, 12, 20, 0.85), rgba(10, 12, 20, 0.95)),
+    radial-gradient(circle at 50% 20%, rgba(255, 107, 129, 0.15), transparent 70%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wiki-header-content {
+  max-width: 750px;
+  margin: 0 auto;
 }
 
 .wiki-header h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.2rem;
-  margin-bottom: .5rem;
-  background: linear-gradient(135deg, var(--orange), var(--red));
+  font-size: 3.2rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--yellow), var(--orange), var(--red));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+.wiki-header p {
+  color: var(--fg-muted, #aaa);
+  font-size: 1.05rem;
+  margin-bottom: 25px;
+}
+
+/* Search bar */
+.search-container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 45px 16px 50px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--orange);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 25px rgba(255, 165, 2, 0.3);
+}
+
+.search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--orange);
+  font-size: 1.1rem;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--fg-muted, #888);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.search-clear-btn:hover {
+  color: #fff;
+}
+
+.search-meta {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--fg-muted, #888);
+}
+
+/* --- Layout Główny --- */
 .wiki-main-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 16px;
+  padding: 24px 16px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
+@media (min-width: 900px) {
+  .wiki-main-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+/* --- Sidebar --- */
 .wiki-sidebar {
-  background: var(--card);
-  padding: 16px;
-  border-radius: 16px;
+  background: rgba(20, 22, 35, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 900px) {
+  .wiki-sidebar {
+    width: 290px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 90px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+}
+
+.sidebar-block h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--orange);
+  margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
   display: flex;
-  gap: 8px;
-  overflow-x: auto;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .category-list li {
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.05);
-  white-space: nowrap;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--fg-muted, #ccc);
   cursor: pointer;
-  font-size: .9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.category-list li:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transform: translateX(4px);
 }
 
 .category-list li.active {
-  background: var(--red);
+  background: linear-gradient(135deg, rgba(255, 71, 87, 0.25), rgba(255, 165, 2, 0.25));
+  border: 1px solid rgba(255, 165, 2, 0.4);
+  color: #fff;
+  font-weight: 600;
+}
+
+.cat-count {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--fg-muted, #aaa);
+}
+
+.category-list li.active .cat-count {
+  background: var(--orange);
+  color: #000;
+  font-weight: 700;
+}
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-moderation {
+  background: transparent;
+  border: 1px dashed rgba(255, 211, 42, 0.4);
+  color: var(--yellow);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-moderation:hover {
+  background: rgba(255, 211, 42, 0.1);
+  border-style: solid;
+}
+
+/* --- Content & Grid --- */
+.wiki-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.active-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.filter-label {
+  font-size: 0.85rem;
+  color: var(--fg-muted, #888);
+}
+
+.filter-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(255, 165, 2, 0.15);
+  color: var(--yellow);
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 165, 2, 0.3);
+}
+
+.btn-reset-filter {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--red);
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .wiki-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 20px;
 }
 
-/* Wiki Card Internals (layout bits that are specific to wiki card content) */
-.wiki-card h3 {
-  margin: 0 0 .5rem;
+@media (min-width: 650px) {
+  .wiki-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* --- Wiki Cards --- */
+.wiki-card {
+  background: rgba(22, 24, 38, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.wiki-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 165, 2, 0.4);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 165, 2, 0.1);
+}
+
+.wiki-card.pending-card {
+  border: 2px dashed var(--yellow);
+  background: rgba(35, 28, 15, 0.85);
+}
+
+.pending-ribbon {
+  display: inline-block;
+  background: var(--yellow);
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.wiki-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.wiki-card-header h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.status-verified {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.cat-badge {
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ddd;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cat-badge:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.cat-badge.main-cat {
+  background: rgba(255, 71, 87, 0.2);
+  color: #ff9da6;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.cat-badge.sub-cat {
+  background: rgba(55, 66, 250, 0.2);
+  color: #aab4ff;
+  border: 1px solid rgba(55, 66, 250, 0.3);
 }
 
 .definition {
-  margin: 1rem 0;
-  color: var(--fg-muted);
+  color: var(--fg-muted, #ccc);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.source-container-preview {
+  margin-top: 8px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.source-pill {
+  font-size: 0.75rem;
+  color: var(--yellow);
+  text-decoration: none;
+  background: rgba(255, 211, 42, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 211, 42, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.source-pill:hover {
+  background: rgba(255, 211, 42, 0.25);
+  color: #fff;
 }
 
 .wiki-card-footer {
   margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  border-top: 1px solid rgba(255,255,255,.08);
-  padding-top: .75rem;
+  gap: 10px;
 }
 
-@media (min-width: 768px) {
-  .wiki-main-container {
-    flex-direction: row;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
+.author-meta {
+  font-size: 0.8rem;
+  color: var(--fg-muted, #888);
+}
 
-  .wiki-sidebar {
-    width: 260px;
-    position: sticky;
-    top: 100px;
-  }
+.author-meta a {
+  color: var(--orange);
+  text-decoration: none;
+}
 
-  .wiki-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+.author-meta a:hover {
+  text-decoration: underline;
+}
+
+/* Przyciski w kartach */
+.btn-verify {
+  background: rgba(255, 211, 42, 0.1);
+  border: 1px solid rgba(255, 211, 42, 0.3);
+  color: var(--yellow);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-verify:hover {
+  background: var(--yellow);
+  color: #000;
+}
+
+.moderation-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-approve {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.btn-approve:hover {
+  background: #059669;
+  transform: scale(1.05);
+}
+
+.btn-reject {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reject:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-edit-admin {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-edit-admin:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-delete-admin {
+  background: transparent;
+  border: none;
+  color: rgba(239, 68, 68, 0.7);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.btn-delete-admin:hover {
+  color: #ef4444;
+}
+
+/* --- Formularz i Modal Dodawania/Edycji --- */
+.wiki-modal {
+  max-width: 680px;
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 24px;
+  background: rgba(18, 20, 32, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  padding: 32px 28px;
+}
+
+.wiki-modal h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--yellow);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ddd;
+  margin-bottom: 8px;
+}
+
+.form-group label .required {
+  color: var(--red);
+}
+
+.label-hint {
+  font-weight: 400;
+  color: var(--fg-muted, #888);
+  font-size: 0.78rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
   }
+}
+
+/* Chips Container */
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #bbb;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.chip.active {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: #000;
+  font-weight: 700;
+  border-color: transparent;
+  box-shadow: 0 0 12px rgba(255, 107, 129, 0.3);
+}
+
+/* Source Row */
+.source-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.source-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.btn-remove-source {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.btn-remove-source:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-add-inline {
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  color: var(--yellow);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.btn-add-inline:hover {
+  background: rgba(255, 211, 42, 0.1);
+  border-color: var(--yellow);
+}
+
+.form-note {
+  font-size: 0.8rem;
+  color: var(--fg-muted, #999);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border-left: 3px solid var(--orange);
+  margin: 18px 0;
+}
+
+.modal-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.form-message-box {
+  margin-top: 15px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  display: none;
+}
+
+.form-message-box.success {
+  display: block;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid #10b981;
+  color: #8ff0c5;
+}
+
+.form-message-box.error {
+  display: block;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #ff9da6;
+}
+
+/* Modal Admin Login */
+.admin-modal {
+  max-width: 440px;
+}
+
+.footer-admin-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 4px;
+}
+
+.footer-admin-btn:hover {
+  color: var(--yellow);
+}
+
+/* Spinner */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--fg-muted, #aaa);
+  gap: 15px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--yellow);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

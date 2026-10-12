@@ -1,163 +1,380 @@
-<main id="app-content">
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salsopedia - Encyklopedia Salsy Kubańskiej | Kato Salsa Hub</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/radio.css">
+  <link rel="stylesheet" href="assets/css/wiki.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;800&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Animowane tło z kubańskimi kolorami -->
+  <div class="animated-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Sticky Navigation -->
+  <nav class="nav-bar">
+    <div class="nav-brand-group">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-text">KATO SALSA HUB</span>
+        <span class="logo-emoji">🔥</span>
+      </a>
+      <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio">
+        <i class="fas fa-play"></i>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="index.html#hero">Start</a>
+      <a href="index.html#onas">O nas</a>
+      <a href="index.html#style">Style</a>
+      <a href="salsopedia.html" class="active" data-page="wiki">Salsopedia</a>
+      <a href="index.html#radio">Radio</a>
+      <a href="index.html#mapa">Lokacja</a>
+      <a href="index.html#kontakt" class="cta-link">Kontakt</a>
+    </div>
+    <div class="burger-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <!-- Main Content Area (Target for SPA Router) -->
+  <main id="app-content">
+
+    <!-- Admin Moderation Toolbar (widoczny tylko dla zalogowanego admina) -->
+    <div id="adminToolbar" class="admin-toolbar" style="display: none;">
+      <div class="admin-toolbar-inner">
+        <div class="admin-status">
+          <span class="admin-badge"><i class="fas fa-shield-alt"></i> Tryb Administratora</span>
+          <span class="admin-info">Zalogowano jako Moderator</span>
+        </div>
+        <div class="admin-actions">
+          <button id="btnShowLive" class="admin-tab-btn active">
+            <i class="fas fa-book"></i> Baza wiedzy (<span id="liveCountBadge">0</span>)
+          </button>
+          <button id="btnShowPending" class="admin-tab-btn">
+            <i class="fas fa-tasks"></i> Do moderacji (<span id="pendingCountBadge">0</span>)
+          </button>
+          <button id="btnAdminAdd" class="btn btn-secondary btn-sm">
+            <i class="fas fa-plus-circle"></i> Dodaj do bazy
+          </button>
+          <button id="btnLogoutAdmin" class="btn-logout" title="Wyloguj z trybu moderatora">
+            <i class="fas fa-sign-out-alt"></i> Wyloguj
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Salsopedia Header -->
     <header class="wiki-header">
-        <div class="wiki-header-content">
-            <h1>Salsopedia</h1>
-            <p>Twoja encyklopedia wiedzy o salsie kubańskiej, muzyce i kulturze.</p>
+      <div class="wiki-header-content">
+        <h1>Salsopedia</h1>
+        <p>Twoja otwarta encyklopedia wiedzy o salsie kubańskiej, muzyce i kulturze afro-kubańskiej.</p>
 
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="searchInput" class="search-input"
-                    placeholder="Szukaj pojęcia (np. Vacilala, Timba)...">
-            </div>
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchInput" class="search-input"
+            placeholder="Szukaj pojęcia (np. Vacilala, Enchufla, Timba, Clave)...">
+          <button id="clearSearchBtn" class="search-clear-btn" style="display: none;" title="Wyczyść szukanie">&times;</button>
         </div>
+        <div class="search-meta">
+          <span id="resultsCount">Ładowanie haseł...</span>
+        </div>
+      </div>
     </header>
 
     <!-- Main Content Area -->
     <div class="wiki-main-container">
 
-        <!-- Sidebar Navigation -->
-        <aside class="wiki-sidebar">
-            <h3>Kategorie</h3>
-            <ul class="category-list" id="categoryList">
-                <li data-category="all" class="active">Wszystkie</li>
-                <li data-category="steps">Kroki (Podstawy)</li>
-                <li data-category="figures">Figury (Pary)</li>
-                <li data-category="instruments">Instrumenty</li>
-                <li data-category="music">Muzyka</li>
-                <li data-category="dance">Taniec</li>
-                <li data-category="styles">Style Tańca</li>
-                <li data-category="history">Historia</li>
-                <li data-category="gods">Bogowie (Orishas)</li>
-                <li data-category="instructors">Instruktorzy</li>
-                <li data-category="schools">Szkoły Tańca</li>
-            </ul>
+      <!-- Sidebar Navigation -->
+      <aside class="wiki-sidebar">
+        <div class="sidebar-block">
+          <h3>Kategorie</h3>
+          <ul class="category-list" id="categoryList">
+            <li data-category="all" class="active">
+              <span>Wszystkie</span>
+              <span class="cat-count" id="count-all">-</span>
+            </li>
+            <li data-category="steps">
+              <span>Kroki (Podstawy)</span>
+              <span class="cat-count" id="count-steps">-</span>
+            </li>
+            <li data-category="figures">
+              <span>Figury (Casino / Rueda)</span>
+              <span class="cat-count" id="count-figures">-</span>
+            </li>
+            <li data-category="dance">
+              <span>Taniec</span>
+              <span class="cat-count" id="count-dance">-</span>
+            </li>
+            <li data-category="styles">
+              <span>Style Tańca</span>
+              <span class="cat-count" id="count-styles">-</span>
+            </li>
+            <li data-category="music">
+              <span>Muzyka</span>
+              <span class="cat-count" id="count-music">-</span>
+            </li>
+            <li data-category="instruments">
+              <span>Instrumenty</span>
+              <span class="cat-count" id="count-instruments">-</span>
+            </li>
+            <li data-category="history">
+              <span>Historia</span>
+              <span class="cat-count" id="count-history">-</span>
+            </li>
+            <li data-category="gods">
+              <span>Bogowie (Orishas)</span>
+              <span class="cat-count" id="count-gods">-</span>
+            </li>
+            <li data-category="instructors">
+              <span>Instruktorzy</span>
+              <span class="cat-count" id="count-instructors">-</span>
+            </li>
+            <li data-category="schools">
+              <span>Szkoły Tańca</span>
+              <span class="cat-count" id="count-schools">-</span>
+            </li>
+          </ul>
+        </div>
 
-            <div class="sidebar-footer">
-                <button id="showPendingBtn" class="btn-text">
-                    <i class="fas fa-history"></i> Oczekujące zmiany
-                </button>
-            </div>
-        </aside>
+        <div class="sidebar-actions">
+          <button id="sidebarAddBtn" class="btn btn-primary btn-full">
+            <i class="fas fa-plus"></i> Zaproponuj hasło
+          </button>
+          <button id="showPendingBtn" class="btn-text btn-moderation">
+            <i class="fas fa-user-shield"></i> Panel Moderacji
+          </button>
+        </div>
+      </aside>
+
+      <!-- Terms Grid Area -->
+      <section class="wiki-content">
+        <!-- Active Filter Bar -->
+        <div class="active-filter-bar">
+          <span class="filter-label">Aktualny widok:</span>
+          <span id="activeFilterBadge" class="filter-pill">Wszystkie hasła</span>
+          <button id="resetFilterBtn" class="btn-reset-filter" style="display: none;">Pokaż wszystkie</button>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="loading-spinner">
+          <div class="spinner"></div>
+          <p>Wczytywanie bazy wiedzy...</p>
+        </div>
 
         <!-- Terms Grid -->
-        <section class="wiki-content">
-            <!-- Loading Spinner -->
-            <div id="loading" class="loading-spinner">
-                <div class="spinner"></div>
-            </div>
+        <div id="wikiGrid" class="wiki-grid"></div>
 
-            <!-- Terms Grid -->
-            <div id="wikiGrid" class="wiki-grid"></div>
-
-
-            <!-- No Results Message -->
-            <div id="noResults" class="no-results hidden">
-                <i class="fas fa-search"></i>
-                <p>Nie znaleziono takiego hasła.</p>
-                <button class="btn-add-inline" onclick="openModal()">Dodaj je!</button>
-            </div>
-        </section>
+        <!-- No Results Message -->
+        <div id="noResults" class="no-results hidden">
+          <i class="fas fa-search-minus fa-3x" style="color: var(--yellow); margin-bottom: 15px;"></i>
+          <h3>Nie znaleziono takiego hasła</h3>
+          <p>Znasz to pojęcie? Dodaj je do Salsopedii i pomóż rozwijać społeczność taneczną!</p>
+          <button class="btn btn-primary" onclick="window.openModal()">Dodaj to hasło!</button>
+        </div>
+      </section>
 
     </div>
 
-    <!-- Floating Action Button (Moved inside main for SPA routing) -->
-    <button id="addTermBtn" class="fab-add" onclick="openModal()" title="Dodaj nowe hasło">
-        <i class="fas fa-plus"></i>
+    <!-- Floating Action Button -->
+    <button id="addTermBtn" class="fab-add" onclick="window.openModal()" title="Dodaj nowe hasło">
+      <i class="fas fa-plus"></i>
     </button>
 
-    <!-- Modal for Adding/Editing Terms (Moved inside main for SPA routing) -->
+    <!-- Modal for Adding / Editing Terms -->
     <div id="wikiModal" class="modal-overlay">
-        <div class="modal-content wiki-modal">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2 id="modalTitle">Dodaj hasło</h2>
+      <div class="modal-content wiki-modal">
+        <button class="modal-close" onclick="window.closeModal()" title="Zamknij">&times;</button>
+        <h2 id="modalTitle">Dodaj nowe hasło</h2>
 
-            <form id="wikiForm">
-                <input type="hidden" id="termId" name="id">
-                <input type="hidden" id="isVerification" name="verification_request">
+        <form id="wikiForm">
+          <input type="hidden" id="termId" name="id">
+          <input type="hidden" id="isVerification" name="verification_request">
+          <input type="hidden" id="formAdminDirect" name="admin_direct">
 
-                <div class="form-group">
-                    <label for="termInput">Hasło</label>
-                    <input type="text" id="termInput" name="term" required placeholder="np. Enchufla">
-                </div>
+          <div class="form-group">
+            <label for="termInput">Nazwa pojęcia / hasła <span class="required">*</span></label>
+            <input type="text" id="termInput" name="term" required placeholder="np. Vacilala, Timba, Enchufla Doble">
+          </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Kategorie Główne</label>
-                        <div id="catSelectContainer" class="custom-select-container"></div>
-                        <select id="catSelect" name="category" multiple style="display:none">
-                            <option value="steps">Kroki</option>
-                            <option value="figures">Figury</option>
-                            <option value="instruments">Instrumenty</option>
-                            <option value="music">Muzyka</option>
-                            <option value="dance" selected>Taniec</option>
-                            <option value="styles">Style</option>
-                            <option value="history">Historia</option>
-                            <option value="gods">Bogowie</option>
-                            <option value="instructors">Instruktorzy</option>
-                            <option value="schools">Szkoły</option>
-                        </select>
-                    </div>
+          <!-- Kategorie - Chip Selection -->
+          <div class="form-group">
+            <label>Kategorie Główne <span class="required">*</span> <span class="label-hint">(kliknij, aby zaznaczyć)</span></label>
+            <div id="categoryChips" class="chips-container">
+              <button type="button" class="chip" data-val="steps">Kroki</button>
+              <button type="button" class="chip" data-val="figures">Figury</button>
+              <button type="button" class="chip active" data-val="dance">Taniec</button>
+              <button type="button" class="chip" data-val="styles">Style</button>
+              <button type="button" class="chip" data-val="music">Muzyka</button>
+              <button type="button" class="chip" data-val="instruments">Instrumenty</button>
+              <button type="button" class="chip" data-val="history">Historia</button>
+              <button type="button" class="chip" data-val="gods">Bogowie (Orishas)</button>
+              <button type="button" class="chip" data-val="instructors">Instruktorzy</button>
+              <button type="button" class="chip" data-val="schools">Szkoły</button>
+            </div>
+          </div>
 
-                    <div class="form-group">
-                        <label>Podkategorie</label>
-                        <div id="subSelectContainer" class="custom-select-container"></div>
-                        <select id="subSelect" name="subcategory" multiple style="display:none">
-                            <option value="lead">Prowadzenie</option>
-                            <option value="follow">Podążanie</option>
-                            <option value="partnerwork">W parach</option>
-                            <option value="shines">Solo (Shines)</option>
-                            <option value="technique">Technika</option>
-                            <option value="rhythm">Rytmika</option>
-                        </select>
-                    </div>
-                </div>
+          <!-- Podkategorie - Chip Selection -->
+          <div class="form-group">
+            <label>Podkategorie <span class="label-hint">(opcjonalnie)</span></label>
+            <div id="subcategoryChips" class="chips-container">
+              <button type="button" class="chip" data-val="lead">Prowadzenie</button>
+              <button type="button" class="chip" data-val="follow">Podążanie</button>
+              <button type="button" class="chip" data-val="partnerwork">W parach</button>
+              <button type="button" class="chip" data-val="shines">Solo / Shines</button>
+              <button type="button" class="chip" data-val="technique">Technika</button>
+              <button type="button" class="chip" data-val="rhythm">Rytmika</button>
+            </div>
+          </div>
 
-                <div class="form-group" style="margin-top:15px">
-                    <label>Proponowana nowa kategoria (opcjonalne)</label>
-                    <input type="text" id="userCategoryInput" name="user_category"
-                        placeholder="Np. Stroje, Festiwale...">
-                </div>
+          <div class="form-group">
+            <label for="userCategoryInput">Proponowana nowa kategoria <span class="label-hint">(jeśli brakuje odpowiedniej)</span></label>
+            <input type="text" id="userCategoryInput" name="user_category" placeholder="np. Stroje, Festiwale, Reguły parkietu...">
+          </div>
 
-                <div class="form-group">
-                    <label>Źródła (Link, Książka, Instruktor)</label>
-                    <div id="sourceContainer">
-                        <!-- Source rows injected via JS -->
-                    </div>
-                    <button type="button" class="btn-add-inline" onclick="addSourceRow()">+ Dodaj kolejne
-                        źródło</button>
-                </div>
+          <div class="form-group">
+            <label>Źródła / Odnośniki <span class="label-hint">(Książka, instruktor, wideo, link)</span></label>
+            <div id="sourceContainer"></div>
+            <button type="button" class="btn-add-inline" onclick="window.addSourceRow()">
+              <i class="fas fa-plus"></i> Dodaj kolejne źródło
+            </button>
+          </div>
 
-                <div class="form-group auth-group">
-                    <div>
-                        <label for="authorInput">Twój Podpis (Ksywka)*</label>
-                        <input type="text" id="authorInput" name="author" required placeholder="Jak mamy Cię podpisać?">
-                    </div>
-                    <div>
-                        <label for="authorLinkInput">Twój Facebook/Insta (Link)</label>
-                        <input type="url" id="authorLinkInput" name="author_link"
-                            placeholder="https://facebook.com/...">
-                    </div>
-                </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="authorInput">Twój Podpis / Ksywka <span class="required">*</span></label>
+              <input type="text" id="authorInput" name="author" required placeholder="np. TancerzKato, Ania">
+            </div>
+            <div class="form-group">
+              <label for="authorLinkInput">Profil Instagram / Facebook <span class="label-hint">(opcjonalnie)</span></label>
+              <input type="url" id="authorLinkInput" name="author_link" placeholder="https://instagram.com/twojprofil">
+            </div>
+          </div>
 
-                <p class="form-note">
-                    <i class="fas fa-info-circle"></i> Zgłoszenia trafiają do moderacji i systemu oczekujących.
-                </p>
+          <div class="form-group">
+            <label for="definitionInput">Definicja / Opis pojęcia <span class="required">*</span></label>
+            <textarea id="definitionInput" name="definition" rows="5" required
+              placeholder="Opisz dokładnie to pojęcie: jak się wykonuje ruch, jakie ma korzenie, z czego wynika..."></textarea>
+          </div>
 
-                <div class="form-group">
-                    <label for="definitionInput">Definicja</label>
-                    <textarea id="definitionInput" name="definition" rows="5" required
-                        placeholder="Opisz to pojęcie..."></textarea>
-                </div>
+          <!-- Honeypot -->
+          <input type="text" name="surname" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="text" name="hp_chk" style="display:none" tabindex="-1" autocomplete="off">
 
-                <!-- Honeypot -->
-                <input type="text" name="surname" style="display:none">
+          <p class="form-note">
+            <i class="fas fa-info-circle"></i> Zgłoszenia społeczności trafiają do kolejki moderacji i są weryfikowane przed publikacją.
+          </p>
 
-                <button type="submit" class="btn-submit">Wyślij do moderacji</button>
-            </form>
-            <div id="formMessage"></div>
-        </div>
+          <div class="modal-form-actions">
+            <button type="submit" id="submitTermBtn" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Wyślij do moderacji
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Anuluj</button>
+          </div>
+        </form>
+
+        <div id="formMessage" class="form-message-box"></div>
+      </div>
     </div>
 
-</main>
+    <!-- Modal Logowania Administratora / Moderatora -->
+    <div id="adminLoginModal" class="modal-overlay">
+      <div class="modal-content wiki-modal admin-modal">
+        <button class="modal-close" onclick="window.closeAdminLoginModal()" title="Zamknij">&times;</button>
+        <h2><i class="fas fa-lock"></i> Panel Moderatora</h2>
+        <p>Wprowadź hasło administratora, aby zarządzać kolejką zgłoszeń i zatwierdzać nowe hasła.</p>
+
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label for="adminPasswordInput">Hasło administratora:</label>
+            <input type="password" id="adminPasswordInput" required placeholder="Wpisz hasło..." autocomplete="current-password">
+          </div>
+          <div class="modal-form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-key"></i> Zaloguj do moderacji
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.closeAdminLoginModal()">Anuluj</button>
+          </div>
+        </form>
+        <div id="adminLoginMessage" class="form-message-box"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="logo-text">KATO SALSA HUB</span>
+        <p>Twoje centrum salsy na Śląsku. Muzyka, taniec, pasja i niepowtarzalny klimat.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#hero">Start</a>
+        <a href="index.html#onas">O nas</a>
+        <a href="index.html#style">Style</a>
+        <a href="salsopedia.html">Salsopedia</a>
+        <a href="index.html#kontakt">Kontakt</a>
+        <a href="privacy.html">Polityka Prywatności</a>
+        <a href="https://dancepuls.katosalsahub.pl/" target="_blank">DancePuls Generator</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
+          target="_blank">TwojaStronaWWW</a></p>
+      <p style="margin-top:10px;">
+        <button type="button" id="footerAdminBtn" class="footer-admin-btn">[Panel Moderacji Salsopedii]</button>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner">
+    <div class="cookie-content">
+      <h4>🍪 Ciasteczka i Prywatność</h4>
+      <p>Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
+          href="privacy.html">Politykę Prywatności</a>.</p>
+    </div>
+    <div class="cookie-actions">
+      <button id="accept-cookies" class="btn btn-primary">Akceptuję</button>
+    </div>
+  </div>
+
+  <script src="assets/js/cookies.js"></script>
+  <script>
+    // Rok w footerze
+    const rokEl = document.getElementById("rok");
+    if (rokEl) rokEl.textContent = new Date().getFullYear();
+
+    // Burger menu
+    const burger = document.querySelector('.burger-menu');
+    const navLinks = document.querySelector('.nav-links');
+    if (burger && navLinks) {
+      burger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        burger.classList.toggle('active');
+      });
+    }
+  </script>
+  <script src="assets/js/wiki.js"></script>
+  <script src="assets/js/radio.js"></script>
+  <script src="assets/js/router.js"></script>
+</body>
+
+</html>

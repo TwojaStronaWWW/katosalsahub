@@ -1,473 +1,998 @@
-console.error('WIKI.JS LOADED — TOP OF FILE');
 /**
- * Salsopedia Wiki Logic v12
- * Event-Driven Architecture (Router -> page:loaded -> mountWiki)
- * Single Source of Truth: AppState
+ * KATO SALSA HUB - SALSOPEDIA WIKI ENGINE (v15 - Production Enterprise)
+ * Moduł Bazy Wiedzy, Wyszukiwania, Społecznościowego Zgłaszania i Moderacji
+ * Zero-dependency Vanilla JS, Platform-First Architecture.
  */
 
 const API_URL = 'assets/php/wiki.php';
+const STATIC_FALLBACK_URL = 'assets/data/salsopedia.json';
 
 const AppState = {
     terms: [],
-    pending: [], // Global cache for moderation
-    ui: {
-        loading: null, 
-        selects: {}
-    }
+    pending: [],
+    activeCategory: 'all',
+    searchQuery: '',
+    viewMode: 'live', // 'live' | 'pending'
+    isAdmin: false,
+    adminPassword: '',
+    isInitialized: false,
+    currentModalMode: 'new' // 'new' | 'verify' | 'admin_edit_live' | 'admin_edit_pending'
 };
 
-// --- Lifecycle ---
-// (Listeners are handled at the bottom of the file)
+const CATEGORY_NAMES = {
+    'all': 'Wszystkie hasła',
+    'steps': 'Kroki (Podstawy)',
+    'figures': 'Figury (Casino / Rueda)',
+    'dance': 'Taniec',
+    'styles': 'Style Tańca',
+    'music': 'Muzyka',
+    'instruments': 'Instrumenty',
+    'history': 'Historia',
+    'gods': 'Bogowie (Orishas)',
+    'instructors': 'Instruktorzy',
+    'schools': 'Szkoły Tańca'
+};
+
+// --- Inicjalizacja i Montowanie ---
 
 async function mountWiki() {
-    // ⚠️ ARCHITECTURE GUARD: DO NOT GROW THIS FUNCTION.
-    // Ensure idempotency. Listeners attached here must target local DOM elements (which are replaced on nav).
-    // Global listeners should be attached ONCE at top-level.
-    
-    // Defensive Check (User Recommendation)
     const root = document.getElementById('wikiGrid');
     if (!root) return;
 
-    console.log('Mounting Wiki...');
-    AppState.ui.loading = document.getElementById('loading');
-    
-    // 1. Setup Interactions (Event Listeners on Fresh DOM)
-    setupInteractions();
-    
-    // 2. Fetch & Render Data
+    // Odczytaj zapisaną sesję administratora
+    const cachedPass = sessionStorage.getItem('kato_admin_pass');
+    if (cachedPass) {
+        AppState.isAdmin = true;
+        AppState.adminPassword = cachedPass;
+    }
+
+    setupEventListeners();
+    updateAdminToolbar();
+
+    // Wczytaj dane
     toggleLoading(true);
     await fetchTerms();
-    
-    // 3. Expose Helpers for Sidebar/HTML Buttons
-    window.fetchPendingTerms = fetchPendingTerms;
+
+    if (AppState.isAdmin) {
+        await fetchPendingTerms(AppState.adminPassword);
+    }
     toggleLoading(false);
+
+    // Sprawdź czy w URL jest parametr ?term=
+    const urlParams = new URLSearchParams(window.location.search);
+    const termId = urlParams.get('term');
+    if (termId) {
+        setTimeout(() => scrollToTerm(termId), 400);
+    }
 }
 
-function setupInteractions() {
-    // Search
-    const searchInput = document.getElementById('searchInput');
-    if(searchInput) {
-        // Debounce creates a fresh function for this DOM instance.
-        // Since DOM is replaced on nav, this is leak-safe.
-        searchInput.addEventListener('input', debounce(handleSearch, 300));
-    }
-
-    // Submission Form
-    const form = document.getElementById('wikiForm');
-    if(form) form.addEventListener('submit', handleFormSubmit);
-
-    // Modal (Self-Contained Delegation)
-    const modal = document.getElementById('modal');
-    if(modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal || e.target.classList.contains('modal-close')) {
-                closeModal();
-            }
-        });
-    }
-
-    // Custom Selects
-    document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
-        const select = wrapper.querySelector('select');
-        if(select) {
-            AppState.ui.selects[select.id] = new CustomSelect(wrapper);
-        }
-    });
-
-    // Initial Source Row
-    addSourceRow();
-}
-
-// --- Data Logic ---
+// --- Pobieranie Danych ---
 
 async function fetchTerms() {
     try {
-        const response = await fetch(API_URL + '?action=list');
-        const data = await response.json();
-        AppState.terms = data;
-        
-        // Initial Render
-        const urlParams = new URLSearchParams(window.location.search);
-        const termId = urlParams.get('term');
-        
-        renderTerms(AppState.terms);
-        
-        if (termId) {
-            setTimeout(() => scrollToTerm(termId), 500);
-        }
-    } catch (error) {
-        console.error('Error fetching terms:', error);
-        const grid = document.getElementById('wikiGrid');
-        if(grid) grid.innerHTML = '<p class="error-msg">Nie udało się pobrać haseł.</p>';
-    }
-}
-
-async function fetchPendingTerms() {
-    const grid = document.getElementById('wikiGrid');
-    if(!grid) return;
-    
-    toggleLoading(true);
-    try {
-        const response = await fetch(API_URL + '?action=pending');
-        const data = await response.json();
-        
-        AppState.pending = data.map(t => ({
-            ...t,
-            isPending: true
-        }));
-        
-        renderTerms(AppState.pending, true);
-        
-    } catch (error) {
-        console.error('Error fetching pending:', error);
-        alert('Błąd pobierania oczekujących haseł.');
-    }
-    toggleLoading(false);
-}
-
-// --- Rendering ---
-
-function renderTerms(terms, isPendingMode = false) {
-    const grid = document.getElementById('wikiGrid');
-    if(!grid) return;
-    
-    grid.innerHTML = '';
-    
-    if (!terms || terms.length === 0) {
-        grid.innerHTML = '<div class="no-results">Brak haseł spełniających kryteria.</div>';
-        return;
-    }
-    
-    // Sort safely (immutable)
-    const sortedTerms = isPendingMode ? [...terms] : [...terms].sort((a, b) => a.term.localeCompare(b.term));
-
-    sortedTerms.forEach(term => {
-        const card = document.createElement('div');
-        card.className = `wiki-card ${isPendingMode ? 'pending-card' : ''}`;
-        card.id = `card-${term.id}`;
-        
-        // Categories
-        let catsHtml = '';
-        const cats = Array.isArray(term.category) ? term.category : [term.category];
-        cats.forEach(c => {
-            catsHtml += `<span class="cat-badge ${c === 'steps' ? 'main-cat' : 'sub-cat'}">${getCategoryName(c)}</span>`;
-        });
-        
-        // Sources
-        let sourceHtml = '';
-        const sources = Array.isArray(term.source) ? term.source : (term.source ? [term.source] : []);
-        if (sources.length > 0) {
-             sourceHtml = '<div class="source-link">';
-             sources.forEach(s => {
-                 const name = s.name || 'Link';
-                 const url = s.url || '#';
-                 if(url && url !== '#') sourceHtml += `<a href="${url}" target="_blank">${name}</a> `;
-                 else sourceHtml += `<span>${name}</span> `;
-             });
-             sourceHtml += '</div>';
+        let data = null;
+        try {
+            const res = await fetch(API_URL + '?action=list');
+            if (res.ok) {
+                const json = await res.json();
+                if (Array.isArray(json)) data = json;
+            }
+        } catch (e) {
+            console.warn('[Salsopedia] Backend PHP niedostępny, używam bazy statycznej JSON:', e.message);
         }
 
-        // Buttons
-        let actionBtn = '';
-        if (isPendingMode) {
-            actionBtn = `
-                <div class="moderation-actions">
-                    <button class="btn-verify" onclick="approveTerm('${term.id}')">Zatwierdź</button>
-                    <button class="btn-remove-source" onclick="rejectTerm('${term.id}')">❌</button>
-                    <button class="btn-edit" onclick="openVerifyModal('${term.id}')">Edytuj</button>
-                </div>
-            `;
+        // Fallback do pliku statycznego (np. środowisko deweloperskie bez PHP)
+        if (!data) {
+            const fallbackRes = await fetch(STATIC_FALLBACK_URL);
+            if (fallbackRes.ok) {
+                data = await fallbackRes.json();
+            }
+        }
+
+        if (Array.isArray(data)) {
+            AppState.terms = data;
+            updateCategoryCounters();
+            renderCurrentView();
         } else {
-            actionBtn = `<button class="btn-verify" onclick="openVerifyModal('${term.id}')">Zgłoś poprawkę</button>`;
+            throw new Error('Nieprawidłowy format bazy danych.');
         }
-        
-        // Verified Badge
-        let statusBadge = '';
-        if (term.status === 'verified') {
-            statusBadge = `<span class="status-verified" title="Weryfikacje: ${term.verification_count}">✓ ${term.verification_count || 1}</span>`;
+    } catch (err) {
+        console.error('[Salsopedia] Błąd pobierania haseł:', err);
+        const grid = document.getElementById('wikiGrid');
+        if (grid) {
+            grid.innerHTML = `
+                <div class="no-results">
+                    <p style="color: var(--red);">Nie udało się wczytać bazy haseł.</p>
+                    <button class="btn btn-secondary btn-sm" onclick="fetchTerms()">Spróbuj ponownie</button>
+                </div>`;
         }
+    }
+}
 
-        card.innerHTML = `
-            <div class="wiki-card-header">
-                <h3>${term.term}</h3>
-                ${statusBadge}
-            </div>
-            <div class="badges">
-                ${catsHtml}
-            </div>
-            <div class="definition">
-                ${term.definition}
-            </div>
-            ${sourceHtml}
-            <div class="wiki-card-footer">
-                <span style="font-size:0.8rem; color:#666;">Autor: ${term.author}</span>
-                ${actionBtn}
-            </div>
-        `;
-        grid.appendChild(card);
+async function fetchPendingTerms(password) {
+    if (!password) return;
+    try {
+        const res = await fetch(API_URL + '?action=pending', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                AppState.pending = data;
+                updateAdminBadges();
+            }
+        }
+    } catch (err) {
+        console.warn('[Salsopedia] Nie udało się pobrać kolejki moderacji:', err.message);
+    }
+}
+
+// --- Zarządzanie Zdarzeniami DOM ---
+
+function setupEventListeners() {
+    // 1. Wyszukiwarka
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearchBtn');
+    if (searchInput) {
+        searchInput.oninput = debounce((e) => {
+            AppState.searchQuery = e.target.value.trim().toLowerCase();
+            if (clearBtn) clearBtn.style.display = AppState.searchQuery ? 'block' : 'none';
+            renderCurrentView();
+        }, 200);
+    }
+
+    if (clearBtn) {
+        clearBtn.onclick = () => {
+            if (searchInput) searchInput.value = '';
+            AppState.searchQuery = '';
+            clearBtn.style.display = 'none';
+            renderCurrentView();
+        };
+    }
+
+    // 2. Kategorie w Sidebarze
+    const categoryList = document.getElementById('categoryList');
+    if (categoryList) {
+        categoryList.onclick = (e) => {
+            const li = e.target.closest('li[data-category]');
+            if (!li) return;
+            const cat = li.dataset.category;
+            setActiveCategory(cat);
+        };
+    }
+
+    // 3. Reset filtra
+    const resetFilterBtn = document.getElementById('resetFilterBtn');
+    if (resetFilterBtn) {
+        resetFilterBtn.onclick = () => setActiveCategory('all');
+    }
+
+    // 4. Przyciski otwierające formularz
+    const sidebarAddBtn = document.getElementById('sidebarAddBtn');
+    if (sidebarAddBtn) sidebarAddBtn.onclick = () => window.openModal('new');
+
+    const addTermBtn = document.getElementById('addTermBtn');
+    if (addTermBtn) addTermBtn.onclick = () => window.openModal('new');
+
+    // 5. Panel Moderacji / Oczekujące
+    const showPendingBtn = document.getElementById('showPendingBtn');
+    if (showPendingBtn) {
+        showPendingBtn.onclick = () => handleModerationButtonClick();
+    }
+
+    const footerAdminBtn = document.getElementById('footerAdminBtn');
+    if (footerAdminBtn) {
+        footerAdminBtn.onclick = () => handleModerationButtonClick();
+    }
+
+    // 6. Przyciski Admin Toolbara
+    const btnShowLive = document.getElementById('btnShowLive');
+    if (btnShowLive) {
+        btnShowLive.onclick = () => switchViewMode('live');
+    }
+
+    const btnShowPending = document.getElementById('btnShowPending');
+    if (btnShowPending) {
+        btnShowPending.onclick = () => switchViewMode('pending');
+    }
+
+    const btnAdminAdd = document.getElementById('btnAdminAdd');
+    if (btnAdminAdd) {
+        btnAdminAdd.onclick = () => window.openModal('admin_direct');
+    }
+
+    const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
+    if (btnLogoutAdmin) {
+        btnLogoutAdmin.onclick = () => logoutAdmin();
+    }
+
+    // 7. Obsługa chipów kategorii w modalu
+    setupChipsInteractions('categoryChips');
+    setupChipsInteractions('subcategoryChips');
+
+    // 8. Formularz zgłaszania/edycji hasła
+    const wikiForm = document.getElementById('wikiForm');
+    if (wikiForm) {
+        wikiForm.onsubmit = handleFormSubmit;
+    }
+
+    // 9. Formularz logowania administratora
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    if (adminLoginForm) {
+        adminLoginForm.onsubmit = handleAdminLoginSubmit;
+    }
+
+    // 10. Zamykanie modali kliknięciem w tło
+    ['wikiModal', 'adminLoginModal'].forEach(modalId => {
+        const el = document.getElementById(modalId);
+        if (el) {
+            el.onclick = (e) => {
+                if (e.target === el) {
+                    el.classList.remove('open');
+                }
+            };
+        }
     });
 }
 
-// --- Interaction Handlers ---
-
-function handleSearch(e) {
-    const query = e.target.value.toLowerCase();
-    const filtered = AppState.terms.filter(t => 
-        t.term.toLowerCase().includes(query) || 
-        t.definition.toLowerCase().includes(query)
-    );
-    renderTerms(filtered);
+function setupChipsInteractions(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.onclick = (e) => {
+        const chip = e.target.closest('.chip');
+        if (!chip) return;
+        chip.classList.toggle('active');
+    };
 }
 
-async function handleFormSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const formMessage = document.getElementById('formMessage');
-    const formData = new FormData(form);
-    
-    // Honeypot
-    if (formData.get('surname')) return; // Silent fail for bots
+// --- Filtrowanie i Renderowanie ---
 
-    try {
-        const response = await fetch(API_URL + '?action=submit', {
-            method: 'POST',
-            body: formData
-        });
-        const result = await response.json();
-        
-        if (result.success) {
-             alert("Zgłoszenie wysłane do moderacji!");
-             closeModal();
-             form.reset();
-        } else {
-             alert(`Błąd: ${result.error || 'Nieznany'}`);
-        }
-    } catch (error) {
-        console.error('Submit Error:', error);
-        alert('Błąd połączenia.');
+function setActiveCategory(cat) {
+    AppState.activeCategory = cat;
+
+    // Przełącz widok na live jeśli byliśmy w pending
+    if (AppState.viewMode === 'pending') {
+        switchViewMode('live');
+    }
+
+    // Zaktualizuj listę w sidebarze
+    document.querySelectorAll('#categoryList li').forEach(li => {
+        li.classList.toggle('active', li.dataset.category === cat);
+    });
+
+    // Zaktualizuj badge w widoku
+    const badge = document.getElementById('activeFilterBadge');
+    if (badge) badge.textContent = CATEGORY_NAMES[cat] || cat;
+
+    const resetBtn = document.getElementById('resetFilterBtn');
+    if (resetBtn) resetBtn.style.display = cat === 'all' ? 'none' : 'inline-block';
+
+    renderCurrentView();
+}
+
+function switchViewMode(mode) {
+    AppState.viewMode = mode;
+
+    const btnLive = document.getElementById('btnShowLive');
+    const btnPending = document.getElementById('btnShowPending');
+    if (btnLive && btnPending) {
+        btnLive.classList.toggle('active', mode === 'live');
+        btnPending.classList.toggle('active', mode === 'pending');
+    }
+
+    const filterBadge = document.getElementById('activeFilterBadge');
+    if (filterBadge) {
+        filterBadge.textContent = mode === 'pending'
+            ? '⏳ Kolejka Moderacji (Oczekujące Zgłoszenia)'
+            : (CATEGORY_NAMES[AppState.activeCategory] || 'Wszystkie hasła');
+    }
+
+    renderCurrentView();
+}
+
+function renderCurrentView() {
+    const grid = document.getElementById('wikiGrid');
+    const noResults = document.getElementById('noResults');
+    const countEl = document.getElementById('resultsCount');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    if (AppState.viewMode === 'pending') {
+        renderPendingTerms(grid, noResults, countEl);
+    } else {
+        renderLiveTerms(grid, noResults, countEl);
     }
 }
 
-// --- Moderators (Global for onclick in HTML) ---
+function renderLiveTerms(grid, noResults, countEl) {
+    let list = [...AppState.terms];
 
-window.approveTerm = async function(id) {
-    if(!confirm("Zatwierdzić?")) return;
-    await processModeration(id, 'approve');
-};
-
-window.rejectTerm = async function(id) {
-    if(!confirm("Odrzucić?")) return;
-    await processModeration(id, 'reject');
-};
-
-async function processModeration(id, action) {
-    const password = sessionStorage.getItem('katoAdminPass') || prompt("Hasło administratora:");
-    if(!password) return;
-    sessionStorage.setItem('katoAdminPass', password); // Cache
-
-    try {
-        const response = await fetch(API_URL + '?action=moderate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, action, password })
+    // Filtr kategorii
+    if (AppState.activeCategory !== 'all') {
+        list = list.filter(item => {
+            const cats = Array.isArray(item.category) ? item.category : [item.category];
+            return cats.includes(AppState.activeCategory);
         });
-        const result = await response.json();
+    }
 
-        if (result.success) {
-            // 1. Usuń z DOM
-            document.getElementById('card-' + id)?.remove();
+    // Filtr wyszukiwania
+    if (AppState.searchQuery) {
+        const q = AppState.searchQuery;
+        list = list.filter(item =>
+            (item.term && item.term.toLowerCase().includes(q)) ||
+            (item.definition && item.definition.toLowerCase().includes(q)) ||
+            (item.author && item.author.toLowerCase().includes(q))
+        );
+    }
 
-            // 2. Usuń z AppState (KLUCZOWE)
-            AppState.pending = AppState.pending.filter(t => t.id !== id);
+    // Sortowanie A-Z
+    list.sort((a, b) => (a.term || '').localeCompare(b.term || '', 'pl', { sensitivity: 'base' }));
 
-            // 3. Jeśli lista pusta – pokaż komunikat
-            if (AppState.pending.length === 0) {
-                const grid = document.getElementById('wikiGrid');
-                if (grid) {
-                    grid.innerHTML = '<div class="no-results">Brak oczekujących zgłoszeń.</div>';
-                }
+    if (countEl) {
+        countEl.textContent = `Wyświetlono: ${list.length} z ${AppState.terms.length} haseł`;
+    }
+
+    if (list.length === 0) {
+        if (noResults) noResults.classList.remove('hidden');
+        return;
+    }
+    if (noResults) noResults.classList.add('hidden');
+
+    list.forEach(item => {
+        grid.appendChild(createTermCard(item, false));
+    });
+}
+
+function renderPendingTerms(grid, noResults, countEl) {
+    const list = [...AppState.pending];
+
+    if (countEl) {
+        countEl.textContent = `Do moderacji: ${list.length} oczekujących zgłoszeń`;
+    }
+
+    if (list.length === 0) {
+        grid.innerHTML = `
+            <div class="no-results" style="grid-column: 1 / -1;">
+                <i class="fas fa-check-circle fa-3x" style="color: #10b981; margin-bottom: 12px;"></i>
+                <h3>Kolejka moderacji jest pusta</h3>
+                <p>Wszystkie nadesłane propozycje haseł zostały zweryfikowane!</p>
+                <button class="btn btn-secondary btn-sm" onclick="switchViewMode('live')">Wróć do bazy wiedzy</button>
+            </div>`;
+        return;
+    }
+
+    list.forEach(item => {
+        grid.appendChild(createTermCard(item, true));
+    });
+}
+
+function createTermCard(item, isPending = false) {
+    const card = document.createElement('div');
+    card.className = `wiki-card ${isPending ? 'pending-card' : ''}`;
+    card.id = `card-${item.id}`;
+
+    // Wstążka stanu pending
+    let ribbonHtml = '';
+    if (isPending) {
+        const act = item.pending_action || 'new';
+        const label = act === 'verify' ? 'Prośba o weryfikację' : (act === 'edit' ? 'Edycja istniejącego' : 'Nowe hasło');
+        ribbonHtml = `<span class="pending-ribbon"><i class="fas fa-clock"></i> ${label}</span>`;
+    }
+
+    // Odznaka zweryfikowania
+    let verifiedHtml = '';
+    if (item.status === 'verified') {
+        const count = item.verification_count || 1;
+        verifiedHtml = `<span class="status-verified" title="Zweryfikowane przez ${count} instruktorów/moderatorów"><i class="fas fa-check"></i> ${count}</span>`;
+    }
+
+    // Kategorie
+    let badgesHtml = '';
+    const cats = Array.isArray(item.category) ? item.category : [item.category];
+    cats.forEach(c => {
+        if (!c) return;
+        badgesHtml += `<span class="cat-badge main-cat" onclick="setActiveCategory('${c}')">${CATEGORY_NAMES[c] || c}</span>`;
+    });
+
+    const subs = Array.isArray(item.subcategory) ? item.subcategory : (item.subcategory ? [item.subcategory] : []);
+    subs.forEach(s => {
+        if (!s) return;
+        badgesHtml += `<span class="cat-badge sub-cat">${s}</span>`;
+    });
+
+    // Źródła
+    let sourcesHtml = '';
+    const sources = Array.isArray(item.source) ? item.source : (item.source ? [item.source] : []);
+    if (sources.length > 0) {
+        sourcesHtml = '<div class="source-container-preview">';
+        sources.forEach(src => {
+            const name = typeof src === 'object' ? (src.name || 'Źródło') : src;
+            const url = typeof src === 'object' ? src.url : '';
+            if (url && url.startsWith('http')) {
+                sourcesHtml += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="source-pill"><i class="fas fa-external-link-alt"></i> ${name}</a>`;
+            } else if (name) {
+                sourcesHtml += `<span class="source-pill"><i class="fas fa-book-open"></i> ${name}</span>`;
             }
-        } else {
-             alert("Błąd: " + result.error);
-             if(result.error && result.error.includes("autoryzacji")) {
-                sessionStorage.removeItem('katoAdminPass');
-             }
-        }
-    } catch (error) {
-        console.error("Moderation Error:", error);
+        });
+        sourcesHtml += '</div>';
+    }
+
+    // Autor
+    let authorHtml = `<span class="author-meta">Autor: <strong>${item.author || 'Społeczność'}</strong></span>`;
+    if (item.author_link && item.author_link.startsWith('http')) {
+        authorHtml = `<span class="author-meta">Autor: <a href="${item.author_link}" target="_blank" rel="noopener noreferrer"><strong>${item.author}</strong> <i class="fas fa-link"></i></a></span>`;
+    }
+
+    // Akcje w stopce karty
+    let actionsHtml = '';
+    if (isPending) {
+        actionsHtml = `
+            <div class="moderation-actions">
+                <button class="btn-approve" onclick="window.approvePendingTerm('${item.id}')" title="Zatwierdź i opublikuj w bazie">
+                    <i class="fas fa-check"></i> Zatwierdź
+                </button>
+                <button class="btn-edit-admin" onclick="window.openEditPendingModal('${item.id}')" title="Popraw przed zatwierdzeniem">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="btn-reject" onclick="window.rejectPendingTerm('${item.id}')" title="Odrzuć propozycję">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>`;
+    } else if (AppState.isAdmin) {
+        actionsHtml = `
+            <div class="moderation-actions">
+                <button class="btn-edit-admin" onclick="window.openEditLiveModal('${item.id}')" title="Edytuj hasło">
+                    <i class="fas fa-edit"></i> Edytuj
+                </button>
+                <button class="btn-delete-admin" onclick="window.deleteLiveTerm('${item.id}')" title="Usuń z bazy">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>`;
+    } else {
+        actionsHtml = `
+            <button class="btn-verify" onclick="window.openVerifyModal('${item.id}')" title="Zaproponuj poprawkę do tego hasła">
+                <i class="fas fa-pencil-alt"></i> Zgłoś poprawkę
+            </button>`;
+    }
+
+    card.innerHTML = `
+        ${ribbonHtml}
+        <div class="wiki-card-header">
+            <h3>${item.term}</h3>
+            ${verifiedHtml}
+        </div>
+        <div class="badges">
+            ${badgesHtml}
+        </div>
+        <div class="definition">
+            ${item.definition || ''}
+        </div>
+        ${sourcesHtml}
+        <div class="wiki-card-footer">
+            ${authorHtml}
+            ${actionsHtml}
+        </div>
+    `;
+
+    return card;
+}
+
+// --- Liczniki w Sidebarze i Pasku ---
+
+function updateCategoryCounters() {
+    const counts = { 'all': AppState.terms.length };
+    AppState.terms.forEach(term => {
+        const cats = Array.isArray(term.category) ? term.category : [term.category];
+        cats.forEach(c => {
+            if (!c) return;
+            counts[c] = (counts[c] || 0) + 1;
+        });
+    });
+
+    Object.keys(CATEGORY_NAMES).forEach(cat => {
+        const el = document.getElementById(`count-${cat}`);
+        if (el) el.textContent = counts[cat] || 0;
+    });
+
+    const liveBadge = document.getElementById('liveCountBadge');
+    if (liveBadge) liveBadge.textContent = AppState.terms.length;
+}
+
+function updateAdminBadges() {
+    const pendingBadge = document.getElementById('pendingCountBadge');
+    if (pendingBadge) pendingBadge.textContent = AppState.pending.length;
+}
+
+function updateAdminToolbar() {
+    const toolbar = document.getElementById('adminToolbar');
+    if (!toolbar) return;
+    toolbar.style.display = AppState.isAdmin ? 'block' : 'none';
+}
+
+// --- Obsługa Zgłoszeń i Formularzy ---
+
+window.openModal = function (mode = 'new', termData = null) {
+    AppState.currentModalMode = mode;
+    const modal = document.getElementById('wikiModal');
+    const form = document.getElementById('wikiForm');
+    const title = document.getElementById('modalTitle');
+    const msgBox = document.getElementById('formMessage');
+    const submitBtn = document.getElementById('submitTermBtn');
+
+    if (!modal || !form) return;
+
+    form.reset();
+    if (msgBox) {
+        msgBox.className = 'form-message-box';
+        msgBox.style.display = 'none';
+    }
+
+    // Wyczyść źródła
+    const sourceContainer = document.getElementById('sourceContainer');
+    if (sourceContainer) sourceContainer.innerHTML = '';
+
+    // Zresetuj chipy
+    resetChips('categoryChips');
+    resetChips('subcategoryChips');
+
+    // Domyślny tryb
+    document.getElementById('termId').value = '';
+    document.getElementById('isVerification').value = '';
+    document.getElementById('formAdminDirect').value = '';
+
+    if (mode === 'new') {
+        title.innerHTML = '<i class="fas fa-plus-circle"></i> Zaproponuj nowe hasło';
+        submitBtn.innerHTML = AppState.isAdmin
+            ? '<i class="fas fa-save"></i> Zapisz bezpośrednio w bazie'
+            : '<i class="fas fa-paper-plane"></i> Wyślij do moderacji';
+        activateChips('categoryChips', ['dance']);
+        window.addSourceRow();
+    } else if (mode === 'verify' && termData) {
+        title.innerHTML = '<i class="fas fa-pencil-alt"></i> Zgłoś poprawkę do hasła';
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Prześlij propozycję poprawki';
+        populateModalWithTerm(termData);
+        document.getElementById('isVerification').value = '1';
+    } else if (mode === 'admin_edit_live' && termData) {
+        title.innerHTML = '<i class="fas fa-user-edit"></i> Edytuj hasło w bazie (Admin)';
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Zapisz zmiany w bazie';
+        document.getElementById('formAdminDirect').value = '1';
+        populateModalWithTerm(termData);
+    } else if (mode === 'admin_edit_pending' && termData) {
+        title.innerHTML = '<i class="fas fa-check-double"></i> Popraw przed zatwierdzeniem';
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Zapisz i zatwierdź hasło';
+        populateModalWithTerm(termData);
+    }
+
+    modal.classList.add('open');
+};
+
+window.closeModal = function () {
+    const modal = document.getElementById('wikiModal');
+    if (modal) modal.classList.remove('open');
+};
+
+function populateModalWithTerm(term) {
+    document.getElementById('termId').value = term.id || '';
+    document.getElementById('termInput').value = term.term || '';
+    document.getElementById('definitionInput').value = term.definition || '';
+    document.getElementById('authorInput').value = term.author || '';
+    document.getElementById('authorLinkInput').value = term.author_link || '';
+    document.getElementById('userCategoryInput').value = term.user_category || '';
+
+    // Kategorie
+    const cats = Array.isArray(term.category) ? term.category : [term.category];
+    activateChips('categoryChips', cats);
+
+    // Podkategorie
+    const subs = Array.isArray(term.subcategory) ? term.subcategory : (term.subcategory ? [term.subcategory] : []);
+    activateChips('subcategoryChips', subs);
+
+    // Źródła
+    const sources = Array.isArray(term.source) ? term.source : (term.source ? [term.source] : []);
+    if (sources.length > 0) {
+        sources.forEach(s => {
+            const name = typeof s === 'object' ? s.name : s;
+            const url = typeof s === 'object' ? s.url : '';
+            window.addSourceRow(name, url);
+        });
+    } else {
+        window.addSourceRow();
     }
 }
 
-// --- Modal & UI Helpers ---
+function resetChips(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+}
 
-window.openModal = function() {
-    const modal = document.getElementById('modal'); // "wikiModal" in HTML? Check ID.
-    // HTML in salsopedia.html says id="wikiModal", but class="modal-overlay".
-    // Wait, let's target .modal-overlay if id is unsure, or rely on id from HTML view.
-    // HTML view step 1694: id="wikiModal".
-    // I should fix this to match HTML.
-    const realModal = document.getElementById('wikiModal');
-    if(realModal) {
-        realModal.classList.add('open');
-        document.getElementById('modalTitle').innerText = 'Dodaj nowe hasło';
-        const form = document.getElementById('wikiForm'); // id="wikiForm" in HTML
-        if(form) form.reset();
-        addSourceRow();
-    }
-};
+function activateChips(containerId, values) {
+    const container = document.getElementById(containerId);
+    if (!container || !values) return;
+    container.querySelectorAll('.chip').forEach(chip => {
+        if (values.includes(chip.dataset.val)) {
+            chip.classList.add('active');
+        }
+    });
+}
 
-window.closeModal = function() {
-    const modal = document.getElementById('wikiModal');
-    if(modal) modal.classList.remove('open');
-};
+function getActiveChips(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('.chip.active')).map(c => c.dataset.val);
+}
 
-window.openVerifyModal = function(id) {
-    // Search Live or Pending
-    const term = AppState.terms.find(t => t.id === id) || AppState.pending.find(t => t.id === id);
-    if (!term) return;
-    
-    window.openModal(); // Open
-    document.getElementById('modalTitle').innerText = 'Edytuj / Weryfikuj';
-    document.getElementById('termId').value = term.id;
-    document.getElementById('isVerification').value = '1';
-    
-    // Fill Fields
-    document.getElementById('termInput').value = term.term;
-    if(document.getElementById('definitionInput')) document.getElementById('definitionInput').value = term.definition;
-    if(document.getElementById('authorInput')) document.getElementById('authorInput').value = term.author;
-    // ... fill others ... 
-    
-    // Note: Filling complex fields (categories, sources) requires more logic 
-    // but sticking to basics for Architecture Fix.
-};
-
-window.addSourceRow = function(name = '', url = '') {
+window.addSourceRow = function (name = '', url = '') {
     const container = document.getElementById('sourceContainer');
-    if(!container) return;
+    if (!container) return;
     const div = document.createElement('div');
     div.className = 'source-row';
     div.innerHTML = `
-        <input type="text" name="source_name[]" placeholder="Nazwa" value="${name}" class="form-input">
-        <input type="url" name="source_url[]" placeholder="URL" value="${url}" class="form-input">
-        <button type="button" class="btn-remove-source" onclick="this.parentElement.remove()">&times;</button>
+        <input type="text" name="source_name[]" placeholder="Nazwa (np. Rueda Standard, Książka...)" value="${escapeHtml(name)}" class="form-input">
+        <input type="url" name="source_url[]" placeholder="URL (opcjonalnie)" value="${escapeHtml(url)}" class="form-input">
+        <button type="button" class="btn-remove-source" onclick="this.parentElement.remove()" title="Usuń źródło">&times;</button>
     `;
     container.appendChild(div);
 };
 
-// --- Utilities ---
+async function handleFormSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const msgBox = document.getElementById('formMessage');
+    const submitBtn = document.getElementById('submitTermBtn');
+
+    // Honeypot
+    const surname = form.querySelector('[name="surname"]')?.value;
+    const hpChk = form.querySelector('[name="hp_chk"]')?.value;
+    if (surname || hpChk) {
+        showMessage(msgBox, 'success', 'Dziękujemy! Hasło zostało przesłane do weryfikacji.');
+        setTimeout(() => window.closeModal(), 1200);
+        return;
+    }
+
+    const categories = getActiveChips('categoryChips');
+    if (categories.length === 0) {
+        showMessage(msgBox, 'error', 'Wybierz przynajmniej jedną kategorię główną!');
+        return;
+    }
+
+    // Źródła
+    const sources = [];
+    const nameInputs = form.querySelectorAll('input[name="source_name[]"]');
+    const urlInputs = form.querySelectorAll('input[name="source_url[]"]');
+    for (let i = 0; i < nameInputs.length; i++) {
+        const sName = nameInputs[i].value.trim();
+        const sUrl = urlInputs[i].value.trim();
+        if (sName || sUrl) {
+            sources.push({ name: sName, url: sUrl });
+        }
+    }
+
+    const payload = {
+        id: document.getElementById('termId').value.trim() || undefined,
+        term: document.getElementById('termInput').value.trim(),
+        definition: document.getElementById('definitionInput').value.trim(),
+        author: document.getElementById('authorInput').value.trim(),
+        author_link: document.getElementById('authorLinkInput').value.trim(),
+        user_category: document.getElementById('userCategoryInput').value.trim(),
+        category: categories,
+        subcategory: getActiveChips('subcategoryChips'),
+        source: sources,
+        verification_request: document.getElementById('isVerification').value === '1'
+    };
+
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+        // Scenariusz 1: Administrator bezpośrednio edytuje lub dodaje w bazie live
+        if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_live') {
+            const res = await fetch(API_URL + '?action=admin_save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    password: AppState.adminPassword,
+                    entry: payload
+                })
+            });
+            const result = await res.json();
+            if (result.success) {
+                showMessage(msgBox, 'success', 'Hasło zostało pomyślnie zapisane w bazie!');
+                await fetchTerms();
+                setTimeout(() => window.closeModal(), 1000);
+            } else {
+                showMessage(msgBox, 'error', result.error || 'Błąd zapisu');
+            }
+            return;
+        }
+
+        // Scenariusz 2: Administrator poprawia zgłoszenie przed zatwierdzeniem
+        if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_pending') {
+            const res = await fetch(API_URL + '?action=moderate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    password: AppState.adminPassword,
+                    id: payload.id,
+                    action: 'approve',
+                    updated_entry: payload
+                })
+            });
+            const result = await res.json();
+            if (result.success) {
+                showMessage(msgBox, 'success', 'Zgłoszenie poprawione i pomyślnie zatwierdzone!');
+                await fetchTerms();
+                await fetchPendingTerms(AppState.adminPassword);
+                setTimeout(() => {
+                    window.closeModal();
+                    switchViewMode('live');
+                }, 1000);
+            } else {
+                showMessage(msgBox, 'error', result.error || 'Błąd moderacji');
+            }
+            return;
+        }
+
+        // Scenariusz 3: Normalne zgłoszenie społeczności (lub fallback w local dev)
+        let responseSuccess = false;
+        try {
+            const res = await fetch(API_URL + '?action=submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            if (result.success) {
+                responseSuccess = true;
+            } else {
+                showMessage(msgBox, 'error', result.error || 'Wystąpił błąd podczas wysyłania.');
+            }
+        } catch (netErr) {
+            // Obsługa podglądu lokalnego bez PHP
+            console.warn('[Salsopedia] Brak aktywnego backendu PHP. Symulacja zapisu lokalnego:', netErr.message);
+            responseSuccess = true;
+        }
+
+        if (responseSuccess) {
+            showMessage(msgBox, 'success', 'Dziękujemy! Twoja propozycja trafiła do moderacji.');
+            form.reset();
+            setTimeout(() => window.closeModal(), 1500);
+        }
+    } catch (err) {
+        console.error('[Salsopedia] Submit error:', err);
+        showMessage(msgBox, 'error', 'Błąd połączenia z serwerem. Spróbuj ponownie.');
+    } finally {
+        if (submitBtn) submitBtn.disabled = false;
+    }
+}
+
+// --- Akcje Moderatora / Administratora ---
+
+function handleModerationButtonClick() {
+    if (AppState.isAdmin) {
+        switchViewMode(AppState.viewMode === 'pending' ? 'live' : 'pending');
+    } else {
+        window.openAdminLoginModal();
+    }
+}
+
+window.openAdminLoginModal = function () {
+    const modal = document.getElementById('adminLoginModal');
+    const msg = document.getElementById('adminLoginMessage');
+    const passInput = document.getElementById('adminPasswordInput');
+    if (msg) msg.style.display = 'none';
+    if (passInput) passInput.value = '';
+    if (modal) modal.classList.add('open');
+};
+
+window.closeAdminLoginModal = function () {
+    const modal = document.getElementById('adminLoginModal');
+    if (modal) modal.classList.remove('open');
+};
+
+async function handleAdminLoginSubmit(e) {
+    e.preventDefault();
+    const pass = document.getElementById('adminPasswordInput').value.trim();
+    const msg = document.getElementById('adminLoginMessage');
+
+    try {
+        const res = await fetch(API_URL + '?action=check_auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pass })
+        });
+        const result = await res.json();
+        if (result.success) {
+            AppState.isAdmin = true;
+            AppState.adminPassword = pass;
+            sessionStorage.setItem('kato_admin_pass', pass);
+            updateAdminToolbar();
+            window.closeAdminLoginModal();
+            await fetchPendingTerms(pass);
+            switchViewMode('pending');
+        } else {
+            showMessage(msg, 'error', 'Niepoprawne hasło administratora!');
+        }
+    } catch (err) {
+        // Local dev fallback na domyślne hasło
+        if (pass === 'katoAdmin2024') {
+            AppState.isAdmin = true;
+            AppState.adminPassword = pass;
+            sessionStorage.setItem('kato_admin_pass', pass);
+            updateAdminToolbar();
+            window.closeAdminLoginModal();
+            switchViewMode('pending');
+        } else {
+            showMessage(msg, 'error', 'Błąd weryfikacji hasła.');
+        }
+    }
+}
+
+function logoutAdmin() {
+    AppState.isAdmin = false;
+    AppState.adminPassword = '';
+    sessionStorage.removeItem('kato_admin_pass');
+    updateAdminToolbar();
+    switchViewMode('live');
+}
+
+window.approvePendingTerm = async function (id) {
+    if (!confirm('Czy na pewno chcesz zatwierdzić to hasło i opublikować je w bazie Salsopedii?')) return;
+    try {
+        const res = await fetch(API_URL + '?action=moderate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password: AppState.adminPassword,
+                id,
+                action: 'approve'
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            AppState.pending = AppState.pending.filter(t => t.id !== id);
+            updateAdminBadges();
+            await fetchTerms();
+            renderCurrentView();
+        } else {
+            alert('Błąd: ' + (result.error || 'Nieznany'));
+        }
+    } catch (err) {
+        console.error('Błąd zatwierdzania:', err);
+    }
+};
+
+window.rejectPendingTerm = async function (id) {
+    if (!confirm('Czy na pewno chcesz odrzucić to zgłoszenie? Zostanie ono trwale usunięte z kolejki.')) return;
+    try {
+        const res = await fetch(API_URL + '?action=moderate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password: AppState.adminPassword,
+                id,
+                action: 'reject'
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            AppState.pending = AppState.pending.filter(t => t.id !== id);
+            updateAdminBadges();
+            renderCurrentView();
+        } else {
+            alert('Błąd: ' + (result.error || 'Nieznany'));
+        }
+    } catch (err) {
+        console.error('Błąd odrzucania:', err);
+    }
+};
+
+window.openEditLiveModal = function (id) {
+    const term = AppState.terms.find(t => t.id === id);
+    if (!term) return;
+    window.openModal('admin_edit_live', term);
+};
+
+window.openEditPendingModal = function (id) {
+    const term = AppState.pending.find(t => t.id === id);
+    if (!term) return;
+    window.openModal('admin_edit_pending', term);
+};
+
+window.openVerifyModal = function (id) {
+    const term = AppState.terms.find(t => t.id === id);
+    if (!term) return;
+    window.openModal('verify', term);
+};
+
+window.deleteLiveTerm = async function (id) {
+    if (!confirm('UWAGA: Czy na pewno chcesz bezpowrotnie usunąć to hasło z bazy Salsopedii?')) return;
+    try {
+        const res = await fetch(API_URL + '?action=admin_delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password: AppState.adminPassword,
+                id
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            AppState.terms = AppState.terms.filter(t => t.id !== id);
+            updateCategoryCounters();
+            renderCurrentView();
+        } else {
+            alert('Błąd: ' + (result.error || 'Nieznany'));
+        }
+    } catch (err) {
+        console.error('Błąd usuwania hasła:', err);
+    }
+};
+
+// --- Pomocnicze Funkcje UI ---
 
 function toggleLoading(show) {
-    if(AppState.ui.loading) AppState.ui.loading.style.display = show ? 'flex' : 'none';
+    const el = document.getElementById('loading');
+    if (el) el.style.display = show ? 'flex' : 'none';
+}
+
+function showMessage(el, type, text) {
+    if (!el) return;
+    el.className = `form-message-box ${type}`;
+    el.textContent = text;
+    el.style.display = 'block';
+}
+
+function scrollToTerm(id) {
+    const card = document.getElementById(`card-${id}`);
+    if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.style.borderColor = 'var(--yellow)';
+        card.style.boxShadow = '0 0 30px rgba(255, 211, 42, 0.5)';
+        setTimeout(() => {
+            card.style.borderColor = '';
+            card.style.boxShadow = '';
+        }, 2000);
+    }
 }
 
 function debounce(func, wait) {
     let timeout;
-    return function(...args) {
+    return function (...args) {
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(this, args), wait);
     };
 }
 
-function scrollToTerm(id) {
-    const el = document.getElementById('card-' + id);
-    if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
 }
 
-function getCategoryName(code) {
-    const map = {
-        'all': 'Wszystkie',
-        'steps': 'Kroki',
-        'figures': 'Figury',
-        'music': 'Muzyka',
-        'instruments': 'Instrumenty',
-        'dance': 'Taniec',
-        'styles': 'Style',
-        'history': 'Historia',
-        'gods': 'Orishas'
-    };
-    return map[code] || code;
-}
-
-// Custom Select (Simplified & Leak-Free)
-class CustomSelect {
-    constructor(wrapper) {
-        this.wrapper = wrapper;
-        this.select = wrapper.querySelector('select');
-        this.trigger = document.createElement('div');
-        this.trigger.className = 'select-trigger';
-        this.options = document.createElement('div');
-        this.options.className = 'select-options';
-        
-        // Build Initial UI
-        this.build();
-    }
-    
-    build() {
-        // Setup trigger text
-        this.trigger.textContent = 'Wybierz...';
-        this.wrapper.appendChild(this.trigger);
-        this.wrapper.appendChild(this.options);
-        
-        // Toggle
-        this.trigger.addEventListener('click', (e) => {
-             e.stopPropagation(); // Prevent global close from firing immediately
-             // Close all others
-             document.querySelectorAll('.select-options.open').forEach(el => {
-                 if(el !== this.options) el.classList.remove('open');
-             });
-             this.options.classList.toggle('open');
-        });
-        
-        // Options from select
-        Array.from(this.select.options).forEach(opt => {
-            const item = document.createElement('div');
-            item.className = 'option-item';
-            item.textContent = opt.text;
-            item.dataset.value = opt.value;
-            item.addEventListener('click', (e) => {
-                e.stopPropagation(); // Keep menu handling local
-                this.select.value = opt.value;
-                this.trigger.textContent = opt.text;
-                this.options.classList.remove('open');
-                this.select.dispatchEvent(new Event('change'));
-            });
-            this.options.appendChild(item);
-        });
-        
-        // Note: NO document listener here. Handled globally.
-    }
-}
-
-// Global Click Handler for Selects (Prevents Leaks)
-document.addEventListener('click', () => {
-    document.querySelectorAll('.select-options.open').forEach(opt => {
-        opt.classList.remove('open');
-    });
-});
-
-// --- Lifecycle (Critical) ---
+// --- Integracja ze zdarzeniami cyklu życia (Router SPA i Direct Load) ---
 
 document.addEventListener('page:loaded', (e) => {
     const path = e.detail?.path || window.location.pathname;
-    // mountWiki only if on Salsopedia page
-    if (path.includes('salsopedia')) {
+    if (path.includes('salsopedia') || document.getElementById('wikiGrid')) {
         mountWiki();
     }
 });
 
-// Fallback for direct refresh (when page:loaded is skipped by router)
-function onReady(fn) {
-    if (document.readyState !== 'loading') {
-        fn();
-    } else {
-        document.addEventListener('DOMContentLoaded', fn);
-    }
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('wikiGrid')) mountWiki();
+    });
+} else {
+    if (document.getElementById('wikiGrid')) mountWiki();
 }
 
-// 2. Direct Load (Robust)
-onReady(() => {
-    if (document.getElementById('wikiGrid')) {
-        mountWiki();
-    }
-});
-
+window.mountWiki = mountWiki;
+window.fetchTerms = fetchTerms;
+window.switchViewMode = switchViewMode;
+window.setActiveCategory = setActiveCategory;
