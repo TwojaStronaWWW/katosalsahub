@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Pre-commit hook dla projektu Kato Salsa Hub & DancePuls
+# Wzorzec jakościowy Enterprise Template
+
+set -e
+
+echo "🔍 [pre-commit] Uruchamianie weryfikacji jakości (npm run check)..."
+
+if ! npm run check; then
+  echo "❌ [pre-commit] Testy lub weryfikacja składni nie powiodły się! Popraw błędy przed commitem."
+  exit 1
+fi
+
+echo "✅ [pre-commit] Wszystkie testy przeszły pomyślnie! Zezwolono na commit."
+exit 0

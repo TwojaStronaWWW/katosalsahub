@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "Kato Salsa Hub & DancePuls Event Automation Platform",
   "scripts": {
+    "test": "node --test tests/**/*.test.js",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:coverage": "node --test --experimental-test-coverage tests/**/*.test.js",
+    "check:syntax": "node --check dancepuls.pl/tools/sync_engine.js",
+    "check": "npm run check:syntax && npm test",
+    "prepare": "git config core.hooksPath .githooks || true",
     "report": "node dancepuls.pl/tools/sync_engine.js",
     "sync": "node dancepuls.pl/tools/sync_engine.js"
   },

@@ -1,0 +1,41 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const ROOT_DIR = path.resolve(__dirname, '..', '..');
+const EVENTS_JSON = path.join(ROOT_DIR, 'dancepuls.pl', 'data', 'events.json');
+const EVENTS_DB_MD = path.join(ROOT_DIR, 'dancepuls.pl', 'data', 'events_database.md');
+
+describe('Walidacja schematu bazy wydarzeń DancePuls (Issue #14)', () => {
+  it('plik bazy Markdown events_database.md powinien istnieć i mieć niepustą zawartość', () => {
+    assert.ok(fs.existsSync(EVENTS_DB_MD), 'Brak pliku events_database.md');
+    const md = fs.readFileSync(EVENTS_DB_MD, 'utf-8');
+    assert.ok(md.length > 100);
+    assert.match(md, /KATO SALSA HUB/i);
+  });
+
+  it('plik events.json powinien istnieć i być poprawnym JSON-em z listą dni', () => {
+    assert.ok(fs.existsSync(EVENTS_JSON), 'Brak pliku events.json');
+    let data;
+    assert.doesNotThrow(() => {
+      data = JSON.parse(fs.readFileSync(EVENTS_JSON, 'utf-8'));
+    }, 'Plik events.json zawiera błąd składni JSON!');
+
+    assert.ok(Array.isArray(data), 'events.json musi być tablicą dni');
+    assert.ok(data.length > 0, 'events.json powinien zawierać przynajmniej jeden dzień z wydarzeniami');
+  });
+
+  it('każdy dzień i wydarzenie w events.json powinno posiadać wymagane pola (date, events, opis, miasto, miejsce)', () => {
+    const data = JSON.parse(fs.readFileSync(EVENTS_JSON, 'utf-8'));
+    for (const day of data) {
+      assert.ok(day.date && typeof day.date === 'string', 'Każdy wpis dnia musi posiadać pole date');
+      assert.ok(Array.isArray(day.events), `Wpis dnia ${day.date} musi zawierać tablicę events`);
+      for (const ev of day.events) {
+        assert.ok(ev.opis && typeof ev.opis === 'string', `Wydarzenie w ${day.date} nie ma opisu`);
+        assert.ok(ev.miasto && typeof ev.miasto === 'string', `Wydarzenie ${ev.opis} nie ma przypisanego miasta`);
+        assert.ok(ev.miejsce && typeof ev.miejsce === 'string', `Wydarzenie ${ev.opis} nie ma przypisanego miejsca`);
+      }
+    }
+  });
+});

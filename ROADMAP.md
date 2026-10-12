@@ -38,6 +38,9 @@ Wszystkie zadania są synchronizowane z **GitHub Issues** oraz **GitHub Mileston
 ---
 
 ### 🟠 Sprint 2: RODO & Nowoczesne CI/CD (Inspiracja z Gal Anonim)
+- [x] **#24: [CICD] Wdrożenie Zero-Dependency Test Runner (node:test) i pre-commit hooków (Wzorzec Enterprise Template)** *(ZREALIZOWANO: 14 testów jednostkowych)*
+- [x] **#25: [QUALITY] Konfiguracja audytu Lighthouse CI (.lighthouserc.json) z progami asercji** *(ZREALIZOWANO)*
+- [x] **#26: [AGENTS] Wdrożenie ram sterowania agentami AI (AGENTS.md & GEMINI.md)** *(ZREALIZOWANO)*
 - [ ] **#6: [PRIVACY] Zmiana pola w formularzu na „Imię lub pseudonim” (Minimalizacja RODO)**
   - *Priorytet:* `HIGH` | *Etykiety:* `gdpr`, `frontend`
   - *Opis:* Rezygnacja z wymagania pełnego nazwiska w kontakcie.
