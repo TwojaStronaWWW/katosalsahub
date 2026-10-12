@@ -133,6 +133,23 @@ button {
   display: inline-block; /* Fix for some browsers */
 }
 
+/* --- Visibility & Utility Classes --- */
+.hidden,
+.is-hidden {
+  display: none !important;
+}
+
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 /* --- Reduced Motion --- */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -140,3 +157,4 @@ button {
     transition: none !important;
   }
 }
+

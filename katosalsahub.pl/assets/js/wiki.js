@@ -136,76 +136,79 @@ function setupEventListeners() {
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearchBtn');
     if (searchInput) {
-        searchInput.oninput = debounce((e) => {
+        searchInput.addEventListener('input', debounce((e) => {
             AppState.searchQuery = e.target.value.trim().toLowerCase();
-            if (clearBtn) clearBtn.style.display = AppState.searchQuery ? 'block' : 'none';
+            if (clearBtn) clearBtn.classList.toggle('is-hidden', !AppState.searchQuery);
             renderCurrentView();
-        }, 200);
+        }, 200));
     }
 
     if (clearBtn) {
-        clearBtn.onclick = () => {
+        clearBtn.addEventListener('click', () => {
             if (searchInput) searchInput.value = '';
             AppState.searchQuery = '';
-            clearBtn.style.display = 'none';
+            clearBtn.classList.add('is-hidden');
             renderCurrentView();
-        };
+        });
     }
 
     // 2. Kategorie w Sidebarze
     const categoryList = document.getElementById('categoryList');
     if (categoryList) {
-        categoryList.onclick = (e) => {
+        categoryList.addEventListener('click', (e) => {
             const li = e.target.closest('li[data-category]');
             if (!li) return;
             const cat = li.dataset.category;
             setActiveCategory(cat);
-        };
+        });
     }
 
     // 3. Reset filtra
     const resetFilterBtn = document.getElementById('resetFilterBtn');
     if (resetFilterBtn) {
-        resetFilterBtn.onclick = () => setActiveCategory('all');
+        resetFilterBtn.addEventListener('click', () => setActiveCategory('all'));
     }
 
     // 4. Przyciski otwierające formularz
     const sidebarAddBtn = document.getElementById('sidebarAddBtn');
-    if (sidebarAddBtn) sidebarAddBtn.onclick = () => window.openModal('new');
+    if (sidebarAddBtn) sidebarAddBtn.addEventListener('click', () => window.openModal('new'));
 
     const addTermBtn = document.getElementById('addTermBtn');
-    if (addTermBtn) addTermBtn.onclick = () => window.openModal('new');
+    if (addTermBtn) addTermBtn.addEventListener('click', () => window.openModal('new'));
+
+    const noResultsAddBtn = document.getElementById('noResultsAddBtn');
+    if (noResultsAddBtn) noResultsAddBtn.addEventListener('click', () => window.openModal('new'));
 
     // 5. Panel Moderacji / Oczekujące
     const showPendingBtn = document.getElementById('showPendingBtn');
     if (showPendingBtn) {
-        showPendingBtn.onclick = () => handleModerationButtonClick();
+        showPendingBtn.addEventListener('click', () => handleModerationButtonClick());
     }
 
     const footerAdminBtn = document.getElementById('footerAdminBtn');
     if (footerAdminBtn) {
-        footerAdminBtn.onclick = () => handleModerationButtonClick();
+        footerAdminBtn.addEventListener('click', () => handleModerationButtonClick());
     }
 
     // 6. Przyciski Admin Toolbara
     const btnShowLive = document.getElementById('btnShowLive');
     if (btnShowLive) {
-        btnShowLive.onclick = () => switchViewMode('live');
+        btnShowLive.addEventListener('click', () => switchViewMode('live'));
     }
 
     const btnShowPending = document.getElementById('btnShowPending');
     if (btnShowPending) {
-        btnShowPending.onclick = () => switchViewMode('pending');
+        btnShowPending.addEventListener('click', () => switchViewMode('pending'));
     }
 
     const btnAdminAdd = document.getElementById('btnAdminAdd');
     if (btnAdminAdd) {
-        btnAdminAdd.onclick = () => window.openModal('admin_direct');
+        btnAdminAdd.addEventListener('click', () => window.openModal('admin_direct'));
     }
 
     const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
     if (btnLogoutAdmin) {
-        btnLogoutAdmin.onclick = () => logoutAdmin();
+        btnLogoutAdmin.addEventListener('click', () => logoutAdmin());
     }
 
     // 7. Obsługa chipów kategorii w modalu
@@ -215,24 +218,82 @@ function setupEventListeners() {
     // 8. Formularz zgłaszania/edycji hasła
     const wikiForm = document.getElementById('wikiForm');
     if (wikiForm) {
-        wikiForm.onsubmit = handleFormSubmit;
+        wikiForm.addEventListener('submit', handleFormSubmit);
     }
 
     // 9. Formularz logowania administratora
     const adminLoginForm = document.getElementById('adminLoginForm');
     if (adminLoginForm) {
-        adminLoginForm.onsubmit = handleAdminLoginSubmit;
+        adminLoginForm.addEventListener('submit', handleAdminLoginSubmit);
     }
 
-    // 10. Zamykanie modali kliknięciem w tło
+    // 10. Przyciski zamykania i anulowania modali
+    const wikiModalCloseBtn = document.getElementById('wikiModalCloseBtn');
+    if (wikiModalCloseBtn) wikiModalCloseBtn.addEventListener('click', () => window.closeModal());
+
+    const cancelWikiModalBtn = document.getElementById('cancelWikiModalBtn');
+    if (cancelWikiModalBtn) cancelWikiModalBtn.addEventListener('click', () => window.closeModal());
+
+    const adminLoginModalCloseBtn = document.getElementById('adminLoginModalCloseBtn');
+    if (adminLoginModalCloseBtn) adminLoginModalCloseBtn.addEventListener('click', () => window.closeAdminLoginModal());
+
+    const cancelAdminLoginBtn = document.getElementById('cancelAdminLoginBtn');
+    if (cancelAdminLoginBtn) cancelAdminLoginBtn.addEventListener('click', () => window.closeAdminLoginModal());
+
+    const addSourceRowBtn = document.getElementById('addSourceRowBtn');
+    if (addSourceRowBtn) addSourceRowBtn.addEventListener('click', () => window.addSourceRow());
+
+    // 11. Delegacja usuwania wierszy źródeł
+    const sourceContainer = document.getElementById('sourceContainer');
+    if (sourceContainer) {
+        sourceContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-action="remove-source"]');
+            if (btn) {
+                const row = btn.closest('.source-row');
+                if (row) row.remove();
+            }
+        });
+    }
+
+    // 12. Delegacja akcji w siatce haseł (Zero inline handlers)
+    const grid = document.getElementById('wikiGrid');
+    if (grid) {
+        grid.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+            const action = target.dataset.action;
+            const id = target.dataset.id;
+            const cat = target.dataset.cat;
+
+            if (action === 'filter-cat' && cat) {
+                setActiveCategory(cat);
+            } else if (action === 'verify' && id) {
+                window.openVerifyModal(id);
+            } else if (action === 'approve' && id) {
+                window.approvePendingTerm(id);
+            } else if (action === 'reject' && id) {
+                window.rejectPendingTerm(id);
+            } else if (action === 'edit-pending' && id) {
+                window.openEditPendingModal(id);
+            } else if (action === 'edit-live' && id) {
+                window.openEditLiveModal(id);
+            } else if (action === 'delete-live' && id) {
+                window.deleteLiveTerm(id);
+            } else if (action === 'switch-live') {
+                switchViewMode('live');
+            }
+        });
+    }
+
+    // 13. Zamykanie modali kliknięciem w tło
     ['wikiModal', 'adminLoginModal'].forEach(modalId => {
         const el = document.getElementById(modalId);
         if (el) {
-            el.onclick = (e) => {
+            el.addEventListener('click', (e) => {
                 if (e.target === el) {
-                    el.classList.remove('open');
+                    el.classList.remove('open', 'is-open');
                 }
-            };
+            });
         }
     });
 }
@@ -267,7 +328,7 @@ function setActiveCategory(cat) {
     if (badge) badge.textContent = CATEGORY_NAMES[cat] || cat;
 
     const resetBtn = document.getElementById('resetFilterBtn');
-    if (resetBtn) resetBtn.style.display = cat === 'all' ? 'none' : 'inline-block';
+    if (resetBtn) resetBtn.classList.toggle('is-hidden', cat === 'all');
 
     renderCurrentView();
 }
@@ -336,10 +397,10 @@ function renderLiveTerms(grid, noResults, countEl) {
     }
 
     if (list.length === 0) {
-        if (noResults) noResults.classList.remove('hidden');
+        if (noResults) noResults.classList.remove('is-hidden', 'hidden');
         return;
     }
-    if (noResults) noResults.classList.add('hidden');
+    if (noResults) noResults.classList.add('is-hidden', 'hidden');
 
     list.forEach(item => {
         grid.appendChild(createTermCard(item, false));
@@ -359,7 +420,7 @@ function renderPendingTerms(grid, noResults, countEl) {
                 <i class="fas fa-check-circle fa-3x" style="color: #10b981; margin-bottom: 12px;"></i>
                 <h3>Kolejka moderacji jest pusta</h3>
                 <p>Wszystkie nadesłane propozycje haseł zostały zweryfikowane!</p>
-                <button class="btn btn-secondary btn-sm" onclick="switchViewMode('live')">Wróć do bazy wiedzy</button>
+                <button class="btn btn-secondary btn-sm" data-action="switch-live">Wróć do bazy wiedzy</button>
             </div>`;
         return;
     }
@@ -394,7 +455,7 @@ function createTermCard(item, isPending = false) {
     const cats = Array.isArray(item.category) ? item.category : [item.category];
     cats.forEach(c => {
         if (!c) return;
-        badgesHtml += `<span class="cat-badge main-cat" onclick="setActiveCategory('${c}')">${CATEGORY_NAMES[c] || c}</span>`;
+        badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${c}">${CATEGORY_NAMES[c] || c}</span>`;
     });
 
     const subs = Array.isArray(item.subcategory) ? item.subcategory : (item.subcategory ? [item.subcategory] : []);
@@ -426,34 +487,34 @@ function createTermCard(item, isPending = false) {
         authorHtml = `<span class="author-meta">Autor: <a href="${item.author_link}" target="_blank" rel="noopener noreferrer"><strong>${item.author}</strong> <i class="fas fa-link"></i></a></span>`;
     }
 
-    // Akcje w stopce karty
+    // Akcje w stopce karty (zgodne z SoC - delegacja zdarzeń data-action)
     let actionsHtml = '';
     if (isPending) {
         actionsHtml = `
             <div class="moderation-actions">
-                <button class="btn-approve" onclick="window.approvePendingTerm('${item.id}')" title="Zatwierdź i opublikuj w bazie">
+                <button class="btn-approve" data-action="approve" data-id="${item.id}" title="Zatwierdź i opublikuj w bazie">
                     <i class="fas fa-check"></i> Zatwierdź
                 </button>
-                <button class="btn-edit-admin" onclick="window.openEditPendingModal('${item.id}')" title="Popraw przed zatwierdzeniem">
+                <button class="btn-edit-admin" data-action="edit-pending" data-id="${item.id}" title="Popraw przed zatwierdzeniem">
                     <i class="fas fa-pencil-alt"></i>
                 </button>
-                <button class="btn-reject" onclick="window.rejectPendingTerm('${item.id}')" title="Odrzuć propozycję">
+                <button class="btn-reject" data-action="reject" data-id="${item.id}" title="Odrzuć propozycję">
                     <i class="fas fa-times"></i>
                 </button>
             </div>`;
     } else if (AppState.isAdmin) {
         actionsHtml = `
             <div class="moderation-actions">
-                <button class="btn-edit-admin" onclick="window.openEditLiveModal('${item.id}')" title="Edytuj hasło">
+                <button class="btn-edit-admin" data-action="edit-live" data-id="${item.id}" title="Edytuj hasło">
                     <i class="fas fa-edit"></i> Edytuj
                 </button>
-                <button class="btn-delete-admin" onclick="window.deleteLiveTerm('${item.id}')" title="Usuń z bazy">
+                <button class="btn-delete-admin" data-action="delete-live" data-id="${item.id}" title="Usuń z bazy">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </div>`;
     } else {
         actionsHtml = `
-            <button class="btn-verify" onclick="window.openVerifyModal('${item.id}')" title="Zaproponuj poprawkę do tego hasła">
+            <button class="btn-verify" data-action="verify" data-id="${item.id}" title="Zaproponuj poprawkę do tego hasła">
                 <i class="fas fa-pencil-alt"></i> Zgłoś poprawkę
             </button>`;
     }
@@ -509,7 +570,7 @@ function updateAdminBadges() {
 function updateAdminToolbar() {
     const toolbar = document.getElementById('adminToolbar');
     if (!toolbar) return;
-    toolbar.style.display = AppState.isAdmin ? 'block' : 'none';
+    toolbar.classList.toggle('is-hidden', !AppState.isAdmin);
 }
 
 // --- Obsługa Zgłoszeń i Formularzy ---
@@ -526,8 +587,7 @@ window.openModal = function (mode = 'new', termData = null) {
 
     form.reset();
     if (msgBox) {
-        msgBox.className = 'form-message-box';
-        msgBox.style.display = 'none';
+        msgBox.className = 'form-message-box is-hidden';
     }
 
     // Wyczyść źródła
@@ -566,12 +626,12 @@ window.openModal = function (mode = 'new', termData = null) {
         populateModalWithTerm(termData);
     }
 
-    modal.classList.add('open');
+    modal.classList.add('is-open', 'open');
 };
 
 window.closeModal = function () {
     const modal = document.getElementById('wikiModal');
-    if (modal) modal.classList.remove('open');
+    if (modal) modal.classList.remove('is-open', 'open');
 };
 
 function populateModalWithTerm(term) {
@@ -633,7 +693,7 @@ window.addSourceRow = function (name = '', url = '') {
     div.innerHTML = `
         <input type="text" name="source_name[]" placeholder="Nazwa (np. Rueda Standard, Książka...)" value="${escapeHtml(name)}" class="form-input">
         <input type="url" name="source_url[]" placeholder="URL (opcjonalnie)" value="${escapeHtml(url)}" class="form-input">
-        <button type="button" class="btn-remove-source" onclick="this.parentElement.remove()" title="Usuń źródło">&times;</button>
+        <button type="button" class="btn-remove-source" data-action="remove-source" title="Usuń źródło">&times;</button>
     `;
     container.appendChild(div);
 };
@@ -782,14 +842,14 @@ window.openAdminLoginModal = function () {
     const modal = document.getElementById('adminLoginModal');
     const msg = document.getElementById('adminLoginMessage');
     const passInput = document.getElementById('adminPasswordInput');
-    if (msg) msg.style.display = 'none';
+    if (msg) msg.className = 'form-message-box is-hidden';
     if (passInput) passInput.value = '';
-    if (modal) modal.classList.add('open');
+    if (modal) modal.classList.add('is-open', 'open');
 };
 
 window.closeAdminLoginModal = function () {
     const modal = document.getElementById('adminLoginModal');
-    if (modal) modal.classList.remove('open');
+    if (modal) modal.classList.remove('is-open', 'open');
 };
 
 async function handleAdminLoginSubmit(e) {
@@ -935,14 +995,14 @@ window.deleteLiveTerm = async function (id) {
 
 function toggleLoading(show) {
     const el = document.getElementById('loading');
-    if (el) el.style.display = show ? 'flex' : 'none';
+    if (el) el.classList.toggle('is-hidden', !show);
 }
 
 function showMessage(el, type, text) {
     if (!el) return;
     el.className = `form-message-box ${type}`;
     el.textContent = text;
-    el.style.display = 'block';
+    el.classList.remove('is-hidden');
 }
 
 function scrollToTerm(id) {

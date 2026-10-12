@@ -57,7 +57,7 @@
   <main id="app-content">
 
     <!-- Admin Moderation Toolbar (widoczny tylko dla zalogowanego admina) -->
-    <div id="adminToolbar" class="admin-toolbar" style="display: none;">
+    <div id="adminToolbar" class="admin-toolbar is-hidden">
       <div class="admin-toolbar-inner">
         <div class="admin-status">
           <span class="admin-badge"><i class="fas fa-shield-alt"></i> Tryb Administratora</span>
@@ -90,7 +90,7 @@
           <i class="fas fa-search search-icon"></i>
           <input type="text" id="searchInput" class="search-input"
             placeholder="Szukaj pojęcia (np. Vacilala, Enchufla, Timba, Clave)...">
-          <button id="clearSearchBtn" class="search-clear-btn" style="display: none;" title="Wyczyść szukanie">&times;</button>
+          <button id="clearSearchBtn" class="search-clear-btn is-hidden" title="Wyczyść szukanie">&times;</button>
         </div>
         <div class="search-meta">
           <span id="resultsCount">Ładowanie haseł...</span>
@@ -169,7 +169,7 @@
         <div class="active-filter-bar">
           <span class="filter-label">Aktualny widok:</span>
           <span id="activeFilterBadge" class="filter-pill">Wszystkie hasła</span>
-          <button id="resetFilterBtn" class="btn-reset-filter" style="display: none;">Pokaż wszystkie</button>
+          <button id="resetFilterBtn" class="btn-reset-filter is-hidden">Pokaż wszystkie</button>
         </div>
 
         <!-- Loading Spinner -->
@@ -182,25 +182,25 @@
         <div id="wikiGrid" class="wiki-grid"></div>
 
         <!-- No Results Message -->
-        <div id="noResults" class="no-results hidden">
-          <i class="fas fa-search-minus fa-3x" style="color: var(--yellow); margin-bottom: 15px;"></i>
+        <div id="noResults" class="no-results is-hidden">
+          <i class="fas fa-search-minus fa-3x no-results-icon"></i>
           <h3>Nie znaleziono takiego hasła</h3>
           <p>Znasz to pojęcie? Dodaj je do Salsopedii i pomóż rozwijać społeczność taneczną!</p>
-          <button class="btn btn-primary" onclick="window.openModal()">Dodaj to hasło!</button>
+          <button id="noResultsAddBtn" class="btn btn-primary">Dodaj to hasło!</button>
         </div>
       </section>
 
     </div>
 
     <!-- Floating Action Button -->
-    <button id="addTermBtn" class="fab-add" onclick="window.openModal()" title="Dodaj nowe hasło">
+    <button id="addTermBtn" class="fab-add" title="Dodaj nowe hasło">
       <i class="fas fa-plus"></i>
     </button>
 
     <!-- Modal for Adding / Editing Terms -->
     <div id="wikiModal" class="modal-overlay">
       <div class="modal-content wiki-modal">
-        <button class="modal-close" onclick="window.closeModal()" title="Zamknij">&times;</button>
+        <button id="wikiModalCloseBtn" class="modal-close" title="Zamknij">&times;</button>
         <h2 id="modalTitle">Dodaj nowe hasło</h2>
 
         <form id="wikiForm">
@@ -251,7 +251,7 @@
           <div class="form-group">
             <label>Źródła / Odnośniki <span class="label-hint">(Książka, instruktor, wideo, link)</span></label>
             <div id="sourceContainer"></div>
-            <button type="button" class="btn-add-inline" onclick="window.addSourceRow()">
+            <button type="button" id="addSourceRowBtn" class="btn-add-inline">
               <i class="fas fa-plus"></i> Dodaj kolejne źródło
             </button>
           </div>
@@ -274,8 +274,8 @@
           </div>
 
           <!-- Honeypot -->
-          <input type="text" name="surname" style="display:none" tabindex="-1" autocomplete="off">
-          <input type="text" name="hp_chk" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="text" name="surname" class="hp-field" tabindex="-1" autocomplete="off">
+          <input type="text" name="hp_chk" class="hp-field" tabindex="-1" autocomplete="off">
 
           <p class="form-note">
             <i class="fas fa-info-circle"></i> Zgłoszenia społeczności trafiają do kolejki moderacji i są weryfikowane przed publikacją.
@@ -285,7 +285,7 @@
             <button type="submit" id="submitTermBtn" class="btn btn-primary">
               <i class="fas fa-paper-plane"></i> Wyślij do moderacji
             </button>
-            <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Anuluj</button>
+            <button type="button" id="cancelWikiModalBtn" class="btn btn-secondary">Anuluj</button>
           </div>
         </form>
 
@@ -296,7 +296,7 @@
     <!-- Modal Logowania Administratora / Moderatora -->
     <div id="adminLoginModal" class="modal-overlay">
       <div class="modal-content wiki-modal admin-modal">
-        <button class="modal-close" onclick="window.closeAdminLoginModal()" title="Zamknij">&times;</button>
+        <button id="adminLoginModalCloseBtn" class="modal-close" title="Zamknij">&times;</button>
         <h2><i class="fas fa-lock"></i> Panel Moderatora</h2>
         <p>Wprowadź hasło administratora, aby zarządzać kolejką zgłoszeń i zatwierdzać nowe hasła.</p>
 
@@ -309,7 +309,7 @@
             <button type="submit" class="btn btn-primary">
               <i class="fas fa-key"></i> Zaloguj do moderacji
             </button>
-            <button type="button" class="btn btn-secondary" onclick="window.closeAdminLoginModal()">Anuluj</button>
+            <button type="button" id="cancelAdminLoginBtn" class="btn btn-secondary">Anuluj</button>
           </div>
         </form>
         <div id="adminLoginMessage" class="form-message-box"></div>
@@ -338,7 +338,7 @@
     <div class="footer-bottom">
       <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
           target="_blank">TwojaStronaWWW</a></p>
-      <p style="margin-top:10px;">
+      <p class="footer-admin-row">
         <button type="button" id="footerAdminBtn" class="footer-admin-btn">[Panel Moderacji Salsopedii]</button>
       </p>
     </div>

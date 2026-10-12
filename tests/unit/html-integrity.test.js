@@ -44,6 +44,13 @@ describe('Integralność semantyczna i SEO (HTML)', () => {
       assert.match(html, /id="wikiModal"/i);
       assert.match(html, /id="adminToolbar"/i);
     });
+
+    it('plik salsopedia.html nie powinien zawierać styli inline ani inline event handlerów (SoC & ISO 27001)', () => {
+      const html = fs.readFileSync(SALSOPEDIA_HTML, 'utf-8');
+      assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w salsopedia.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+onclick\s*=/i, 'Wykryto atrybut onclick="..." w salsopedia.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+onsubmit\s*=/i, 'Wykryto atrybut onsubmit="..." w salsopedia.html naruszający SoC');
+    });
   });
 
   describe('DancePuls (dancepuls.pl/index.html)', () => {
