@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="katosalsahub.pl/assets/images/logo.png" alt="Kato Salsa Hub Logo" width="160" onerror="this.src='https://katosalsahub.pl/assets/images/logo.png'" />
+  <img src="katosalsahub.pl/assets/images/logo.jpg" alt="Kato Salsa Hub Logo" width="160" onerror="this.src='https://katosalsahub.pl/assets/images/logo.jpg'" />
 </p>
 
 <h1 align="center">Kato Salsa Hub & DancePuls — Społecznościowa Platforma Taneczna</h1>
@@ -22,7 +22,7 @@
   <a href="https://katosalsahub.pl" target="_blank">
     <img src="https://img.shields.io/badge/%F0%9F%8C%90_ODWIED%C5%B9_KATOSALSAHUB.PL-e63946?style=for-the-badge" alt="Odwiedź Kato Salsa Hub" />
   </a>
-  <a href="https://dancepuls.pl" target="_blank">
+  <a href="https://dancepuls.katosalsahub.pl" target="_blank">
     <img src="https://img.shields.io/badge/%F0%9F%94%A5_ODKRYJ_WYDARZENIA_DANCEPULS.PL-1d3557?style=for-the-badge" alt="Odwiedź DancePuls" />
   </a>
 </p>
@@ -32,7 +32,7 @@
 ## 📸 Podgląd Serwisu
 
 <p align="center">
-  <img src="katosalsahub.pl/assets/images/og-preview.png" alt="Podgląd Kato Salsa Hub" width="850" onerror="this.style.display='none'" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);" />
+  <img src="katosalsahub.pl/assets/images/hero.png" alt="Podgląd Kato Salsa Hub" width="850" onerror="this.style.display='none'" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);" />
 </p>
 
 ---
