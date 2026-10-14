@@ -18,7 +18,7 @@
     "sync": "node dancepuls.pl/tools/sync_engine.js"
   },
   "devDependencies": {
-    "@lhci/cli": "^0.14.0"
+    "@lhci/cli": "^0.15.1"
   },
   "keywords": [
     "salsa",
