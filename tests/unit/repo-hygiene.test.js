@@ -21,7 +21,7 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.ok(pkg.scripts.serve, 'Brak skryptu serve');
   });
 
-  it('pliki dokumentacji, bezpieczeństwa (.gitleaks.toml, .env.example, .htaccess) oraz PWA (manifest.json, sw.js) powinny istnieć', () => {
+  it('pliki dokumentacji, SEO (robots.txt, sitemap.xml), bezpieczeństwa (.gitleaks.toml, .env.example, .htaccess, rate-limit.php) oraz PWA (manifest.json, sw.js) powinny istnieć', () => {
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'AGENTS.md')), 'Brak AGENTS.md');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'GEMINI.md')), 'Brak GEMINI.md');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'BLUEPRINT.md')), 'Brak BLUEPRINT.md');
@@ -32,12 +32,18 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.env.example')), 'Brak .env.example (#1, #2)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.htaccess')), 'Brak katosalsahub.pl/.htaccess (#4)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', '.htaccess')), 'Brak katosalsahub.pl/assets/data/.htaccess (#4)');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'rate-limit.php')), 'Brak katosalsahub.pl/assets/php/rate-limit.php');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'robots.txt')), 'Brak katosalsahub.pl/robots.txt');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sitemap.xml')), 'Brak katosalsahub.pl/sitemap.xml');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl', '.htaccess')), 'Brak dancepuls.pl/.htaccess');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl', 'robots.txt')), 'Brak dancepuls.pl/robots.txt');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl', 'sitemap.xml')), 'Brak dancepuls.pl/sitemap.xml');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'manifest.json')), 'Brak manifest.json (#21)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sw.js')), 'Brak sw.js (#21)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'pull_request_template.md')), 'Brak .github/pull_request_template.md');
   });
 
-  it('kod źródłowy PHP i JS nie może zawierać zahardkodowanych haseł ani kluczy API (#1, #2)', () => {
+  it('kod źródłowy PHP i JS nie może zawierać zahardkodowanych haseł ani kluczy API oraz musi stosować rate_limit i HTTP_CF_CONNECTING_IP (#1, #2)', () => {
     const wikiPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'wiki.php'), 'utf-8');
     const wikiJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'wiki.js'), 'utf-8');
     const contactPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'contact.php'), 'utf-8');
@@ -45,9 +51,13 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.doesNotMatch(wikiPhp, /katoAdmin2024/i, 'Wykryto zahardkodowane hasło w wiki.php');
     assert.doesNotMatch(wikiJs, /katoAdmin2024/i, 'Wykryto zahardkodowane hasło w wiki.js');
     assert.match(wikiPhp, /flock\s*\(\s*\$fp\s*,\s*LOCK_EX\s*\)/i, 'Brak blokady flock(LOCK_EX) w wiki.php (#13)');
-    assert.match(wikiPhp, /X-CSRF-Token/i, 'Brak weryfikacji tokenu CSRF w wiki.php (#12)');
+    assert.match(wikiPhp, /X_CSRF_TOKEN/i, 'Brak weryfikacji tokenu CSRF w wiki.php (#12)');
+    assert.match(wikiPhp, /rate_limit\s*\(/i, 'Brak ochrony rate_limit() w wiki.php');
+    assert.match(wikiPhp, /sanitize_http_url/i, 'Brak walidacji URL sanitize_http_url() w wiki.php');
     assert.match(contactPhp, /OSTICKET_API_KEY/i, 'Brak odczytu OSTICKET_API_KEY ze środowiska w contact.php (#2)');
     assert.match(contactPhp, /function\s+mask_ip/i, 'Brak funkcji anonimizacji IP mask_ip() w contact.php (#7)');
+    assert.match(contactPhp, /HTTP_CF_CONNECTING_IP/i, 'Brak odczytu HTTP_CF_CONNECTING_IP w contact.php');
+    assert.match(contactPhp, /rate_limit\s*\(/i, 'Brak ochrony rate_limit() w contact.php');
   });
 
   it('git hook (.githooks/pre-commit) powinien istnieć, posiadać shebang bash i uruchamiać npm run check', () => {
@@ -82,6 +92,9 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.match(ciContent, /actions\/checkout@v\d+/i);
     assert.match(ciContent, /gitleaks/i);
     assert.match(ciContent, /smoke-diagnostics/i);
+
+    const deployContent = fs.readFileSync(path.join(ROOT_DIR, '.github', 'workflows', 'deploy.yml'), 'utf-8');
+    assert.match(deployContent, /--exclude-glob\s+assets\/data\/pending_edits\.json/i, 'Brak ochrony pending_edits.json podczas wdrożenia SFTP');
   });
 
   it('konfiguracja audytu Lighthouse CI (.lighthouserc.json) powinna istnieć i definiować asercje jakościowe', () => {
@@ -99,9 +112,28 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.match(content, /package-ecosystem:\s*"github-actions"/i);
   });
 
-  it('serwer lokalny scripts/serve.js oraz test dymny tests/smoke/ui-smoke.js powinny istnieć', () => {
+  it('serwer lokalny scripts/serve.js oraz test dymny tests/smoke/ui-smoke.js powinny istnieć i chronić przed Directory Traversal oraz DoS', () => {
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'scripts', 'serve.js')), 'Brak scripts/serve.js');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'tests', 'smoke', 'ui-smoke.js')), 'Brak tests/smoke/ui-smoke.js');
+
+    const srv = require('../../scripts/serve.js');
+    assert.strictEqual(typeof srv.resolveSafeFilePath, 'function');
+    assert.strictEqual(srv.SECURITY_HEADERS['X-Content-Type-Options'], 'nosniff');
+
+    const safeIndex = srv.resolveSafeFilePath('/index.html');
+    assert.strictEqual(safeIndex.isAllowed, true);
+
+    const traversal = srv.resolveSafeFilePath('/../../package.json');
+    assert.strictEqual(traversal.isAllowed, false, 'Directory Traversal powinien być zablokowany');
+
+    const malformed = srv.resolveSafeFilePath('/%E0%A4%A');
+    assert.strictEqual(malformed.isMalformed, true, 'Uszkodzony URL powinien zwrócić flagę isMalformed bez rzucania wyjątku');
+
+    const blockedPhp = srv.resolveSafeFilePath('/assets/php/wiki.php');
+    assert.strictEqual(blockedPhp.isAllowed, false, 'Kod źródłowy PHP nie może być serwowany jako plain text');
+
+    const blockedPending = srv.resolveSafeFilePath('/assets/data/pending_edits.json');
+    assert.strictEqual(blockedPending.isAllowed, false, 'Plik pending_edits.json musi być zablokowany');
   });
 
   it('kluczowe pliki źródłowe nie mogą zawierać pozostałości po konfliktach gita (merge conflict markers)', () => {

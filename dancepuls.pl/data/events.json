@@ -1,6 +1,50 @@
 [
   {
-    "date": "2026-10-06",
+    "date": "2026-10-13",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Dzień i Noc",
+        "miejsceInne": "Dzień i Noc (ul. Warszawska 5)",
+        "adres": "ul. Warszawska 5",
+        "lat": 50.2591,
+        "lng": 19.0235,
+        "tytul": "Kizombada",
+        "opis": "Kizombada - VAMULA.pl Akademia Kizomby; dzień miniony",
+        "link": "https://www.facebook.com/events/3376069955899024/",
+        "style": [
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-14",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8296,
+        "lng": 19.0468,
+        "tytul": "Bachata Ladies Masterclass by Hanna Nazarenko",
+        "opis": "Bachata Ladies Masterclass by Hanna Nazarenko,warsztaty solo dla kobiet - Szkoła Tańca Corazon; 17–19 CEST; 08.10 opis StayHappening i Sabaki potwierdza jednorazowy 2h masterclass; nowe w bazie 08.10; dzień miniony",
+        "link": "https://www.facebook.com/events/1607796560752954/",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-15",
     "events": [
       {
         "checked": true,
@@ -12,52 +56,18 @@
         "adres": "ul. Konopnickiej 29",
         "lat": 50.0442,
         "lng": 19.9348,
-        "opis": "Praktis - Forum Tańca",
-        "link": "https://www.facebook.com/events/2039466050043342/",
+        "tytul": "Praktis IMPRO z Samborem",
+        "opis": "Praktis IMPRO z Samborem - 22:30–23:30 z opisu; 15.10 OnlyDance, nowe w bazie 15.10, data publikacji nieustalona",
+        "link": "https://onlydanceapp.com/event/1b697a7fb3e249feae92",
         "style": [
-          "Bachata"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Zaraz Wracam Tu",
-        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
-        "adres": "ul. Miodowa 51",
-        "lat": 50.0528,
-        "lng": 19.9482,
-        "opis": "Salsunia - VivaSalsa",
-        "link": "https://www.facebook.com/events/1792821655476260/",
-        "style": [
-          "Cubana"
+          "Sensual Impro"
         ]
       }
     ]
   },
   {
-    "date": "2026-10-09",
+    "date": "2026-10-16",
     "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Piekary Śląskie",
-        "miastoInne": "",
-        "miejsce": "Dwór Hubertus",
-        "miejsceInne": "Dwór Hubertus (Sala Myśliwska, Inwalidów Wojennych 72)",
-        "adres": "Sala Myśliwska, Inwalidów Wojennych 72",
-        "lat": 50.3712,
-        "lng": 18.9475,
-        "opis": "Pumpkin Latino Fiesta,warsztaty/potańcówka - 18–22; Dwór Hubertus/Śląska Szkoła Tańca Dariusz Kurzeja; FB odczytany",
-        "link": "https://www.facebook.com/events/1823534535342983/",
-        "style": [
-          "Salsa",
-          "Bachata",
-          "Mambo",
-          "Rumba"
-        ]
-      },
       {
         "checked": true,
         "promote": false,
@@ -68,49 +78,347 @@
         "adres": "ul. Kamienna 17",
         "lat": 50.0752,
         "lng": 19.9398,
-        "opis": "Bachata Flow with DJ Palejandro - bachatowy.social; 21:00 z opisu, FB nieodnaleziony",
-        "link": "https://onlydanceapp.com/event/782dd4ab392e44369a5d",
+        "tytul": "Bachata Night",
+        "opis": "Bachata Night,DJ Kołki - Natalia Szpiegla; 06.10 link z Sabaki, FB fetch throttled; nie nowa pozycja",
+        "link": "https://www.facebook.com/events/1432950208788026/",
         "style": [
-          "Bachata",
-          "Sensual Impro"
-        ]
-      }
-    ]
-  },
-  {
-    "date": "2026-10-10",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Rybnik",
-        "miastoInne": "",
-        "miejsce": "El Pachanguero",
-        "miejsceInne": "El Pachanguero (Grunwaldzka 46)",
-        "adres": "Grunwaldzka 46",
-        "lat": 50.0971,
-        "lng": 18.5418,
-        "opis": "PACHANGUERÓWKA - ROMAN PARTY EDITION - 21:15 CEST; El Pachanguero - Akademia Tańca; nowość 05.10 w rotacji Rybnik",
-        "link": "https://www.facebook.com/events/",
-        "style": [
-          "Salsa",
           "Bachata"
         ]
       },
       {
         "checked": true,
         "promote": false,
-        "miasto": "Częstochowa",
+        "miasto": "Kraków",
         "miastoInne": "",
-        "miejsce": "Este Loco–Dance with passion",
-        "miejsceInne": "Este Loco–Dance with passion (Dekabrystów 35B)",
-        "adres": "Dekabrystów 35B",
-        "lat": 50.8118,
-        "lng": 19.1203,
-        "opis": "Impreza taneczna - Este Loco–Dance with passion; 21:00; dane z Danzly View Original Event",
-        "link": "https://www.facebook.com/events/1098620145954289/",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Praktis URBANKIZ",
+        "opis": "Praktis URBANKIZ - 21:30–22:30 z opisu; 15.10 OnlyDance, FB nieodnaleziony; nowe w bazie 15.10",
+        "link": "https://onlydanceapp.com/event/cf94eaa4a26b4794b860",
+        "style": [
+          "Urban Kiz"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-17",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.2608,
+        "lng": 19.0205,
+        "tytul": "TIMBEANDO LIVE MUSIC",
+        "opis": "TIMBEANDO LIVE MUSIC,warsztaty z Klaudią i Adriano,muzyka na żywo - 15–18; La Clave; 13.10 Krajownik potwierdza datę, miejsce, organizatora, solo/pary i muzykę live; FB nieodnaleziony; nowe w bazie 13.10",
+        "link": "https://krajownik.pl/katowice/wydarzenia/timbeando-live-music-warsztaty-z-klaudia-i-adriano-1710-377712",
+        "style": [
+          "Timba",
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.2608,
+        "lng": 19.0205,
+        "tytul": "BACHATA meets IMPRO vol24",
+        "opis": "BACHATA meets IMPRO vol24 - 22–03; Pedro y Bella/La Clave/Ela Stępień; FB odczytany; wstęp „we wrześniu” omyłkowy, plakat i nagłówek 17.10",
+        "link": "https://www.facebook.com/events/28288351754151971/",
+        "style": [
+          "Bachata",
+          "Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2562,
+        "lng": 19.0315,
+        "tytul": "CRASH COURSE SALSA–3H i tańczysz",
+        "opis": "CRASH COURSE SALSA–3H i tańczysz,warsztaty - 16–19; Mil Pasos/Monika; Kamienna 4; 13.10 Krajownik potwierdza termin, miejsce, organizatora i jednorazowy intensywny kurs; FB nieodnaleziony; nowe w bazie 13.10",
+        "link": "https://krajownik.pl/katowice/wydarzenia/crash-course-salsa-3h-i-tanczysz-sobota-1600-1900-17102026-417443",
+        "style": [
+          "Salsa"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Gravitacja",
+        "miejsceInne": "Gravitacja (ul. Gliwicka 44)",
+        "adres": "ul. Gliwicka 44",
+        "lat": 50.2624,
+        "lng": 19.0052,
+        "tytul": "Dance++",
+        "opis": "Dance++ - Dance Plus Plus",
+        "link": "https://www.facebook.com/events/2184800225400574/",
+        "style": [
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Siewierz",
+        "miastoInne": "",
+        "miejsce": "Beleza",
+        "miejsceInne": "Beleza (Rynek 11)",
+        "adres": "Rynek 11",
+        "lat": 50.4701,
+        "lng": 19.2291,
+        "tytul": "Kizombada",
+        "opis": "Kizombada - Beleza",
+        "link": "https://www.facebook.com/events/1078285134652928/",
+        "style": [
+          "Kizomba",
+          "Semba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8296,
+        "lng": 19.0468,
+        "tytul": "warsztaty Social Warmup",
+        "opis": "warsztaty Social Warmup,Ewela i Karol - DANCE#LOVEit & Corazon",
+        "link": "https://onlydanceapp.com/event/d34c15295db34b9eb85c",
+        "style": [
+          "Bachata",
+          "Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8296,
+        "lng": 19.0468,
+        "tytul": "Domówka",
+        "opis": "Domówka,dwie sale - DANCE#LOVEit & Corazon",
+        "link": "https://onlydanceapp.com/event/9bb5eb718f5e4dcc9b30",
         "style": [
           "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "AllDance",
+        "miejsceInne": "AllDance (1 Maja 20)",
+        "adres": "1 Maja 20",
+        "lat": 49.8235,
+        "lng": 19.0442,
+        "tytul": "Praktis Bachata/Salsa/Kizomba",
+        "opis": "Praktis Bachata/Salsa/Kizomba - Szkoła Tańca AllDance; 21–01 z opisu; 14.10 karta potwierdza rok, datę, miejsce, organizatora; FB nieodnaleziony; pomiń cenę; nowe w bazie 14.10",
+        "link": "https://krajownik.pl/bielsko-biala/wydarzenia/praktis-bachatasalsakizomba-w-alldance-415046",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Hala Lipowa",
+        "miejsceInne": "Hala Lipowa (ul. Lipowa 4D)",
+        "adres": "ul. Lipowa 4D",
+        "lat": 50.0478,
+        "lng": 19.9614,
+        "tytul": "Salsowa Fiesta",
+        "opis": "Salsowa Fiesta,DJ El Honguito - Hala Lipowa",
+        "link": "https://www.facebook.com/events/4497510513844745/",
+        "style": [
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Dobra Nocka",
+        "opis": "Dobra Nocka - LOFToDANCE",
+        "link": "https://onlydanceapp.com/event/659f6c54531b45cbab52",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-18",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2562,
+        "lng": 19.0315,
+        "tytul": "SALSA STREET",
+        "opis": "SALSA STREET,warsztaty Anny Cibis - 15–18; Anna Cibis; adres konfliktowy Krajownik Mikołowska 13A vs aktualny MP Kamienna 4, publikuj bez ulicy; 13.10 potwierdzono opis, termin i organizatora; FB nieodnaleziony; nowe w bazie 13.10",
+        "link": "https://krajownik.pl/katowice/wydarzenia/salsa-street-warsztaty-415772",
+        "style": [
+          "Cubana",
+          "Bodymovement",
+          "Reggaeton"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "KIZLAB",
+        "miejsceInne": "KIZLAB (ul. Sobieskiego 11)",
+        "adres": "ul. Sobieskiego 11",
+        "lat": 50.2603,
+        "lng": 19.0156,
+        "tytul": "KIZLAB SUNDAYS–Grand Opening",
+        "opis": "KIZLAB SUNDAYS–Grand Opening - KIZLAB",
+        "link": "https://www.facebook.com/events/1617716113426642/",
+        "style": [
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Praktis BACHATOWY",
+        "opis": "Praktis BACHATOWY - 15.10 OnlyDance; 2h, pomiń godzinę z nagłówka UTC; FB nieodnaleziony; nowe w bazie 15.10",
+        "link": "https://onlydanceapp.com/event/5a14d3007427471c9f00",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "SONDAY vol.19",
+        "opis": "SONDAY vol.19,zajęcia Son Cubano w parach i praktis - 17–19:05 zajęcia+praktis; Paweł Bulenda/Mary Latoszanka; 15.10 OnlyDance, FB nieodnaleziony; nowe w bazie 15.10",
+        "link": "https://onlydanceapp.com/event/3ffea57a1eec446c8dfd",
+        "style": [
+          "Son Cubano"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-20",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Zaraz Wracam Tu",
+        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
+        "adres": "ul. Miodowa 51",
+        "lat": 50.0528,
+        "lng": 19.9482,
+        "tytul": "Salsunia",
+        "opis": "Salsunia - VivaSalsa",
+        "link": "https://www.facebook.com/events/1968496233786036/",
+        "style": [
+          "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-24",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Sabrosa Dance Studio",
+        "miejsceInne": "Sabrosa Dance Studio (rondo Mogilskie 1)",
+        "adres": "rondo Mogilskie 1",
+        "lat": 50.0658,
+        "lng": 19.9595,
+        "tytul": "Marco Faravelli wraca do Sabrosy",
+        "opis": "Marco Faravelli wraca do Sabrosy,warsztaty weekendowe - Sabrosa; 11.10 publiczne ogłoszenie potwierdza daty 24–25.10.2026; bezpośrednie wydarzenie FB nieodnalezione; nowe w bazie 11.10",
+        "link": "https://www.facebook.com/groups/1202777840091298/posts/2864429500592782/",
+        "style": [
+          "Mambo",
+          "Salsa On2"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2562,
+        "lng": 19.0315,
+        "tytul": "K Experience + Early Vibes & Goodnights Pumpkin Edition",
+        "opis": "K Experience + Early Vibes & Goodnights Pumpkin Edition,warsztaty i impreza - Mil Pasos/Michał Rozewski; 03.10 oficjalna strona potwierdza zajęcia 16–20 oraz imprezę 20–02 (Kamienna 4)",
+        "link": "https://www.facebook.com/events/1040992492288985/",
+        "style": [
           "Bachata",
           "Kizomba"
         ]
@@ -125,33 +433,98 @@
         "adres": "ul. Konopnickiej 29",
         "lat": 50.0442,
         "lng": 19.9348,
-        "opis": "Przygarnij świeżaka - Forum Tańca",
-        "link": "https://www.facebook.com/events/1613694100136407/",
+        "tytul": "Halloween Hogwarts",
+        "opis": "Halloween Hogwarts - Forum Tańca",
+        "link": "https://www.facebook.com/events/1061231330083326/",
         "style": [
-          "Bachata",
-          "Salsa"
+          "Salsa",
+          "Bachata"
         ]
       }
     ]
   },
   {
-    "date": "2026-10-11",
+    "date": "2026-10-25",
     "events": [
       {
         "checked": true,
         "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
-        "miejsce": "Sabrosa Dance Studio",
-        "miejsceInne": "Sabrosa Dance Studio (rondo Mogilskie 1)",
-        "adres": "rondo Mogilskie 1",
-        "lat": 50.0658,
-        "lng": 19.9595,
-        "opis": "warsztaty Korzenie salsy–Son Cubano & Rumba - 12–16; Sabrosa",
-        "link": "https://www.facebook.com/events/1086127587260589/",
+        "miejsce": "Teatro Cubano",
+        "miejsceInne": "Teatro Cubano (Jagiellońska 10)",
+        "adres": "Jagiellońska 10",
+        "lat": 50.0628,
+        "lng": 19.9352,
+        "tytul": "Bachata at Teatro Cubano",
+        "opis": "Bachata at Teatro Cubano - Mykhailo Burdeinyi",
+        "link": "https://onlydanceapp.com/event/bUBcJYprLm1Iak6fHe3B",
         "style": [
-          "Son Cubano",
-          "Rumba"
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-28",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2562,
+        "lng": 19.0315,
+        "tytul": "Upiorna nagrywka z Izabelą",
+        "opis": "Upiorna nagrywka z Izabelą,zajęcia specjalne - 18:00, pomiń koniec 19:55 vs 20:00; 03.10 strona oficjalna, FB brak",
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-30",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tychy",
+        "miastoInne": "",
+        "miejsce": "Mohito",
+        "miejsceInne": "Mohito (al.Jana PawłaII 14)",
+        "adres": "al.Jana PawłaII 14",
+        "lat": 50.1275,
+        "lng": 18.9912,
+        "tytul": "Wielka Biba Halloween+Urodziny Zuzi",
+        "opis": "Wielka Biba Halloween+Urodziny Zuzi - Mohito Tychy; 21:00; FB nieodnaleziony",
+        "link": "https://onlydanceapp.com/event/439ca0f1bb6c4322b797",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8296,
+        "lng": 19.0468,
+        "tytul": "Koszmarrrrrna Domówka",
+        "opis": "Koszmarrrrrna Domówka - FB odczytany; pomiń godzinę: nagłówek 21:00 vs plakat 21:30",
+        "link": "https://www.facebook.com/events/1451317200146085/",
+        "style": [
+          "Salsa",
+          "Bachata"
         ]
       },
       {
@@ -164,8 +537,32 @@
         "adres": "rondo Mogilskie 1",
         "lat": 50.0658,
         "lng": 19.9595,
-        "opis": "warsztaty Bachata before the drop - Sabrosa",
-        "link": "https://salsasabrosa.pl/",
+        "tytul": "Halloween",
+        "opis": "Halloween - Sabrosa",
+        "link": "https://onlydanceapp.com/event/b245a2c97eb94614a103",
+        "style": [
+          "Salsa",
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-31",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Gravitacja",
+        "miejsceInne": "Gravitacja (Gliwicka 44)",
+        "adres": "Gliwicka 44",
+        "lat": 50.2624,
+        "lng": 19.0052,
+        "tytul": "Halloween Bachata Party–Día de los Muertos",
+        "opis": "Halloween Bachata Party–Día de los Muertos - La Clave; 21:30 z opisu; 03.10 OnlyDance; ten sam bilet też do La Clave",
+        "link": "https://onlydanceapp.com/event/ca531940745043df9786",
         "style": [
           "Bachata"
         ]
@@ -175,15 +572,527 @@
         "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
-        "miejsce": "Mykhailo Burdeinyi",
-        "miejsceInne": "Mykhailo Burdeinyi (Kraków Centrum)",
-        "adres": "Kraków Centrum",
-        "lat": 50.0647,
-        "lng": 19.945,
-        "opis": "Bachata at Mojitos–First Test - Mojitos/Mykhailo Burdeinyi",
-        "link": "https://onlydanceapp.com/event/tIHBDVVqeaXb24RpjGzl",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "warsztaty Unlock Your Freestyle–Level2",
+        "opis": "warsztaty Unlock Your Freestyle–Level2 - 15–18; oficjalny opis odczytany 01.10; FB nieodnaleziony",
+        "link": "https://sklep.loftodance.pl/wydarzenie/unlock-your-freestyle-level-2,1281",
+        "style": [
+          "Bachata solo",
+          "Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Party w Trupa2026",
+        "opis": "Party w Trupa2026 - 22–03, 100% Bachata; LOFToDANCE; FB nieodnaleziony",
+        "link": "https://onlydanceapp.com/event/cac634dc87f642b1b3ef",
         "style": [
           "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-03",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Zaraz Wracam Tu",
+        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
+        "adres": "ul. Miodowa 51",
+        "lat": 50.0528,
+        "lng": 19.9482,
+        "tytul": "Salsunia",
+        "opis": "Salsunia - VivaSalsa",
+        "link": "https://www.facebook.com/events/1083906274387790/",
+        "style": [
+          "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-07",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2562,
+        "lng": 19.0315,
+        "tytul": "B Experience",
+        "opis": "B Experience,zajęcia specjalne i praktis - 16:00 zajęcia, 20:00 praktis; pomiń koniec 00:00 vs 23:45; 03.10 oficjalny opis, FB brak",
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Overpower Dancers Edition vol.19",
+        "opis": "Overpower Dancers Edition vol.19 - 21:30–02:30 z opisu; 15.10 OnlyDance, opis Konopnickiej 29 ma pierwszeństwo nad mapą 31; FB nieodnaleziony; nowe w bazie 15.10",
+        "link": "https://onlydanceapp.com/event/91178caf3b1c456e8cc8",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "¡A bailar salsa!",
+        "opis": "¡A bailar salsa!,impreza i wcześniejsze warsztaty - impreza 20–24, warsztaty godzina TBA; 15.10 OnlyDance, Kamienna 2–4, FB nieodnaleziony; nowe w bazie 15.10",
+        "link": "https://onlydanceapp.com/event/2b905e5e085c44a3924e",
+        "style": [
+          "Salsa On1",
+          "Salsa On2"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-08",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "KIZLAB",
+        "miejsceInne": "KIZLAB (ul. Sobieskiego 11)",
+        "adres": "ul. Sobieskiego 11",
+        "lat": 50.2603,
+        "lng": 19.0156,
+        "tytul": "KIZLAB SUNDAYS",
+        "opis": "KIZLAB SUNDAYS - KIZLAB; kolejna ogłoszona edycja, program TBA",
+        "link": "https://www.facebook.com/events/1617716113426642/",
+        "style": [
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-13",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2562,
+        "lng": 19.0315,
+        "tytul": "LVL UP z Danielem Rojewskim",
+        "opis": "LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty - 18:00–20:55 z opisu; 03.10 oficjalna strona, FB brak",
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Sensual Impro Festival",
+        "opis": "Sensual Impro Festival - 01.10 oficjalne sklep.loftodance.pl/wydarzenie/sensual-impro-festival-2026,1215 potwierdza 13–15.11",
+        "link": "https://www.facebook.com/events/1288385083316354/",
+        "style": [
+          "Bachata",
+          "Sensual Impro"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-14",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2562,
+        "lng": 19.0315,
+        "tytul": "LVL UP z Mają Modliszewską",
+        "opis": "LVL UP z Mają Modliszewską,warsztaty - 16–19; 03.10 oficjalna strona, FB brak",
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-17",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Zaraz Wracam Tu",
+        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
+        "adres": "ul. Miodowa 51",
+        "lat": 50.0528,
+        "lng": 19.9482,
+        "tytul": "Salsunia",
+        "opis": "Salsunia - VivaSalsa",
+        "link": "https://www.facebook.com/events/2970730173282777/",
+        "style": [
+          "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-21",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Gravitacja",
+        "miejsceInne": "Gravitacja (ul. Gliwicka 44)",
+        "adres": "ul. Gliwicka 44",
+        "lat": 50.2624,
+        "lng": 19.0052,
+        "tytul": "Dance++ Kizomba Fusion Party",
+        "opis": "Dance++ Kizomba Fusion Party - 20–03; FB odczytany; save the date, program jeszcze nieogłoszony",
+        "link": "https://www.facebook.com/events/1368901197951496/",
+        "style": [
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-22",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "KIZLAB",
+        "miejsceInne": "KIZLAB (ul. Sobieskiego 11)",
+        "adres": "ul. Sobieskiego 11",
+        "lat": 50.2603,
+        "lng": 19.0156,
+        "tytul": "KIZLAB SUNDAYS",
+        "opis": "KIZLAB SUNDAYS - KIZLAB; kolejna ogłoszona edycja, program TBA",
+        "link": "https://www.facebook.com/events/1617716113426642/",
+        "style": [
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-01",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Zaraz Wracam Tu",
+        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
+        "adres": "ul. Miodowa 51",
+        "lat": 50.0528,
+        "lng": 19.9482,
+        "tytul": "Salsunia",
+        "opis": "Salsunia - VivaSalsa",
+        "link": "https://www.facebook.com/events/1249676614905478/",
+        "style": [
+          "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-03",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Hucisko",
+        "miastoInne": "",
+        "miejsce": "Orle Gniazdo",
+        "miejsceInne": "Orle Gniazdo (woj.śląskie)",
+        "adres": "woj.śląskie",
+        "lat": 50.5947,
+        "lng": 19.5297,
+        "tytul": "FeelTheFlow",
+        "opis": "FeelTheFlow - FeeltheSalsa/Damian Ratajczak",
+        "link": "https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-06",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "KIZLAB",
+        "miejsceInne": "KIZLAB (ul. Sobieskiego 11)",
+        "adres": "ul. Sobieskiego 11",
+        "lat": 50.2603,
+        "lng": 19.0156,
+        "tytul": "KIZLAB SUNDAYS–Mikołajki",
+        "opis": "KIZLAB SUNDAYS–Mikołajki - KIZLAB; edycja mikołajkowa, program TBA",
+        "link": "https://www.facebook.com/events/1617716113426642/",
+        "style": [
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-15",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Zaraz Wracam Tu",
+        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
+        "adres": "ul. Miodowa 51",
+        "lat": 50.0528,
+        "lng": 19.9482,
+        "tytul": "Salsunia",
+        "opis": "Salsunia - VivaSalsa",
+        "link": "https://www.facebook.com/events/1105058955723288/",
+        "style": [
+          "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-20",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "KIZLAB",
+        "miejsceInne": "KIZLAB (ul. Sobieskiego 11)",
+        "adres": "ul. Sobieskiego 11",
+        "lat": 50.2603,
+        "lng": 19.0156,
+        "tytul": "KIZLAB SUNDAYS",
+        "opis": "KIZLAB SUNDAYS - KIZLAB; kolejna ogłoszona edycja, program TBA",
+        "link": "https://www.facebook.com/events/1617716113426642/",
+        "style": [
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-27",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "AllDance",
+        "miejsceInne": "AllDance (1Maja 20)",
+        "adres": "1Maja 20",
+        "lat": 49.8235,
+        "lng": 19.0442,
+        "tytul": "Zakończenie roku",
+        "opis": "Zakończenie roku - AllDance",
+        "link": "https://onlydanceapp.com/event/icJdCgoBSSeEDjiUbFNd",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-31",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Sylwester",
+        "opis": "Sylwester - LOFToDANCE",
+        "link": "https://onlydanceapp.com/event/bd432805b60646cbb405",
+        "style": [
+          "Bachata",
+          "Sensual Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Sylwester",
+        "opis": "Sylwester - Forum Tańca",
+        "link": "https://onlydanceapp.com/event/d657e4d472494187a483",
+        "style": [
+          "Salsa",
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-01-29",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Cracovia Rueda Festival",
+        "opis": "Cracovia Rueda Festival - lista oczekujących, nie twierdź całkowicie wyprzedane; oferty wyjazdów na festiwal to duplikaty",
+        "link": "https://www.facebook.com/events/1430429125397912/",
+        "style": [
+          "Cubana",
+          "Rueda"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-06-04",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Hotel Premier",
+        "miejsceInne": "Hotel Premier (Opolska 14a)",
+        "adres": "Opolska 14a",
+        "lat": 50.0912,
+        "lng": 19.9278,
+        "tytul": "VIBRAS",
+        "opis": "VIBRAS - Vibras Cracow Bachata Festival; edycja zaczyna 04.06 lokalnie, nie 03.06 UTC",
+        "link": "https://onlydanceapp.com/event/468664172081446b840e",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-06-18",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "LOVEtoFEST27",
+        "opis": "LOVEtoFEST27 - koniec nieustalony",
+        "link": "https://onlydanceapp.com/event/0fbf2c282d2346a5b1c4",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-09-16",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Hotel Galaxy",
+        "miejsceInne": "Hotel Galaxy (Gęsia 22a)",
+        "adres": "Gęsia 22a",
+        "lat": 50.0558,
+        "lng": 19.9602,
+        "tytul": "Kizz Ryders 10-lecie",
+        "opis": "Kizz Ryders 10-lecie - Kizz Ryders; koniec nieustalony; https://kizzryders.com/events/",
+        "link": "https://onlydanceapp.com/event/bDNi3yyIAnYKvujNV0fq",
+        "style": [
+          "Kizomba"
         ]
       }
     ]

@@ -117,21 +117,8 @@
     </div>
 
     <script src="assets/js/cookies.js"></script>
-    <script>
-        // Rok w footerze
-        document.getElementById("rok").textContent = new Date().getFullYear();
-
-        // Burger menu integration
-        const burger = document.querySelector('.burger-menu');
-        const navLinks = document.querySelector('.nav-links');
-        if (burger && navLinks) {
-            burger.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                burger.classList.toggle('active');
-            });
-        }
-    </script>
     <script src="assets/js/radio.js"></script>
+    <script src="assets/js/router.js"></script>
 </body>
 
 </html>

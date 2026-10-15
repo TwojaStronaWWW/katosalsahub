@@ -1,25 +1,30 @@
 <?php
+declare(strict_types=1);
+
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
 
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
 error_reporting(E_ALL);
 
-function debug_log($message) {
+require_once __DIR__ . '/rate-limit.php';
+
+function debug_log(string $message): void {
     error_log('[KatoContact] ' . $message);
 }
 
 /**
  * Pobiera zmienną środowiskową z getenv(), $_ENV lub lokalnego pliku .env poza webrootem
  */
-function get_env_secret($key, $default = '') {
+function get_env_secret(string $key, string $default = ''): string {
     $val = getenv($key);
     if ($val !== false && $val !== '') {
-        return $val;
+        return (string)$val;
     }
     if (!empty($_ENV[$key])) {
-        return $_ENV[$key];
+        return (string)$_ENV[$key];
     }
     $envPaths = [
         __DIR__ . '/../../../.env',
@@ -49,26 +54,27 @@ function get_env_secret($key, $default = '') {
  * Anonimizacja adresu IP zgodnie z zasadą minimalizacji danych RODO (Issue #7)
  * Zeruje ostatni oktet w IPv4 (np. 192.168.1.0) lub końcówkę w IPv6.
  */
-function mask_ip($ip) {
+function mask_ip($ip): string {
     if (empty($ip) || !is_string($ip)) {
         return '0.0.0.0';
     }
-    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-        $parts = explode('.', $ip);
+    $cleanIp = trim(explode(',', $ip)[0]);
+    if (filter_var($cleanIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        $parts = explode('.', $cleanIp);
         $parts[3] = '0';
         return implode('.', $parts);
     }
-    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-        $parts = explode(':', $ip);
+    if (filter_var($cleanIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $parts = explode(':', $cleanIp);
         return implode(':', array_slice($parts, 0, 3)) . '::0';
     }
     return '0.0.0.0';
 }
 
 // Obsługa wejścia (JSON lub POST/FormData)
-$input = json_decode(file_get_contents("php://input"), true);
+$input = json_decode((string)file_get_contents("php://input"), true);
 if (!is_array($input)) {
-    $input = $_POST;
+    $input = is_array($_POST) ? $_POST : [];
 }
 
 if (empty($input)) {
@@ -76,8 +82,16 @@ if (empty($input)) {
     exit;
 }
 
-$rawIp = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+// Rzeczywiste IP klienta (z uwzględnieniem Cloudflare Proxy Anycast) i anonimizacja RODO
+$rawIp = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
 $maskedIp = mask_ip($rawIp);
+
+// 0. Zabezpieczenie Rate Limiting (ISO 27001): maks. 5 zgłoszeń na 60 sekund
+if (!rate_limit('contact_' . $maskedIp, 5, 60)) {
+    http_response_code(429);
+    echo json_encode(['success' => false, 'message' => 'Zbyt wiele prób wysłania wiadomości. Odczekaj chwilę przed kolejną próbą.']);
+    exit;
+}
 
 // 1. Zabezpieczenie Anty-Bot: Honeypot (pola pułapki)
 $honeypots = ['hp_chk', 'website', 'website_url', 'company_name', 'phone_extra'];
@@ -96,16 +110,20 @@ if (empty($input['js_check'])) {
     exit;
 }
 
-if (isset($input['submission_seconds']) && (float)$input['submission_seconds'] < 2.5) {
-    debug_log("BOT BLOCKED: Form submitted too quickly (" . $input['submission_seconds'] . "s)");
+if (!isset($input['submission_seconds']) || (float)$input['submission_seconds'] < 2.5) {
+    debug_log("BOT BLOCKED: Form submitted too quickly or missing submission_seconds");
     echo json_encode(['success' => true, 'message' => 'Wiadomość wysłana pomyślnie!']);
     exit;
 }
 
-// 3. Walidacja pól formularza oraz zgody RODO (Issue #6 & #7)
-$name = trim(strip_tags($input['name'] ?? ''));
-$email = trim($input['email'] ?? '');
-$message = trim(strip_tags($input['message'] ?? ''));
+// 3. Walidacja i oczyszczenie pól formularza oraz zgody RODO (Issue #6 & #7)
+$rawName = strip_tags((string)($input['name'] ?? ''));
+$name = mb_substr(trim((string)preg_replace('/[\r\n]+/', ' ', $rawName)), 0, 120);
+
+$rawEmail = (string)($input['email'] ?? '');
+$email = mb_substr(trim((string)preg_replace('/[\r\n]+/', '', $rawEmail)), 0, 180);
+
+$message = mb_substr(trim(strip_tags((string)($input['message'] ?? ''))), 0, 4000);
 $gdprConsent = !empty($input['gdpr_consent']);
 
 if (empty($name) || empty($email) || empty($message)) {
@@ -141,7 +159,7 @@ $osTicketApiKey = get_env_secret('OSTICKET_API_KEY');
 $osTicketApiUrl = get_env_secret('OSTICKET_API_URL', 'http://hd.twojastronawww.pl:8080/ticket_hook.php');
 $ticketCreated = false;
 
-if (!empty($osTicketApiKey)) {
+if (!empty($osTicketApiKey) && function_exists('curl_init')) {
     $ticketData = [
         'name' => $name,
         'email' => $email,
@@ -161,7 +179,7 @@ if (!empty($osTicketApiKey)) {
     curl_setopt($ch, CURLOPT_RESOLVE, ['hd.twojastronawww.pl:8080:127.0.0.1']);
     curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.0');
     curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData, JSON_UNESCAPED_UNICODE));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 6);
 
@@ -169,7 +187,7 @@ if (!empty($osTicketApiKey)) {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    $resArr = json_decode($apiResponse, true);
+    $resArr = json_decode((string)$apiResponse, true);
     $ticketCreated = ($httpCode === 201 && !empty($resArr['success']));
     $ticketNum = $resArr['number'] ?? 'unknown';
 
@@ -182,7 +200,7 @@ if (!empty($osTicketApiKey)) {
 
 if (!$ticketCreated) {
     // Awaryjny fallback e-mail
-    $to = "kontakt@twojastronawww.pl";
+    $to = get_env_secret('CONTACT_EMAIL', 'kontakt@twojastronawww.pl');
     $subject = "Nowa wiadomość od: $name [Kato Salsa Hub]";
     $email_content = "Imię lub pseudonim: $name\nEmail: $email\nZanonimizowane IP: $maskedIp\n\nWiadomość:\n$message";
     $from_email = "noreply@katosalsahub.pl";

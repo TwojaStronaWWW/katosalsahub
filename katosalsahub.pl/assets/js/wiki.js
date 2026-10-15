@@ -474,10 +474,18 @@ function renderPendingTerms(grid, noResults, countEl) {
     });
 }
 
+function isSafeHttpUrl(url) {
+    return typeof url === 'string' && /^https?:\/\/[^\s"'<>]+$/i.test(url.trim());
+}
+
 function createTermCard(item, isPending = false) {
+    const rawId = String(item.id || '').replace(/[^a-zA-Z0-9_-]/g, '');
+    const safeId = escapeHtml(rawId || item.id || '');
+    const safeTerm = escapeHtml(item.term || '');
+
     const card = document.createElement('div');
     card.className = `wiki-card ${isPending ? 'pending-card' : ''}`;
-    card.id = `card-${item.id}`;
+    card.id = `card-${rawId}`;
 
     let ribbonHtml = '';
     if (isPending) {
@@ -488,7 +496,7 @@ function createTermCard(item, isPending = false) {
 
     let verifiedHtml = '';
     if (item.status === 'verified') {
-        const count = item.verification_count || 1;
+        const count = Number.parseInt(item.verification_count, 10) || 1;
         verifiedHtml = `<span class="status-verified" title="Hasło zweryfikowane merytorycznie przez ${count} instruktorów / moderatorów Kato Salsa Hub"><i class="fas fa-check-circle"></i> ${count}</span>`;
     }
 
@@ -496,13 +504,15 @@ function createTermCard(item, isPending = false) {
     const cats = Array.isArray(item.category) ? item.category : [item.category];
     cats.forEach(c => {
         if (!c) return;
-        badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${c}">${CATEGORY_NAMES[c] || c}</span>`;
+        const safeCat = escapeHtml(c);
+        const safeCatName = escapeHtml(CATEGORY_NAMES[c] || c);
+        badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${safeCat}">${safeCatName}</span>`;
     });
 
     const subs = Array.isArray(item.subcategory) ? item.subcategory : (item.subcategory ? [item.subcategory] : []);
     subs.forEach(s => {
         if (!s) return;
-        badgesHtml += `<span class="cat-badge sub-cat">${s}</span>`;
+        badgesHtml += `<span class="cat-badge sub-cat">${escapeHtml(s)}</span>`;
     });
 
     let sourcesHtml = '';
@@ -511,50 +521,51 @@ function createTermCard(item, isPending = false) {
         sourcesHtml = '<div class="source-container-preview">';
         sources.forEach(src => {
             const name = typeof src === 'object' ? (src.name || 'Źródło') : src;
-            const url = typeof src === 'object' ? src.url : '';
-            if (url && url.startsWith('http')) {
+            const url = typeof src === 'object' ? (src.url || '') : '';
+            if (isSafeHttpUrl(url)) {
                 const iconClass = url.includes('youtube.com') ? 'fa-play-circle' : 'fa-external-link-alt';
-                sourcesHtml += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Otwórz w nowej karcie: ${escapeHtml(name)}"><i class="fas ${iconClass}"></i> ${escapeHtml(name)}</a>`;
+                sourcesHtml += `<a href="${escapeHtml(url.trim())}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Otwórz w nowej karcie: ${escapeHtml(name)}"><i class="fas ${iconClass}"></i> ${escapeHtml(name)}</a>`;
             } else if (name) {
-                const ytFallback = `https://www.youtube.com/results?search_query=${encodeURIComponent(item.term + ' Salsa Cubana')}`;
-                sourcesHtml += `<a href="${ytFallback}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Zobacz prezentację wideo na YouTube: ${escapeHtml(item.term)}"><i class="fas fa-play-circle"></i> ${escapeHtml(name)}</a>`;
+                const ytFallback = `https://www.youtube.com/results?search_query=${encodeURIComponent((item.term || '') + ' Salsa Cubana')}`;
+                sourcesHtml += `<a href="${escapeHtml(ytFallback)}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Zobacz prezentację wideo na YouTube: ${safeTerm}"><i class="fas fa-play-circle"></i> ${escapeHtml(name)}</a>`;
             }
         });
         sourcesHtml += '</div>';
     }
 
-    let authorHtml = `<span class="author-meta">Autor: <strong>${item.author || 'Społeczność'}</strong></span>`;
-    if (item.author_link && item.author_link.startsWith('http')) {
-        authorHtml = `<span class="author-meta">Autor: <a href="${item.author_link}" target="_blank" rel="noopener noreferrer"><strong>${item.author}</strong> <i class="fas fa-link"></i></a></span>`;
+    const safeAuthor = escapeHtml(item.author || 'Społeczność');
+    let authorHtml = `<span class="author-meta">Autor: <strong>${safeAuthor}</strong></span>`;
+    if (isSafeHttpUrl(item.author_link)) {
+        authorHtml = `<span class="author-meta">Autor: <a href="${escapeHtml(item.author_link.trim())}" target="_blank" rel="noopener noreferrer"><strong>${safeAuthor}</strong> <i class="fas fa-link"></i></a></span>`;
     }
 
     let actionsHtml = '';
     if (isPending) {
         actionsHtml = `
             <div class="moderation-actions">
-                <button class="btn-approve" data-action="approve" data-id="${item.id}" title="Zatwierdź i opublikuj w bazie">
+                <button class="btn-approve" data-action="approve" data-id="${safeId}" title="Zatwierdź i opublikuj w bazie">
                     <i class="fas fa-check"></i> Zatwierdź
                 </button>
-                <button class="btn-edit-admin" data-action="edit-pending" data-id="${item.id}" title="Popraw przed zatwierdzeniem">
+                <button class="btn-edit-admin" data-action="edit-pending" data-id="${safeId}" title="Popraw przed zatwierdzeniem">
                     <i class="fas fa-pencil-alt"></i>
                 </button>
-                <button class="btn-reject" data-action="reject" data-id="${item.id}" title="Odrzuć propozycję">
+                <button class="btn-reject" data-action="reject" data-id="${safeId}" title="Odrzuć propozycję">
                     <i class="fas fa-times"></i>
                 </button>
             </div>`;
     } else if (AppState.isAdmin) {
         actionsHtml = `
             <div class="moderation-actions">
-                <button class="btn-edit-admin" data-action="edit-live" data-id="${item.id}" title="Edytuj hasło">
+                <button class="btn-edit-admin" data-action="edit-live" data-id="${safeId}" title="Edytuj hasło">
                     <i class="fas fa-edit"></i> Edytuj
                 </button>
-                <button class="btn-delete-admin" data-action="delete-live" data-id="${item.id}" title="Usuń z bazy">
+                <button class="btn-delete-admin" data-action="delete-live" data-id="${safeId}" title="Usuń z bazy">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </div>`;
     } else {
         actionsHtml = `
-            <button class="btn-verify" data-action="verify" data-id="${item.id}" title="Zaproponuj poprawkę do tego hasła">
+            <button class="btn-verify" data-action="verify" data-id="${safeId}" title="Zaproponuj poprawkę do tego hasła">
                 <i class="fas fa-pencil-alt"></i> Zgłoś poprawkę
             </button>`;
     }
@@ -562,14 +573,14 @@ function createTermCard(item, isPending = false) {
     card.innerHTML = `
         ${ribbonHtml}
         <div class="wiki-card-header">
-            <h3>${item.term}</h3>
+            <h3>${safeTerm}</h3>
             ${verifiedHtml}
         </div>
         <div class="badges">
             ${badgesHtml}
         </div>
         <div class="definition">
-            ${linkifyDefinition(item.definition || '', item.id)}
+            ${linkifyDefinition(item.definition || '', rawId)}
         </div>
         ${sourcesHtml}
         <div class="wiki-card-footer">
@@ -1325,7 +1336,8 @@ function escapeHtml(str) {
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 // --- Integracja ze zdarzeniami cyklu życia (Router SPA i Direct Load) ---
@@ -1351,3 +1363,5 @@ window.switchViewMode = switchViewMode;
 window.setActiveCategory = setActiveCategory;
 window.linkifyDefinition = linkifyDefinition;
 window.jumpToTermCard = jumpToTermCard;
+window.escapeHtml = escapeHtml;
+window.isSafeHttpUrl = isSafeHttpUrl;

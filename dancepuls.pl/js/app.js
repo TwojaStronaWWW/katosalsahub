@@ -144,6 +144,11 @@ document.addEventListener('DOMContentLoaded', function () {
 			inputMiejsceInne.placeholder = 'Wpisz miejsce'
 			inputMiejsceInne.style.display = 'none'
 
+			const inputTytul = document.createElement('input')
+			inputTytul.type = 'text'
+			inputTytul.className = 'tytul-wydarzenia'
+			inputTytul.placeholder = 'Krótka nazwa imprezy/warsztatów (opcjonalnie)'
+
 			const inputLink = document.createElement('input')
 			inputLink.type = 'text'
 			inputLink.className = 'link'
@@ -266,6 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			})
 
 			// Dodaj event listenery do inputów
+			inputTytul.addEventListener('input', generujPost)
 			inputLink.addEventListener('input', generujPost)
 			inputMiastoInne.addEventListener('input', generujPost)
 			inputMiejsceInne.addEventListener('input', generujPost)
@@ -280,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			updateMiejscaOptions(selectMiasto.value)
 
-			eventBlock.append(selectMiasto, inputMiastoInne, selectMiejsce, inputMiejsceInne, inputLink)
+			eventBlock.append(selectMiasto, inputMiastoInne, selectMiejsce, inputMiejsceInne, inputTytul, inputLink)
 			container.append(toggle, eventBlock)
 
 			// Styl dla headera, żeby checkbox był w linii z resztą
@@ -371,22 +377,19 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 	}
 
-	const btnClear = document.getElementById('clear-import-btn')
-	if (btnClear) {
-		btnClear.addEventListener('click', () => {
-			document.getElementById('import-fb-data').value = ''
-			// Optional: maybe clear form events? No, logic says "Clear Field".
-			// If user meant "Clear Form", that is "wyczysc formularz" which was already in header?
-			// User said "reset historii zgloszen i wyczysc skrypt".
-			// "Wyczysc skrypt" probably means the JSON field.
+	const btnClearForm = document.getElementById('clear-form-btn')
+	if (btnClearForm) {
+		btnClearForm.addEventListener('click', () => {
+			if (confirm('Na pewno wyczyścić cały formularz i przywrócić stan początkowy?')) {
+				localStorage.removeItem('party_generator_stan')
+				location.reload()
+			}
 		})
 	}
 
 	const btnCopyScraper = document.getElementById('copy-scraper-btn')
 	if (btnCopyScraper) {
 		btnCopyScraper.addEventListener('click', () => {
-			// ALWAYS FETCH NEW to avoid stale cache issues when I update the file
-			// window.scraperScriptCache check REMOVED
 			fetch('tools/fb_scraper.js?v=' + new Date().getTime())
 				.then(r => r.text())
 				.then(t => {
@@ -425,6 +428,21 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 	}
 
+	const btnCopyPost = document.getElementById('copy-post-btn')
+	if (btnCopyPost) btnCopyPost.addEventListener('click', kopiujGotowyPost)
+
+	const btnCopySkeleton = document.getElementById('copy-skeleton-btn')
+	if (btnCopySkeleton) btnCopySkeleton.addEventListener('click', kopiujTytul)
+
+	const btnCopyComment1 = document.getElementById('copy-comment1-btn')
+	if (btnCopyComment1) btnCopyComment1.addEventListener('click', kopiujWynik)
+
+	const btnCopyComment2 = document.getElementById('copy-comment2-btn')
+	if (btnCopyComment2) btnCopyComment2.addEventListener('click', kopiujKomentarz2)
+
+	const btnCopyAllPoll = document.getElementById('copy-all-poll-btn')
+	if (btnCopyAllPoll) btnCopyAllPoll.addEventListener('click', kopiujCalaAnkiete)
+
 	applyFilter()
 
 	// --- AUTOSAVE & LIVE PREVIEW ---
@@ -443,10 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			block.querySelectorAll('.event-container').forEach(container => {
 				const checkbox = container.querySelector('.toggle-checkbox')
-				if (!checkbox.checked) return // Zapisujemy tylko aktywne, żeby nie śmiecić? A może wszystkie?
-				// Zapiszmy tylko te 'checked', żeby przy restore tylko one się otworzyły.
-				// Ale jak user wpisał coś i odznaczył, to straci?
-				// Lepiej zapisać stan 'checked' w obiekcie.
+				if (!checkbox.checked) return
 
 				const isChecked = checkbox.checked
 				const promote = container.querySelector('.promowane').checked
@@ -456,11 +471,11 @@ document.addEventListener('DOMContentLoaded', function () {
 				const miastoInne = eventBlock.querySelector('.miasto-inne')?.value || ''
 				const miejsce = eventBlock.querySelector('.miejsce')?.value || ''
 				const miejsceInne = eventBlock.querySelector('.miejsce-inne')?.value || ''
+				const tytul = eventBlock.querySelector('.tytul-wydarzenia')?.value || ''
 				const link = eventBlock.querySelector('.link')?.value || ''
 
 				const styleActive = Array.from(container.querySelectorAll('input.styl:checked')).map(cb => cb.value)
 
-				// Zapisujemy tylko jeśli cokolwiek jest zmienione/zaznaczone, żeby nie puchło
 				if (isChecked || link || miasto !== 'Katowice') {
 					events.push({
 						checked: isChecked,
@@ -469,6 +484,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						miastoInne,
 						miejsce,
 						miejsceInne,
+						tytul,
 						link,
 						style: styleActive,
 					})
@@ -481,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 
 		localStorage.setItem('party_generator_stan', JSON.stringify(stan))
-		generujPost() // Przy okazji generuj wynik
+		generujPost()
 	}
 
 	/**
@@ -497,11 +513,9 @@ document.addEventListener('DOMContentLoaded', function () {
 			const blocks = document.querySelectorAll('.day-block')
 
 			stan.forEach(dayData => {
-				// Znajdź blok dnia (porównujemy daty, ale uwaga na Timezone - tu używamy ISO stringa z dataset)
 				const targetBlock = Array.from(blocks).find(b => b.dataset.date === dayData.date)
-				if (!targetBlock) return // Może data już minęła
+				if (!targetBlock) return
 
-				// Dynamicznie utwórz brakujące kontenery, jeśli wydarzeń jest więcej niż 1
 				if (targetBlock._createEventContainer && dayData.events) {
 					while (targetBlock.querySelectorAll('.event-container').length < dayData.events.length) {
 						const newIdx = targetBlock.querySelectorAll('.event-container').length
@@ -512,17 +526,16 @@ document.addEventListener('DOMContentLoaded', function () {
 				const containers = targetBlock.querySelectorAll('.event-container')
 
 				dayData.events.forEach((ev, index) => {
-					if (index >= containers.length) return // Więcej eventów niż slotów
+					if (index >= containers.length) return
 
 					const container = containers[index]
 					const eventBlock = container.querySelector('.event-block')
 
-					// Checkboxy glowne
 					const checkbox = container.querySelector('.toggle-checkbox')
 					checkbox.checked = ev.checked
 
 					const promote = container.querySelector('.promowane')
-					promote.checked = ev.promote
+					promote.checked = Boolean(ev.promote)
 					if (ev.checked) {
 						promote.parentElement.style.display = 'inline-block'
 						container.querySelector('.checkboxes').style.display = 'flex'
@@ -530,11 +543,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 					eventBlock.style.display = ev.checked ? 'block' : 'none'
 
-					// Pola
 					const miastoSelect = eventBlock.querySelector('.miasto')
 					const miastoInne = eventBlock.querySelector('.miasto-inne')
 					const miejsceSelect = eventBlock.querySelector('.miejsce')
 					const miejsceInne = eventBlock.querySelector('.miejsce-inne')
+					const tytulInput = eventBlock.querySelector('.tytul-wydarzenia')
 					const linkInput = eventBlock.querySelector('.link')
 
 					const city = ev.miasto || 'Katowice'
@@ -559,15 +572,19 @@ document.addEventListener('DOMContentLoaded', function () {
 					} else {
 						miejsceSelect.value = 'Inne'
 						miejsceInne.style.display = 'block'
-						miejsceInne.value = ev.miejsceInne || place
+						miejsceInne.value = place || ev.miejsceInne || ''
 					}
 					miejsceSelect.dispatchEvent(new Event('change'))
+
+					if (tytulInput) {
+						const fallbackTitle = ev.opis ? ev.opis.split(' - ')[0].split(',')[0].trim() : ''
+						tytulInput.value = ev.tytul || fallbackTitle || ''
+					}
 
 					if (linkInput) {
 						linkInput.value = ev.link || ''
 					}
 
-					// Style
 					const styleCbs = container.querySelectorAll('input.styl')
 					const eventStyles = Array.isArray(ev.style) ? ev.style : (ev.styles ? ev.styles.split(/[\/,]/) : [])
 					const lowerStyles = eventStyles.map(s => s.trim().toLowerCase())
@@ -578,8 +595,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				})
 			})
 
-			generujPost() // Odśwież widok posta
-			updateEventCounter() // Odśwież licznik
+			generujPost()
+			updateEventCounter()
 		} catch (e) {
 			console.error('Błąd wczytywania stanu:', e)
 		}
@@ -600,29 +617,99 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 
+	/**
+	 * Wczytuje pełny 6-sekcyjny raport KSH z pliku data/latest_report.md
+	 * i wypełnia Sekcję 2 (Post), Sekcję 3 (Ankieta), Sekcję 4 (Komentarz 1),
+	 * Sekcję 5 (Komentarz 2) oraz modal Audytu (Sekcje 1 i 6).
+	 */
+	async function zaladujRaportKSH(silent = true) {
+		try {
+			const res = await fetch('data/latest_report.md?v=' + Date.now())
+			if (!res.ok) return
+			const md = await res.text()
+			if (!md) return
+
+			window.latestFullReportMd = md
+			const parts = md.split(/\n---\n/)
+			const findSection = prefix => {
+				const found = parts.find(p => p.trim().startsWith(prefix))
+				if (!found) return ''
+				const lines = found.trim().split('\n')
+				return lines.slice(1).join('\n').trim()
+			}
+
+			const sec1 = findSection('## 1.')
+			const sec2 = findSection('## 2.')
+			const sec3 = findSection('## 3.')
+			const sec4 = findSection('## 4.')
+			const sec5 = findSection('## 5.')
+			const sec6 = findSection('## 6.')
+
+			if (sec1) {
+				const el1 = document.getElementById('audit-sec1')
+				if (el1) el1.textContent = sec1
+			}
+			if (sec6) {
+				const el6 = document.getElementById('audit-sec6')
+				if (el6) el6.textContent = sec6
+			}
+			if (sec2) {
+				const postEl = document.getElementById('post-opis')
+				if (postEl) postEl.value = sec2
+			}
+			if (sec4) {
+				const wynikEl = document.getElementById('wynik')
+				if (wynikEl) wynikEl.value = sec4
+			}
+			if (sec5) {
+				const przyszleEl = document.getElementById('wynik-przyszle')
+				if (przyszleEl) przyszleEl.value = sec5
+			}
+			if (sec3) {
+				window.latestPollText = sec3
+				renderPollButtons(sec3)
+			}
+
+			if (!silent) {
+				alert('✅ Wczytano wszystkie 6 sekcji raportu KSH z data/latest_report.md!')
+			}
+		} catch (e) {
+			console.warn('Nie udało się wczytać data/latest_report.md:', e)
+			if (!silent) {
+				alert('⚠️ Nie udało się wczytać raportu KSH: ' + e.message)
+			}
+		}
+	}
+
 	const btnLoadDb = document.getElementById('load-db-btn')
 	if (btnLoadDb) {
 		btnLoadDb.addEventListener('click', async () => {
 			if (confirm('Czy chcesz wczytać aktualne wydarzenia z pliku data/events.json? Nadpisze to obecny formularz.')) {
 				await zaladujZPlikuJSON()
-				alert('✅ Pomyślnie wczytano wydarzenia z bazy!')
+				await zaladujRaportKSH(true)
+				alert('✅ Pomyślnie wczytano wydarzenia z bazy i zaktualizowano raport!')
 			}
 		})
 	}
 
+	const btnLoadReport = document.getElementById('load-report-btn')
+	if (btnLoadReport) {
+		btnLoadReport.addEventListener('click', () => {
+			zaladujRaportKSH(false)
+		})
+	}
+
 	function nasluchujZmian() {
-		// Podpinamy się pod wszystko co żyje w #form
 		const formContainer = document.getElementById('form')
 
-		formContainer.addEventListener('input', e => {
+		formContainer.addEventListener('input', () => {
 			zapiszStan()
 		})
 
-		formContainer.addEventListener('change', e => {
+		formContainer.addEventListener('change', () => {
 			zapiszStan()
 		})
 
-		// Hashtagi też
 		const hashInput = document.getElementById('hashtagi')
 		if (hashInput) {
 			hashInput.addEventListener('input', zapiszStan)
@@ -633,9 +720,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	nasluchujZmian()
 	if (localStorage.getItem('party_generator_stan')) {
 		wczytajStan()
+		zaladujRaportKSH(true)
 	} else {
 		zaladujZPlikuJSON().then(() => {
 			generujPost()
+			zaladujRaportKSH(true)
 		})
 	}
 
@@ -870,58 +959,58 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function updateEventCounter() {
-		const count = document.querySelectorAll('.event-block[style*="display: block"]').length
+		const count = document.querySelectorAll('.event-container .toggle-checkbox:checked').length
 		const counterEl = document.getElementById('event-counter')
 		if (counterEl) counterEl.textContent = `Liczba wgranych wydarzeń: ${count}`
 	}
 
-	// Obsługa Enter i Auto-Paste w textarea - USUNIĘTE (brak pola tekstowego)
-	// const importArea = document.getElementById('import-fb-data');
-	// ... logic removed ...
+	function setupModal(modalId, openBtnId, closeBtnId) {
+		const modalEl = document.getElementById(modalId)
+		const openBtn = document.getElementById(openBtnId)
+		const closeBtn = document.getElementById(closeBtnId)
+		if (!modalEl) return
 
-	// --- HELP MODAL ---
-	const modal = document.getElementById('help-modal')
-	const btnHelp = document.getElementById('help-btn')
-	const spanClose = document.getElementsByClassName('close-modal')[0]
-
-	if (btnHelp && modal) {
-		btnHelp.onclick = function () {
-			// Toggle class 'open' for CSS transition
-			// We also need to handle 'display' to ensure it exists in DOM for opacity transition
-			// The CSS: .modal { display: none; opacity: 0; visibility: hidden; }
-			// .modal.open { display: block; opacity: 1; visibility: visible; }
-			// Actually, display:block <-> none breaks transition unless we use keyframes or visibility.
-			// Let's rely on class toggling. The CSS I added handles display:block in .open?
-			// Let's check CSS. If I used display:none -> display:block, no transition happens for opacity.
-			// Better strategy: Always display: flex (or block), but visibility: hidden/visible and opacity.
-			// OR: use setTimeout for display.
-
-			// Simpler approach for now: Toggle class. Adjust CSS to support it.
-			if (modal.classList.contains('open')) {
-				modal.classList.remove('open')
-				setTimeout(() => (modal.style.display = 'none'), 400) // Wait for transition
-			} else {
-				modal.style.display = 'flex' // Ensure layout
-				// Force reflow
-				void modal.offsetWidth
-				modal.classList.add('open')
-			}
+		const closeModal = () => {
+			modalEl.classList.remove('open')
+			setTimeout(() => (modalEl.style.display = 'none'), 400)
 		}
+
+		if (openBtn) {
+			openBtn.addEventListener('click', () => {
+				if (modalEl.classList.contains('open')) {
+					closeModal()
+				} else {
+					modalEl.style.display = 'flex'
+					void modalEl.offsetWidth
+					modalEl.classList.add('open')
+				}
+			})
+		}
+
+		if (closeBtn) {
+			closeBtn.addEventListener('click', closeModal)
+		}
+
+		window.addEventListener('click', event => {
+			if (event.target === modalEl) {
+				closeModal()
+			}
+		})
 	}
 
-	if (spanClose && modal) {
-		spanClose.onclick = function () {
-			modal.classList.remove('open')
-			setTimeout(() => (modal.style.display = 'none'), 400)
-		}
-	}
+	setupModal('help-modal', 'help-btn', 'close-help-modal')
+	setupModal('audit-modal', 'open-audit-btn', 'close-audit-modal')
 
-	if (modal) {
-		window.addEventListener('click', function (event) {
-			if (event.target == modal) {
-				modal.classList.remove('open')
-				setTimeout(() => (modal.style.display = 'none'), 400)
+	const btnCopyFullReport = document.getElementById('copy-full-report-btn')
+	if (btnCopyFullReport) {
+		btnCopyFullReport.addEventListener('click', () => {
+			if (!window.latestFullReportMd) {
+				alert('Brak wczytanego raportu KSH!')
+				return
 			}
+			navigator.clipboard.writeText(window.latestFullReportMd).then(() => {
+				alert('✅ Skopiowano pełny 6-sekcyjny raport KSH (Markdown) do schowka!')
+			})
 		})
 	}
 
@@ -935,16 +1024,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	const mobileModal = document.getElementById('mobile-warning-modal')
 	const mobileCloseBtn = document.getElementById('mobile-warning-close')
-
-	// Check if user already dismissed, but let's say we show it every session for now or stick to session?
-	// User requested: "jak ktos sprobuje wejsc na telefonie niech otrzyma komunikat"
-	// Let's use sessionStorage so it doesn't annoy on refresh, but shows on new tab.
-	// Let's use sessionStorage so it doesn't annoy on refresh, but shows on new tab.
 	const forceMobile = new URLSearchParams(window.location.search).has('mobile')
 
 	if ((isMobile() || forceMobile) && (!sessionStorage.getItem('mobile_warning_dismissed') || forceMobile)) {
 		if (mobileModal) {
-			mobileModal.style.display = 'flex' // Flex for centering
+			mobileModal.style.display = 'flex'
 		}
 	}
 
@@ -956,19 +1040,19 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	updateEventCounter()
-	updateTitle() // Inicjalizacja tytułu
-	initInbox() // Inicjalizacja skrzynki odbiorczej
+	updateTitle()
+	initInbox()
 	initWeather('weather-widget')
 })
 
 // --- INBOX HELPER ---
 function initInbox() {
-	// HARDCODED URL - Ukryty przed widokiem
 	const HIDDEN_SHEET_URL =
 		'https://docs.google.com/spreadsheets/d/1sI3oU5dNLhWsK0vcct069MENk-o-XuUh9UQ7k-O7Um8/edit?resourcekey=&gid=1833510316#gid=1833510316'
 
 	const checkBtn = document.getElementById('check-inbox-btn')
 	const container = document.getElementById('inbox-container')
+	if (!checkBtn || !container) return
 
 	checkBtn.addEventListener('click', () => {
 		const url = HIDDEN_SHEET_URL
@@ -976,21 +1060,16 @@ function initInbox() {
 		checkBtn.disabled = true
 		checkBtn.textContent = '⏳ Pobieranie...'
 
-		// AUTO-CONVERT GOOGLE SHEETS URL
 		let fetchUrl = url
 		const sheetMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/)
 		if (sheetMatch) {
 			const id = sheetMatch[1]
-			let gid = '0' // default first sheet
-
-			// Try to find gid in URL parameters or hash
+			let gid = '0'
 			const gidMatch = url.match(/[?&#]gid=([0-9]+)/)
 			if (gidMatch) {
 				gid = gidMatch[1]
 			}
-
 			fetchUrl = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv&gid=${gid}`
-			console.log('Konwersja linku Google Sheets:', fetchUrl)
 		}
 
 		fetch(fetchUrl)
@@ -1004,28 +1083,19 @@ function initInbox() {
 					.map(r => r.trim())
 					.filter(r => r)
 
-				// Assume Row 1 is header, skip it.
-				// Rows structure: Timestamp, Link, ...
-
 				const pendingItems = []
 				const processed = JSON.parse(localStorage.getItem('party_inbox_done') || '[]')
 
-				// Start from index 1 (skip header)
 				for (let i = 1; i < rows.length; i++) {
 					const row = rows[i]
-					// Smart split for CSV (handling quotes)
 					const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || row.split(',')
-
 					const cleanCols = cols.map(c => c.replace(/^"|"$/g, '').trim())
-
-					// Find Link Column
-					const linkIndex = cleanCols.findIndex(c => c.includes('facebook.com') || c.includes('fb.me'))
+					const linkIndex = cleanCols.findIndex(c => /^https?:\/\//i.test(c) && (c.includes('facebook.com') || c.includes('fb.me')))
 
 					if (linkIndex !== -1) {
 						const link = cleanCols[linkIndex]
 						const timestampStr = cleanCols[0]
 
-						// Próba odfiltrowania starych wydarzeń - szukamy daty w każdej kolumnie
 						const today = new Date()
 						today.setHours(0, 0, 0, 0)
 
@@ -1035,12 +1105,10 @@ function initInbox() {
 						for (const cell of cleanCols) {
 							const d = parsujDateFB(cell)
 							if (d) {
-								// Jeśli jakakolwiek data w rekordzie jest z przeszłości - flagujemy jako "stare"
 								if (d < today) {
 									shouldSkip = true
 									break
 								}
-								// Zapamiętujemy najlepszą (najwcześniejszą przyszłą?) datę do wyświetlenia
 								if (!bestFoundDate || d < bestFoundDate) {
 									bestFoundDate = d
 								}
@@ -1049,11 +1117,9 @@ function initInbox() {
 
 						if (shouldSkip) continue
 
-						// Collect other info (skip Timestamp [0] and Link)
 						const extraInfo = cleanCols.filter((c, idx) => idx !== 0 && idx !== linkIndex && c.length > 0).join(' | ')
 
 						if (!processed.includes(link)) {
-							// Wyświetlamy datę wydarzenia jeśli znaleziono, inaczej timestamp
 							const displayDate = bestFoundDate ? formatujDatePL(bestFoundDate) : timestampStr
 							pendingItems.push({ date: displayDate, link, info: extraInfo })
 						}
@@ -1062,13 +1128,13 @@ function initInbox() {
 
 				renderInbox(pendingItems)
 				checkBtn.disabled = false
-				checkBtn.textContent = '🔄 Sprawdź nowe zgłoszenia'
+				checkBtn.textContent = '🔄 Sprawdź'
 			})
 			.catch(err => {
 				console.error(err)
 				alert('Błąd pobierania CSV. Sprawdź czy link jest poprawny (musi być opublikowany jako CSV).')
 				checkBtn.disabled = false
-				checkBtn.textContent = '🔄 Sprawdź nowe zgłoszenia'
+				checkBtn.textContent = '🔄 Sprawdź'
 			})
 	})
 
@@ -1093,15 +1159,6 @@ function initInbox() {
 			div.style.background = '#fff'
 			div.style.borderRadius = '5px'
 
-			// HEADER: Date + Day
-			// We need to pass date from the parsing loop.
-			// Assuming 'date' availability. I will update the parsing loop in a separate call if needed.
-			// Looking at previous step, I only extracted link and info.
-			// But wait, I see in line 947 loop I need to extract DATE.
-			// Let's assume for this specific edit I am changing the render logic.
-			// BUT I NOTICE I DIDN'T PASS DATE IN PREVIOUS STEPS.
-			// I MUST FIX THE PARSING LOOP FIRST OR TOGETHER.
-
 			const headerDiv = document.createElement('div')
 			headerDiv.style.fontWeight = 'bold'
 			headerDiv.style.color = '#333'
@@ -1111,11 +1168,12 @@ function initInbox() {
 
 			const contentDiv = document.createElement('div')
 			contentDiv.style.marginBottom = '8px'
-			contentDiv.style.wordBreak = 'break-all' // WRAPPING
+			contentDiv.style.wordBreak = 'break-all'
 
 			const linkText = document.createElement('a')
-			linkText.href = link
+			linkText.href = /^https?:\/\//i.test(link) ? link : '#'
 			linkText.target = '_blank'
+			linkText.rel = 'noopener noreferrer'
 			linkText.textContent = link
 			linkText.style.color = 'var(--cuban-blue)'
 			linkText.style.textDecoration = 'none'
@@ -1129,7 +1187,7 @@ function initInbox() {
 						setTimeout(() => (linkText.style.color = originalColor), 1500)
 					})
 				} else {
-					fetch('fb_scraper.js')
+					fetch('tools/fb_scraper.js')
 						.then(r => r.text())
 						.then(t => navigator.clipboard.writeText(t))
 				}
@@ -1183,76 +1241,12 @@ function initInbox() {
 
 function toBoldUnicode(text) {
 	const chars = {
-		a: '𝐚',
-		b: '𝐛',
-		c: '𝐜',
-		d: '𝐝',
-		e: '𝐞',
-		f: '𝐟',
-		g: '𝐠',
-		h: '𝐡',
-		i: '𝐢',
-		j: '𝐣',
-		k: '𝐤',
-		l: '𝐥',
-		m: '𝐦',
-		n: '𝐧',
-		o: '𝐨',
-		p: '𝐩',
-		q: '𝐪',
-		r: '𝐫',
-		s: '𝐬',
-		t: '𝐭',
-		u: '𝐮',
-		v: '𝐯',
-		w: '𝐰',
-		x: '𝐱',
-		y: '𝐲',
-		z: '𝐳',
-		A: '𝐀',
-		B: '𝐁',
-		C: '𝐂',
-		D: '𝐃',
-		E: '𝐄',
-		F: '𝐅',
-		G: '𝐆',
-		H: '𝐇',
-		I: '𝐈',
-		J: '𝐉',
-		K: '𝐊',
-		L: '𝐋',
-		M: '𝐌',
-		N: '𝐍',
-		O: '𝐎',
-		P: '𝐏',
-		Q: '𝐐',
-		R: '𝐑',
-		S: '𝐒',
-		T: '𝐓',
-		U: '𝐔',
-		V: '𝐕',
-		W: '𝐖',
-		X: '𝐗',
-		Y: '𝐘',
-		Z: '𝐙',
-		ą: '𝐚̨',
-		ć: '𝐜́',
-		ę: '𝐞̨',
-		ł: 'ł',
-		ń: '𝐧́',
-		ó: '𝐨́',
-		ś: '𝐬́',
-		ź: '𝐳́',
-		ż: '𝐳̇',
-		Ą: '𝐀̨',
-		Ć: '𝐂́',
-		Ę: '𝐄̨',
-		Ł: 'Ł',
-		Ń: '𝐍́',
-		Ó: '𝐎́',
-		Ś: '𝐒́',
-		Ź: '𝐙́',
-		Ż: '𝐙̇',
+		a: '𝐚', b: '𝐛', c: '𝐜', d: '𝐝', e: '𝐞', f: '𝐟', g: '𝐠', h: '𝐡', i: '𝐢', j: '𝐣', k: '𝐤', l: '𝐥', m: '𝐦',
+		n: '𝐧', o: '𝐨', p: '𝐩', q: '𝐪', r: '𝐫', s: '𝐬', t: '𝐭', u: '𝐮', v: '𝐯', w: '𝐰', x: '𝐱', y: '𝐲', z: '𝐳',
+		A: '𝐀', B: '𝐁', C: '𝐂', D: '𝐃', E: '𝐄', F: '𝐅', G: '𝐆', H: '𝐇', I: '𝐈', J: '𝐉', K: '𝐊', L: '𝐋', M: '𝐌',
+		N: '𝐍', O: '𝐎', P: '𝐏', Q: '𝐐', R: '𝐑', S: '𝐒', T: '𝐓', U: '𝐔', V: '𝐕', W: '𝐖', X: '𝐗', Y: '𝐘', Z: '𝐙',
+		ą: '𝐚̨', ć: '𝐜́', ę: '𝐞̨', ł: 'ł', ń: '𝐧́', ó: '𝐨́', ś: '𝐬́', ź: '𝐳́', ż: '𝐳̇',
+		Ą: '𝐀̨', Ć: '𝐂́', Ę: '𝐄̨', Ł: 'Ł', Ń: '𝐍́', Ó: '𝐎́', Ś: '𝐒́', Ź: '𝐙́', Ż: '𝐙̇',
 	}
 	return text
 		.split('')
@@ -1271,7 +1265,7 @@ function getWeekNumber(d) {
 function getTitleString() {
 	const today = new Date()
 	if (today.getDay() === 0) {
-		today.setDate(today.getDate() + 1) // Jeśli Niedziela, liczymy dla Poniedziałku
+		today.setDate(today.getDate() + 1)
 	}
 
 	const targetDate = new Date()
@@ -1280,22 +1274,8 @@ function getTitleString() {
 	const weekNum = getWeekNumber(targetDate)
 
 	const liczebniki = [
-		'zerowy',
-		'pierwszy',
-		'drugi',
-		'trzeci',
-		'czwarty',
-		'piąty',
-		'szósty',
-		'siódmy',
-		'ósmy',
-		'dziewiąty',
-		'dziesiąty',
-		'jedenasty',
-		'dwunasty',
-		'trzynasty',
-		'czternasty',
-		'piętnasty',
+		'zerowy', 'pierwszy', 'drugi', 'trzeci', 'czwarty', 'piąty', 'szósty', 'siódmy',
+		'ósmy', 'dziewiąty', 'dziesiąty', 'jedenasty', 'dwunasty', 'trzynasty', 'czternasty', 'piętnasty',
 	]
 
 	let numerTekst = weekNum
@@ -1306,8 +1286,6 @@ function getTitleString() {
 }
 
 function updateTitle() {
-	// Funkcja zachowana dla kompatybilności wstecznej,
-	// choć pole post-title zostało usunięte z HTML
 	const title = getTitleString()
 	const titleInput = document.getElementById('post-title')
 	if (titleInput) titleInput.value = title
@@ -1334,62 +1312,121 @@ ${hashtagi}`
 	alert('Szkielet zestawienia skopiowany!')
 }
 
+function renderPollButtons(pollText) {
+	const ankietaDiv = document.getElementById('kopiuj-ankiete') || document.createElement('div')
+	ankietaDiv.id = 'kopiuj-ankiete'
+	ankietaDiv.innerHTML = ''
+
+	const sidebarContainer = document.getElementById('kopiuj-ankiete-container')
+	if (sidebarContainer) {
+		sidebarContainer.appendChild(ankietaDiv)
+	} else {
+		document.body.appendChild(ankietaDiv)
+	}
+
+	pollText
+		.trim()
+		.split('\n')
+		.filter(l => l)
+		.forEach(l => {
+			const div = document.createElement('div')
+			div.className = 'copy-line'
+			div.style.marginBottom = '5px'
+			const btn = document.createElement('button')
+			btn.type = 'button'
+			btn.textContent = '📋 ' + l
+
+			btn.addEventListener('click', () => {
+				navigator.clipboard.writeText(l)
+				btn.textContent = '✅ Skopiowano!'
+				btn.classList.add('clicked-poll')
+				setTimeout(() => {
+					btn.textContent = '✅ ' + l
+				}, 1000)
+			})
+			div.appendChild(btn)
+			ankietaDiv.appendChild(div)
+		})
+}
+
 /**
- * Główna funkcja generująca treść posta oraz przyciski ankiety.
- * Zbiera dane ze wszystkich aktywnych bloków dni i wydarzeń.
+ * Główna funkcja generująca treść posta, Komentarza 1 oraz przyciski ankiety
+ * na podstawie formularza kalendarza (z automatycznym rozróżnianiem wydarzeń w tym samym miejscu i dniu).
  */
 function generujPost() {
 	updateTitle()
 	const blocks = document.querySelectorAll('.day-block')
-	let wynik = '🎉 Zestawienie imprezowe:\n\n'
+	let wynik = '🎉 Zestawienie imprezowe\n\n'
 	let wynikAnkieta = ''
+	const dayEvents = {}
 
 	blocks.forEach(block => {
 		if (block.style.display === 'none') return
 
 		const containers = block.querySelectorAll('.event-block')
 		const dzienTekst = block.querySelector('h3').textContent
-		let dzienWiersz = ''
+		const activeInDay = []
 
 		containers.forEach(eventBlock => {
-			// Checkbox: toggle-checkbox jest w labelu, który jest poprzednikiem eventBlocka?
-			// Struktura DOM:
-			// div > label(toggle) > checkbox
-			// div > eventBlock
-			// Nie. W generowaniu (linia 85): container (div) -> toggle (label) -> checkbox
-			//                                               -> eventBlock
-			// Więc eventBlock.previousElementSibling to toggle.
-
 			const toggleLabel = eventBlock.previousElementSibling
-			const checkbox = toggleLabel.querySelector('input[type=checkbox]')
-
+			const checkbox = toggleLabel ? toggleLabel.querySelector('input[type=checkbox]') : null
 			if (!checkbox || !checkbox.checked) return
 
 			const miasto = eventBlock.querySelector('.miasto')
 			const miastoInne = eventBlock.querySelector('.miasto-inne')
 			const miejsce = eventBlock.querySelector('.miejsce')
 			const miejsceInne = eventBlock.querySelector('.miejsce-inne')
+			const tytul = eventBlock.querySelector('.tytul-wydarzenia')
 			const link = eventBlock.querySelector('.link')
 			const container = eventBlock.parentElement
 			const styleCbs = container.querySelectorAll('input.styl:checked')
-			// Promote checkbox teraz jest w headerze (toggle-checkbox sibling)
 			const promote = toggleLabel.querySelector('.promowane').checked
 
 			const finalMiasto = miasto.value === 'Inne' ? miastoInne.value.trim() : miasto.value
 			const finalMiejsce = miejsce.value === 'Inne' ? miejsceInne.value.trim() : miejsce.value
 			const styleTekst = [...styleCbs].map(cb => cb.value).join('/')
+			const shortTytul = tytul ? tytul.value.trim() : ''
 
-			const prefix = promote ? '⭐ ' : '➡️ '
-			dzienWiersz += `${prefix}${finalMiasto}: ${finalMiejsce} (${styleTekst})\n`
-			if (link.value.trim()) dzienWiersz += `🔗 ${link.value.trim()}\n`
-
-			wynikAnkieta += `${dzienTekst}: ${finalMiasto} - ${finalMiejsce} (${styleTekst})\n`
+			activeInDay.push({
+				miasto: finalMiasto,
+				miejsce: finalMiejsce,
+				tytul: shortTytul,
+				style: styleTekst,
+				link: link.value.trim(),
+				promote,
+			})
 		})
 
-		if (dzienWiersz) wynik += `🗓️ ${dzienTekst}:\n${dzienWiersz}\n`
+		dayEvents[dzienTekst] = activeInDay
+
+		if (activeInDay.length > 0) {
+			// Policz wystąpienia (miasto + miejsce) w tym samym dniu
+			const venueCounts = new Map()
+			activeInDay.forEach(ev => {
+				const key = `${ev.miasto.toLowerCase()}::${ev.miejsce.toLowerCase()}`
+				venueCounts.set(key, (venueCounts.get(key) || 0) + 1)
+			})
+
+			let dzienWiersz = ''
+			activeInDay.forEach(ev => {
+				const key = `${ev.miasto.toLowerCase()}::${ev.miejsce.toLowerCase()}`
+				const count = venueCounts.get(key) || 1
+				const miejsceLabel =
+					count > 1 && ev.tytul && !ev.miejsce.toLowerCase().includes(ev.tytul.toLowerCase())
+						? `${ev.miejsce}, ${ev.tytul}`
+						: ev.miejsce
+
+				const prefix = ev.promote ? '⭐ ' : '➡️ '
+				dzienWiersz += `${prefix}${ev.miasto}: ${miejsceLabel} (${ev.style})\n`
+				if (ev.link) dzienWiersz += `🔗 ${ev.link}\n`
+
+				wynikAnkieta += `${dzienTekst}: ${ev.miasto} - ${miejsceLabel} (${ev.style})\n`
+			})
+
+			wynik += `🗓️ ${dzienTekst}:\n${dzienWiersz}\n`
+		}
 	})
 
-	// Generowanie gotowego opisu posta
 	function budujOpisDlaDnia(events) {
 		if (!events || events.length === 0) return 'Na razie brak potwierdzonych ogłoszeń.'
 
@@ -1438,46 +1475,24 @@ function generujPost() {
 		return s.charAt(0).toUpperCase() + s.slice(1)
 	}
 
-	const dayEvents = {}
-	blocks.forEach(block => {
-		if (block.style.display === 'none') return
-		const containers = block.querySelectorAll('.event-block')
-		const dzienTekst = block.querySelector('h3').textContent
-		dayEvents[dzienTekst] = []
-
-		containers.forEach(eventBlock => {
-			const toggleLabel = eventBlock.previousElementSibling
-			const checkbox = toggleLabel ? toggleLabel.querySelector('input[type=checkbox]') : null
-			if (!checkbox || !checkbox.checked) return
-
-			const miasto = eventBlock.querySelector('.miasto')
-			const miastoInne = eventBlock.querySelector('.miasto-inne')
-			const miejsce = eventBlock.querySelector('.miejsce')
-			const miejsceInne = eventBlock.querySelector('.miejsce-inne')
-			const container = eventBlock.parentElement
-			const styleCbs = container.querySelectorAll('input.styl:checked')
-
-			const finalMiasto = miasto.value === 'Inne' ? miastoInne.value.trim() : miasto.value
-			const finalMiejsce = miejsce.value === 'Inne' ? miejsceInne.value.trim() : miejsce.value
-			const styleTekst = [...styleCbs].map(cb => cb.value).join('/')
-
-			dayEvents[dzienTekst].push({
-				miasto: finalMiasto,
-				miejsce: finalMiejsce,
-				style: styleTekst
-			})
-		})
-	})
-
 	const ptKey = Object.keys(dayEvents).find(k => k.includes('PIĄTEK'))
 	const sbKey = Object.keys(dayEvents).find(k => k.includes('SOBOTA'))
 	const ndKey = Object.keys(dayEvents).find(k => k.includes('NIEDZIELA'))
+
+	let weekendRangeLabel = ''
+	if (ptKey && ndKey) {
+		const ptDateMatch = ptKey.match(/\((\d{2})\.\d{2}\)/)
+		const ndDateMatch = ndKey.match(/\((\d{2}\.\d{2})\)/)
+		if (ptDateMatch && ndDateMatch) {
+			weekendRangeLabel = ` (${ptDateMatch[1]}-${ndDateMatch[1]})`
+		}
+	}
 
 	const opisPt = budujOpisDlaDnia(dayEvents[ptKey])
 	const opisSb = budujOpisDlaDnia(dayEvents[sbKey])
 	const opisNd = budujOpisDlaDnia(dayEvents[ndKey])
 
-	let gotowyPost = `🎉 Gdzie tańczymy w ten weekend?
+	const gotowyPost = `🎉 Gdzie tańczymy w ten weekend?${weekendRangeLabel}
 
 🗓️ PIĄTEK
 ${opisPt}
@@ -1486,60 +1501,30 @@ ${opisPt}
 ${opisSb}
 
 🗓️ NIEDZIELA
-${opisNd}
-
-🔗 Pełna lista imprez z linkami w pierwszym komentarzu! 👇
-
-${document.getElementById('hashtagi').value}`
+${opisNd}`
 
 	const postOpisElem = document.getElementById('post-opis')
 	if (postOpisElem) {
 		postOpisElem.value = gotowyPost
 	}
 
+	const hashtagiVal = document.getElementById('hashtagi')?.value || '#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice'
 	wynik += '@wszyscy Do zobaczenia na parkiecie! 💃🕺\n\n'
 	wynik +=
 		'📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649\n\n'
 	wynik +=
 		'📻 PS2: Chcesz posłuchać radia gdzie puszczają salsę bez reklam i w dodatku z opcją zablokowania telefonu? Masz taką opcję na naszej stronie: 👉 https://katosalsahub.pl\n\n'
 	wynik +=
-		'☕️ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
-	wynik += document.getElementById('hashtagi').value
-	document.getElementById('wynik').value = wynik
+		'☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
+	wynik += hashtagiVal
 
-	const ankietaDiv = document.getElementById('kopiuj-ankiete') || document.createElement('div')
-	ankietaDiv.id = 'kopiuj-ankiete'
-	ankietaDiv.innerHTML = ''
-
-	const sidebarContainer = document.getElementById('kopiuj-ankiete-container')
-	if (sidebarContainer) {
-		sidebarContainer.appendChild(ankietaDiv)
-	} else {
-		document.body.appendChild(ankietaDiv)
+	const wynikElem = document.getElementById('wynik')
+	if (wynikElem) {
+		wynikElem.value = wynik
 	}
 
-	wynikAnkieta
-		.trim()
-		.split('\n')
-		.filter(l => l)
-		.forEach(l => {
-			const div = document.createElement('div')
-			div.className = 'copy-line'
-			div.style.marginBottom = '5px'
-			const btn = document.createElement('button')
-			btn.textContent = '📋 ' + l
-
-			btn.onclick = () => {
-				navigator.clipboard.writeText(l)
-				btn.textContent = '✅ Skopiowano!'
-				btn.classList.add('clicked-poll')
-				setTimeout(() => {
-					btn.textContent = '✅ ' + l
-				}, 1000)
-			}
-			div.appendChild(btn)
-			ankietaDiv.appendChild(div)
-		})
+	window.latestPollText = wynikAnkieta.trim()
+	renderPollButtons(wynikAnkieta)
 }
 
 function kopiujGotowyPost() {
@@ -1550,18 +1535,43 @@ function kopiujGotowyPost() {
 		return
 	}
 	navigator.clipboard.writeText(tekst).then(() => {
-		alert('✅ Skopiowano gotowy post na FB z opisem do schowka!')
+		alert('✅ Skopiowano gotowy post na FB (Sekcja 2) do schowka!')
 	})
 }
 
 function kopiujWynik() {
-	const text = document.getElementById('wynik').value
-	navigator.clipboard.writeText(text)
-	alert('Podsumowanie do komentarza skopiowane!')
+	const text = document.getElementById('wynik')?.value || ''
+	if (!text) return
+	navigator.clipboard.writeText(text).then(() => {
+		alert('✅ Skopiowano Komentarz 1 — Weekend (Sekcja 4) do schowka!')
+	})
 }
 
-// Eksportujemy funkcje do window, aby były dostępne w HTML onclick
+function kopiujKomentarz2() {
+	const text = document.getElementById('wynik-przyszle')?.value || ''
+	if (!text) {
+		alert('Brak treści Komentarza 2 (kliknij najpierw "Wczytaj Raport KSH")!')
+		return
+	}
+	navigator.clipboard.writeText(text).then(() => {
+		alert('✅ Skopiowano Komentarz 2 — Kolejne tygodnie (Sekcja 5) do schowka!')
+	})
+}
+
+function kopiujCalaAnkiete() {
+	const text = window.latestPollText || ''
+	if (!text) {
+		alert('Brak opcji ankiety do skopiowania!')
+		return
+	}
+	navigator.clipboard.writeText(text).then(() => {
+		alert('✅ Skopiowano całą ankietę (Sekcja 3) do schowka!')
+	})
+}
+
 window.kopiujGotowyPost = kopiujGotowyPost
 window.kopiujTytul = kopiujTytul
 window.kopiujWynik = kopiujWynik
+window.kopiujKomentarz2 = kopiujKomentarz2
+window.kopiujCalaAnkiete = kopiujCalaAnkiete
 window.generujPost = generujPost

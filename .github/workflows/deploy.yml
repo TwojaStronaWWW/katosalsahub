@@ -113,10 +113,26 @@ jobs:
             -e "
               set net:timeout 60;
               set sftp:auto-confirm yes;
-              mirror -R --verbose ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
-              mirror -R --verbose ./dancepuls.pl /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }};
+              mirror -R --verbose --exclude-glob assets/data/pending_edits.json --exclude-glob assets/data/*.bak --exclude-glob assets/php/rate_limits/rate_*.json ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
+              mirror -R --verbose --exclude-glob data/*.bak --exclude-glob data/*.tmp ./dancepuls.pl /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }};
               quit
             "
+
+      - name: Cloudflare Purge Cache (Edge Invalidation)
+        if: github.ref_name == 'main'
+        env:
+          CF_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -n "$CF_ZONE" ] && [ -n "$CF_TOKEN" ]; then
+            echo "⚡ Czyszczenie pamięci podręcznej Cloudflare CDN..."
+            curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE/purge_cache" \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              -H "Content-Type: application/json" \
+              --data '{"purge_everything":true}'
+          else
+            echo "ℹ️ Pominięto Cloudflare Purge Cache (brak sekretów CLOUDFLARE_ZONE_ID / CLOUDFLARE_API_TOKEN)."
+          fi
 
       - name: Czyszczenie starych artefaktów backupów (max 2 ostatnie)
         env:

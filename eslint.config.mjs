@@ -41,6 +41,16 @@ export default [
         FileReader: "readonly",
         btoa: "readonly",
         atob: "readonly",
+        // Service Worker & Node.js globals
+        self: "readonly",
+        caches: "readonly",
+        process: "readonly",
+        require: "readonly",
+        module: "readonly",
+        exports: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+        Buffer: "readonly",
       },
     },
     rules: {

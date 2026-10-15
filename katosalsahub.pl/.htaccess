@@ -1,3 +1,5 @@
+Options -Indexes
+
 AddDefaultCharset UTF-8
 AddType 'text/html; charset=UTF-8' html
 AddType 'text/css; charset=UTF-8' css
@@ -6,6 +8,14 @@ AddType 'application/json; charset=UTF-8' json
 AddType 'application/manifest+json; charset=UTF-8' webmanifest
 AddType 'image/webp' webp
 
+# Nagłówki bezpieczeństwa OWASP / ISO 27001
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
 # Wyłączenie wyświetlania błędów PHP na środowisku produkcyjnym (ISO 27001)
 <IfModule mod_php.c>
   php_flag display_errors Off
@@ -13,7 +23,7 @@ AddType 'image/webp' webp
 </IfModule>
 
 # Blokada bezpośredniego dostępu HTTP do kolejki moderacji, kopii zapasowych i plików środowiskowych
-<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|orig|psd|sh|sql|sw[op])|~|pending_edits\.json|\.env.*)$">
+<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|orig|psd|sh|sql|sw[op]|tmp)|~|pending_edits\.json|\.env.*)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>

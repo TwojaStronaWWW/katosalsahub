@@ -5,66 +5,46 @@ description: Generator cyklicznych raportów imprez, warsztatów i festiwali tan
 
 # Kato Salsa Hub & DancePuls Reporter
 
-Zautomatyzowany generator zestawień imprezowych dla społeczności tanecznej na Śląsku oraz w Krakowie.
+Zautomatyzowany generator zestawień imprezowych dla społeczności tanecznej na Śląsku oraz w Krakowie, połączony z aplikacją webową `dancepuls.pl` i silnikiem `dancepuls.pl/tools/sync_engine.js`.
 
 ## 1. Zakres Stylów i Geografii
-- **Style:** Salsa (zwłaszcza Cubana/casino, timba, son, rueda), Bachata (wszystkie odmiany), Kizomba/Semba, tańce kubańskie.
+- **Style:** Salsa (zwłaszcza Cubana/casino, timba, son, rueda), Bachata (wszystkie odmiany), Kizomba/Semba/Urban Kiz, tańce kubańskie.
 - **Typy:** Imprezy, potańcówki (social), practisy, warsztaty, festiwale, maratony taneczne.
-- **Wykluczenia:** Zwykły grafik regularnych kursów tygodniowych.
-- **Obszar:** Całe województwo śląskie (Katowice, Gliwice, Sosnowiec, Zabrze, Tychy, Chorzów, Bielsko-Biała, Cieszyn, Żywiec, Rybnik, Częstochowa, Dąbrowa Górnicza, Siewierz, Piekary Śląskie, Szczyrk, Wisła itd.) oraz miasto Kraków.
+- **Wykluczenia:** Zwykły grafik regularnych kursów tygodniowych, czysty Zouk/WCS, lokalizacje poza woj. śląskim i Krakowem (np. Opole, Poronin, Murzasichle, Bartkowa).
+- **Obszar:** Całe województwo śląskie (Katowice, Gliwice, Sosnowiec, Zabrze, Tychy, Chorzów, Bielsko-Biała, Cieszyn, Żywiec, Rybnik, Częstochowa, Dąbrowa Górnicza, Siewierz, Piekary Śląskie, Szczyrk, Wisła, Hucisko itd.) oraz miasto Kraków.
 
-## 2. Stała Baza Danych i Narzędzia
-- **Baza główna:** `dancepuls.pl/data/events_database.md`
-- **JSON dla DancePuls:** `dancepuls.pl/data/events.json`
-- **Gotowy raport:** `dancepuls.pl/data/latest_report.md`
-- **Silnik automatyzacji:** `dancepuls.pl/tools/sync_engine.js` (uruchamiany przez `node dancepuls.pl/tools/sync_engine.js` lub `npm run report`)
-- Format bazy: `data|miejsce|nazwa|style|źródło|uwagi/organizator`.
+## 2. Stała Baza Danych, Skróty i Narzędzia
+- **Baza główna (Single Source of Truth):** `dancepuls.pl/data/events_database.md`
+  - Sekcje w bazie:
+    - `## OPIS POSTA (SEKCJA 2)` — zredagowane, naturalne zdania na `PIĄTEK|...`, `SOBOTA|...`, `NIEDZIELA|...`
+    - `## BIEŻĄCY WEEKEND (DD–DD.MM.RRRR)` — wydarzenia bieżącego weekendu (pt–nd)
+    - `## PN–CZ BIEŻĄCEGO TYGODNIA` — wydarzenia pn–cz (poza ankietą weekendową, raportowane w Sekcji 6)
+    - `## DALSZE TERMINY (KOLEJNE TYGODNIE)` — wszystkie przyszłe zapowiedzi i festiwale (Komentarz 2)
+    - `## NIEPEWNE TROPY (POZA PUBLIKACJĄ)` — tropy wymagające potwierdzenia (trafiają wyłącznie do prywatnej Sekcji 6)
+    - `## ARCHIWUM MINIONE` — zachowane minione edycje
+  - Format wiersza: `data|miejsce|nazwa|style|źródło|uwagi/organizator`
+  - Skróty linków automatycznie rozwijane przez `sync_engine.js`:
+    - `F:ID` -> `https://www.facebook.com/events/ID/`
+    - `O:ID` -> `https://onlydanceapp.com/event/ID`
+  - Skróty miejsc (`VENUE_MAP`): `LC`, `EV`, `MP`, `GR`, `KL`, `TS`, `DL`, `SA`, `FT`, `PR`, `LO`, `ZW`, `MY` (dla `MY` lokal podawany po przecinku, np. `MY,Mojitos,Mikołajska13`).
+- **JSON dla aplikacji DancePuls:** `dancepuls.pl/data/events.json`
+- **Gotowy 6-sekcyjny raport:** `dancepuls.pl/data/latest_report.md`
+- **Silnik automatyzacji:** `dancepuls.pl/tools/sync_engine.js` (uruchamiany przez `npm run report` lub `node dancepuls.pl/tools/sync_engine.js`).
 
-## 3. Sprawdzone Źródła i Agregatory
-### Kalendarze i agregatory:
-- **Sabaki:**
-  - Katowice: `https://sabaki.dance/events/Katowice`
-  - Kraków: `https://sabaki.dance/events/Krakow`
-  - Bielsko-Biała: `https://sabaki.dance/events/Bielsko-Biala`
-- **Krakowski kalendarz Sergio:** `https://events.sergiocarcamo.com/krakow/salsa-events/`
-- **OnlyDance:** `https://onlydanceapp.com/`
-- **Danzly:** `https://danz.ly/`
-- **Airdancia:** `https://airdancia.com/`
-- **Krajownik:** `https://krajownik.pl/`
-- **HappeningNext:** `https://happeningnext.com/`
-
-### Oficjalne strony organizatorów i szkół:
-- **Kato Salsa Hub:** `https://katosalsahub.pl` oraz `https://www.facebook.com/KatoSalsaHub`
-- **Mil Pasos Katowice:** `https://www.milpasoskatowice.pl/?page=wydarzenia`
-- **Spontan Latino na Paprach:** `https://spontanlatinonapaprach.pl/` oraz grupa FB
-- **DANCE#LOVEit & Corazon Bielsko:** `https://danceloveit.pl/bachata-party-bielsko/`
-- **Sabrosa Kraków:** `https://salsasabrosa.pl/`
-- **LOFToDANCE Kraków:** `https://sklep.loftodance.pl/wydarzenia`
-- **JNdance Studio:** `https://jndance.pl/`
-- **Kizz Ryders:** `https://kizzryders.com/events/`
-- **Organizatorzy obserwowani regionalnie:** La Clave, Marcepan, Good Mood, Evolution Dance, NOSPR, Nowy Dekameron, Mohito Gliwice/Tychy, Havana Rybnik, El Pachanguero Rybnik, Częstotańcz, Este Loco Częstochowa, Forum Tańca Kraków, VivaSalsa Kraków, AloCubano, KIZLAB Katowice, Dance++, Beleza Siewierz, AllDance Bielsko-Biała.
-
-### Formularz zgłoszeniowy KSH:
-- Formularz Google: `https://tiny.pl/2bc8z7649`
-- Eksport CSV z Google Sheets: `https://docs.google.com/spreadsheets/d/1sI3oU5dNLhWsK0vcct069MENk-o-XuUh9UQ7k-O7Um8/export?format=csv&gid=1833510316` (automatycznie pobierany przez `sync_engine.js`)
+## 3. Zasady Pracy Oszczędnej i Weryfikacji
+1. **Praca przyrostowa:** Zaczynaj od `dancepuls.pl/data/events_database.md`. Znanych i potwierdzonych wydarzeń NIE wyszukuj ponownie; szukaj przyrostowo nowych ogłoszeń i sygnałów zmian od ostatniego sprawdzenia.
+2. **Rotacja źródeł regionalnych:** Łącz niezależne zapytania, rotuj podregiony (Katowice/Aglomeracja, Rybnik/Gliwice/Tychy, Bielsko/Cieszyn/Żywiec, Częstochowa/Zagłębie, Kraków).
+3. **Deduplikacja:** Klucz to `nazwa + termin + miejsce + organizator`, a nie sam URL. Nie usuwaj pozycji z powodu braku w dzisiejszych wynikach wyszukiwania.
+4. **Sprawdzone źródła:**
+   - Formularz Google KSH (CSV): sprawdzany automatycznie przez `sync_engine.js`.
+   - Publiczna strona FB KSH: `https://www.facebook.com/KatoSalsaHub`.
+   - Agregatory: Sabaki (`sabaki.dance`), OnlyDance (`onlydanceapp.com`), Danzly (`danz.ly`), Airdancia (`airdancia.com`), Krajownik (`krajownik.pl`), HappeningNext (`happeningnext.com`).
+   - Oficjalne strony szkół: `milpasoskatowice.pl/?page=wydarzenia`, `spontanlatinonapaprach.pl`, `danceloveit.pl/bachata-party-bielsko/`, `salsasabrosa.pl`, `sklep.loftodance.pl/wydarzenia`, `jndance.pl`, `kizzryders.com/events/`.
 
 ## 4. Format Raportu (6 Sekcji)
-- **Sekcja 1 (PRYWATNIE):** Data, liczba pozycji, nowości, faktycznie wykonana praca, rotacje regionalne.
-- **Sekcja 2 (POST na FB):** Gotowy do wklejenia post na grupę/fanpage (po 1–2 naturalne zdania na Piątek, Sobotę, Niedzielę, Katowice na pierwszym planie, "Cubana" przez 'C').
-- **Sekcja 3 (ANKIETA):** Format linijka po linijce: `PIĄTEK (DD.MM): Miasto - Miejsce (style)` bez emoji.
-- **Sekcja 4 (KOMENTARZ 1 — weekend):** Zestawienie z bezpośrednimi linkami i stopką KSH.
-- **Sekcja 5 (KOMENTARZ 2 — przyszłość):** Zestawienie kolejnych tygodni chronologicznie ze stopką KSH.
-- **Sekcja 6 (PRYWATNIE):** Pominięcia, niepewne tropy, kolejne kroki.
-
-### Stała Stopka KSH (dla Sekcji 4 i 5):
-```text
-@wszyscy Do zobaczenia na parkiecie! 💃🕺
-
-📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649
-
-📻 PS2: Chcesz posłuchać radia gdzie puszczają salsę bez reklam i w dodatku z opcją zablokowania telefonu? Masz taką opcję na naszej stronie: 👉 https://katosalsahub.pl
-
-☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
-
-#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice
-```
+1. **Sekcja 1 (PRYWATNIE):** Data raportu, liczba pozycji (`X pt + Y sb + Z nd`), nowości w bazie vs odziedziczone, stan arkusza zgłoszeń, faktycznie wykonana praca.
+2. **Sekcja 2 (POST NA FB):** Gotowy post wg wzoru `🎉 Gdzie tańczymy w ten weekend? (DD-DD.MM)` — po 1–2 naturalne zdania na Piątek, Sobotę, Niedzielę; Katowice na pierwszym planie; warsztaty nazwane warsztatami; pisownia `Cubana` / `salsa cubana` przez `C`.
+3. **Sekcja 3 (ANKIETA):** Jedna opcja na linię bez emoji: `PIĄTEK (DD.MM): Miasto - Miejsce (style)`. Gdy w tym samym miejscu i dniu jest więcej niż 1 wydarzenie, rozróżniaj krótką nazwą imprezy (`Miasto - Miejsce, krótka nazwa (style)`).
+4. **Sekcja 4 (KOMENTARZ 1 — weekend):** Pełna lista z miejscami/stylami identycznymi z ankietą (`⭐` wyłącznie dla własnej imprezy KSH, `➡️` dla pozostałych), linkiem `🔗` i dokładną stopką KSH.
+5. **Sekcja 5 (KOMENTARZ 2 — przyszłość):** Nagłówek `🎉 Zaplanowane wydarzenia — kolejne tygodnie`, pełna chronologiczna lista zapowiedzi w formacie `🗓️ DZIEŃ (DD.MM.RRRR)` (lub zakres dla festiwali / `OD DD.MM.RRRR`), `➡️ Miasto: Miejsce, nazwa (style)`, `🔗 link` oraz dokładna stopka KSH.
+6. **Sekcja 6 (PRYWATNIE):** Wydarzenia `pn–cz` bieżącego tygodnia poza ankietą, wstrzymane/niepewne tropy z powodami, konflikty danych i kolejne konkretne kroki.

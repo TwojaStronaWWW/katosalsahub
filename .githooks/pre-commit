@@ -4,8 +4,16 @@
 
 set -e
 
-echo "🔍 [pre-commit] Uruchamianie weryfikacji jakości (npm run check)..."
+echo "🔍 [pre-commit] Uruchamianie lokalnej bramy jakościowej (Quality Gate)..."
 
+# 1. Blokada przypadkowego commitowania sekretów (.env, config/secrets.php, .htpasswd, .bak)
+if git diff --cached --name-only | grep -E "(^|/)\.env(\..+)?$|config/secrets\.php|\.htpasswd|\.bak$" | grep -v "\.env\.example$"; then
+  echo "❌ [pre-commit] Wykryto plik z wrażliwymi sekretami lub kopią zapasową w indeksie Git!"
+  echo "Usuń plik z indeksu poleceniem: git reset HEAD <plik>"
+  exit 1
+fi
+
+# 2. Uruchomienie weryfikacji składni i testów jednostkowych
 if ! npm run check; then
   echo "❌ [pre-commit] Testy lub weryfikacja składni nie powiodły się! Popraw błędy przed commitem."
   exit 1
