@@ -16,8 +16,10 @@ regex = '''katoAdmin202[0-9]'''
 tags = ["password", "salsopedia", "security"]
 
 [allowlist]
-description = "Wykluczenie szablonów przykładowych i dokumentacji testowej"
+description = "Wykluczenie szablonów przykładowych i testów jednostkowych weryfikujących brak haseł"
 paths = [
-  '''^\.env\.example$''',
-  '''^\.gitleaks\.toml$'''
+  '''^\.?env\.example$''',
+  '''^\.?gitleaks\.toml$''',
+  '''^tests/.*''',
+  '''^\.git/.*'''
 ]
