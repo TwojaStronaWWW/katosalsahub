@@ -960,3 +960,23 @@
   border-color: var(--yellow);
 }
 
+/* --- Wewnętrzne hiperłącza encyklopedyczne (styl Wikipedii) --- */
+.wiki-inline-link {
+  color: #fbbf24;
+  text-decoration: underline;
+  text-decoration-color: rgba(251, 191, 36, 0.45);
+  text-underline-offset: 3px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease, background-color 0.2s ease;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
+.wiki-inline-link:hover {
+  color: #fff;
+  background-color: rgba(251, 191, 36, 0.2);
+  text-decoration-color: #fbbf24;
+}
+
+

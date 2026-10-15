@@ -107,5 +107,22 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         assert.ok(Array.isArray(entry.category) && entry.category.length > 0, `Hasło ${entry.term} nie ma kategorii`);
       }
     });
+
+    it('salsopedia.json powinna zawierać szkoły tańca (schools), instruktorów (instructors) oraz przetłumaczone na polski etykiety źródeł', () => {
+      const entries = JSON.parse(fs.readFileSync(SALSOPEDIA_JSON, 'utf-8'));
+      const schools = entries.filter(e => Array.isArray(e.category) && e.category.includes('schools'));
+      const instructors = entries.filter(e => Array.isArray(e.category) && e.category.includes('instructors'));
+
+      assert.ok(schools.length >= 8, `Oczekiwano min. 8 szkół tańca w Katowicach/Śląsku, znaleziono: ${schools.length}`);
+      assert.ok(instructors.length >= 8, `Oczekiwano min. 8 instruktorów, znaleziono: ${instructors.length}`);
+
+      const rawJson = fs.readFileSync(SALSOPEDIA_JSON, 'utf-8');
+      assert.doesNotMatch(rawJson, /"Rueda Logic"|'Rueda Logic'|"Spanish Terms"|"Casino Essentials"/, 'W salsopedia.json pozostały nieprzetłumaczone angielskie etykiety źródeł');
+
+      const wikiJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'wiki.js'), 'utf-8');
+      assert.match(wikiJs, /linkifyDefinition/, 'Brak silnika automatycznego linkowania słów kluczowych (linkifyDefinition) w wiki.js');
+      assert.match(wikiJs, /wiki-inline-link/, 'Brak klasy .wiki-inline-link dla linków wewnętrznych Salsopedii');
+    });
   });
 });
+

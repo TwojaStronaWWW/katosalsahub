@@ -29,6 +29,7 @@ const CATEGORY_NAMES = {
     'instruments': 'Instrumenty',
     'history': 'Historia',
     'gods': 'Bogowie (Orishas)',
+    'bands': 'Zespoły i Artyści',
     'instructors': 'Instruktorzy',
     'schools': 'Szkoły Tańca'
 };
@@ -311,6 +312,9 @@ function setupEventListeners() {
 
             if (action === 'filter-cat' && cat) {
                 setActiveCategory(cat);
+            } else if (action === 'jump-term' && id) {
+                e.preventDefault();
+                jumpToTermCard(id);
             } else if (action === 'verify' && id) {
                 window.openVerifyModal(id);
             } else if (action === 'approve' && id) {
@@ -509,9 +513,9 @@ function createTermCard(item, isPending = false) {
             const name = typeof src === 'object' ? (src.name || 'Źródło') : src;
             const url = typeof src === 'object' ? src.url : '';
             if (url && url.startsWith('http')) {
-                sourcesHtml += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="source-pill"><i class="fas fa-external-link-alt"></i> ${name}</a>`;
+                sourcesHtml += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Źródło / odnośnik zewnętrzny: ${escapeHtml(name)}"><i class="fas fa-external-link-alt"></i> ${escapeHtml(name)}</a>`;
             } else if (name) {
-                sourcesHtml += `<span class="source-pill"><i class="fas fa-book-open"></i> ${name}</span>`;
+                sourcesHtml += `<span class="source-pill" title="Źródło merytoryczne / dziedzina: ${escapeHtml(name)}"><i class="fas fa-book-open"></i> ${escapeHtml(name)}</span>`;
             }
         });
         sourcesHtml += '</div>';
@@ -563,7 +567,7 @@ function createTermCard(item, isPending = false) {
             ${badgesHtml}
         </div>
         <div class="definition">
-            ${item.definition || ''}
+            ${linkifyDefinition(item.definition || '', item.id)}
         </div>
         ${sourcesHtml}
         <div class="wiki-card-footer">
@@ -1070,6 +1074,220 @@ function scrollToTerm(id) {
     }
 }
 
+function jumpToTermCard(id) {
+    let card = document.getElementById(`card-${id}`);
+    if (!card) {
+        // Jeśli hasło jest ukryte przez filtr kategorii lub wyszukiwarkę, zresetuj widok
+        AppState.activeCategory = 'all';
+        AppState.searchQuery = '';
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) searchInput.value = '';
+        const clearBtn = document.getElementById('clearSearchBtn');
+        if (clearBtn) clearBtn.classList.add('is-hidden');
+        document.querySelectorAll('#categoryList li').forEach(li => {
+            li.classList.toggle('active', li.dataset.category === 'all');
+        });
+        const badge = document.getElementById('activeFilterBadge');
+        if (badge) badge.textContent = CATEGORY_NAMES['all'];
+        const resetBtn = document.getElementById('resetFilterBtn');
+        if (resetBtn) resetBtn.classList.add('is-hidden');
+        renderCurrentView();
+    }
+    scrollToTerm(id);
+}
+
+// --- Silnik Auto-Linkowania Słów Kluczowych (Wikipedia-style Cross-Linking) ---
+
+const POLISH_KEYWORD_ALIASES = {
+    'Rueda de Casino': ['Rueda de Casino', 'Rueda', 'Ruedzie', 'Ruedy', 'Ruedę', 'Ruedą'],
+    'Casino': ['Salsa Cubana', 'Salsy Kubańskiej', 'Salsie Kubańskiej', 'Salsę Kubańską', 'Casino'],
+    'Salsa': ['Salsa', 'Salsy', 'Salsie', 'Salsę', 'Salsą'],
+    'Timba': ['Timba', 'Timby', 'Timbie', 'Timbę', 'Timbą'],
+    'Son': ['Son Cubano', 'Sonu', 'Sonie', 'Son'],
+    'Rumba': ['Rumba', 'Rumby', 'Rumbie', 'Rumbę', 'Rumbą'],
+    'Guaguancó': ['Guaguancó', 'Guaguanco'],
+    'Columbia': ['Columbia', 'Columbii', 'Columbię'],
+    'Yambú': ['Yambú', 'Yambu'],
+    'Clave': ['Clave'],
+    'Dile Que No (DQN)': ['Dile Que No', 'DQN'],
+    'Guapea': ['Guapea', 'Guapei', 'Guapeę'],
+    'Enchufla': ['Enchufla', 'Enchufli', 'Enchuflę'],
+    'Vacilala': ['Vacilala', 'Vacilali', 'Vacilalę'],
+    'Setenta (70)': ['Setenta', 'Setenty', 'Setencie'],
+    'Sombrero': ['Sombrero'],
+    'Dame (Dame Una)': ['Dame Una', 'Dame Dos', 'Dame'],
+    'Adiós (Prima)': ['Adiós', 'Prima'],
+    'Orishas': ['Orishas', 'Orisha', 'Oriszów', 'Orisze'],
+    'Santería': ['Santería', 'Santerii', 'Santerię', 'Santeria'],
+    'Bata': ['Bata', 'Batá'],
+    'Conga': ['Conga', 'Congi', 'Cong'],
+    'Bongosy': ['Bongosy', 'Bongosów', 'Bongosach'],
+    'Timbales': ['Timbales', 'Timbalesy', 'Timbalesów'],
+    'Tres': ['Tres'],
+    'Güiro': ['Güiro', 'Guiro'],
+    'Marakasy': ['Marakasy', 'Marakasów'],
+    'Campana': ['Campana', 'Campany'],
+    'Despelote': ['Despelote'],
+    'Tembleque': ['Tembleque'],
+    "P'al Medio (Pa'l Medio)": ["P'al Medio", "Pa'l Medio"],
+    'Tarraxa / Tarraxinha': ['Tarraxa', 'Tarraxinha', 'Tarraxinhi'],
+    'Saída': ['Saída', 'Saida', 'Saidy'],
+    'Semba': ['Semba', 'Semby', 'Sembie', 'Sembę'],
+    'Reggaeton': ['Reggaeton', 'Reggaetonu', 'Reggaetonie', 'Cubaton', 'Cubatonu'],
+    'Cha-cha-chá': ['Cha-cha-chá', 'Cha-cha', 'Cha-chy'],
+    'Mambo': ['Mambo'],
+    'Son Montuno': ['Son Montuno', 'Montuno'],
+    'Changüí': ['Changüí', 'Changui'],
+    'Danzón': ['Danzón', 'Danzon', 'Danzonu'],
+    'Contratiempo': ['Contratiempo'],
+    'A Tiempo': ['A Tiempo'],
+    'Bomba': ['Bomba', 'Bomby'],
+    'Pilon': ['Pilon', 'Pilón'],
+    'Songo': ['Songo'],
+    'Cantante': ['Cantante'],
+    'Coro': ['Coro'],
+    'Pregón': ['Pregón', 'Pregon'],
+    'Tumbao': ['Tumbao'],
+    'Musicality': ['Musicality', 'Muzykalność', 'Muzykalności'],
+    'La Clave (Katowice)': ['La Clave'],
+    'Mil Pasos (Katowice)': ['Mil Pasos'],
+    'Evolution Dance Studio (Katowice)': ['Evolution Dance Studio'],
+    'KIZLAB (Katowice)': ['KIZLAB'],
+    'VAMULA.pl Akademia Kizomby (Katowice)': ['VAMULA.pl', 'Vamula'],
+    'Gravitacja / Dance Plus Plus (Katowice)': ['Gravitacja', 'Dance Plus Plus'],
+    'Dolina Trzech Stawów — Kato Salsa Hub (Katowice)': ['Dolina Trzech Stawów', 'Doliny Trzech Stawów', 'Dolinie Trzech Stawów', 'Kato Salsa Hub'],
+    'Śląska Szkoła Tańca Dariusz Kurzeja (Katowice / Śląsk)': ['Śląska Szkoła Tańca', 'Śląskiej Szkoły Tańca', 'Śląską Szkołę Tańca'],
+    'Szkoła Tańca Mohito (Gliwice / Tychy)': ['Szkoła Tańca Mohito', 'Mohito'],
+    'DANCE#LOVEit & Corazon (Bielsko-Biała)': ['DANCE#LOVEit', 'Corazon'],
+    'Pedro y Bella': ['Pedro y Bella', 'Pedro'],
+    'Ela Stępień': ['Ela Stępień', 'Eli Stępień', 'Elę Stępień'],
+    'Michał Rozewski': ['Michał Rozewski', 'Michała Rozewskiego', 'Michałem Rozewskim'],
+    'Daniel Rojewski': ['Daniel Rojewski', 'Daniela Rojewskiego', 'Danielem Rojewskim'],
+    'Maja Modliszewska': ['Maja Modliszewska', 'Mai Modliszewskiej', 'Mają Modliszewską'],
+    'Regla (Kuba / Katowice)': ['Regla', 'Regli', 'Reglą'],
+    'Ania „Ana” Kurowska': ['Ania „Ana” Kurowska', 'Anią „Aną” Kurowską', 'Ani Kurowskiej', 'Ania Kurowska'],
+    'Dariusz Kurzeja': ['Dariusz Kurzeja', 'Dariusza Kurzei', 'Dariuszem Kurzeją'],
+    'Damian Ratajczak (FeelTheSalsa)': ['Damian Ratajczak', 'Damiana Ratajczaka', 'FeelTheSalsa'],
+    'Leidel Portuondo (Kuba)': ['Leidel Portuondo', 'Leidela Portuondo']
+};
+
+const GEO_IGNORE_TOKENS = new Set([
+    'katowice', 'kuba', 'śląsk', 'gliwice / tychy', 'bielsko-biała',
+    'katowice / śląsk', 'kuba / katowice', 'w salsie', 'orishas', '70'
+]);
+
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function buildKeywordEntries(terms) {
+    const entries = [];
+    const seenPhraseLower = new Set();
+
+    const addEntry = (phrase, termObj) => {
+        const clean = (phrase || '').trim();
+        if (clean.length < 3) return;
+        const lower = clean.toLowerCase();
+        if (GEO_IGNORE_TOKENS.has(lower)) return;
+        if (seenPhraseLower.has(lower)) return;
+        seenPhraseLower.add(lower);
+        entries.push({
+            phrase: clean,
+            lower,
+            id: termObj.id,
+            term: termObj.term
+        });
+    };
+
+    (terms || []).forEach(t => {
+        if (!t || !t.id || !t.term) return;
+        addEntry(t.term, t);
+
+        // Warianty z polskiego słownika odmian fleksyjnych
+        const aliases = POLISH_KEYWORD_ALIASES[t.term];
+        if (Array.isArray(aliases)) {
+            aliases.forEach(a => addEntry(a, t));
+        }
+
+        // Nazwa bazowa przed nawiasem lub myślnikiem, np. "La Clave (Katowice)" -> "La Clave"
+        const parenMatch = t.term.match(/^([^(—]+?)\s*(?:\(([^)]+)\)|—\s*(.+))$/);
+        if (parenMatch) {
+            addEntry(parenMatch[1], t);
+            if (parenMatch[2] && !GEO_IGNORE_TOKENS.has(parenMatch[2].trim().toLowerCase())) {
+                addEntry(parenMatch[2], t);
+            }
+        }
+
+        // Nazwy rozdzielone ukośnikiem, np. "Eleguá / Eleggua"
+        if (t.term.includes('/')) {
+            t.term.split('/').forEach(part => {
+                const cleaned = part.replace(/\([^)]*\)/g, '').trim();
+                addEntry(cleaned, t);
+            });
+        }
+    });
+
+    // Sortuj od najdłuższych fraz do najkrótszych, aby "Rueda de Casino" miało priorytet przed "Rueda" i "Casino"
+    entries.sort((a, b) => b.phrase.length - a.phrase.length);
+    return entries;
+}
+
+function linkifyDefinition(rawText, currentItemId = '') {
+    if (!rawText) return '';
+    const terms = AppState.terms || [];
+    if (terms.length === 0) return escapeHtml(rawText);
+
+    const entries = buildKeywordEntries(terms);
+    const linkedTargetIds = new Set();
+    if (currentItemId) linkedTargetIds.add(currentItemId);
+
+    const placeholders = [];
+    const storePlaceholder = (html) => {
+        const token = `\u0000WIKILINK_${placeholders.length}\u0000`;
+        placeholders.push(html);
+        return token;
+    };
+
+    // 1. Obsługa jawnych linków w nawiasach kwadratowych: [Hasło]
+    let workingText = String(rawText).replace(/\[([^\][]+)\]/g, (match, inner) => {
+        const cleanInner = inner.trim();
+        const lowerInner = cleanInner.toLowerCase();
+        const found = entries.find(e => e.lower === lowerInner) ||
+            terms.find(t => t.term && t.term.toLowerCase().includes(lowerInner));
+        if (found && found.id !== currentItemId) {
+            linkedTargetIds.add(found.id);
+            const targetTitle = found.term || cleanInner;
+            return storePlaceholder(
+                `<a href="#card-${escapeHtml(found.id)}" class="wiki-inline-link" data-action="jump-term" data-id="${escapeHtml(found.id)}" title="Przejdź do hasła: ${escapeHtml(targetTitle)}">${escapeHtml(cleanInner)}</a>`
+            );
+        }
+        return cleanInner;
+    });
+
+    // 2. Automatyczne wykrywanie słów kluczowych w tekście (pierwsze wystąpienie danego hasła, jak w Wikipedii)
+    for (const entry of entries) {
+        if (linkedTargetIds.has(entry.id)) continue;
+
+        const pattern = new RegExp(
+            `(?<![\\p{L}\\p{N}_\\u0000])(${escapeRegex(entry.phrase)})(?![\\p{L}\\p{N}_\\u0000])`,
+            'iu'
+        );
+
+        if (pattern.test(workingText)) {
+            workingText = workingText.replace(pattern, (matchedText) => {
+                linkedTargetIds.add(entry.id);
+                return storePlaceholder(
+                    `<a href="#card-${escapeHtml(entry.id)}" class="wiki-inline-link" data-action="jump-term" data-id="${escapeHtml(entry.id)}" title="Przejdź do hasła: ${escapeHtml(entry.term)}">${escapeHtml(matchedText)}</a>`
+                );
+            });
+        }
+    }
+
+    // 3. Escape pozostałego zwykłego tekstu i przywrócenie bezpiecznych znaczników <a>
+    const escapedText = escapeHtml(workingText);
+    return escapedText.replace(/\u0000WIKILINK_(\d+)\u0000/g, (_, idx) => placeholders[Number(idx)] || '');
+}
+
 function debounce(func, wait) {
     let timeout;
     return function (...args) {
@@ -1108,3 +1326,5 @@ window.mountWiki = mountWiki;
 window.fetchTerms = fetchTerms;
 window.switchViewMode = switchViewMode;
 window.setActiveCategory = setActiveCategory;
+window.linkifyDefinition = linkifyDefinition;
+window.jumpToTermCard = jumpToTermCard;
