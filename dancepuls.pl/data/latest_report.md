@@ -2,7 +2,7 @@
 Rozpoczynam nową edycji na weekend **09–11.10.2026**.
 - Z bazy przeniesiono **11 pozycji** na nadchodzący weekend (5 pt, 3 sb, 3 nd).
 - Miniony weekend (02–04.10) zarchiwizowany w bazie.
-- Nowe zgłoszenia z formularza: brak nowych zgłoszeń w arkuszu.
+- Nowe zgłoszenia z formularza: https://www.facebook.com/events/770886418668167/, clave, https://zabrze.com.pl/artykuly/artykul/latino-pod-chmurka-w-zabrzu-w-piatek-odbedzie-sie-potancowka-na-placu-teatralnym?fbclid=IwdGRjcAUZF1ljbGNrBRkXUHBkb2YBZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMzUwNjg1NTMxNzI4AAEewv8xg3R1jnmM1CmuULeuhVIip33CaeCUMLX2mMW6CVHmyeo-RtPSo4x5ZBA_aem_eszY5TPvflkGax4IlgY3Ew.
 - Rotacja regionalna: baza zawiera pozycje z Katowic, Piekar Śląskich, Gliwic, Rybnika, Częstochowy, Bielska-Białej, Szczyrku, Wisły oraz Krakowa.
 
 ---
