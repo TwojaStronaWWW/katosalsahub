@@ -1,5 +1,5 @@
 /**
- * KATO SALSA HUB - SALSOPEDIA WIKI ENGINE (v15 - Production Enterprise)
+ * KATO SALSA HUB - SALSOPEDIA WIKI ENGINE (v16 - ISO 27001 Secure Session & CSRF)
  * Moduł Bazy Wiedzy, Wyszukiwania, Społecznościowego Zgłaszania i Moderacji
  * Zero-dependency Vanilla JS, Platform-First Architecture.
  */
@@ -14,7 +14,7 @@ const AppState = {
     searchQuery: '',
     viewMode: 'live', // 'live' | 'pending'
     isAdmin: false,
-    adminPassword: '',
+    csrfToken: '',
     isInitialized: false,
     currentModalMode: 'new' // 'new' | 'verify' | 'admin_edit_live' | 'admin_edit_pending'
 };
@@ -39,11 +39,10 @@ async function mountWiki() {
     const root = document.getElementById('wikiGrid');
     if (!root) return;
 
-    // Odczytaj zapisaną sesję administratora
-    const cachedPass = sessionStorage.getItem('kato_admin_pass');
-    if (cachedPass) {
-        AppState.isAdmin = true;
-        AppState.adminPassword = cachedPass;
+    // Sprawdź aktywną sesję administratora przez ciasteczko HttpOnly i token CSRF
+    const cachedCsrf = sessionStorage.getItem('kato_csrf_token');
+    if (cachedCsrf) {
+        await verifyExistingAdminSession(cachedCsrf);
     }
 
     setupEventListeners();
@@ -54,16 +53,51 @@ async function mountWiki() {
     await fetchTerms();
 
     if (AppState.isAdmin) {
-        await fetchPendingTerms(AppState.adminPassword);
+        await fetchPendingTerms();
     }
     toggleLoading(false);
 
-    // Sprawdź czy w URL jest parametr ?term=
+    // Sprawdź parametry URL (?term= lub ?admin=1)
     const urlParams = new URLSearchParams(window.location.search);
     const termId = urlParams.get('term');
     if (termId) {
         setTimeout(() => scrollToTerm(termId), 400);
     }
+    if (urlParams.get('admin') === '1' || window.location.hash === '#admin') {
+        const modBtn = document.getElementById('showPendingBtn');
+        if (modBtn) modBtn.classList.remove('is-hidden');
+        if (!AppState.isAdmin) {
+            window.openAdminLoginModal();
+        }
+    }
+}
+
+async function verifyExistingAdminSession(cachedCsrf) {
+    try {
+        const res = await fetch(API_URL + '?action=check_auth', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': cachedCsrf
+            },
+            body: JSON.stringify({})
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (data.success && data.authenticated) {
+                AppState.isAdmin = true;
+                AppState.csrfToken = data.csrf_token || cachedCsrf;
+                sessionStorage.setItem('kato_csrf_token', AppState.csrfToken);
+                return;
+            }
+        }
+    } catch (e) {
+        // Ignoruj błąd połączenia w trybie statycznym
+    }
+    AppState.isAdmin = false;
+    AppState.csrfToken = '';
+    sessionStorage.removeItem('kato_csrf_token');
 }
 
 // --- Pobieranie Danych ---
@@ -72,7 +106,7 @@ async function fetchTerms() {
     try {
         let data = null;
         try {
-            const res = await fetch(API_URL + '?action=list');
+            const res = await fetch(API_URL + '?action=list', { credentials: 'same-origin' });
             if (res.ok) {
                 const json = await res.json();
                 if (Array.isArray(json)) data = json;
@@ -81,7 +115,6 @@ async function fetchTerms() {
             console.warn('[Salsopedia] Backend PHP niedostępny, używam bazy statycznej JSON:', e.message);
         }
 
-        // Fallback do pliku statycznego (np. środowisko deweloperskie bez PHP)
         if (!data) {
             const fallbackRes = await fetch(STATIC_FALLBACK_URL);
             if (fallbackRes.ok) {
@@ -102,20 +135,24 @@ async function fetchTerms() {
         if (grid) {
             grid.innerHTML = `
                 <div class="no-results">
-                    <p style="color: var(--red);">Nie udało się wczytać bazy haseł.</p>
-                    <button class="btn btn-secondary btn-sm" onclick="fetchTerms()">Spróbuj ponownie</button>
+                    <p>Nie udało się wczytać bazy haseł.</p>
+                    <button class="btn btn-secondary btn-sm" data-action="retry-fetch">Spróbuj ponownie</button>
                 </div>`;
         }
     }
 }
 
-async function fetchPendingTerms(password) {
-    if (!password) return;
+async function fetchPendingTerms() {
+    if (!AppState.isAdmin) return;
     try {
         const res = await fetch(API_URL + '?action=pending', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
+            body: JSON.stringify({ csrf_token: AppState.csrfToken })
         });
         if (res.ok) {
             const data = await res.json();
@@ -179,15 +216,22 @@ function setupEventListeners() {
     const noResultsAddBtn = document.getElementById('noResultsAddBtn');
     if (noResultsAddBtn) noResultsAddBtn.addEventListener('click', () => window.openModal('new'));
 
-    // 5. Panel Moderacji / Oczekujące
+    // 5. Panel Moderacji / Oczekujące (oraz skrót Ctrl+Shift+M dla moderatora)
     const showPendingBtn = document.getElementById('showPendingBtn');
     if (showPendingBtn) {
         showPendingBtn.addEventListener('click', () => handleModerationButtonClick());
     }
 
-    const footerAdminBtn = document.getElementById('footerAdminBtn');
-    if (footerAdminBtn) {
-        footerAdminBtn.addEventListener('click', () => handleModerationButtonClick());
+    if (!AppState.isInitialized) {
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'M' || e.key === 'm')) {
+                e.preventDefault();
+                const modBtn = document.getElementById('showPendingBtn');
+                if (modBtn) modBtn.classList.remove('is-hidden');
+                handleModerationButtonClick();
+            }
+        });
+        AppState.isInitialized = true;
     }
 
     // 6. Przyciski Admin Toolbara
@@ -281,6 +325,8 @@ function setupEventListeners() {
                 window.deleteLiveTerm(id);
             } else if (action === 'switch-live') {
                 switchViewMode('live');
+            } else if (action === 'retry-fetch') {
+                fetchTerms();
             }
         });
     }
@@ -301,11 +347,11 @@ function setupEventListeners() {
 function setupChipsInteractions(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    container.onclick = (e) => {
+    container.addEventListener('click', (e) => {
         const chip = e.target.closest('.chip');
         if (!chip) return;
         chip.classList.toggle('active');
-    };
+    });
 }
 
 // --- Filtrowanie i Renderowanie ---
@@ -313,17 +359,14 @@ function setupChipsInteractions(containerId) {
 function setActiveCategory(cat) {
     AppState.activeCategory = cat;
 
-    // Przełącz widok na live jeśli byliśmy w pending
     if (AppState.viewMode === 'pending') {
         switchViewMode('live');
     }
 
-    // Zaktualizuj listę w sidebarze
     document.querySelectorAll('#categoryList li').forEach(li => {
         li.classList.toggle('active', li.dataset.category === cat);
     });
 
-    // Zaktualizuj badge w widoku
     const badge = document.getElementById('activeFilterBadge');
     if (badge) badge.textContent = CATEGORY_NAMES[cat] || cat;
 
@@ -371,7 +414,6 @@ function renderCurrentView() {
 function renderLiveTerms(grid, noResults, countEl) {
     let list = [...AppState.terms];
 
-    // Filtr kategorii
     if (AppState.activeCategory !== 'all') {
         list = list.filter(item => {
             const cats = Array.isArray(item.category) ? item.category : [item.category];
@@ -379,7 +421,6 @@ function renderLiveTerms(grid, noResults, countEl) {
         });
     }
 
-    // Filtr wyszukiwania
     if (AppState.searchQuery) {
         const q = AppState.searchQuery;
         list = list.filter(item =>
@@ -389,7 +430,6 @@ function renderLiveTerms(grid, noResults, countEl) {
         );
     }
 
-    // Sortowanie A-Z
     list.sort((a, b) => (a.term || '').localeCompare(b.term || '', 'pl', { sensitivity: 'base' }));
 
     if (countEl) {
@@ -416,8 +456,8 @@ function renderPendingTerms(grid, noResults, countEl) {
 
     if (list.length === 0) {
         grid.innerHTML = `
-            <div class="no-results" style="grid-column: 1 / -1;">
-                <i class="fas fa-check-circle fa-3x" style="color: #10b981; margin-bottom: 12px;"></i>
+            <div class="no-results">
+                <i class="fas fa-check-circle fa-3x no-results-icon"></i>
                 <h3>Kolejka moderacji jest pusta</h3>
                 <p>Wszystkie nadesłane propozycje haseł zostały zweryfikowane!</p>
                 <button class="btn btn-secondary btn-sm" data-action="switch-live">Wróć do bazy wiedzy</button>
@@ -435,7 +475,6 @@ function createTermCard(item, isPending = false) {
     card.className = `wiki-card ${isPending ? 'pending-card' : ''}`;
     card.id = `card-${item.id}`;
 
-    // Wstążka stanu pending
     let ribbonHtml = '';
     if (isPending) {
         const act = item.pending_action || 'new';
@@ -443,14 +482,12 @@ function createTermCard(item, isPending = false) {
         ribbonHtml = `<span class="pending-ribbon"><i class="fas fa-clock"></i> ${label}</span>`;
     }
 
-    // Odznaka zweryfikowania
     let verifiedHtml = '';
     if (item.status === 'verified') {
         const count = item.verification_count || 1;
         verifiedHtml = `<span class="status-verified" title="Zweryfikowane przez ${count} instruktorów/moderatorów"><i class="fas fa-check"></i> ${count}</span>`;
     }
 
-    // Kategorie
     let badgesHtml = '';
     const cats = Array.isArray(item.category) ? item.category : [item.category];
     cats.forEach(c => {
@@ -464,7 +501,6 @@ function createTermCard(item, isPending = false) {
         badgesHtml += `<span class="cat-badge sub-cat">${s}</span>`;
     });
 
-    // Źródła
     let sourcesHtml = '';
     const sources = Array.isArray(item.source) ? item.source : (item.source ? [item.source] : []);
     if (sources.length > 0) {
@@ -481,13 +517,11 @@ function createTermCard(item, isPending = false) {
         sourcesHtml += '</div>';
     }
 
-    // Autor
     let authorHtml = `<span class="author-meta">Autor: <strong>${item.author || 'Społeczność'}</strong></span>`;
     if (item.author_link && item.author_link.startsWith('http')) {
         authorHtml = `<span class="author-meta">Autor: <a href="${item.author_link}" target="_blank" rel="noopener noreferrer"><strong>${item.author}</strong> <i class="fas fa-link"></i></a></span>`;
     }
 
-    // Akcje w stopce karty (zgodne z SoC - delegacja zdarzeń data-action)
     let actionsHtml = '';
     if (isPending) {
         actionsHtml = `
@@ -590,26 +624,26 @@ window.openModal = function (mode = 'new', termData = null) {
         msgBox.className = 'form-message-box is-hidden';
     }
 
-    // Wyczyść źródła
     const sourceContainer = document.getElementById('sourceContainer');
     if (sourceContainer) sourceContainer.innerHTML = '';
 
-    // Zresetuj chipy
     resetChips('categoryChips');
     resetChips('subcategoryChips');
 
-    // Domyślny tryb
     document.getElementById('termId').value = '';
     document.getElementById('isVerification').value = '';
     document.getElementById('formAdminDirect').value = '';
 
-    if (mode === 'new') {
+    if (mode === 'new' || mode === 'admin_direct') {
         title.innerHTML = '<i class="fas fa-plus-circle"></i> Zaproponuj nowe hasło';
         submitBtn.innerHTML = AppState.isAdmin
             ? '<i class="fas fa-save"></i> Zapisz bezpośrednio w bazie'
             : '<i class="fas fa-paper-plane"></i> Wyślij do moderacji';
         activateChips('categoryChips', ['dance']);
         window.addSourceRow();
+        if (mode === 'admin_direct') {
+            AppState.currentModalMode = 'admin_edit_live';
+        }
     } else if (mode === 'verify' && termData) {
         title.innerHTML = '<i class="fas fa-pencil-alt"></i> Zgłoś poprawkę do hasła';
         submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Prześlij propozycję poprawki';
@@ -642,15 +676,12 @@ function populateModalWithTerm(term) {
     document.getElementById('authorLinkInput').value = term.author_link || '';
     document.getElementById('userCategoryInput').value = term.user_category || '';
 
-    // Kategorie
     const cats = Array.isArray(term.category) ? term.category : [term.category];
     activateChips('categoryChips', cats);
 
-    // Podkategorie
     const subs = Array.isArray(term.subcategory) ? term.subcategory : (term.subcategory ? [term.subcategory] : []);
     activateChips('subcategoryChips', subs);
 
-    // Źródła
     const sources = Array.isArray(term.source) ? term.source : (term.source ? [term.source] : []);
     if (sources.length > 0) {
         sources.forEach(s => {
@@ -719,7 +750,6 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    // Źródła
     const sources = [];
     const nameInputs = form.querySelectorAll('input[name="source_name[]"]');
     const urlInputs = form.querySelectorAll('input[name="source_url[]"]');
@@ -751,9 +781,13 @@ async function handleFormSubmit(e) {
         if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_live') {
             const res = await fetch(API_URL + '?action=admin_save', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': AppState.csrfToken
+                },
                 body: JSON.stringify({
-                    password: AppState.adminPassword,
+                    csrf_token: AppState.csrfToken,
                     entry: payload
                 })
             });
@@ -772,9 +806,13 @@ async function handleFormSubmit(e) {
         if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_pending') {
             const res = await fetch(API_URL + '?action=moderate', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': AppState.csrfToken
+                },
                 body: JSON.stringify({
-                    password: AppState.adminPassword,
+                    csrf_token: AppState.csrfToken,
                     id: payload.id,
                     action: 'approve',
                     updated_entry: payload
@@ -784,7 +822,7 @@ async function handleFormSubmit(e) {
             if (result.success) {
                 showMessage(msgBox, 'success', 'Zgłoszenie poprawione i pomyślnie zatwierdzone!');
                 await fetchTerms();
-                await fetchPendingTerms(AppState.adminPassword);
+                await fetchPendingTerms();
                 setTimeout(() => {
                     window.closeModal();
                     switchViewMode('live');
@@ -795,11 +833,12 @@ async function handleFormSubmit(e) {
             return;
         }
 
-        // Scenariusz 3: Normalne zgłoszenie społeczności (lub fallback w local dev)
+        // Scenariusz 3: Normalne zgłoszenie społeczności
         let responseSuccess = false;
         try {
             const res = await fetch(API_URL + '?action=submit', {
                 method: 'POST',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
@@ -810,7 +849,6 @@ async function handleFormSubmit(e) {
                 showMessage(msgBox, 'error', result.error || 'Wystąpił błąd podczas wysyłania.');
             }
         } catch (netErr) {
-            // Obsługa podglądu lokalnego bez PHP
             console.warn('[Salsopedia] Brak aktywnego backendu PHP. Symulacja zapisu lokalnego:', netErr.message);
             responseSuccess = true;
         }
@@ -854,46 +892,50 @@ window.closeAdminLoginModal = function () {
 
 async function handleAdminLoginSubmit(e) {
     e.preventDefault();
-    const pass = document.getElementById('adminPasswordInput').value.trim();
+    const passInput = document.getElementById('adminPasswordInput');
+    const pass = passInput ? passInput.value.trim() : '';
     const msg = document.getElementById('adminLoginMessage');
 
     try {
         const res = await fetch(API_URL + '?action=check_auth', {
             method: 'POST',
+            credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password: pass })
         });
         const result = await res.json();
-        if (result.success) {
+        if (result.success && result.authenticated) {
             AppState.isAdmin = true;
-            AppState.adminPassword = pass;
-            sessionStorage.setItem('kato_admin_pass', pass);
+            AppState.csrfToken = result.csrf_token || '';
+            if (AppState.csrfToken) {
+                sessionStorage.setItem('kato_csrf_token', AppState.csrfToken);
+            }
+            if (passInput) passInput.value = '';
             updateAdminToolbar();
             window.closeAdminLoginModal();
-            await fetchPendingTerms(pass);
+            await fetchPendingTerms();
             switchViewMode('pending');
         } else {
-            showMessage(msg, 'error', 'Niepoprawne hasło administratora!');
+            showMessage(msg, 'error', result.error || 'Niepoprawne hasło administratora!');
         }
     } catch (err) {
-        // Local dev fallback na domyślne hasło
-        if (pass === 'katoAdmin2024') {
-            AppState.isAdmin = true;
-            AppState.adminPassword = pass;
-            sessionStorage.setItem('kato_admin_pass', pass);
-            updateAdminToolbar();
-            window.closeAdminLoginModal();
-            switchViewMode('pending');
-        } else {
-            showMessage(msg, 'error', 'Błąd weryfikacji hasła.');
-        }
+        showMessage(msg, 'error', 'Brak połączenia z serwerem autoryzacji.');
     }
 }
 
-function logoutAdmin() {
+async function logoutAdmin() {
+    try {
+        await fetch(API_URL + '?action=logout', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'X-CSRF-Token': AppState.csrfToken }
+        });
+    } catch (e) {
+        // Ignoruj błędy sieci przy wylogowaniu
+    }
     AppState.isAdmin = false;
-    AppState.adminPassword = '';
-    sessionStorage.removeItem('kato_admin_pass');
+    AppState.csrfToken = '';
+    sessionStorage.removeItem('kato_csrf_token');
     updateAdminToolbar();
     switchViewMode('live');
 }
@@ -903,9 +945,13 @@ window.approvePendingTerm = async function (id) {
     try {
         const res = await fetch(API_URL + '?action=moderate', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
             body: JSON.stringify({
-                password: AppState.adminPassword,
+                csrf_token: AppState.csrfToken,
                 id,
                 action: 'approve'
             })
@@ -929,9 +975,13 @@ window.rejectPendingTerm = async function (id) {
     try {
         const res = await fetch(API_URL + '?action=moderate', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
             body: JSON.stringify({
-                password: AppState.adminPassword,
+                csrf_token: AppState.csrfToken,
                 id,
                 action: 'reject'
             })
@@ -972,9 +1022,13 @@ window.deleteLiveTerm = async function (id) {
     try {
         const res = await fetch(API_URL + '?action=admin_delete', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
             body: JSON.stringify({
-                password: AppState.adminPassword,
+                csrf_token: AppState.csrfToken,
                 id
             })
         });
@@ -1009,11 +1063,9 @@ function scrollToTerm(id) {
     const card = document.getElementById(`card-${id}`);
     if (card) {
         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        card.style.borderColor = 'var(--yellow)';
-        card.style.boxShadow = '0 0 30px rgba(255, 211, 42, 0.5)';
+        card.classList.add('is-highlighted');
         setTimeout(() => {
-            card.style.borderColor = '';
-            card.style.boxShadow = '';
+            card.classList.remove('is-highlighted');
         }, 2000);
     }
 }

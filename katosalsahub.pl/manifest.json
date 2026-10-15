@@ -1,0 +1,27 @@
+{
+  "name": "Kato Salsa Hub ⚡ Kubańska Energia w Katowicach",
+  "short_name": "KatoSalsaHub",
+  "description": "Oficjalny portal społecznościowy tancerzy Salsy Cubana, Bachaty i Kizomby na Śląsku. Radio Timba Nation 24/7 oraz otwarta encyklopedia Salsopedia.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#13141f",
+  "theme_color": "#fbbf24",
+  "lang": "pl",
+  "categories": ["music", "lifestyle", "entertainment"],
+  "icons": [
+    {
+      "src": "assets/images/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

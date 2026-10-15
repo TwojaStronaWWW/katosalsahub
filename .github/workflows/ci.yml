@@ -21,7 +21,9 @@ jobs:
 
     steps:
       - name: 1.1 Pobranie kodu repozytorium
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       # 1. Sprawdź pliki wejściowe obu portali
       - name: 1.2 Sprawdzenie plików wejściowych (Kato Salsa Hub & DancePuls)
@@ -31,7 +33,7 @@ jobs:
             exit 1
           fi
 
-      # 2. Ochrona przed wyciekiem sekretów
+      # 2. Ochrona przed wyciekiem sekretów i skaner Gitleaks (#3)
       - name: 1.3 Ochrona przed wyciekiem sekretów (.env, secrets.php, .htpasswd)
         run: |
           if git ls-files | grep -E "(\.env|config/secrets\.php|\.htpasswd)$"; then
@@ -39,8 +41,14 @@ jobs:
             exit 1
           fi
 
+      - name: 1.4 Skaner sekretów Gitleaks (Wzorzec Gal Anonim)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+
       # 3. Walidacja składni PHP
-      - name: 1.4 Walidacja składni PHP
+      - name: 1.5 Walidacja składni PHP
         run: |
           if find . -type f -name "*.php" | grep -q .; then
             echo "Sprawdzanie składni PHP..."
@@ -50,17 +58,17 @@ jobs:
           fi
 
       # 4. Konfiguracja Node.js
-      - name: 1.5 Konfiguracja środowiska Node.js
-        uses: actions/setup-node@v4
+      - name: 1.6 Konfiguracja środowiska Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: 22
 
       # 5. Weryfikacja składni JavaScript
-      - name: 1.6 Weryfikacja składni JavaScript
+      - name: 1.7 Weryfikacja składni JavaScript
         run: npm run check:syntax
 
       # 6. Sprawdzanie integralności relatywnych linków i zasobów
-      - name: 1.7 Sprawdzanie referencji lokalnych linków i zasobów
+      - name: 1.8 Sprawdzanie referencji lokalnych linków i zasobów
         run: |
           for dir in katosalsahub.pl dancepuls.pl; do
             echo "🔍 Sprawdzanie referencji w $dir..."
@@ -81,24 +89,54 @@ jobs:
           echo "✅ Sprawdzanie referencji zakończone pomyślnie."
 
       # 7. Testy jednostkowe z raportem pokrycia (node:test)
-      - name: 1.8 Uruchomienie testów jednostkowych (node:test)
+      - name: 1.9 Uruchomienie testów jednostkowych (node:test)
         run: npm test -- --experimental-test-coverage
 
-  lighthouse:
-    name: 2. Audyt Lighthouse CI (a11y, SEO, Best Practices)
+  smoke-test:
+    name: 2. UI Smoke Test (Headless Browser)
     needs: validate
     runs-on: ubuntu-latest
 
     steps:
       - name: 2.1 Pobranie kodu repozytorium
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 2.2 Konfiguracja środowiska Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
 
-      - name: 2.3 Audyt jakościowy Lighthouse CI
+      - name: 2.3 Instalacja silnika przeglądarki Playwright (Chromium)
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: 2.4 Uruchomienie testu dymnego UI
+        run: npm run test:smoke
+
+      - name: 2.5 Upload diagnostyki przy awarii (zrzuty ekranu i logi)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: smoke-diagnostics
+          path: smoke-diagnostics/
+          retention-days: 3
+
+  lighthouse:
+    name: 3. Audyt Lighthouse CI (a11y, SEO, Best Practices)
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 3.1 Pobranie kodu repozytorium
+        uses: actions/checkout@v7
+
+      - name: 3.2 Konfiguracja środowiska Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: 3.3 Audyt jakościowy Lighthouse CI
         uses: treosh/lighthouse-ci-action@v12
         with:
           uploadArtifacts: true

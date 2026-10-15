@@ -1,8 +1,8 @@
 ## 1. PRYWATNIE — raport na 05.10.2026
-Rozpoczynam nową edycję na weekend **09–11.10.2026**.
+Rozpoczynam nową edycji na weekend **09–11.10.2026**.
 - Z bazy przeniesiono **11 pozycji** na nadchodzący weekend (5 pt, 3 sb, 3 nd).
 - Miniony weekend (02–04.10) zarchiwizowany w bazie.
-- Nowe zgłoszenia z formularza: https://www.facebook.com/events/770886418668167/, clave, https://zabrze.com.pl/artykuly/artykul/latino-pod-chmurka-w-zabrzu-w-piatek-odbedzie-sie-potancowka-na-placu-teatralnym?fbclid=IwdGRjcAUZF1ljbGNrBRkXUHBkb2YBZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMzUwNjg1NTMxNzI4AAEewv8xg3R1jnmM1CmuULeuhVIip33CaeCUMLX2mMW6CVHmyeo-RtPSo4x5ZBA_aem_eszY5TPvflkGax4IlgY3Ew.
+- Nowe zgłoszenia z formularza: brak nowych zgłoszeń w arkuszu.
 - Rotacja regionalna: baza zawiera pozycje z Katowic, Piekar Śląskich, Gliwic, Rybnika, Częstochowy, Bielska-Białej, Szczyrku, Wisły oraz Krakowa.
 
 ---
@@ -152,7 +152,7 @@ NIEDZIELA (11.10): Kraków - Mykhailo Burdeinyi (Bachata)
 ➡️ Katowice: Mil Pasos, B Experience,zajęcia specjalne i praktis (Bachata)
 🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
 🗓️ 07.11
-➡️ : Bielsko-Biała, REPARTO–warsztaty z Leidel Portuondo z Kuby (Cubana/Reparto)
+➡️ Katowice: Bielsko-Biała, REPARTO–warsztaty z Leidel Portuondo z Kuby (Cubana/Reparto)
 🔗 https://happeningnext.com/event/reparto-warsztaty-taneczne-z-leidel-portuondo-z-kuby-07112026-bielsko-bia%C5%82a-eid3a0dt7g9gk
 🗓️ 13.11
 ➡️ Katowice: Mil Pasos, LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty (Bachata)

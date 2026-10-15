@@ -2,6 +2,10 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const {
+  normalizeLocation,
+  deduplicateEvents
+} = require('../../dancepuls.pl/tools/sync_engine.js');
 
 const ROOT_DIR = path.resolve(__dirname, '..', '..');
 const EVENTS_JSON = path.join(ROOT_DIR, 'dancepuls.pl', 'data', 'events.json');
@@ -28,7 +32,7 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.ok(data.length > 0, 'events.json powinien zawierać przynajmniej jeden dzień z wydarzeniami');
     });
 
-    it('każdy dzień i wydarzenie w events.json powinno posiadać wymagane pola (date, events, opis, miasto, miejsce)', () => {
+    it('każdy dzień i wydarzenie w events.json powinno posiadać wymagane pola (date, events, opis, miasto, miejsce, lat, lng)', () => {
       const data = JSON.parse(fs.readFileSync(EVENTS_JSON, 'utf-8'));
       for (const day of data) {
         assert.ok(day.date && typeof day.date === 'string', 'Każdy wpis dnia musi posiadać pole date');
@@ -37,8 +41,49 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
           assert.ok(ev.opis && typeof ev.opis === 'string', `Wydarzenie w ${day.date} nie ma opisu`);
           assert.ok(ev.miasto && typeof ev.miasto === 'string', `Wydarzenie ${ev.opis} nie ma przypisanego miasta`);
           assert.ok(ev.miejsce && typeof ev.miejsce === 'string', `Wydarzenie ${ev.opis} nie ma przypisanego miejsca`);
+          assert.strictEqual(typeof ev.lat, 'number', `Wydarzenie ${ev.opis} nie posiada współrzędnej GPS lat (#16)`);
+          assert.strictEqual(typeof ev.lng, 'number', `Wydarzenie ${ev.opis} nie posiada współrzędnej GPS lng (#16)`);
         }
       }
+    });
+
+    it('funkcja normalizeLocation powinna normalizować adresy i zwracać współrzędne GPS (#16)', () => {
+      const loc = normalizeLocation('LC');
+      assert.strictEqual(loc.city, 'Katowice');
+      assert.strictEqual(loc.venue, 'La Clave');
+      assert.match(loc.address, /Chorzowska 11/);
+      assert.strictEqual(typeof loc.lat, 'number');
+      assert.strictEqual(typeof loc.lng, 'number');
+
+      const customLoc = normalizeLocation('PR,Kraków,Kamienna17');
+      assert.strictEqual(customLoc.city, 'Kraków');
+      assert.strictEqual(customLoc.venue, 'PROMINENT');
+      assert.match(customLoc.address, /Kamienna 17/);
+    });
+
+    it('funkcja deduplicateEvents powinna łączyć duplikaty wydarzeń z wielu źródeł (#17)', () => {
+      const sample = [
+        {
+          rawDate: '09.10',
+          city: 'Katowice',
+          venue: 'La Clave',
+          title: 'Salsa Fiesta',
+          styles: 'Salsa',
+          url: 'https://www.facebook.com/events/123456789/'
+        },
+        {
+          rawDate: '09.10',
+          city: 'Katowice',
+          venue: 'La Clave',
+          title: 'Salsa Fiesta (Zgłoszenie z formularza)',
+          styles: 'Bachata',
+          url: 'https://www.facebook.com/events/123456789/'
+        }
+      ];
+      const deduped = deduplicateEvents(sample);
+      assert.strictEqual(deduped.length, 1);
+      assert.match(deduped[0].styles, /Salsa/);
+      assert.match(deduped[0].styles, /Bachata/);
     });
   });
 

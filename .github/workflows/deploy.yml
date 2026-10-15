@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -83,7 +83,7 @@ jobs:
             "
 
       - name: Zapisz backup jako artefakt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: backup-${{ github.ref_name }}-${{ github.run_number }}
           path: backup/
@@ -94,12 +94,15 @@ jobs:
     needs: backup
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     env:
       MAIN_PATH: ${{ github.ref_name == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
       DANCE_PATH: ${{ github.ref_name == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Upload via SFTP (lftp)
         run: |
@@ -114,3 +117,15 @@ jobs:
               mirror -R --verbose ./dancepuls.pl /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }};
               quit
             "
+
+      - name: Czyszczenie starych artefaktów backupów (max 2 ostatnie)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🧹 Czyszczenie starych artefaktów backup-${{ github.ref_name }}-* (pozostawianie 2 najnowszych)..."
+          OLD_IDS=$(gh api "repos/${{ github.repository }}/actions/artifacts" \
+            --jq '.artifacts | map(select(.name | startswith("backup-${{ github.ref_name }}-") and (.expired == false))) | sort_by(.created_at) | reverse | .[2:] | .[].id' || true)
+          for id in $OLD_IDS; do
+            echo "Usuwanie przestarzałego artefaktu backupu ID: $id"
+            gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/$id" || true
+          done

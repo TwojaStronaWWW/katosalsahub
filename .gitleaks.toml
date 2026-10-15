@@ -1,0 +1,23 @@
+title = "Kato Salsa Hub & DancePuls - Gitleaks Security Configuration (ISO 27001)"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "osticket-api-key"
+description = "Wykryto zahardkodowany klucz API osTicket"
+regex = '''(?i)(?:X-API-Key|OSTICKET_API_KEY)\s*[:=]\s*['"]?[A-Z0-9]{24,40}['"]?'''
+tags = ["key", "osticket", "security"]
+
+[[rules]]
+id = "hardcoded-admin-password"
+description = "Wykryto zahardkodowane hasło administratora Salsopedii"
+regex = '''katoAdmin202[0-9]'''
+tags = ["password", "salsopedia", "security"]
+
+[allowlist]
+description = "Wykluczenie szablonów przykładowych i dokumentacji testowej"
+paths = [
+  '''^\.env\.example$''',
+  '''^\.gitleaks\.toml$'''
+]

@@ -4,7 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kato Salsa Hub - oficjalny portal społecznościowy tancerzy Salsy Cubana, Bachaty i Kizomby w Katowicach i na Śląsku. Radio Timba Nation 24/7 oraz Salsopedia.">
+  <meta name="theme-color" content="#fbbf24">
   <title>Kato Salsa Hub ⚡ Kubańska Energia w Katowicach</title>
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/sections.css">
@@ -68,7 +71,7 @@
         </h1>
         <p class="hero-subtitle">Tańczymy razem. Na luzie. Po prostu wpadaj. 💃🕺</p>
         <div class="hero-buttons">
-          <a href="https://www.facebook.com/groups/519446499987373" target="_blank" class="btn btn-primary">
+          <a href="https://www.facebook.com/groups/519446499987373" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
             <span>Bądź na bieżąco z wydarzeniami</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -79,7 +82,10 @@
         </div>
       </div>
       <div class="hero-visual">
-        <img src="assets/images/hero.png" alt="Kato Salsa Hub - Taniec w Katowicach" class="hero-image">
+        <picture>
+          <source srcset="assets/images/hero.webp" type="image/webp">
+          <img src="assets/images/hero.png" alt="Kato Salsa Hub - Taniec w Katowicach" class="hero-image" width="800" height="800" loading="lazy" decoding="async">
+        </picture>
       </div>
     </section>
 
@@ -180,8 +186,26 @@
             <h2 class="section-title">Timba Nation Radio 🎺</h2>
             <p class="radio-desc">Najlepsze kubańskie rytmy non-stop! Puść muzykę i poczuj klimat Hawany w swoim domu.
             </p>
+            <div id="radio-now-playing" class="radio-now-playing" aria-live="polite">
+              <span class="now-playing-icon"><i class="fas fa-music"></i></span>
+              <div class="now-playing-meta">
+                <span class="now-playing-label">Teraz na antenie</span>
+                <span class="now-playing-track">
+                  <strong id="radio-track-artist">Timba Nation Radio</strong> — <span id="radio-track-title">Kubańska Energia 24/7 (Salsa &amp; Timba)</span>
+                </span>
+              </div>
+            </div>
             <button id="radio-play" class="btn btn-radio">▶ Włącz radio</button>
-            <!-- Radio Player hidden logic using Audio API -->
+            <div class="radio-sleep-timer" aria-label="Wyłącznik czasowy radia">
+              <span class="sleep-timer-label"><i class="fas fa-moon"></i> Wyłącznik czasowy:</span>
+              <div class="sleep-timer-buttons">
+                <button type="button" class="sleep-timer-btn" data-minutes="15">15 min</button>
+                <button type="button" class="sleep-timer-btn" data-minutes="30">30 min</button>
+                <button type="button" class="sleep-timer-btn" data-minutes="60">60 min</button>
+                <button type="button" id="sleep-timer-cancel" class="sleep-timer-cancel is-hidden">Wyłącz timer</button>
+              </div>
+              <span id="sleep-timer-status" class="sleep-timer-status is-hidden" aria-live="polite"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -197,6 +221,7 @@
         </div>
         <div class="map-container">
           <iframe
+            title="Mapa miejsc tanecznych Kato Salsa Hub w Katowicach"
             src="https://www.google.com/maps/d/u/1/embed?mid=19lozCUSx249XISvWjEG65y_0ohpWQ3Q&ehbc=2E312F&noprof=1"
             allowfullscreen="" loading="lazy"></iframe>
         </div>
@@ -219,7 +244,7 @@
               </div>
               <div class="contact-item">
                 <span class="contact-icon">👥</span>
-                <a href="https://www.facebook.com/groups/519446499987373" target="_blank">Facebook Group</a>
+                <a href="https://www.facebook.com/groups/519446499987373" target="_blank" rel="noopener noreferrer">Facebook Group</a>
               </div>
             </div>
           </div>
@@ -227,15 +252,15 @@
             <form name="contact" id="contactForm" action="assets/php/contact.php" method="POST">
               <input type="hidden" name="form-name" value="contact" />
               <!-- Honeypot field (hidden for users, visible to bots) -->
-              <div style="display:none !important; position:absolute; left:-9999px; opacity:0; pointer-events:none;" aria-hidden="true">
+              <div class="hp-field" aria-hidden="true">
                 <label for="hp_chk">Nie wypełniaj tego pola:</label>
                 <input type="text" id="hp_chk" name="hp_chk" autocomplete="off" tabindex="-1" />
                 <input type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
                 <input type="text" id="website_url" name="website_url" autocomplete="off" tabindex="-1" />
               </div>
               <div class="form-group">
-                <label for="name">Imię i nazwisko</label>
-                <input type="text" id="name" name="name" required placeholder="Jan Kowalski" />
+                <label for="name">Imię lub pseudonim</label>
+                <input type="text" id="name" name="name" required placeholder="np. Janek, SalsaLover" />
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
@@ -244,6 +269,10 @@
               <div class="form-group">
                 <label for="message">Wiadomość</label>
                 <textarea id="message" name="message" required placeholder="Twoja wiadomość..." rows="5"></textarea>
+              </div>
+              <div class="form-checkbox-group">
+                <input type="checkbox" id="gdpr_consent" name="gdpr_consent" value="1" required />
+                <label for="gdpr_consent">Akceptuję <a href="privacy.html">Politykę Prywatności</a> i wyrażam zgodę na przetwarzanie podanych danych w celu obsługi mojego zapytania w systemie Helpdesk.</label>
               </div>
               <button type="submit" class="btn btn-primary full-width">
                 <span>Wyślij wiadomość</span>
@@ -272,13 +301,12 @@
         <a href="#style">Style</a>
         <a href="#kontakt">Kontakt</a>
         <a href="privacy.html">Polityka Prywatności</a>
-        <a href="https://dancepuls.katosalsahub.pl/" target="_blank">DancePuls Generator</a>
+        <a href="https://dancepuls.katosalsahub.pl/" target="_blank" rel="noopener noreferrer">DancePuls Generator</a>
       </div>
     </div>
     <div class="footer-bottom">
       <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
-          target="_blank">TwojaStronaWWW</a></p>
-      <p style="margin-top:10px;"><a href="salsopedia.html" style="color:#666; text-decoration:none; font-size:0.8rem;">[Panel Moderacji Salsopedii]</a></p>
+          target="_blank" rel="noopener noreferrer">TwojaStronaWWW</a></p>
     </div>
   </footer>
 

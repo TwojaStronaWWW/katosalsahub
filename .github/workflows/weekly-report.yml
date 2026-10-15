@@ -1,0 +1,40 @@
+name: DancePuls Weekly Report Cron
+
+on:
+  schedule:
+    # Każdy czwartek o 08:00 UTC (#15)
+    - cron: '0 8 * * 4'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-report:
+    name: 📅 Generowanie cotygodniowego raportu DancePuls
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobranie kodu repozytorium
+        uses: actions/checkout@v7
+
+      - name: Konfiguracja środowiska Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Uruchomienie silnika synchronizacji i raportowania (sync_engine.js)
+        env:
+          SKIP_REMOTE_SYNC: '1'
+        run: node dancepuls.pl/tools/sync_engine.js
+
+      - name: Automatyczny commit i push zaktualizowanego raportu oraz events.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dancepuls.pl/data/events.json dancepuls.pl/data/latest_report.md
+          if git diff --cached --quiet; then
+            echo "Brak zmian w danych wydarzeń i raporcie."
+          else
+            git commit -m "chore(dancepuls): automatyczna aktualizacja raportu tygodniowego i events.json"
+            git push
+          fi

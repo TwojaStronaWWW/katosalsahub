@@ -954,3 +954,9 @@
   visibility: visible !important;
   pointer-events: auto !important;
 }
+
+.wiki-card.is-highlighted {
+  box-shadow: 0 0 25px var(--yellow);
+  border-color: var(--yellow);
+}
+
