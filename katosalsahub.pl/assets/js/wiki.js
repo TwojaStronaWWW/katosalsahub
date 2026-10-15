@@ -489,7 +489,7 @@ function createTermCard(item, isPending = false) {
     let verifiedHtml = '';
     if (item.status === 'verified') {
         const count = item.verification_count || 1;
-        verifiedHtml = `<span class="status-verified" title="Zweryfikowane przez ${count} instruktorów/moderatorów"><i class="fas fa-check"></i> ${count}</span>`;
+        verifiedHtml = `<span class="status-verified" title="Hasło zweryfikowane merytorycznie przez ${count} instruktorów / moderatorów Kato Salsa Hub"><i class="fas fa-check-circle"></i> ${count}</span>`;
     }
 
     let badgesHtml = '';
@@ -513,9 +513,11 @@ function createTermCard(item, isPending = false) {
             const name = typeof src === 'object' ? (src.name || 'Źródło') : src;
             const url = typeof src === 'object' ? src.url : '';
             if (url && url.startsWith('http')) {
-                sourcesHtml += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Źródło / odnośnik zewnętrzny: ${escapeHtml(name)}"><i class="fas fa-external-link-alt"></i> ${escapeHtml(name)}</a>`;
+                const iconClass = url.includes('youtube.com') ? 'fa-play-circle' : 'fa-external-link-alt';
+                sourcesHtml += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Otwórz w nowej karcie: ${escapeHtml(name)}"><i class="fas ${iconClass}"></i> ${escapeHtml(name)}</a>`;
             } else if (name) {
-                sourcesHtml += `<span class="source-pill" title="Źródło merytoryczne / dziedzina: ${escapeHtml(name)}"><i class="fas fa-book-open"></i> ${escapeHtml(name)}</span>`;
+                const ytFallback = `https://www.youtube.com/results?search_query=${encodeURIComponent(item.term + ' Salsa Cubana')}`;
+                sourcesHtml += `<a href="${ytFallback}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Zobacz prezentację wideo na YouTube: ${escapeHtml(item.term)}"><i class="fas fa-play-circle"></i> ${escapeHtml(name)}</a>`;
             }
         });
         sourcesHtml += '</div>';
@@ -1151,29 +1153,50 @@ const POLISH_KEYWORD_ALIASES = {
     'Musicality': ['Musicality', 'Muzykalność', 'Muzykalności'],
     'La Clave (Katowice)': ['La Clave'],
     'Mil Pasos (Katowice)': ['Mil Pasos'],
+    'Salsa Los Amigos (Katowice / Sosnowiec)': ['Salsa Los Amigos'],
+    'Nova Szkoła Tańca (Katowice)': ['Nova Szkoła Tańca', 'Novej Szkole Tańca'],
     'Evolution Dance Studio (Katowice)': ['Evolution Dance Studio'],
     'KIZLAB (Katowice)': ['KIZLAB'],
     'VAMULA.pl Akademia Kizomby (Katowice)': ['VAMULA.pl', 'Vamula'],
-    'Gravitacja / Dance Plus Plus (Katowice)': ['Gravitacja', 'Dance Plus Plus'],
+    'Gravitacja / Dance Plus Plus (Katowice)': ['Gravitacja', 'Gravitacji', 'Dance Plus Plus', 'Punkt 44'],
     'Dolina Trzech Stawów — Kato Salsa Hub (Katowice)': ['Dolina Trzech Stawów', 'Doliny Trzech Stawów', 'Dolinie Trzech Stawów', 'Kato Salsa Hub'],
     'Śląska Szkoła Tańca Dariusz Kurzeja (Katowice / Śląsk)': ['Śląska Szkoła Tańca', 'Śląskiej Szkoły Tańca', 'Śląską Szkołę Tańca'],
     'Szkoła Tańca Mohito (Gliwice / Tychy)': ['Szkoła Tańca Mohito', 'Mohito'],
     'DANCE#LOVEit & Corazon (Bielsko-Biała)': ['DANCE#LOVEit', 'Corazon'],
-    'Pedro y Bella': ['Pedro y Bella', 'Pedro'],
-    'Ela Stępień': ['Ela Stępień', 'Eli Stępień', 'Elę Stępień'],
-    'Michał Rozewski': ['Michał Rozewski', 'Michała Rozewskiego', 'Michałem Rozewskim'],
-    'Daniel Rojewski': ['Daniel Rojewski', 'Daniela Rojewskiego', 'Danielem Rojewskim'],
-    'Maja Modliszewska': ['Maja Modliszewska', 'Mai Modliszewskiej', 'Mają Modliszewską'],
-    'Regla (Kuba / Katowice)': ['Regla', 'Regli', 'Reglą'],
-    'Ania „Ana” Kurowska': ['Ania „Ana” Kurowska', 'Anią „Aną” Kurowską', 'Ani Kurowskiej', 'Ania Kurowska'],
-    'Dariusz Kurzeja': ['Dariusz Kurzeja', 'Dariusza Kurzei', 'Dariuszem Kurzeją'],
+    'Sebastian Ciosiński (La Clave)': ['Sebastian Ciosiński', 'Sebastiana Ciosińskiego', 'Sebastianem Ciosińskim'],
+    'Ania Seruga (La Clave)': ['Ania Seruga', 'Ani Serugi', 'Anią Serugą'],
+    'Dariusz „Darek” Gruszczyk (La Clave)': ['Dariusz Gruszczyk', 'Dariusza Gruszczyka', 'Darek Gruszczyk'],
+    'Ziemek i Olita (La Clave)': ['Ziemek i Olita', 'Ziemek & Olita'],
+    'Klaudia i Adriano (La Clave)': ['Klaudia i Adriano', 'Klaudia & Adriano'],
+    'Marzena „Marziiik” i Jacek (La Clave)': ['Marzena „Marziiik” i Jacek', 'Marziiik'],
+    'Maciek Zahorodny (La Clave)': ['Maciek Zahorodny', 'Maćka Zahorodnego'],
+    'Justyna Sarzyńska (La Clave)': ['Justyna Sarzyńska', 'Justyny Sarzyńskiej'],
+    'Daniel Galas (Mil Pasos)': ['Daniel Galas', 'Daniela Galasa', 'Danielem Galasem'],
+    'Anita i Grzegorz (Mil Pasos)': ['Anita i Grzegorz'],
+    'Iza i Krystian (Mil Pasos)': ['Iza i Krystian'],
+    'Wiola i Konrad (Mil Pasos)': ['Wiola i Konrad'],
+    'Jędrzej „Jędrek” Górski (Salsa Los Amigos)': ['Jędrzej „Jędrek” Górski', 'Jędrzej Górski', 'Jędrka Górskiego', 'Jędrek Górski'],
+    'Iwona (Salsa Los Amigos)': ['Iwona'],
+    'Regla Maria Peñalver Hernández (Kuba / Katowice)': ['Regla Maria Peñalver Hernández', 'Regla', 'Regli', 'Reglą'],
+    'Daniel Machalica (Katowice)': ['Daniel Machalica', 'Daniela Machalicę', 'Daniela Machalicy'],
+    'Dariusz Kurzeja (Śląska Szkoła Tańca)': ['Dariusz Kurzeja', 'Dariusza Kurzei', 'Dariuszem Kurzeją', 'Dariusza Kurzeję'],
+    'Pedro y Bella (VAMULA.pl)': ['Pedro y Bella', 'Pedro'],
+    'Ela Stępień i Michał Rozewski (KIZLAB)': ['Ela Stępień i Michał Rozewski', 'Ela Stępień', 'Eli Stępień', 'Michał Rozewski', 'Michała Rozewskiego'],
+    'Daniel Rojewski i Maja Modliszewska': ['Daniel Rojewski i Maja Modliszewska', 'Daniel Rojewski', 'Maja Modliszewska'],
     'Damian Ratajczak (FeelTheSalsa)': ['Damian Ratajczak', 'Damiana Ratajczaka', 'FeelTheSalsa'],
-    'Leidel Portuondo (Kuba)': ['Leidel Portuondo', 'Leidela Portuondo']
+    'Leidel Portuondo (Kuba)': ['Leidel Portuondo', 'Leidela Portuondo'],
+    'Paso Básico (Krok podstawowy)': ['Paso Básico', 'Krok podstawowy', 'kroku podstawowego', 'krok podstawowy'],
+    'Lateral (Cucaracha)': ['Cucaracha', 'Lateral'],
+    'Punta y Talón': ['Punta y Talón', 'Punta y Talon'],
+    'Suzy Q (Susie Q)': ['Suzy Q', 'Susie Q'],
+    'Setenta (70)': ['Setenta', 'Setenty', 'Setencie']
 };
 
 const GEO_IGNORE_TOKENS = new Set([
     'katowice', 'kuba', 'śląsk', 'gliwice / tychy', 'bielsko-biała',
-    'katowice / śląsk', 'kuba / katowice', 'w salsie', 'orishas', '70'
+    'katowice / śląsk', 'kuba / katowice', 'katowice / sosnowiec',
+    'w salsie', 'orishas', '70', '7', '71', 'la clave', 'mil pasos',
+    'salsa los amigos', 'śląska szkoła tańca', 'kizlab', 'vamula.pl', 'krok podstawowy'
 ]);
 
 function escapeRegex(str) {

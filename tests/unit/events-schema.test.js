@@ -108,13 +108,18 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       }
     });
 
-    it('salsopedia.json powinna zawierać szkoły tańca (schools), instruktorów (instructors) oraz przetłumaczone na polski etykiety źródeł', () => {
+    it('salsopedia.json powinna zawierać pełną bazę szkół tańca (schools), instruktorów (instructors) z La Clave / Mil Pasos oraz klikalne linki źródłowe', () => {
       const entries = JSON.parse(fs.readFileSync(SALSOPEDIA_JSON, 'utf-8'));
       const schools = entries.filter(e => Array.isArray(e.category) && e.category.includes('schools'));
       const instructors = entries.filter(e => Array.isArray(e.category) && e.category.includes('instructors'));
 
-      assert.ok(schools.length >= 8, `Oczekiwano min. 8 szkół tańca w Katowicach/Śląsku, znaleziono: ${schools.length}`);
-      assert.ok(instructors.length >= 8, `Oczekiwano min. 8 instruktorów, znaleziono: ${instructors.length}`);
+      assert.ok(schools.length >= 12, `Oczekiwano min. 12 szkół tańca w Katowicach/Śląsku, znaleziono: ${schools.length}`);
+      assert.ok(instructors.length >= 20, `Oczekiwano min. 20 instruktorów z katowickich szkół, znaleziono: ${instructors.length}`);
+
+      for (const entry of entries) {
+        assert.ok(Array.isArray(entry.source) && entry.source.length > 0, `Hasło ${entry.term} nie posiada źródła`);
+        assert.match(entry.source[0].url || '', /^https:\/\//, `Hasło ${entry.term} nie posiada klikalnego linku URL w polu source`);
+      }
 
       const rawJson = fs.readFileSync(SALSOPEDIA_JSON, 'utf-8');
       assert.doesNotMatch(rawJson, /"Rueda Logic"|'Rueda Logic'|"Spanish Terms"|"Casino Essentials"/, 'W salsopedia.json pozostały nieprzetłumaczone angielskie etykiety źródeł');
