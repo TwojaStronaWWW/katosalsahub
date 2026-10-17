@@ -1297,11 +1297,23 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   };
 }
 
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => initAiWidget(document, globalThis.window));
-  } else {
+function autoInitAiWidget() {
+  if (typeof document === 'undefined') return;
+  if (document.getElementById('tsw-ai-widget-root')) return;
+  if (document.body) {
     initAiWidget(document, globalThis.window);
+  }
+}
+
+if (typeof document !== 'undefined') {
+  if (document.body) {
+    autoInitAiWidget();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoInitAiWidget);
+  }
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('load', autoInitAiWidget);
   }
 }
 

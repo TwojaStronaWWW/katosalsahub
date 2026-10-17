@@ -55,7 +55,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w index.html');
       assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w index.html');
       assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w index.html');
-      assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
+      assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
       assert.match(html, /data-site-id="katosalsahub"/i);
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
@@ -75,7 +75,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w privacy.html');
       assert.doesNotMatch(html, /\s+style\s*=/i);
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
-      assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
+      assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
     });
   });
 
@@ -93,7 +93,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="studioDiffBox"/i);
       assert.match(html, /id="livePreviewContainer"/i);
       assert.match(html, /id="teamModal"/i);
-      assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
+      assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
 

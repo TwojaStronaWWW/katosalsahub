@@ -32,3 +32,10 @@ AddType 'image/webp' webp
     Deny from all
   </IfModule>
 </FilesMatch>
+
+# Brak agresywnego cache'owania dla Service Workera, widoków HTML i dynamicznej bazy Salsopedii
+<IfModule mod_headers.c>
+  <FilesMatch "^(sw\.js|.*\.html|salsopedia\.json)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>

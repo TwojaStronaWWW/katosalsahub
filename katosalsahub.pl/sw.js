@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v3';
+const CACHE_NAME = 'ksh-pwa-v4';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -70,9 +70,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network-First for salsopedia.json so changes in Salsopedia are immediately visible to UI & AI Assistant,
+  // Network-First for HTML pages, ai-widget.js and salsopedia.json so UI/KB updates are immediately visible,
   // with full offline fallback when network is unavailable
-  if (url.pathname.endsWith('/salsopedia.json')) {
+  const isHtmlNav =
+    request.mode === 'navigate' ||
+    url.pathname === '/' ||
+    url.pathname.endsWith('.html');
+
+  if (
+    isHtmlNav ||
+    url.pathname.endsWith('/salsopedia.json') ||
+    url.pathname.endsWith('/ai-widget.js')
+  ) {
     event.respondWith(
       fetch(request)
         .then((networkResponse) => {

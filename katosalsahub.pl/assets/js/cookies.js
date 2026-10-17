@@ -24,12 +24,19 @@
     });
   }
 
-  // Rejestracja Service Workera dla PWA (#21)
+  // Rejestracja Service Workera dla PWA (#21) z wymuszeniem pobrania świeżej wersji
   if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(() => {
-        // Ciche pominięcie w środowisku deweloperskim bez HTTPS
-      });
+      navigator.serviceWorker
+        .register('sw.js?v=4', { updateViaCache: 'none' })
+        .then((reg) => {
+          if (reg && typeof reg.update === 'function') {
+            reg.update().catch(() => {});
+          }
+        })
+        .catch(() => {
+          // Ciche pominięcie w środowisku deweloperskim bez HTTPS
+        });
     });
   }
 
