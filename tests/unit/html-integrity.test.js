@@ -75,18 +75,20 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
 
-    it('powinien zawierać zaktualizowaną mapę Google My Maps (mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI), widget .map-hub z nawigacją zawsze na Parking Rekomendowany oraz poprawny plik KML', () => {
+    it('powinien zawierać zaktualizowaną mapę Google My Maps (mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI), widget .map-hub w układzie 4 kafelków 2x2 z nawigacją zawsze na Parking Rekomendowany oraz poprawny plik KML', () => {
       assert.match(html, /mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI/);
       assert.match(html, /href="assets\/css\/sections\.css\?v=[0-9.]+"/i, 'Brak parametru cache-busting ?v= dla sections.css');
       assert.match(html, /class="map-hub"/);
       assert.match(html, /id="ksh-map-iframe"/);
       assert.match(html, /class="map-tab-btn is-active"/);
       assert.match(html, /class="map-focus-btn"/);
+      assert.doesNotMatch(html, /class="map-stage-footer"/, 'Nadmiarowa sekcja .map-stage-footer pod mapą powinna być usunięta');
       assert.match(html, /Nawiguj na Parking Rekomendowany/);
       assert.doesNotMatch(html, /destination=50\.2577281,19\.0248325/, 'Nawigacja dla Wolnych Ludzi powinna kierować na Parking Rekomendowany (NOSPR), a nie na deptak Mariacka 2');
       assert.doesNotMatch(html, /destination=50\.2449289,19\.046362/, 'Nawigacja dla 3 Stawów powinna kierować na Parking Rekomendowany (Południe / Rolkostrada), a nie na sam brzeg stawu');
       assert.match(html, /Wolni Ludzie/i);
-      assert.match(html, /href="assets\/data\/kato-salsa-hub-mapa\.kml"/);
+      assert.match(html, /Kamienny Krąg/i);
+      assert.match(html, /Amfiteatr i Parking NOSPR/i);
 
       const kmlPath = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'kato-salsa-hub-mapa.kml');
       assert.ok(fs.existsSync(kmlPath), 'Brak pliku kato-salsa-hub-mapa.kml w katosalsahub.pl/assets/data/');
