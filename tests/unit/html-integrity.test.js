@@ -49,6 +49,8 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       const radioCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'radio.css'), 'utf-8');
       assert.match(radioCss, /\.radio-now-playing\s*\{[^}]*overflow:\s*hidden/s, 'Brak overflow: hidden w .radio-now-playing');
       assert.match(radioCss, /\.now-playing-meta\s*\{[^}]*flex:\s*1\s+1\s+0%/s, 'Brak flex: 1 1 0% w .now-playing-meta');
+      assert.match(radioCss, /\.radio-sleep-timer\s*\{[^}]*grid-template-areas:/s, 'Brak stałej siatki grid-template-areas w .radio-sleep-timer');
+      assert.match(radioCss, /\.radio-sleep-timer\s+\.sleep-timer-cancel\.is-hidden[\s\S]*?visibility:\s*hidden\s*!important/, 'Brak visibility: hidden !important zapobiegającego skokom wysokości przy przełączaniu timera');
     });
 
     it('powinien wykorzystywać format WebP oraz atrybut loading="lazy" dla grafiki Hero (#23)', () => {

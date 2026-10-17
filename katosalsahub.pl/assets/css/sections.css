@@ -362,42 +362,62 @@ main {
 .radio-wrapper {
     display: grid;
     grid-template-columns: minmax(0, 1fr); /* Mobile */
-    gap: 40px;
+    gap: 32px;
     align-items: center;
     
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     background: linear-gradient(
       180deg,
-      rgba(255,255,255,0.04),
-      rgba(255,255,255,0.01)
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.015)
     );
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
     
     border-radius: 24px;
     padding: 24px; /* Mobile Padding */
     width: 100%;
     max-width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.radio-playing .radio-wrapper {
+    border-color: rgba(251, 191, 36, 0.25);
 }
 
 .radio-visual {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    justify-content: center;
+    gap: 24px;
     min-width: 0;
 }
 
 .radio-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     min-width: 0;
     width: 100%;
     max-width: 100%;
 }
 
-/* Vinyl Disc moved to components.css */
+.radio-content .section-title {
+    margin: 0 0 12px;
+}
+
+.radio-desc {
+    margin: 0;
+    color: var(--fg-muted);
+    line-height: 1.6;
+}
 
 @media (min-width: 968px) {
     .radio-wrapper {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-        padding: clamp(24px, 4vw, 60px);
+        gap: 48px;
+        padding: clamp(28px, 4vw, 48px);
     }
 }
 
