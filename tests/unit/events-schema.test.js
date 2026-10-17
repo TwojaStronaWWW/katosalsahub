@@ -215,6 +215,29 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.match(fullDiffHtml, /Źródła:/);
       assert.match(fullDiffHtml, /Doprecyzowano rozliczenie rytmiczne/);
     });
+
+    it('wyszukiwarka Salsopedii (sortAndFilterTermsByQuery) powinna priorytetyzować trafienia w tytule nad definicją (np. "Timba" na 1. miejscu)', () => {
+      const { computeSearchRelevance, sortAndFilterTermsByQuery } = require('../../katosalsahub.pl/assets/js/wiki.js');
+      const entries = JSON.parse(fs.readFileSync(SALSOPEDIA_JSON, 'utf-8'));
+
+      const timbaResults = sortAndFilterTermsByQuery(entries, 'timba');
+      assert.ok(timbaResults.length >= 5, 'Zapytanie "timba" powinno zwrócić wiele powiązanych haseł');
+      assert.strictEqual(timbaResults[0].term, 'Timba', 'Hasło o dokładnym tytule "Timba" musi być na 1. miejscu wyników!');
+      assert.ok(
+        computeSearchRelevance({ term: 'Timba', definition: '...' }, 'timba') >
+          computeSearchRelevance({ term: 'Timbales (Pailas)', definition: '...' }, 'timba'),
+        'Dokładne dopasowanie tytułu musi mieć wyższy priorytet niż dopasowanie prefiksowe'
+      );
+      assert.ok(
+        computeSearchRelevance({ term: 'Bombo i Songo Drumset (Perkusja w Timbie)', definition: '...' }, 'timba') >
+          computeSearchRelevance({ term: 'Despelote', definition: 'Styl tańca w Timba...' }, 'timba'),
+        'Dopasowanie w tytule musi mieć wyższy priorytet niż dopasowanie wyłącznie w definicji'
+      );
+
+      // Sprawdzenie wyszukiwania bez polskich i hiszpańskich znaków diakrytycznych
+      const bongoResults = sortAndFilterTermsByQuery(entries, 'bongo');
+      assert.ok(bongoResults.length >= 1 && /Bongó/i.test(bongoResults[0].term), 'Zapytanie "bongo" bez akcentu powinno znaleźć "Bongó (Bongosy)" na 1. miejscu');
+    });
   });
 });
 

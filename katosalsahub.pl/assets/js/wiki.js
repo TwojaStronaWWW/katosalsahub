@@ -621,6 +621,124 @@ function renderCurrentView() {
     }
 }
 
+function normalizeSearchString(str) {
+    if (!str) return '';
+    return String(str)
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ł/g, 'l')
+        .trim();
+}
+
+function escapeRegExp(str) {
+    return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getPolishStem(normWord) {
+    if (!normWord || normWord.length < 4) return normWord;
+    return normWord.replace(/(ach|ami|owi|iem|om|ie|ow|ej|ym|im|ia|iu|ek|ka|ki|ce|ke|y|a|e|i|u|o)$/, '');
+}
+
+/**
+ * Oblicza wynik trafności wyszukiwania (Search Relevance Score):
+ * - 100 pkt: dokładne dopasowanie całego tytułu (np. "Timba" === "timba")
+ * -  90 pkt: dokładne dopasowanie głównego członu tytułu przed nawiasem/ukośnikiem/myślnikiem (np. "Clave (Rytm)" dla "clave")
+ * -  80 pkt: tytuł zaczyna się od szukanej frazy (Prefix Match, np. "Timbales (Pailas)" dla "timba")
+ * -  75 pkt: tytuł zaczyna się od rdzenia fleksyjnego szukanej frazy (np. "Timbero / Timbera" dla "timba")
+ * -  70 pkt: szukana fraza występuje jako pełne słowo w głównym tytule (przed nawiasem)
+ * -  65 pkt: szukana fraza występuje bezpośrednio w tytule (w tym wewnątrz nawiasu)
+ * -  60 pkt: rdzeń fleksyjny szukanej frazy występuje w tytule (np. "Perkusja w Timbie" dla "timba")
+ * -  25 pkt: szukana fraza występuje w definicji oraz w podkategorii
+ * -  20 pkt: szukana fraza występuje w treści definicji (definition) lub autorze (author)
+ * -   0 pkt: brak dopasowania
+ */
+function computeSearchRelevance(item, rawQuery) {
+    if (!item || !rawQuery) return 0;
+    const qRaw = String(rawQuery).trim().toLowerCase();
+    const qNorm = normalizeSearchString(qRaw);
+    if (!qNorm) return 0;
+
+    const qStem = getPolishStem(qNorm);
+
+    const termRaw = String(item.term || '').trim().toLowerCase();
+    const termNorm = normalizeSearchString(termRaw);
+    const baseTermNorm = termNorm.split(/[(\/—–-]/)[0].trim();
+
+    if (termRaw === qRaw || termNorm === qNorm) {
+        return 100;
+    }
+
+    if (baseTermNorm && baseTermNorm === qNorm) {
+        return 90;
+    }
+
+    if (termRaw.startsWith(qRaw) || termNorm.startsWith(qNorm)) {
+        return 80;
+    }
+
+    if (qStem && qStem.length >= 4 && termNorm.startsWith(qStem)) {
+        return 75;
+    }
+
+    const wordRegex = new RegExp(`(?:^|[\\s(\\/„"'-])${escapeRegExp(qNorm)}(?:$|[\\s)\\/”"',.-])`, 'i');
+    if (baseTermNorm && wordRegex.test(baseTermNorm)) {
+        return 70;
+    }
+
+    if (termRaw.includes(qRaw) || termNorm.includes(qNorm)) {
+        return 65;
+    }
+
+    if (qStem && qStem.length >= 4 && termNorm.includes(qStem)) {
+        return 60;
+    }
+
+    const defRaw = String(item.definition || '').toLowerCase();
+    const defNorm = normalizeSearchString(defRaw);
+    const authorNorm = normalizeSearchString(item.author || '');
+    const inDefOrAuthor = defRaw.includes(qRaw) || defNorm.includes(qNorm) || authorNorm.includes(qNorm);
+
+    if (inDefOrAuthor) {
+        const subs = Array.isArray(item.subcategory)
+            ? item.subcategory
+            : (item.subcategory ? [item.subcategory] : []);
+        const subMatch = subs.some(s => {
+            const sNorm = normalizeSearchString(SUBCATEGORY_NAMES[s] || s);
+            return sNorm.includes(qNorm) || normalizeSearchString(s).includes(qNorm);
+        });
+        return subMatch ? 25 : 20;
+    }
+
+    return 0;
+}
+
+function sortAndFilterTermsByQuery(terms, rawQuery) {
+    const list = Array.isArray(terms) ? [...terms] : [];
+    const q = String(rawQuery || '').trim();
+
+    if (!q) {
+        return list.sort((a, b) => (a.term || '').localeCompare(b.term || '', 'pl', { sensitivity: 'base' }));
+    }
+
+    const scored = [];
+    for (const item of list) {
+        const score = computeSearchRelevance(item, q);
+        if (score > 0) {
+            scored.push({ item, score });
+        }
+    }
+
+    scored.sort((a, b) => {
+        if (b.score !== a.score) {
+            return b.score - a.score;
+        }
+        return (a.item.term || '').localeCompare(b.item.term || '', 'pl', { sensitivity: 'base' });
+    });
+
+    return scored.map(entry => entry.item);
+}
+
 function renderLiveTerms(grid, noResults, countEl) {
     let list = [...AppState.terms];
 
@@ -635,16 +753,7 @@ function renderLiveTerms(grid, noResults, countEl) {
         });
     }
 
-    if (AppState.searchQuery) {
-        const q = AppState.searchQuery;
-        list = list.filter(item =>
-            (item.term && item.term.toLowerCase().includes(q)) ||
-            (item.definition && item.definition.toLowerCase().includes(q)) ||
-            (item.author && item.author.toLowerCase().includes(q))
-        );
-    }
-
-    list.sort((a, b) => (a.term || '').localeCompare(b.term || '', 'pl', { sensitivity: 'base' }));
+    list = sortAndFilterTermsByQuery(list, AppState.searchQuery);
 
     if (countEl) {
         countEl.textContent = AppState.viewMode === 'unverified'
@@ -1397,9 +1506,9 @@ function updateStudioLivePreviewAndDiff() {
 function renderWikiLinkSuggestions(query) {
     const container = document.getElementById('wikiLinkSuggestions');
     if (!container) return;
-    const q = (query || '').trim().toLowerCase();
-    const matches = AppState.terms
-        .filter(t => !q || (t.term && t.term.toLowerCase().includes(q)))
+    const q = (query || '').trim();
+    const matches = sortAndFilterTermsByQuery(AppState.terms, q)
+        .filter(t => !q || computeSearchRelevance(t, q) >= 60)
         .slice(0, 12);
 
     if (matches.length === 0) {
@@ -2375,6 +2484,8 @@ if (typeof window !== 'undefined') {
     window.jumpToTermCard = jumpToTermCard;
     window.computeWordDiff = computeWordDiff;
     window.buildTermDiffHtml = buildTermDiffHtml;
+    window.computeSearchRelevance = computeSearchRelevance;
+    window.sortAndFilterTermsByQuery = sortAndFilterTermsByQuery;
     window.escapeHtml = escapeHtml;
     window.isSafeHttpUrl = isSafeHttpUrl;
 }
@@ -2385,6 +2496,8 @@ if (typeof module !== 'undefined' && module.exports) {
         notifyKnowledgeUpdated,
         computeWordDiff,
         buildTermDiffHtml,
+        computeSearchRelevance,
+        sortAndFilterTermsByQuery,
         linkifyDefinition,
         buildKeywordEntries,
         escapeHtml,
