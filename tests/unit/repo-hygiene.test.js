@@ -37,13 +37,17 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'pull_request_template.md')), 'Brak .github/pull_request_template.md');
   });
 
-  it('kod źródłowy PHP i JS nie może zawierać zahardkodowanych haseł ani kluczy API (#1, #2)', () => {
+  it('kod źródłowy PHP i JS (w tym ai-widget.js) nie może zawierać zahardkodowanych haseł ani kluczy API (#1, #2, ISO 27001)', () => {
     const wikiPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'wiki.php'), 'utf-8');
     const wikiJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'wiki.js'), 'utf-8');
+    const aiWidgetJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'ai-widget.js'), 'utf-8');
     const contactPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'contact.php'), 'utf-8');
 
     assert.doesNotMatch(wikiPhp, /katoAdmin2024/i, 'Wykryto zahardkodowane hasło w wiki.php');
     assert.doesNotMatch(wikiJs, /katoAdmin2024/i, 'Wykryto zahardkodowane hasło w wiki.js');
+    assert.doesNotMatch(aiWidgetJs, /AIzaSy[A-Za-z0-9_-]{33}/, 'Wykryto klucz Google API w ai-widget.js');
+    assert.doesNotMatch(aiWidgetJs, /gsk_[A-Za-z0-9]{20,}/, 'Wykryto klucz Groq API w ai-widget.js');
+    assert.doesNotMatch(aiWidgetJs, /sk-or-v1-[A-Za-z0-9]{20,}/, 'Wykryto klucz OpenRouter w ai-widget.js');
     assert.match(wikiPhp, /flock\s*\(\s*\$fp\s*,\s*LOCK_EX\s*\)/i, 'Brak blokady flock(LOCK_EX) w wiki.php (#13)');
     assert.match(wikiPhp, /X-CSRF-Token/i, 'Brak weryfikacji tokenu CSRF w wiki.php (#12)');
     assert.match(contactPhp, /OSTICKET_API_KEY/i, 'Brak odczytu OSTICKET_API_KEY ze środowiska w contact.php (#2)');

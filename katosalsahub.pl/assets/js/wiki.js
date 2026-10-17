@@ -1,8 +1,12 @@
 /**
- * KATO SALSA HUB - SALSOPEDIA WIKI ENGINE (v16 - ISO 27001 Secure Session & CSRF)
- * Moduł Bazy Wiedzy, Wyszukiwania, Społecznościowego Zgłaszania i Moderacji
- * Zero-dependency Vanilla JS, Platform-First Architecture.
+ * KATO SALSA HUB - SALSOPEDIA WIKI ENGINE (v17 - Salsopedia Studio, Visual Diff & Multi-Role RBAC)
+ * Moduł Bazy Wiedzy, Wyszukiwania, Społecznościowego Zgłaszania, Porównywarki Zmian (Diff) i Moderacji
+ * Zero-dependency Vanilla JS, Platform-First Architecture (ISO 27001 & Raricart Patterns).
  */
+
+if (typeof window === 'undefined') {
+    globalThis.window = globalThis;
+}
 
 const API_URL = 'assets/php/wiki.php';
 const STATIC_FALLBACK_URL = 'assets/data/salsopedia.json';
@@ -10,13 +14,19 @@ const STATIC_FALLBACK_URL = 'assets/data/salsopedia.json';
 const AppState = {
     terms: [],
     pending: [],
+    moderators: [],
     activeCategory: 'all',
     searchQuery: '',
-    viewMode: 'live', // 'live' | 'pending'
+    viewMode: 'live', // 'live' | 'unverified' | 'pending'
     isAdmin: false,
+    userRole: 'guest', // 'guest' | 'moderator' | 'admin'
+    userName: '',
+    userEmail: '',
+    forcePasswordChange: false,
     csrfToken: '',
     isInitialized: false,
-    currentModalMode: 'new' // 'new' | 'verify' | 'admin_edit_live' | 'admin_edit_pending'
+    currentModalMode: 'new', // 'new' | 'verify' | 'admin_edit_live' | 'admin_edit_pending'
+    editingOriginalTerm: null
 };
 
 const CATEGORY_NAMES = {
@@ -34,13 +44,22 @@ const CATEGORY_NAMES = {
     'schools': 'Szkoły Tańca'
 };
 
+const SUBCATEGORY_NAMES = {
+    'lead': 'Prowadzenie',
+    'follow': 'Podążanie',
+    'partnerwork': 'W parach',
+    'shines': 'Solo / Shines',
+    'technique': 'Technika',
+    'rhythm': 'Rytmika'
+};
+
 // --- Inicjalizacja i Montowanie ---
 
 async function mountWiki() {
     const root = document.getElementById('wikiGrid');
     if (!root) return;
 
-    // Sprawdź aktywną sesję administratora przez ciasteczko HttpOnly i token CSRF
+    // Sprawdź aktywną sesję moderatora/administratora przez ciasteczko HttpOnly i token CSRF
     const cachedCsrf = sessionStorage.getItem('kato_csrf_token');
     if (cachedCsrf) {
         await verifyExistingAdminSession(cachedCsrf);
@@ -88,6 +107,10 @@ async function verifyExistingAdminSession(cachedCsrf) {
             const data = await res.json();
             if (data.success && data.authenticated) {
                 AppState.isAdmin = true;
+                AppState.userRole = data.role || 'admin';
+                AppState.userName = data.user_name || 'Moderator';
+                AppState.userEmail = data.user_email || '';
+                AppState.forcePasswordChange = Boolean(data.force_change);
                 AppState.csrfToken = data.csrf_token || cachedCsrf;
                 sessionStorage.setItem('kato_csrf_token', AppState.csrfToken);
                 return;
@@ -96,18 +119,45 @@ async function verifyExistingAdminSession(cachedCsrf) {
     } catch (e) {
         // Ignoruj błąd połączenia w trybie statycznym
     }
+    resetAuthState();
+}
+
+function resetAuthState() {
     AppState.isAdmin = false;
+    AppState.userRole = 'guest';
+    AppState.userName = '';
+    AppState.userEmail = '';
+    AppState.forcePasswordChange = false;
     AppState.csrfToken = '';
     sessionStorage.removeItem('kato_csrf_token');
 }
 
 // --- Pobieranie Danych ---
 
+function notifyKnowledgeUpdated() {
+    if (typeof window !== 'undefined') {
+        window.__SALSOPEDIA_TERMS__ = AppState.terms;
+        if (typeof window.dispatchEvent === 'function' && typeof CustomEvent === 'function') {
+            window.dispatchEvent(new CustomEvent('salsopedia:updated', {
+                detail: { terms: AppState.terms }
+            }));
+        }
+        try {
+            if (typeof localStorage !== 'undefined' && typeof localStorage.setItem === 'function') {
+                localStorage.setItem('ksh_salsopedia_sync', JSON.stringify({
+                    ts: Date.now(),
+                    count: Array.isArray(AppState.terms) ? AppState.terms.length : 0
+                }));
+            }
+        } catch { /* ignoruj blokadę storage */ }
+    }
+}
+
 async function fetchTerms() {
     try {
         let data = null;
         try {
-            const res = await fetch(API_URL + '?action=list', { credentials: 'same-origin' });
+            const res = await fetch(API_URL + '?action=list', { credentials: 'same-origin', cache: 'no-store' });
             if (res.ok) {
                 const json = await res.json();
                 if (Array.isArray(json)) data = json;
@@ -117,7 +167,7 @@ async function fetchTerms() {
         }
 
         if (!data) {
-            const fallbackRes = await fetch(STATIC_FALLBACK_URL);
+            const fallbackRes = await fetch(STATIC_FALLBACK_URL, { cache: 'no-store' });
             if (fallbackRes.ok) {
                 data = await fallbackRes.json();
             }
@@ -125,6 +175,7 @@ async function fetchTerms() {
 
         if (Array.isArray(data)) {
             AppState.terms = data;
+            notifyKnowledgeUpdated();
             updateCategoryCounters();
             renderCurrentView();
         } else {
@@ -235,10 +286,15 @@ function setupEventListeners() {
         AppState.isInitialized = true;
     }
 
-    // 6. Przyciski Admin Toolbara
+    // 6. Przyciski Admin/Moderator Toolbara
     const btnShowLive = document.getElementById('btnShowLive');
     if (btnShowLive) {
         btnShowLive.addEventListener('click', () => switchViewMode('live'));
+    }
+
+    const btnShowUnverified = document.getElementById('btnShowUnverified');
+    if (btnShowUnverified) {
+        btnShowUnverified.addEventListener('click', () => switchViewMode('unverified'));
     }
 
     const btnShowPending = document.getElementById('btnShowPending');
@@ -251,28 +307,118 @@ function setupEventListeners() {
         btnAdminAdd.addEventListener('click', () => window.openModal('admin_direct'));
     }
 
+    const btnManageTeam = document.getElementById('btnManageTeam');
+    if (btnManageTeam) {
+        btnManageTeam.addEventListener('click', () => window.openTeamModal());
+    }
+
     const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
     if (btnLogoutAdmin) {
         btnLogoutAdmin.addEventListener('click', () => logoutAdmin());
     }
 
-    // 7. Obsługa chipów kategorii w modalu
+    // 7. Obsługa chipów kategorii w modalu + aktualizacja podglądu na żywo
     setupChipsInteractions('categoryChips');
     setupChipsInteractions('subcategoryChips');
 
-    // 8. Formularz zgłaszania/edycji hasła
+    // 8. Formularz zgłaszania/edycji hasła + Live Preview i Diff
     const wikiForm = document.getElementById('wikiForm');
     if (wikiForm) {
         wikiForm.addEventListener('submit', handleFormSubmit);
+        wikiForm.addEventListener('input', () => {
+            updateStudioLivePreviewAndDiff();
+        });
     }
 
-    // 9. Formularz logowania administratora
+    // Pomocnik wstawiania linków wewnętrznych [Hasło]
+    const insertWikiLinkBtn = document.getElementById('insertWikiLinkBtn');
+    const closeWikiLinkPickerBtn = document.getElementById('closeWikiLinkPickerBtn');
+    const wikiLinkPicker = document.getElementById('wikiLinkPicker');
+    const wikiLinkSearchInput = document.getElementById('wikiLinkSearchInput');
+    const wikiLinkSuggestions = document.getElementById('wikiLinkSuggestions');
+
+    if (insertWikiLinkBtn && wikiLinkPicker) {
+        insertWikiLinkBtn.addEventListener('click', () => {
+            const isHidden = wikiLinkPicker.classList.toggle('is-hidden');
+            if (!isHidden && wikiLinkSearchInput) {
+                wikiLinkSearchInput.value = '';
+                renderWikiLinkSuggestions('');
+                wikiLinkSearchInput.focus();
+            }
+        });
+    }
+
+    if (closeWikiLinkPickerBtn && wikiLinkPicker) {
+        closeWikiLinkPickerBtn.addEventListener('click', () => {
+            wikiLinkPicker.classList.add('is-hidden');
+        });
+    }
+
+    if (wikiLinkSearchInput) {
+        wikiLinkSearchInput.addEventListener('input', (e) => {
+            renderWikiLinkSuggestions(e.target.value);
+        });
+    }
+
+    if (wikiLinkSuggestions) {
+        wikiLinkSuggestions.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-insert-term]');
+            if (!btn) return;
+            insertTermTagIntoDefinition(btn.dataset.insertTerm);
+        });
+    }
+
+    // Obsługa ostrzeżenia o duplikacie hasła
+    const dupWarn = document.getElementById('termDuplicateWarning');
+    if (dupWarn) {
+        dupWarn.addEventListener('click', (e) => {
+            const switchBtn = e.target.closest('[data-action="switch-to-existing"]');
+            if (!switchBtn) return;
+            const existingId = switchBtn.dataset.id;
+            const existingTerm = AppState.terms.find(t => t.id === existingId);
+            if (existingTerm) {
+                window.openModal(AppState.isAdmin ? 'admin_edit_live' : 'verify', existingTerm);
+            }
+        });
+    }
+
+    // 9. Formularz logowania administratora / moderatora
     const adminLoginForm = document.getElementById('adminLoginForm');
     if (adminLoginForm) {
         adminLoginForm.addEventListener('submit', handleAdminLoginSubmit);
     }
 
-    // 10. Przyciski zamykania i anulowania modali
+    // 10. Formularze w modalu Kont i Haseł (#teamModal)
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', handleChangePasswordSubmit);
+    }
+
+    const addModeratorForm = document.getElementById('addModeratorForm');
+    if (addModeratorForm) {
+        addModeratorForm.addEventListener('submit', handleSaveModeratorSubmit);
+    }
+
+    const moderatorsListContainer = document.getElementById('moderatorsListContainer');
+    if (moderatorsListContainer) {
+        moderatorsListContainer.addEventListener('click', (e) => {
+            const delBtn = e.target.closest('[data-action="delete-moderator"]');
+            if (delBtn && delBtn.dataset.email) {
+                deleteModeratorAccount(delBtn.dataset.email);
+            }
+            const editModBtn = e.target.closest('[data-action="fill-moderator"]');
+            if (editModBtn) {
+                const emailEl = document.getElementById('modEmailInput');
+                const nameEl = document.getElementById('modNameInput');
+                const roleEl = document.getElementById('modRoleSelect');
+                if (emailEl) emailEl.value = editModBtn.dataset.email || '';
+                if (nameEl) nameEl.value = editModBtn.dataset.name || '';
+                if (roleEl) roleEl.value = editModBtn.dataset.role || 'moderator';
+            }
+        });
+    }
+
+    // 11. Przyciski zamykania i anulowania modali
     const wikiModalCloseBtn = document.getElementById('wikiModalCloseBtn');
     if (wikiModalCloseBtn) wikiModalCloseBtn.addEventListener('click', () => window.closeModal());
 
@@ -285,22 +431,33 @@ function setupEventListeners() {
     const cancelAdminLoginBtn = document.getElementById('cancelAdminLoginBtn');
     if (cancelAdminLoginBtn) cancelAdminLoginBtn.addEventListener('click', () => window.closeAdminLoginModal());
 
-    const addSourceRowBtn = document.getElementById('addSourceRowBtn');
-    if (addSourceRowBtn) addSourceRowBtn.addEventListener('click', () => window.addSourceRow());
+    const teamModalCloseBtn = document.getElementById('teamModalCloseBtn');
+    if (teamModalCloseBtn) teamModalCloseBtn.addEventListener('click', () => window.closeTeamModal());
 
-    // 11. Delegacja usuwania wierszy źródeł
+    const addSourceRowBtn = document.getElementById('addSourceRowBtn');
+    if (addSourceRowBtn) {
+        addSourceRowBtn.addEventListener('click', () => {
+            window.addSourceRow();
+            updateStudioLivePreviewAndDiff();
+        });
+    }
+
+    // 12. Delegacja usuwania wierszy źródeł
     const sourceContainer = document.getElementById('sourceContainer');
     if (sourceContainer) {
         sourceContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('[data-action="remove-source"]');
             if (btn) {
                 const row = btn.closest('.source-row');
-                if (row) row.remove();
+                if (row) {
+                    row.remove();
+                    updateStudioLivePreviewAndDiff();
+                }
             }
         });
     }
 
-    // 12. Delegacja akcji w siatce haseł (Zero inline handlers)
+    // 13. Delegacja akcji w siatce haseł (Zero inline handlers)
     const grid = document.getElementById('wikiGrid');
     if (grid) {
         grid.addEventListener('click', (e) => {
@@ -317,6 +474,8 @@ function setupEventListeners() {
                 jumpToTermCard(id);
             } else if (action === 'verify' && id) {
                 window.openVerifyModal(id);
+            } else if (action === 'quick-verify' && id) {
+                window.quickVerifyTerm(id);
             } else if (action === 'approve' && id) {
                 window.approvePendingTerm(id);
             } else if (action === 'reject' && id) {
@@ -335,8 +494,8 @@ function setupEventListeners() {
         });
     }
 
-    // 13. Zamykanie modali kliknięciem w tło
-    ['wikiModal', 'adminLoginModal'].forEach(modalId => {
+    // 14. Zamykanie modali kliknięciem w tło
+    ['wikiModal', 'adminLoginModal', 'teamModal'].forEach(modalId => {
         const el = document.getElementById(modalId);
         if (el) {
             el.addEventListener('click', (e) => {
@@ -355,6 +514,7 @@ function setupChipsInteractions(containerId) {
         const chip = e.target.closest('.chip');
         if (!chip) return;
         chip.classList.toggle('active');
+        updateStudioLivePreviewAndDiff();
     });
 }
 
@@ -372,10 +532,13 @@ function setActiveCategory(cat) {
     });
 
     const badge = document.getElementById('activeFilterBadge');
-    if (badge) badge.textContent = CATEGORY_NAMES[cat] || cat;
+    if (badge) {
+        const prefix = AppState.viewMode === 'unverified' ? '🔍 Do weryfikacji: ' : '';
+        badge.textContent = prefix + (CATEGORY_NAMES[cat] || cat);
+    }
 
     const resetBtn = document.getElementById('resetFilterBtn');
-    if (resetBtn) resetBtn.classList.toggle('is-hidden', cat === 'all');
+    if (resetBtn) resetBtn.classList.toggle('is-hidden', cat === 'all' && AppState.viewMode === 'live');
 
     renderCurrentView();
 }
@@ -384,17 +547,22 @@ function switchViewMode(mode) {
     AppState.viewMode = mode;
 
     const btnLive = document.getElementById('btnShowLive');
+    const btnUnverified = document.getElementById('btnShowUnverified');
     const btnPending = document.getElementById('btnShowPending');
-    if (btnLive && btnPending) {
-        btnLive.classList.toggle('active', mode === 'live');
-        btnPending.classList.toggle('active', mode === 'pending');
-    }
+
+    if (btnLive) btnLive.classList.toggle('active', mode === 'live');
+    if (btnUnverified) btnUnverified.classList.toggle('active', mode === 'unverified');
+    if (btnPending) btnPending.classList.toggle('active', mode === 'pending');
 
     const filterBadge = document.getElementById('activeFilterBadge');
     if (filterBadge) {
-        filterBadge.textContent = mode === 'pending'
-            ? '⏳ Kolejka Moderacji (Oczekujące Zgłoszenia)'
-            : (CATEGORY_NAMES[AppState.activeCategory] || 'Wszystkie hasła');
+        if (mode === 'pending') {
+            filterBadge.textContent = '⏳ Kolejka Moderacji (Oczekujące Zgłoszenia Społeczności)';
+        } else if (mode === 'unverified') {
+            filterBadge.textContent = `🔍 Hasła do weryfikacji merytorycznej (${CATEGORY_NAMES[AppState.activeCategory] || 'Wszystkie'})`;
+        } else {
+            filterBadge.textContent = CATEGORY_NAMES[AppState.activeCategory] || 'Wszystkie hasła';
+        }
     }
 
     renderCurrentView();
@@ -418,6 +586,10 @@ function renderCurrentView() {
 function renderLiveTerms(grid, noResults, countEl) {
     let list = [...AppState.terms];
 
+    if (AppState.viewMode === 'unverified') {
+        list = list.filter(item => item.status !== 'verified');
+    }
+
     if (AppState.activeCategory !== 'all') {
         list = list.filter(item => {
             const cats = Array.isArray(item.category) ? item.category : [item.category];
@@ -437,10 +609,23 @@ function renderLiveTerms(grid, noResults, countEl) {
     list.sort((a, b) => (a.term || '').localeCompare(b.term || '', 'pl', { sensitivity: 'base' }));
 
     if (countEl) {
-        countEl.textContent = `Wyświetlono: ${list.length} z ${AppState.terms.length} haseł`;
+        countEl.textContent = AppState.viewMode === 'unverified'
+            ? `Do weryfikacji w tym widoku: ${list.length} haseł`
+            : `Wyświetlono: ${list.length} z ${AppState.terms.length} haseł`;
     }
 
     if (list.length === 0) {
+        if (AppState.viewMode === 'unverified') {
+            if (noResults) noResults.classList.add('is-hidden', 'hidden');
+            grid.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-check-double fa-3x no-results-icon"></i>
+                    <h3>Wszystkie hasła w tej kategorii są już zweryfikowane!</h3>
+                    <p>Świetna robota! Możesz przełączyć się na pełną bazę wiedzy lub wybrać inną kategorię.</p>
+                    <button class="btn btn-secondary btn-sm" data-action="switch-live">Wróć do pełnej bazy</button>
+                </div>`;
+            return;
+        }
         if (noResults) noResults.classList.remove('is-hidden', 'hidden');
         return;
     }
@@ -453,6 +638,7 @@ function renderLiveTerms(grid, noResults, countEl) {
 
 function renderPendingTerms(grid, noResults, countEl) {
     const list = [...AppState.pending];
+    if (noResults) noResults.classList.add('is-hidden', 'hidden');
 
     if (countEl) {
         countEl.textContent = `Do moderacji: ${list.length} oczekujących zgłoszeń`;
@@ -474,35 +660,74 @@ function renderPendingTerms(grid, noResults, countEl) {
     });
 }
 
+function findOriginalLiveTerm(pendingOrEditItem) {
+    if (!pendingOrEditItem) return null;
+    const lookupId = pendingOrEditItem.target_id || pendingOrEditItem.id;
+    if (lookupId) {
+        const byId = AppState.terms.find(t => t.id === lookupId);
+        if (byId) return byId;
+    }
+    if (pendingOrEditItem.term) {
+        const lower = pendingOrEditItem.term.trim().toLowerCase();
+        return AppState.terms.find(t => t.term && t.term.trim().toLowerCase() === lower) || null;
+    }
+    return null;
+}
+
 function createTermCard(item, isPending = false) {
     const card = document.createElement('div');
     card.className = `wiki-card ${isPending ? 'pending-card' : ''}`;
     card.id = `card-${item.id}`;
 
     let ribbonHtml = '';
+    let inlineDiffHtml = '';
+
     if (isPending) {
-        const act = item.pending_action || 'new';
-        const label = act === 'verify' ? 'Prośba o weryfikację' : (act === 'edit' ? 'Edycja istniejącego' : 'Nowe hasło');
-        ribbonHtml = `<span class="pending-ribbon"><i class="fas fa-clock"></i> ${label}</span>`;
+        const originalTerm = findOriginalLiveTerm(item);
+        const act = item.pending_action || (originalTerm ? 'edit' : 'new');
+        const label = act === 'verify'
+            ? 'Propozycja poprawki do hasła'
+            : (act === 'edit' || originalTerm ? 'Edycja istniejącego hasła' : 'Nowe hasło od społeczności');
+        const submittedDate = item.submitted_at ? ` • ${escapeHtml(item.submitted_at)}` : '';
+        ribbonHtml = `<span class="pending-ribbon"><i class="fas fa-clock"></i> ${label}${submittedDate}</span>`;
+
+        if (originalTerm) {
+            inlineDiffHtml = `
+                <div class="card-diff-box">
+                    <div class="card-diff-header">
+                        <i class="fas fa-exchange-alt"></i> Porównanie z obecną wersją w bazie (Przed vs Po):
+                    </div>
+                    ${buildTermDiffHtml(originalTerm, item)}
+                </div>`;
+        } else if (item.change_note) {
+            inlineDiffHtml = `
+                <div class="card-diff-box">
+                    <div class="card-diff-header"><i class="fas fa-comment-dots"></i> Komentarz zgłaszającego:</div>
+                    <p class="diff-note-text">${escapeHtml(item.change_note)}</p>
+                </div>`;
+        }
     }
 
     let verifiedHtml = '';
     if (item.status === 'verified') {
         const count = item.verification_count || 1;
-        verifiedHtml = `<span class="status-verified" title="Zweryfikowane przez ${count} instruktorów/moderatorów"><i class="fas fa-check"></i> ${count}</span>`;
+        const verifier = item.verified_by ? ` (ost. ${escapeHtml(item.verified_by)})` : '';
+        verifiedHtml = `<span class="status-verified" title="Zweryfikowane merytorycznie (${count}x)${verifier}"><i class="fas fa-check"></i> ${count}</span>`;
+    } else if (AppState.isAdmin && !isPending) {
+        verifiedHtml = `<span class="status-unverified-badge" title="Hasło oczekuje na potwierdzenie merytoryczne instruktora/moderatora">Niezweryfikowane</span>`;
     }
 
     let badgesHtml = '';
     const cats = Array.isArray(item.category) ? item.category : [item.category];
     cats.forEach(c => {
         if (!c) return;
-        badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${c}">${CATEGORY_NAMES[c] || c}</span>`;
+        badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${escapeHtml(c)}">${escapeHtml(CATEGORY_NAMES[c] || c)}</span>`;
     });
 
     const subs = Array.isArray(item.subcategory) ? item.subcategory : (item.subcategory ? [item.subcategory] : []);
     subs.forEach(s => {
         if (!s) return;
-        badgesHtml += `<span class="cat-badge sub-cat">${s}</span>`;
+        badgesHtml += `<span class="cat-badge sub-cat">${escapeHtml(SUBCATEGORY_NAMES[s] || s)}</span>`;
     });
 
     let sourcesHtml = '';
@@ -513,7 +738,7 @@ function createTermCard(item, isPending = false) {
             const name = typeof src === 'object' ? (src.name || 'Źródło') : src;
             const url = typeof src === 'object' ? src.url : '';
             if (url && url.startsWith('http')) {
-                sourcesHtml += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Źródło / odnośnik zewnętrzny: ${escapeHtml(name)}"><i class="fas fa-external-link-alt"></i> ${escapeHtml(name)}</a>`;
+                sourcesHtml += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Źródło / odnośnik zewnętrzny: ${escapeHtml(name)}"><i class="fas fa-external-link-alt"></i> ${escapeHtml(name)}</a>`;
             } else if (name) {
                 sourcesHtml += `<span class="source-pill" title="Źródło merytoryczne / dziedzina: ${escapeHtml(name)}"><i class="fas fa-book-open"></i> ${escapeHtml(name)}</span>`;
             }
@@ -521,38 +746,52 @@ function createTermCard(item, isPending = false) {
         sourcesHtml += '</div>';
     }
 
-    let authorHtml = `<span class="author-meta">Autor: <strong>${item.author || 'Społeczność'}</strong></span>`;
+    let authorHtml = `<span class="author-meta">Autor: <strong>${escapeHtml(item.author || 'Społeczność')}</strong></span>`;
     if (item.author_link && item.author_link.startsWith('http')) {
-        authorHtml = `<span class="author-meta">Autor: <a href="${item.author_link}" target="_blank" rel="noopener noreferrer"><strong>${item.author}</strong> <i class="fas fa-link"></i></a></span>`;
+        authorHtml = `<span class="author-meta">Autor: <a href="${escapeHtml(item.author_link)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(item.author)}</strong> <i class="fas fa-link"></i></a></span>`;
     }
 
     let actionsHtml = '';
     if (isPending) {
         actionsHtml = `
             <div class="moderation-actions">
-                <button class="btn-approve" data-action="approve" data-id="${item.id}" title="Zatwierdź i opublikuj w bazie">
+                <button type="button" class="btn-approve" data-action="approve" data-id="${escapeHtml(item.id)}" title="Zatwierdź i opublikuj w bazie">
                     <i class="fas fa-check"></i> Zatwierdź
                 </button>
-                <button class="btn-edit-admin" data-action="edit-pending" data-id="${item.id}" title="Popraw przed zatwierdzeniem">
-                    <i class="fas fa-pencil-alt"></i>
+                <button type="button" class="btn-edit-admin" data-action="edit-pending" data-id="${escapeHtml(item.id)}" title="Otwórz w Studio (Podgląd Diff i edycja przed zatwierdzeniem)">
+                    <i class="fas fa-sliders-h"></i> Edytuj / Diff
                 </button>
-                <button class="btn-reject" data-action="reject" data-id="${item.id}" title="Odrzuć propozycję">
+                <button type="button" class="btn-reject" data-action="reject" data-id="${escapeHtml(item.id)}" title="Odrzuć propozycję">
                     <i class="fas fa-times"></i>
                 </button>
             </div>`;
     } else if (AppState.isAdmin) {
+        const quickVerifyBtn = item.status !== 'verified'
+            ? `<button type="button" class="btn-quick-verify" data-action="quick-verify" data-id="${escapeHtml(item.id)}" title="Potwierdź poprawność tego hasła 1-klikiem">
+                   <i class="fas fa-check"></i> Zweryfikuj
+               </button>`
+            : `<button type="button" class="btn-quick-verify is-verified-plus" data-action="quick-verify" data-id="${escapeHtml(item.id)}" title="Dodaj kolejne potwierdzenie instruktorskie (+1)">
+                   <i class="fas fa-plus"></i> +1
+               </button>`;
+
+        // Tylko główny Admin może bezpowrotnie usuwać hasła z bazy (RBAC)
+        const deleteBtn = AppState.userRole === 'admin'
+            ? `<button type="button" class="btn-delete-admin" data-action="delete-live" data-id="${escapeHtml(item.id)}" title="Usuń z bazy (tylko Admin)">
+                   <i class="fas fa-trash-alt"></i>
+               </button>`
+            : '';
+
         actionsHtml = `
             <div class="moderation-actions">
-                <button class="btn-edit-admin" data-action="edit-live" data-id="${item.id}" title="Edytuj hasło">
+                ${quickVerifyBtn}
+                <button type="button" class="btn-edit-admin" data-action="edit-live" data-id="${escapeHtml(item.id)}" title="Edytuj hasło w Salsopedia Studio">
                     <i class="fas fa-edit"></i> Edytuj
                 </button>
-                <button class="btn-delete-admin" data-action="delete-live" data-id="${item.id}" title="Usuń z bazy">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
+                ${deleteBtn}
             </div>`;
     } else {
         actionsHtml = `
-            <button class="btn-verify" data-action="verify" data-id="${item.id}" title="Zaproponuj poprawkę do tego hasła">
+            <button type="button" class="btn-verify" data-action="verify" data-id="${escapeHtml(item.id)}" title="Zaproponuj poprawkę lub uzupełnienie do tego hasła">
                 <i class="fas fa-pencil-alt"></i> Zgłoś poprawkę
             </button>`;
     }
@@ -560,12 +799,13 @@ function createTermCard(item, isPending = false) {
     card.innerHTML = `
         ${ribbonHtml}
         <div class="wiki-card-header">
-            <h3>${item.term}</h3>
+            <h3>${escapeHtml(item.term)}</h3>
             ${verifiedHtml}
         </div>
         <div class="badges">
             ${badgesHtml}
         </div>
+        ${inlineDiffHtml}
         <div class="definition">
             ${linkifyDefinition(item.definition || '', item.id)}
         </div>
@@ -579,11 +819,209 @@ function createTermCard(item, isPending = false) {
     return card;
 }
 
+// --- Silnik Porównywania Zmian (Visual Word Diff: Przed vs Po) ---
+
+function tokenizeForDiff(text) {
+    if (!text) return [];
+    return String(text).split(/(\s+)/).filter(t => t.length > 0);
+}
+
+function computeWordDiff(oldText, newText) {
+    const oldStr = String(oldText || '').trim();
+    const newStr = String(newText || '').trim();
+    if (oldStr === newStr) {
+        return {
+            hasChanges: false,
+            html: `<span class="diff-unchanged">${escapeHtml(newStr)}</span>`,
+            addedCount: 0,
+            removedCount: 0
+        };
+    }
+
+    const a = tokenizeForDiff(oldStr);
+    const b = tokenizeForDiff(newStr);
+    const n = a.length;
+    const m = b.length;
+
+    // Zabezpieczenie wydajności dla bardzo długich tekstów
+    if (n * m > 90000) {
+        return {
+            hasChanges: true,
+            html: `<del class="diff-removed">${escapeHtml(oldStr)}</del> <ins class="diff-added">${escapeHtml(newStr)}</ins>`,
+            addedCount: 1,
+            removedCount: 1
+        };
+    }
+
+    const dp = Array.from({ length: n + 1 }, () => new Uint16Array(m + 1));
+    for (let i = n - 1; i >= 0; i--) {
+        for (let j = m - 1; j >= 0; j--) {
+            if (a[i] === b[j]) {
+                dp[i][j] = dp[i + 1][j + 1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+            }
+        }
+    }
+
+    let i = 0;
+    let j = 0;
+    const parts = [];
+    let addedCount = 0;
+    let removedCount = 0;
+
+    while (i < n && j < m) {
+        if (a[i] === b[j]) {
+            parts.push({ type: 'same', val: a[i] });
+            i++;
+            j++;
+        } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+            parts.push({ type: 'del', val: a[i] });
+            if (a[i].trim()) removedCount++;
+            i++;
+        } else {
+            parts.push({ type: 'add', val: b[j] });
+            if (b[j].trim()) addedCount++;
+            j++;
+        }
+    }
+    while (i < n) {
+        parts.push({ type: 'del', val: a[i] });
+        if (a[i].trim()) removedCount++;
+        i++;
+    }
+    while (j < m) {
+        parts.push({ type: 'add', val: b[j] });
+        if (b[j].trim()) addedCount++;
+        j++;
+    }
+
+    // Grupowanie sąsiadujących operacji tego samego typu dla czytelnego HTML
+    let html = '';
+    let idx = 0;
+    while (idx < parts.length) {
+        const currentType = parts[idx].type;
+        let chunk = '';
+        while (idx < parts.length && parts[idx].type === currentType) {
+            chunk += parts[idx].val;
+            idx++;
+        }
+        if (currentType === 'same') {
+            html += escapeHtml(chunk);
+        } else if (currentType === 'del') {
+            html += `<del class="diff-removed">${escapeHtml(chunk)}</del>`;
+        } else if (currentType === 'add') {
+            html += `<ins class="diff-added">${escapeHtml(chunk)}</ins>`;
+        }
+    }
+
+    return {
+        hasChanges: true,
+        html,
+        addedCount,
+        removedCount
+    };
+}
+
+function formatSourcesSummary(sourceField) {
+    const arr = Array.isArray(sourceField) ? sourceField : (sourceField ? [sourceField] : []);
+    return arr.map(s => {
+        if (typeof s === 'object' && s !== null) {
+            return s.url ? `${s.name || 'Link'} (${s.url})` : (s.name || '');
+        }
+        return String(s);
+    }).filter(Boolean).join(', ');
+}
+
+function buildTermDiffHtml(originalTerm, proposedTerm) {
+    if (!originalTerm || !proposedTerm) return '';
+
+    const rows = [];
+    let totalChanges = 0;
+
+    // 1. Porównanie nazwy pojęcia
+    if ((originalTerm.term || '').trim() !== (proposedTerm.term || '').trim()) {
+        totalChanges++;
+        rows.push(`
+            <div class="diff-field-row">
+                <span class="diff-field-label">Nazwa hasła:</span>
+                <del class="diff-removed">${escapeHtml(originalTerm.term || '')}</del>
+                <i class="fas fa-arrow-right diff-arrow"></i>
+                <ins class="diff-added">${escapeHtml(proposedTerm.term || '')}</ins>
+            </div>`);
+    }
+
+    // 2. Porównanie definicji (Word-by-Word LCS Diff)
+    const defDiff = computeWordDiff(originalTerm.definition || '', proposedTerm.definition || '');
+    if (defDiff.hasChanges) {
+        totalChanges++;
+        rows.push(`
+            <div class="diff-field-row diff-definition-row">
+                <div class="diff-field-meta">
+                    <span class="diff-field-label">Zmiany w definicji:</span>
+                    <span class="diff-stats">
+                        <span class="diff-stat-add">+${defDiff.addedCount} słów</span>
+                        <span class="diff-stat-del">-${defDiff.removedCount} słów</span>
+                    </span>
+                </div>
+                <div class="diff-text-body">${defDiff.html}</div>
+            </div>`);
+    }
+
+    // 3. Porównanie kategorii
+    const oldCats = (Array.isArray(originalTerm.category) ? originalTerm.category : [originalTerm.category]).filter(Boolean).sort().join(', ');
+    const newCats = (Array.isArray(proposedTerm.category) ? proposedTerm.category : [proposedTerm.category]).filter(Boolean).sort().join(', ');
+    if (oldCats !== newCats) {
+        totalChanges++;
+        rows.push(`
+            <div class="diff-field-row">
+                <span class="diff-field-label">Kategorie:</span>
+                <del class="diff-removed">${escapeHtml(oldCats || 'brak')}</del>
+                <i class="fas fa-arrow-right diff-arrow"></i>
+                <ins class="diff-added">${escapeHtml(newCats || 'brak')}</ins>
+            </div>`);
+    }
+
+    // 4. Porównanie źródeł
+    const oldSrc = formatSourcesSummary(originalTerm.source);
+    const newSrc = formatSourcesSummary(proposedTerm.source);
+    if (oldSrc !== newSrc) {
+        totalChanges++;
+        rows.push(`
+            <div class="diff-field-row">
+                <span class="diff-field-label">Źródła:</span>
+                <del class="diff-removed">${escapeHtml(oldSrc || 'brak')}</del>
+                <i class="fas fa-arrow-right diff-arrow"></i>
+                <ins class="diff-added">${escapeHtml(newSrc || 'brak')}</ins>
+            </div>`);
+    }
+
+    // 5. Notatka od autora poprawki
+    if (proposedTerm.change_note) {
+        rows.push(`
+            <div class="diff-field-row diff-note-row">
+                <span class="diff-field-label"><i class="fas fa-comment-alt"></i> Opis poprawki:</span>
+                <span class="diff-note-text">${escapeHtml(proposedTerm.change_note)}</span>
+            </div>`);
+    }
+
+    if (totalChanges === 0 && !proposedTerm.change_note) {
+        return `<div class="diff-empty-msg"><i class="fas fa-check-circle"></i> Treść identyczna z aktualną wersją w bazie (brak różnic tekstowych).</div>`;
+    }
+
+    return `<div class="diff-fields-list">${rows.join('')}</div>`;
+}
+
 // --- Liczniki w Sidebarze i Pasku ---
 
 function updateCategoryCounters() {
     const counts = { 'all': AppState.terms.length };
+    let unverifiedCount = 0;
+
     AppState.terms.forEach(term => {
+        if (term.status !== 'verified') {
+            unverifiedCount++;
+        }
         const cats = Array.isArray(term.category) ? term.category : [term.category];
         cats.forEach(c => {
             if (!c) return;
@@ -598,6 +1036,9 @@ function updateCategoryCounters() {
 
     const liveBadge = document.getElementById('liveCountBadge');
     if (liveBadge) liveBadge.textContent = AppState.terms.length;
+
+    const unverifiedBadge = document.getElementById('unverifiedCountBadge');
+    if (unverifiedBadge) unverifiedBadge.textContent = unverifiedCount;
 }
 
 function updateAdminBadges() {
@@ -609,24 +1050,45 @@ function updateAdminToolbar() {
     const toolbar = document.getElementById('adminToolbar');
     if (!toolbar) return;
     toolbar.classList.toggle('is-hidden', !AppState.isAdmin);
+
+    const roleBadge = document.getElementById('adminRoleBadge');
+    if (roleBadge) {
+        roleBadge.innerHTML = AppState.userRole === 'admin'
+            ? '<i class="fas fa-crown"></i> Administrator'
+            : '<i class="fas fa-user-check"></i> Moderator';
+    }
+
+    const userInfo = document.getElementById('adminUserInfo');
+    if (userInfo) {
+        userInfo.textContent = AppState.userName
+            ? `Zalogowano: ${AppState.userName}`
+            : 'Aktywna sesja moderacji';
+    }
 }
 
-// --- Obsługa Zgłoszeń i Formularzy ---
+// --- Obsługa Zgłoszeń i Salsopedia Studio (Modal + Live Preview + Diff) ---
 
 window.openModal = function (mode = 'new', termData = null) {
     AppState.currentModalMode = mode;
+    AppState.editingOriginalTerm = null;
+
     const modal = document.getElementById('wikiModal');
     const form = document.getElementById('wikiForm');
     const title = document.getElementById('modalTitle');
+    const subtitle = document.getElementById('modalSubtitle');
     const msgBox = document.getElementById('formMessage');
     const submitBtn = document.getElementById('submitTermBtn');
+    const changeNoteGroup = document.getElementById('changeNoteGroup');
+    const modNote = document.getElementById('formModerationNote');
+    const dupWarn = document.getElementById('termDuplicateWarning');
+    const linkPicker = document.getElementById('wikiLinkPicker');
 
     if (!modal || !form) return;
 
     form.reset();
-    if (msgBox) {
-        msgBox.className = 'form-message-box is-hidden';
-    }
+    if (msgBox) msgBox.className = 'form-message-box is-hidden';
+    if (dupWarn) dupWarn.classList.add('is-hidden');
+    if (linkPicker) linkPicker.classList.add('is-hidden');
 
     const sourceContainer = document.getElementById('sourceContainer');
     if (sourceContainer) sourceContainer.innerHTML = '';
@@ -639,31 +1101,64 @@ window.openModal = function (mode = 'new', termData = null) {
     document.getElementById('formAdminDirect').value = '';
 
     if (mode === 'new' || mode === 'admin_direct') {
-        title.innerHTML = '<i class="fas fa-plus-circle"></i> Zaproponuj nowe hasło';
-        submitBtn.innerHTML = AppState.isAdmin
-            ? '<i class="fas fa-save"></i> Zapisz bezpośrednio w bazie'
+        const isDirect = mode === 'admin_direct' || AppState.isAdmin;
+        title.innerHTML = isDirect
+            ? '<i class="fas fa-plus-circle"></i> Dodaj nowe hasło do Salsopedii'
+            : '<i class="fas fa-plus-circle"></i> Zaproponuj nowe hasło';
+        if (subtitle) {
+            subtitle.textContent = 'Wprowadź treść po lewej stronie — po prawej widzisz podgląd karty na żywo wraz z automatycznymi linkami.';
+        }
+        submitBtn.innerHTML = isDirect
+            ? '<i class="fas fa-save"></i> Opublikuj bezpośrednio w bazie'
             : '<i class="fas fa-paper-plane"></i> Wyślij do moderacji';
+        if (changeNoteGroup) changeNoteGroup.classList.add('is-hidden');
+        if (modNote) modNote.classList.toggle('is-hidden', isDirect);
+
+        if (AppState.isAdmin && AppState.userName) {
+            const authorInput = document.getElementById('authorInput');
+            if (authorInput && !authorInput.value) authorInput.value = AppState.userName;
+        }
+
         activateChips('categoryChips', ['dance']);
         window.addSourceRow();
-        if (mode === 'admin_direct') {
+        if (isDirect) {
             AppState.currentModalMode = 'admin_edit_live';
         }
     } else if (mode === 'verify' && termData) {
+        AppState.editingOriginalTerm = findOriginalLiveTerm(termData) || termData;
         title.innerHTML = '<i class="fas fa-pencil-alt"></i> Zgłoś poprawkę do hasła';
+        if (subtitle) {
+            subtitle.textContent = 'Zmodyfikuj treść poniżej. W prawej kolumnie na żywo widzisz porównanie Twoich poprawek z obecną wersją (Przed vs Po).';
+        }
         submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Prześlij propozycję poprawki';
+        if (changeNoteGroup) changeNoteGroup.classList.remove('is-hidden');
+        if (modNote) modNote.classList.remove('is-hidden');
         populateModalWithTerm(termData);
         document.getElementById('isVerification').value = '1';
     } else if (mode === 'admin_edit_live' && termData) {
-        title.innerHTML = '<i class="fas fa-user-edit"></i> Edytuj hasło w bazie (Admin)';
-        submitBtn.innerHTML = '<i class="fas fa-save"></i> Zapisz zmiany w bazie';
+        AppState.editingOriginalTerm = { ...termData };
+        title.innerHTML = '<i class="fas fa-sliders-h"></i> Edycja hasła w Studio (Live)';
+        if (subtitle) {
+            subtitle.textContent = 'Wszystkie wprowadzone zmiany są porównywane po prawej stronie i po zapisaniu od razu aktualizują bazę.';
+        }
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Zapisz i opublikuj zmiany';
+        if (changeNoteGroup) changeNoteGroup.classList.add('is-hidden');
+        if (modNote) modNote.classList.add('is-hidden');
         document.getElementById('formAdminDirect').value = '1';
         populateModalWithTerm(termData);
     } else if (mode === 'admin_edit_pending' && termData) {
-        title.innerHTML = '<i class="fas fa-check-double"></i> Popraw przed zatwierdzeniem';
-        submitBtn.innerHTML = '<i class="fas fa-check"></i> Zapisz i zatwierdź hasło';
+        AppState.editingOriginalTerm = findOriginalLiveTerm(termData);
+        title.innerHTML = '<i class="fas fa-check-double"></i> Weryfikacja zgłoszenia w Studio (Diff)';
+        if (subtitle) {
+            subtitle.textContent = 'Przejrzyj różnice (Przed vs Po), w razie potrzeby dopracuj definicję i zatwierdź publikację w bazie.';
+        }
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Zatwierdź i opublikuj w bazie';
+        if (changeNoteGroup) changeNoteGroup.classList.remove('is-hidden');
+        if (modNote) modNote.classList.add('is-hidden');
         populateModalWithTerm(termData);
     }
 
+    updateStudioLivePreviewAndDiff();
     modal.classList.add('is-open', 'open');
 };
 
@@ -679,6 +1174,8 @@ function populateModalWithTerm(term) {
     document.getElementById('authorInput').value = term.author || '';
     document.getElementById('authorLinkInput').value = term.author_link || '';
     document.getElementById('userCategoryInput').value = term.user_category || '';
+    const changeNoteEl = document.getElementById('changeNoteInput');
+    if (changeNoteEl) changeNoteEl.value = term.change_note || '';
 
     const cats = Array.isArray(term.category) ? term.category : [term.category];
     activateChips('categoryChips', cats);
@@ -696,6 +1193,173 @@ function populateModalWithTerm(term) {
     } else {
         window.addSourceRow();
     }
+}
+
+function getDraftTermFromForm() {
+    const form = document.getElementById('wikiForm');
+    const sources = [];
+    if (form) {
+        const nameInputs = form.querySelectorAll('input[name="source_name[]"]');
+        const urlInputs = form.querySelectorAll('input[name="source_url[]"]');
+        for (let i = 0; i < nameInputs.length; i++) {
+            const sName = nameInputs[i].value.trim();
+            const sUrl = urlInputs[i].value.trim();
+            if (sName || sUrl) {
+                sources.push({ name: sName, url: sUrl });
+            }
+        }
+    }
+
+    return {
+        id: document.getElementById('termId')?.value.trim() || 'preview_draft',
+        term: document.getElementById('termInput')?.value.trim() || 'Nazwa pojęcia...',
+        definition: document.getElementById('definitionInput')?.value.trim() || 'Tutaj pojawi się podgląd definicji wraz z automatycznym podświetleniem powiązanych haseł...',
+        author: document.getElementById('authorInput')?.value.trim() || 'Społeczność KSH',
+        author_link: document.getElementById('authorLinkInput')?.value.trim() || '',
+        user_category: document.getElementById('userCategoryInput')?.value.trim() || '',
+        change_note: document.getElementById('changeNoteInput')?.value.trim() || '',
+        category: getActiveChips('categoryChips'),
+        subcategory: getActiveChips('subcategoryChips'),
+        source: sources
+    };
+}
+
+function updateStudioLivePreviewAndDiff() {
+    const draft = getDraftTermFromForm();
+    const rawDef = document.getElementById('definitionInput')?.value || '';
+
+    // 1. Licznik znaków
+    const charCounter = document.getElementById('definitionCharCount');
+    if (charCounter) {
+        charCounter.textContent = `${rawDef.length} zn.`;
+    }
+
+    // 2. Sprawdzenie duplikatu nazwy hasła przy dodawaniu nowego pojęcia
+    const dupWarn = document.getElementById('termDuplicateWarning');
+    const rawTermName = document.getElementById('termInput')?.value.trim() || '';
+    if (dupWarn) {
+        if (!AppState.editingOriginalTerm && rawTermName.length >= 2) {
+            const existing = AppState.terms.find(
+                t => t.term && t.term.trim().toLowerCase() === rawTermName.toLowerCase()
+            );
+            if (existing) {
+                dupWarn.innerHTML = `
+                    <span><i class="fas fa-exclamation-circle"></i> Hasło <strong>„${escapeHtml(existing.term)}”</strong> już istnieje w bazie!</span>
+                    <button type="button" class="btn-switch-existing" data-action="switch-to-existing" data-id="${escapeHtml(existing.id)}">
+                        Przejdź do edycji tego hasła &rarr;
+                    </button>`;
+                dupWarn.classList.remove('is-hidden');
+            } else {
+                dupWarn.classList.add('is-hidden');
+            }
+        } else {
+            dupWarn.classList.add('is-hidden');
+        }
+    }
+
+    // 3. Renderowanie Podglądu Karty na Żywo
+    const previewContainer = document.getElementById('livePreviewContainer');
+    const linksBadge = document.getElementById('previewLinksCount');
+    if (previewContainer) {
+        const linkedDefHtml = linkifyDefinition(draft.definition, draft.id);
+        const linkMatches = linkedDefHtml.match(/class="wiki-inline-link"/g);
+        const linkCount = linkMatches ? linkMatches.length : 0;
+        if (linksBadge) {
+            linksBadge.textContent = `${linkCount} powiązań wiki`;
+        }
+
+        let badgesHtml = '';
+        (draft.category.length ? draft.category : ['dance']).forEach(c => {
+            badgesHtml += `<span class="cat-badge main-cat">${escapeHtml(CATEGORY_NAMES[c] || c)}</span>`;
+        });
+        draft.subcategory.forEach(s => {
+            badgesHtml += `<span class="cat-badge sub-cat">${escapeHtml(SUBCATEGORY_NAMES[s] || s)}</span>`;
+        });
+
+        let sourcesHtml = '';
+        if (draft.source.length > 0) {
+            sourcesHtml = '<div class="source-container-preview">';
+            draft.source.forEach(src => {
+                if (src.url && src.url.startsWith('http')) {
+                    sourcesHtml += `<span class="source-pill"><i class="fas fa-external-link-alt"></i> ${escapeHtml(src.name || 'Link')}</span>`;
+                } else if (src.name) {
+                    sourcesHtml += `<span class="source-pill"><i class="fas fa-book-open"></i> ${escapeHtml(src.name)}</span>`;
+                }
+            });
+            sourcesHtml += '</div>';
+        }
+
+        previewContainer.innerHTML = `
+            <div class="wiki-card preview-wiki-card">
+                <div class="wiki-card-header">
+                    <h3>${escapeHtml(draft.term)}</h3>
+                    <span class="status-verified"><i class="fas fa-check"></i> Podgląd</span>
+                </div>
+                <div class="badges">${badgesHtml}</div>
+                <div class="definition">${linkedDefHtml}</div>
+                ${sourcesHtml}
+                <div class="wiki-card-footer">
+                    <span class="author-meta">Autor: <strong>${escapeHtml(draft.author)}</strong></span>
+                </div>
+            </div>`;
+    }
+
+    // 4. Renderowanie Porównania „Przed vs Po” (Diff)
+    const diffBox = document.getElementById('studioDiffBox');
+    const diffContent = document.getElementById('studioDiffContent');
+    if (diffBox && diffContent) {
+        if (AppState.editingOriginalTerm) {
+            diffBox.classList.remove('is-hidden');
+            diffContent.innerHTML = buildTermDiffHtml(AppState.editingOriginalTerm, {
+                ...draft,
+                term: rawTermName || AppState.editingOriginalTerm.term,
+                definition: rawDef
+            });
+        } else {
+            diffBox.classList.add('is-hidden');
+            diffContent.innerHTML = '';
+        }
+    }
+}
+
+function renderWikiLinkSuggestions(query) {
+    const container = document.getElementById('wikiLinkSuggestions');
+    if (!container) return;
+    const q = (query || '').trim().toLowerCase();
+    const matches = AppState.terms
+        .filter(t => !q || (t.term && t.term.toLowerCase().includes(q)))
+        .slice(0, 12);
+
+    if (matches.length === 0) {
+        container.innerHTML = '<span class="label-hint">Brak pasujących haseł w bazie.</span>';
+        return;
+    }
+
+    container.innerHTML = matches.map(t =>
+        `<button type="button" class="link-suggestion-chip" data-insert-term="${escapeHtml(t.term)}">
+            <i class="fas fa-plus"></i> [${escapeHtml(t.term)}]
+        </button>`
+    ).join('');
+}
+
+function insertTermTagIntoDefinition(termTitle) {
+    const textarea = document.getElementById('definitionInput');
+    const picker = document.getElementById('wikiLinkPicker');
+    if (!textarea || !termTitle) return;
+
+    const tag = `[${termTitle}]`;
+    const start = textarea.selectionStart ?? textarea.value.length;
+    const end = textarea.selectionEnd ?? textarea.value.length;
+    const before = textarea.value.slice(0, start);
+    const after = textarea.value.slice(end);
+
+    textarea.value = before + tag + after;
+    textarea.focus();
+    const newCursor = start + tag.length;
+    textarea.setSelectionRange(newCursor, newCursor);
+
+    if (picker) picker.classList.add('is-hidden');
+    updateStudioLivePreviewAndDiff();
 }
 
 function resetChips(containerId) {
@@ -726,7 +1390,7 @@ window.addSourceRow = function (name = '', url = '') {
     const div = document.createElement('div');
     div.className = 'source-row';
     div.innerHTML = `
-        <input type="text" name="source_name[]" placeholder="Nazwa (np. Rueda Standard, Książka...)" value="${escapeHtml(name)}" class="form-input">
+        <input type="text" name="source_name[]" placeholder="Nazwa (np. Standard Rueda, Instruktor...)" value="${escapeHtml(name)}" class="form-input">
         <input type="url" name="source_url[]" placeholder="URL (opcjonalnie)" value="${escapeHtml(url)}" class="form-input">
         <button type="button" class="btn-remove-source" data-action="remove-source" title="Usuń źródło">&times;</button>
     `;
@@ -772,6 +1436,7 @@ async function handleFormSubmit(e) {
         author: document.getElementById('authorInput').value.trim(),
         author_link: document.getElementById('authorLinkInput').value.trim(),
         user_category: document.getElementById('userCategoryInput').value.trim(),
+        change_note: document.getElementById('changeNoteInput')?.value.trim() || '',
         category: categories,
         subcategory: getActiveChips('subcategoryChips'),
         source: sources,
@@ -781,7 +1446,7 @@ async function handleFormSubmit(e) {
     if (submitBtn) submitBtn.disabled = true;
 
     try {
-        // Scenariusz 1: Administrator bezpośrednio edytuje lub dodaje w bazie live
+        // Scenariusz 1: Moderator/Administrator bezpośrednio edytuje lub dodaje w bazie live
         if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_live') {
             const res = await fetch(API_URL + '?action=admin_save', {
                 method: 'POST',
@@ -797,16 +1462,16 @@ async function handleFormSubmit(e) {
             });
             const result = await res.json();
             if (result.success) {
-                showMessage(msgBox, 'success', 'Hasło zostało pomyślnie zapisane w bazie!');
+                showMessage(msgBox, 'success', 'Hasło zostało pomyślnie zapisane i zweryfikowane w bazie!');
                 await fetchTerms();
-                setTimeout(() => window.closeModal(), 1000);
+                setTimeout(() => window.closeModal(), 900);
             } else {
                 showMessage(msgBox, 'error', result.error || 'Błąd zapisu');
             }
             return;
         }
 
-        // Scenariusz 2: Administrator poprawia zgłoszenie przed zatwierdzeniem
+        // Scenariusz 2: Moderator/Administrator poprawia zgłoszenie przed zatwierdzeniem
         if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_pending') {
             const res = await fetch(API_URL + '?action=moderate', {
                 method: 'POST',
@@ -824,13 +1489,13 @@ async function handleFormSubmit(e) {
             });
             const result = await res.json();
             if (result.success) {
-                showMessage(msgBox, 'success', 'Zgłoszenie poprawione i pomyślnie zatwierdzone!');
+                showMessage(msgBox, 'success', 'Zgłoszenie poprawione i pomyślnie opublikowane!');
                 await fetchTerms();
                 await fetchPendingTerms();
                 setTimeout(() => {
                     window.closeModal();
-                    switchViewMode('live');
-                }, 1000);
+                    renderCurrentView();
+                }, 900);
             } else {
                 showMessage(msgBox, 'error', result.error || 'Błąd moderacji');
             }
@@ -858,9 +1523,9 @@ async function handleFormSubmit(e) {
         }
 
         if (responseSuccess) {
-            showMessage(msgBox, 'success', 'Dziękujemy! Twoja propozycja trafiła do moderacji.');
+            showMessage(msgBox, 'success', 'Dziękujemy! Twoja propozycja trafiła do kolejki moderacji.');
             form.reset();
-            setTimeout(() => window.closeModal(), 1500);
+            setTimeout(() => window.closeModal(), 1400);
         }
     } catch (err) {
         console.error('[Salsopedia] Submit error:', err);
@@ -870,7 +1535,7 @@ async function handleFormSubmit(e) {
     }
 }
 
-// --- Akcje Moderatora / Administratora ---
+// --- Akcje Moderatora / Administratora i Zarządzanie Kontami (Wzorzec Raricart) ---
 
 function handleModerationButtonClick() {
     if (AppState.isAdmin) {
@@ -896,7 +1561,9 @@ window.closeAdminLoginModal = function () {
 
 async function handleAdminLoginSubmit(e) {
     e.preventDefault();
+    const emailInput = document.getElementById('adminEmailInput');
     const passInput = document.getElementById('adminPasswordInput');
+    const email = emailInput ? emailInput.value.trim() : '';
     const pass = passInput ? passInput.value.trim() : '';
     const msg = document.getElementById('adminLoginMessage');
 
@@ -905,11 +1572,15 @@ async function handleAdminLoginSubmit(e) {
             method: 'POST',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: pass })
+            body: JSON.stringify({ email, password: pass })
         });
         const result = await res.json();
         if (result.success && result.authenticated) {
             AppState.isAdmin = true;
+            AppState.userRole = result.role || 'admin';
+            AppState.userName = result.user_name || 'Moderator';
+            AppState.userEmail = result.user_email || email;
+            AppState.forcePasswordChange = Boolean(result.force_change);
             AppState.csrfToken = result.csrf_token || '';
             if (AppState.csrfToken) {
                 sessionStorage.setItem('kato_csrf_token', AppState.csrfToken);
@@ -918,9 +1589,14 @@ async function handleAdminLoginSubmit(e) {
             updateAdminToolbar();
             window.closeAdminLoginModal();
             await fetchPendingTerms();
-            switchViewMode('pending');
+
+            if (AppState.forcePasswordChange) {
+                window.openTeamModal(true);
+            } else {
+                switchViewMode(AppState.pending.length > 0 ? 'pending' : 'live');
+            }
         } else {
-            showMessage(msg, 'error', result.error || 'Niepoprawne hasło administratora!');
+            showMessage(msg, 'error', result.error || 'Niepoprawne dane logowania!');
         }
     } catch (err) {
         showMessage(msg, 'error', 'Brak połączenia z serwerem autoryzacji.');
@@ -937,15 +1613,230 @@ async function logoutAdmin() {
     } catch (e) {
         // Ignoruj błędy sieci przy wylogowaniu
     }
-    AppState.isAdmin = false;
-    AppState.csrfToken = '';
-    sessionStorage.removeItem('kato_csrf_token');
+    resetAuthState();
     updateAdminToolbar();
     switchViewMode('live');
 }
 
+window.openTeamModal = async function (isForced = false) {
+    const modal = document.getElementById('teamModal');
+    if (!modal) return;
+
+    const banner = document.getElementById('forcePasswordChangeBanner');
+    if (banner) {
+        banner.classList.toggle('is-hidden', !isForced && !AppState.forcePasswordChange);
+    }
+
+    const summary = document.getElementById('currentAccountSummary');
+    if (summary) {
+        const roleLabel = AppState.userRole === 'admin' ? 'Administrator (Pełne uprawnienia)' : 'Moderator (Edycja i Weryfikacja)';
+        summary.textContent = `${AppState.userName || 'Moderator'} (${AppState.userEmail || 'konto główne'}) — Rola: ${roleLabel}`;
+    }
+
+    const cpMsg = document.getElementById('changePasswordMessage');
+    if (cpMsg) cpMsg.className = 'form-message-box is-hidden';
+
+    const addModMsg = document.getElementById('addModeratorMessage');
+    if (addModMsg) addModMsg.className = 'form-message-box is-hidden';
+
+    const adminSection = document.getElementById('adminTeamSection');
+    if (adminSection) {
+        const isFullAdmin = AppState.userRole === 'admin';
+        adminSection.classList.toggle('is-hidden', !isFullAdmin);
+        if (isFullAdmin) {
+            await fetchModeratorsList();
+        }
+    }
+
+    modal.classList.add('is-open', 'open');
+};
+
+window.closeTeamModal = function () {
+    const modal = document.getElementById('teamModal');
+    if (modal) modal.classList.remove('is-open', 'open');
+};
+
+async function handleChangePasswordSubmit(e) {
+    e.preventDefault();
+    const oldPassword = document.getElementById('cpOldPass')?.value || '';
+    const newPassword = document.getElementById('cpNewPass')?.value || '';
+    const confirmPassword = document.getElementById('cpConfirmPass')?.value || '';
+    const msg = document.getElementById('changePasswordMessage');
+
+    try {
+        const res = await fetch(API_URL + '?action=change_password', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
+            body: JSON.stringify({
+                csrf_token: AppState.csrfToken,
+                old_password: oldPassword,
+                new_password: newPassword,
+                confirm_password: confirmPassword
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            AppState.forcePasswordChange = false;
+            const banner = document.getElementById('forcePasswordChangeBanner');
+            if (banner) banner.classList.add('is-hidden');
+            document.getElementById('changePasswordForm')?.reset();
+            showMessage(msg, 'success', result.message || 'Hasło zostało zmienione!');
+        } else {
+            showMessage(msg, 'error', result.error || 'Błąd zmiany hasła.');
+        }
+    } catch (err) {
+        showMessage(msg, 'error', 'Błąd połączenia z serwerem.');
+    }
+}
+
+async function fetchModeratorsList() {
+    if (AppState.userRole !== 'admin') return;
+    const container = document.getElementById('moderatorsListContainer');
+    if (!container) return;
+
+    try {
+        const res = await fetch(API_URL + '?action=list_moderators', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
+            body: JSON.stringify({ csrf_token: AppState.csrfToken })
+        });
+        const result = await res.json();
+        if (result.success && Array.isArray(result.users)) {
+            AppState.moderators = result.users;
+            if (result.users.length === 0) {
+                container.innerHTML = '<p class="label-hint">Brak dodatkowych kont w pliku moderators.json (aktywne tylko główne konto z .env).</p>';
+                return;
+            }
+            container.innerHTML = result.users.map(u => `
+                <div class="moderator-row-item">
+                    <div class="moderator-row-info">
+                        <strong>${escapeHtml(u.name)}</strong>
+                        <span class="mod-email-pill">${escapeHtml(u.email)}</span>
+                        <span class="mod-role-pill ${u.role === 'admin' ? 'is-admin' : 'is-mod'}">${u.role === 'admin' ? 'Admin' : 'Moderator'}</span>
+                        ${u.force_change ? '<span class="mod-force-pill">Wymagana zmiana hasła</span>' : ''}
+                    </div>
+                    <div class="moderator-row-actions">
+                        <button type="button" class="btn-edit-admin" data-action="fill-moderator" data-email="${escapeHtml(u.email)}" data-name="${escapeHtml(u.name)}" data-role="${escapeHtml(u.role)}" title="Edytuj konto / zresetuj hasło">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button type="button" class="btn-reject" data-action="delete-moderator" data-email="${escapeHtml(u.email)}" title="Usuń konto moderatora">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (err) {
+        container.innerHTML = '<p class="label-hint">Nie udało się pobrać listy kont.</p>';
+    }
+}
+
+async function handleSaveModeratorSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('modEmailInput')?.value.trim() || '';
+    const name = document.getElementById('modNameInput')?.value.trim() || '';
+    const role = document.getElementById('modRoleSelect')?.value || 'moderator';
+    const password = document.getElementById('modPassInput')?.value || '';
+    const forceChange = Boolean(document.getElementById('modForceChangeCheckbox')?.checked);
+    const msg = document.getElementById('addModeratorMessage');
+
+    try {
+        const res = await fetch(API_URL + '?action=save_moderator', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
+            body: JSON.stringify({
+                csrf_token: AppState.csrfToken,
+                email,
+                name,
+                role,
+                password,
+                force_change: forceChange
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            showMessage(msg, 'success', result.message || 'Zapisano konto moderatora!');
+            document.getElementById('addModeratorForm')?.reset();
+            await fetchModeratorsList();
+        } else {
+            showMessage(msg, 'error', result.error || 'Błąd zapisu konta moderatora.');
+        }
+    } catch (err) {
+        showMessage(msg, 'error', 'Błąd połączenia z serwerem.');
+    }
+}
+
+async function deleteModeratorAccount(email) {
+    if (!confirm(`Czy na pewno chcesz usunąć konto moderatora: ${email}?`)) return;
+    try {
+        const res = await fetch(API_URL + '?action=delete_moderator', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
+            body: JSON.stringify({
+                csrf_token: AppState.csrfToken,
+                email
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            await fetchModeratorsList();
+        } else {
+            alert('Błąd: ' + (result.error || 'Nie udało się usunąć konta'));
+        }
+    } catch (err) {
+        console.error('Błąd usuwania konta moderatora:', err);
+    }
+}
+
+window.quickVerifyTerm = async function (id) {
+    try {
+        const res = await fetch(API_URL + '?action=quick_verify', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
+            body: JSON.stringify({
+                csrf_token: AppState.csrfToken,
+                id
+            })
+        });
+        const result = await res.json();
+        if (result.success && result.entry) {
+            const idx = AppState.terms.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                AppState.terms[idx] = result.entry;
+            }
+            notifyKnowledgeUpdated();
+            updateCategoryCounters();
+            renderCurrentView();
+        } else {
+            alert('Błąd weryfikacji: ' + (result.error || 'Nieznany'));
+        }
+    } catch (err) {
+        console.error('Błąd szybkiej weryfikacji:', err);
+    }
+};
+
 window.approvePendingTerm = async function (id) {
-    if (!confirm('Czy na pewno chcesz zatwierdzić to hasło i opublikować je w bazie Salsopedii?')) return;
+    if (!confirm('Czy na pewno chcesz zatwierdzić to zgłoszenie i opublikować je w bazie Salsopedii?')) return;
     try {
         const res = await fetch(API_URL + '?action=moderate', {
             method: 'POST',
@@ -1022,6 +1913,10 @@ window.openVerifyModal = function (id) {
 };
 
 window.deleteLiveTerm = async function (id) {
+    if (AppState.userRole !== 'admin') {
+        alert('Tylko główny Administrator może bezpowrotnie usuwać hasła z bazy.');
+        return;
+    }
     if (!confirm('UWAGA: Czy na pewno chcesz bezpowrotnie usunąć to hasło z bazy Salsopedii?')) return;
     try {
         const res = await fetch(API_URL + '?action=admin_delete', {
@@ -1039,6 +1934,7 @@ window.deleteLiveTerm = async function (id) {
         const result = await res.json();
         if (result.success) {
             AppState.terms = AppState.terms.filter(t => t.id !== id);
+            notifyKnowledgeUpdated();
             updateCategoryCounters();
             renderCurrentView();
         } else {
@@ -1080,6 +1976,9 @@ function jumpToTermCard(id) {
         // Jeśli hasło jest ukryte przez filtr kategorii lub wyszukiwarkę, zresetuj widok
         AppState.activeCategory = 'all';
         AppState.searchQuery = '';
+        if (AppState.viewMode !== 'live') {
+            AppState.viewMode = 'live';
+        }
         const searchInput = document.getElementById('searchInput');
         if (searchInput) searchInput.value = '';
         const clearBtn = document.getElementById('clearSearchBtn');
@@ -1307,24 +2206,42 @@ function escapeHtml(str) {
 
 // --- Integracja ze zdarzeniami cyklu życia (Router SPA i Direct Load) ---
 
-document.addEventListener('page:loaded', (e) => {
-    const path = e.detail?.path || window.location.pathname;
-    if (path.includes('salsopedia') || document.getElementById('wikiGrid')) {
-        mountWiki();
-    }
-});
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        if (document.getElementById('wikiGrid')) mountWiki();
+if (typeof document !== 'undefined') {
+    document.addEventListener('page:loaded', (e) => {
+        const path = e.detail?.path || window.location.pathname;
+        if (path.includes('salsopedia') || document.getElementById('wikiGrid')) {
+            mountWiki();
+        }
     });
-} else {
-    if (document.getElementById('wikiGrid')) mountWiki();
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('wikiGrid')) mountWiki();
+        });
+    } else {
+        if (document.getElementById('wikiGrid')) mountWiki();
+    }
 }
 
-window.mountWiki = mountWiki;
-window.fetchTerms = fetchTerms;
-window.switchViewMode = switchViewMode;
-window.setActiveCategory = setActiveCategory;
-window.linkifyDefinition = linkifyDefinition;
-window.jumpToTermCard = jumpToTermCard;
+if (typeof window !== 'undefined') {
+    window.mountWiki = mountWiki;
+    window.fetchTerms = fetchTerms;
+    window.notifyKnowledgeUpdated = notifyKnowledgeUpdated;
+    window.switchViewMode = switchViewMode;
+    window.setActiveCategory = setActiveCategory;
+    window.linkifyDefinition = linkifyDefinition;
+    window.jumpToTermCard = jumpToTermCard;
+    window.computeWordDiff = computeWordDiff;
+    window.buildTermDiffHtml = buildTermDiffHtml;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        AppState,
+        notifyKnowledgeUpdated,
+        computeWordDiff,
+        buildTermDiffHtml,
+        linkifyDefinition,
+        buildKeywordEntries
+    };
+}

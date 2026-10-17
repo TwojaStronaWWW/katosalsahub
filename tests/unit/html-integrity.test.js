@@ -49,10 +49,13 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="gdpr_consent"[^>]*required/i);
     });
 
-    it('nie powinien zawierać publicznego linku do Panelu Moderacji w stopce (#5) ani stylów inline (SoC)', () => {
+    it('nie powinien zawierać publicznego linku do Panelu Moderacji w stopce (#5) ani stylów inline (SoC) oraz powinien ładować Asystenta AI', () => {
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w index.html');
       assert.doesNotMatch(html, /\s+onclick\s*=/i, 'Wykryto atrybut onclick="..." w index.html');
+      assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
+      assert.match(html, /data-site-id="katosalsahub"/i);
+      assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
   });
 
@@ -65,15 +68,16 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /imię lub pseudonim/i);
     });
 
-    it('nie powinna zawierać bloków <style>, stylów inline ani linku moderacji w stopce (#5, SoC)', () => {
+    it('nie powinna zawierać bloków <style>, stylów inline ani linku moderacji w stopce (#5, SoC) oraz powinna ładować Asystenta AI', () => {
       assert.doesNotMatch(html, /<style[\s>]/i);
       assert.doesNotMatch(html, /\s+style\s*=/i);
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
+      assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
     });
   });
 
   describe('Salsopedia (katosalsahub.pl/salsopedia.html)', () => {
-    it('plik salsopedia.html powinien posiadać poprawny szkielet HTML5 i elementy wiki', () => {
+    it('plik salsopedia.html powinien posiadać poprawny szkielet HTML5, Salsopedia Studio (Live Preview + Diff), modal ról Admin/Moderator oraz Asystenta AI', () => {
       assert.ok(fs.existsSync(SALSOPEDIA_HTML));
       const html = fs.readFileSync(SALSOPEDIA_HTML, 'utf-8');
       assert.match(html, /<!DOCTYPE html>/i);
@@ -82,6 +86,12 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="wikiGrid"/i);
       assert.match(html, /id="wikiModal"/i);
       assert.match(html, /id="adminToolbar"/i);
+      assert.match(html, /id="btnShowUnverified"/i);
+      assert.match(html, /id="studioDiffBox"/i);
+      assert.match(html, /id="livePreviewContainer"/i);
+      assert.match(html, /id="teamModal"/i);
+      assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
+      assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
 
     it('plik salsopedia.html nie powinien zawierać styli inline, inline event handlerów ani publicznego linku moderacji w stopce (#5, SoC)', () => {
@@ -94,11 +104,23 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
   });
 
   describe('DancePuls (dancepuls.pl/index.html)', () => {
-    it('plik index.html powinien istnieć i mieć poprawny szkielet', () => {
+    it('plik index.html powinien istnieć, mieć poprawny szkielet i zawierać panel 6-sekcyjnego raportu KSH', () => {
       assert.ok(fs.existsSync(DANCEPULS_HTML));
       const html = fs.readFileSync(DANCEPULS_HTML, 'utf-8');
       assert.match(html, /<!DOCTYPE html>/i);
       assert.match(html, /<html\s+lang="pl">/i);
+      assert.match(html, /id="load-report-btn"/i);
+      assert.match(html, /id="open-audit-btn"/i);
+      assert.match(html, /id="wynik-przyszle"/i);
+      assert.match(html, /id="copy-comment2-btn"/i);
+      assert.match(html, /id="copy-all-poll-btn"/i);
+    });
+
+    it('plik dancepuls.pl/index.html nie powinien zawierać stylów inline ani inline event handlerów (SoC)', () => {
+      const html = fs.readFileSync(DANCEPULS_HTML, 'utf-8');
+      assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w dancepuls.pl/index.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+onclick\s*=/i, 'Wykryto atrybut onclick="..." w dancepuls.pl/index.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+onsubmit\s*=/i, 'Wykryto atrybut onsubmit="..." w dancepuls.pl/index.html naruszający SoC');
     });
   });
 });

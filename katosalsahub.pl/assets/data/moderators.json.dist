@@ -1,0 +1,18 @@
+{
+  "users": {
+    "admin@katosalsahub.pl": {
+      "name": "Główny Administrator KSH",
+      "role": "admin",
+      "hash": "$2y$10$example_placeholder_hash_change_in_production",
+      "force_change": false,
+      "created_at": "2026-10-16"
+    },
+    "moderator@katosalsahub.pl": {
+      "name": "Instruktor / Moderator",
+      "role": "moderator",
+      "hash": "$2y$10$example_placeholder_hash_change_in_production",
+      "force_change": true,
+      "created_at": "2026-10-16"
+    }
+  }
+}

@@ -979,4 +979,553 @@
   text-decoration-color: #fbbf24;
 }
 
+/* =====================================================
+   SALSOPEDIA STUDIO (v2.0) - 2-COL EDITOR, LIVE PREVIEW,
+   VISUAL DIFF (PRZED VS PO) & MULTI-ROLE RBAC
+   ===================================================== */
 
+.wiki-studio-modal {
+  max-width: 1180px;
+  width: 96%;
+  padding: 28px 30px;
+}
+
+.studio-modal-header {
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.studio-modal-header h2 {
+  margin-bottom: 6px;
+}
+
+.studio-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.wiki-studio-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (min-width: 980px) {
+  .wiki-studio-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}
+
+.wiki-studio-preview-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+}
+
+.studio-preview-box,
+.studio-diff-box {
+  background: rgba(12, 14, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.studio-diff-box {
+  border-color: rgba(245, 158, 11, 0.45);
+  background: linear-gradient(145deg, rgba(30, 24, 15, 0.92), rgba(16, 18, 30, 0.96));
+}
+
+.studio-panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #fbbf24;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.preview-links-badge,
+.diff-summary-badge {
+  font-size: 0.74rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.16);
+  color: #fde68a;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.preview-wiki-card {
+  margin: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.preview-wiki-card:hover {
+  transform: none;
+}
+
+/* --- Pasek narzędziowy definicji i Wstawianie Linków [Hasło] --- */
+.definition-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.definition-label-row label {
+  margin-bottom: 0;
+}
+
+.definition-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-tool-chip {
+  background: rgba(251, 191, 36, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: #fbbf24;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.btn-tool-chip:hover {
+  background: #fbbf24;
+  color: #0f172a;
+}
+
+.char-counter {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+}
+
+.wiki-link-picker {
+  background: rgba(14, 17, 29, 0.96);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.wiki-link-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.btn-close-inline {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-close-inline:hover {
+  color: #fff;
+}
+
+.wiki-link-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  max-height: 130px;
+  overflow-y: auto;
+}
+
+.link-suggestion-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.link-suggestion-chip:hover {
+  background: rgba(251, 191, 36, 0.22);
+  border-color: #fbbf24;
+  color: #fff;
+}
+
+/* --- Ostrzeżenie o duplikacie nazwy hasła --- */
+.duplicate-warning {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fde68a;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-switch-existing {
+  background: #f59e0b;
+  color: #0f172a;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-switch-existing:hover {
+  background: #fbbf24;
+}
+
+/* --- Wizualizacja Porównania Zmian (Visual Diff: Przed vs Po) --- */
+.card-diff-box {
+  background: rgba(12, 15, 26, 0.9);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 0.86rem;
+}
+
+.card-diff-header {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fbbf24;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diff-fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.diff-field-row {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+
+.diff-field-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.diff-field-label {
+  font-weight: 700;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+
+.diff-stats {
+  display: inline-flex;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.diff-stat-add {
+  color: #34d399;
+}
+
+.diff-stat-del {
+  color: #f87171;
+}
+
+.diff-text-body {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  line-height: 1.65;
+}
+
+del.diff-removed {
+  background: rgba(239, 68, 68, 0.24);
+  color: #fca5a5;
+  text-decoration: line-through;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+ins.diff-added {
+  background: rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.6);
+}
+
+.diff-arrow {
+  margin: 0 6px;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.diff-note-row {
+  background: rgba(59, 130, 246, 0.12);
+  border-left: 3px solid #3b82f6;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.diff-note-text {
+  color: #bfdbfe;
+  font-style: italic;
+  margin: 0;
+}
+
+.diff-empty-msg {
+  color: #94a3b8;
+  font-size: 0.84rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --- Szybka Weryfikacja 1-klikiem i Statusy --- */
+.status-unverified-badge {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+  border: 1px dashed rgba(245, 158, 11, 0.45);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.btn-quick-verify {
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #34d399;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-quick-verify:hover {
+  background: #10b981;
+  color: #052e16;
+}
+
+.btn-quick-verify.is-verified-plus {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #94a3b8;
+}
+
+.btn-quick-verify.is-verified-plus:hover {
+  background: rgba(16, 185, 129, 0.25);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+/* --- Modal Zarządzania Kontami Moderatorów i Hasłem (#teamModal) --- */
+.team-modal {
+  max-width: 920px;
+  width: 95%;
+}
+
+.force-change-banner {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  border-left: 4px solid #ef4444;
+  color: #fecaca;
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.force-change-banner p {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #fca5a5;
+}
+
+.team-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+@media (min-width: 820px) {
+  .team-modal-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}
+
+.team-panel-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.team-panel-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-account-meta {
+  font-size: 0.83rem;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  line-height: 1.45;
+}
+
+.form-select {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: rgba(15, 18, 30, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.checkbox-inline-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.83rem;
+  color: #cbd5e1;
+  cursor: pointer;
+  margin: 8px 0 14px;
+}
+
+.moderators-list-block {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.moderators-list-block h4 {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fbbf24;
+}
+
+.moderators-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.moderator-row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 18, 30, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.moderator-row-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.mod-email-pill {
+  font-size: 0.76rem;
+  color: #94a3b8;
+}
+
+.mod-role-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.mod-role-pill.is-admin {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.mod-role-pill.is-mod {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.mod-force-pill {
+  font-size: 0.7rem;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.moderator-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

@@ -17,6 +17,9 @@ dist/
 api/sessions/*
 api/rate_limits/*.json
 api/leads_*.csv
+katosalsahub.pl/assets/data/moderators.json
+katosalsahub.pl/assets/data/login_attempts.json
+*.bak
 *.log
 npm-debug.log*
 

@@ -1,5 +1,5 @@
-# Ochrona kolejki moderacji i kopii zapasowych przed bezpośrednim pobraniem HTTP GET (ISO 27001)
-<FilesMatch "(pending_edits\.json|\.bak|\.tmp|\.log)$">
+# Ochrona kolejki moderacji, bazy kont moderatorów, blokad brute-force i kopii zapasowych przed bezpośrednim pobraniem HTTP GET (ISO 27001 / Wzorzec Raricart)
+<FilesMatch "(pending_edits\.json|moderators\.json|login_attempts\.json|\.bak|\.tmp|\.log)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>

@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v2';
+const CACHE_NAME = 'ksh-pwa-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -22,6 +22,7 @@ const STATIC_ASSETS = [
   '/assets/js/wiki.js',
   '/assets/js/contact.js',
   '/assets/js/cookies.js',
+  '/assets/js/ai-widget.js',
   '/assets/data/salsopedia.json',
   '/assets/images/logo.jpg',
   '/assets/images/logo.webp',
@@ -59,16 +60,34 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
 
-  // Never intercept live radio streams or external analytics/maps
+  // Never intercept live radio streams, AI router requests or dynamic PHP API endpoints
   if (
     url.hostname.includes('zeno.fm') ||
     url.hostname.includes('google.com') ||
+    url.hostname.includes('twojastronawww.pl') ||
     url.pathname.endsWith('.php')
   ) {
     return;
   }
 
-  // Stale-while-revalidate for static assets and salsopedia.json
+  // Network-First for salsopedia.json so changes in Salsopedia are immediately visible to UI & AI Assistant,
+  // with full offline fallback when network is unavailable
+  if (url.pathname.endsWith('/salsopedia.json')) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200 && url.origin === self.location.origin) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for static assets
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       const fetchPromise = fetch(request)
