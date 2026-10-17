@@ -8,6 +8,7 @@ function initMapTabs(doc = document) {
     const focusButtons = doc.querySelectorAll('.map-focus-btn') || [];
     const spotCards = doc.querySelectorAll('.map-spot-card') || [];
     const activeLabel = doc.getElementById('map-active-label');
+    const mainParkingBtn = doc.getElementById('map-main-parking-btn');
     if (!mapIframe || !tabButtons || tabButtons.length === 0) return;
 
     const activateZone = (triggerBtn) => {
@@ -16,6 +17,7 @@ function initMapTabs(doc = document) {
 
         const targetZone = triggerBtn.getAttribute('data-zone');
         const targetLabel = triggerBtn.getAttribute('data-label');
+        const targetParkingUrl = triggerBtn.getAttribute('data-parking-url');
 
         tabButtons.forEach((b) => {
             const isMatch = targetZone
@@ -40,6 +42,10 @@ function initMapTabs(doc = document) {
 
         if (activeLabel && targetLabel) {
             activeLabel.textContent = targetLabel;
+        }
+
+        if (mainParkingBtn && targetParkingUrl) {
+            mainParkingBtn.setAttribute('href', targetParkingUrl);
         }
 
         if (mapIframe.getAttribute('src') !== targetSrc) {
