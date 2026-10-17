@@ -111,6 +111,14 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     assert.equal(fetchCalls, 1, 'Drugie pytanie o to samo nie może wywołać kolejnego żądania do AI');
     assert.equal(res2.cached, true);
     assert.equal(res2.answer, res1.answer);
+
+    // 3. Wiadomość z numerem telefonu lub e-mailem (lead kontaktowy) -> omija cache, aby wyzwolić Ntfy 1-Klik na VPS
+    await api.sendQuestion('Proszę o kontakt na +48 (600) 700 800 lub kontakt@firma.pl');
+    assert.equal(fetchCalls, 2);
+    assert.equal(api.getCachedAnswer('Proszę o kontakt na +48 (600) 700 800 lub kontakt@firma.pl'), null);
+
+    await api.sendQuestion('Proszę o kontakt na +48 (600) 700 800 lub kontakt@firma.pl');
+    assert.equal(fetchCalls, 3);
   });
 
   it('Dynamic Salsopedia Sync: zmiana w Salsopedii automatycznie inwaliduje cache i aktualizuje wcześniej zapisane odpowiedzi', async () => {

@@ -3,6 +3,8 @@
  *
  * Skumulowane najlepsze praktyki z ekosystemu TwojaStronaWWW, Fuego Lingua oraz Kato Salsa Hub:
  * - Zero-Bloat Vanilla JS ES6+ (brak zewnętrznych zależności, 0 kluczy API na frontendzie)
+ * - Obsługa 11-modelowej kaskady High-Availability (6 dostawców API) po stronie VPS
+ * - Priorytetowe przekazywanie leadów kontaktowych (telefon / e-mail omija cache i wyzwala Ntfy 1-Klik)
  * - Dynamic Knowledge Base (live RAG z bazy JSON/Wiki, np. Salsopedii `salsopedia.json` / `wiki.php`)
  * - Inteligentny Response Cache (Query Cache) w localStorage/sessionStorage:
  *   dwukrotne zadanie tego samego pytania zwraca odpowiedź natychmiast (0 ms) bez odpytywania AI
@@ -657,7 +659,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   function hasContactPii(text) {
     const s = String(text || '');
     const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-    const phoneRegex = /(?:\+?48[\s-]?)?(?:\d[\s-]?){8}\d/;
+    const phoneRegex = /(?:\+?48[\s.\-()]*)?(?:\d[\s.\-()]*){8}\d/;
     return emailRegex.test(s) || phoneRegex.test(s);
   }
 
