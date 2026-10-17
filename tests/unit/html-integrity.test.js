@@ -83,6 +83,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /class="map-tab-btn is-active"/);
       assert.match(html, /class="map-focus-btn"/);
       assert.doesNotMatch(html, /class="map-stage-footer"/, 'Nadmiarowa sekcja .map-stage-footer pod mapą powinna być usunięta');
+      assert.doesNotMatch(html, /Cała Mapa/i, 'Przycisk Cała Mapa powinien być usunięty z paska .map-tabs');
       assert.match(html, /Nawiguj na Parking Rekomendowany/);
       assert.doesNotMatch(html, /destination=50\.2577281,19\.0248325/, 'Nawigacja dla Wolnych Ludzi powinna kierować na Parking Rekomendowany (NOSPR), a nie na deptak Mariacka 2');
       assert.doesNotMatch(html, /destination=50\.2449289,19\.046362/, 'Nawigacja dla 3 Stawów powinna kierować na Parking Rekomendowany (Południe / Rolkostrada), a nie na sam brzeg stawu');

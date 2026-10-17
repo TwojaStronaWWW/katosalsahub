@@ -8,11 +8,11 @@
   <meta name="theme-color" content="#fbbf24">
   <title>Kato Salsa Hub ⚡ Kubańska Energia w Katowicach</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="assets/css/style.css?v=4.0">
-  <link rel="stylesheet" href="assets/css/components.css?v=4.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=4.0">
-  <link rel="stylesheet" href="assets/css/radio.css?v=4.0">
-  <link rel="stylesheet" href="assets/css/wiki.css?v=4.0">
+  <link rel="stylesheet" href="assets/css/style.css?v=4.1">
+  <link rel="stylesheet" href="assets/css/components.css?v=4.1">
+  <link rel="stylesheet" href="assets/css/sections.css?v=4.1">
+  <link rel="stylesheet" href="assets/css/radio.css?v=4.1">
+  <link rel="stylesheet" href="assets/css/wiki.css?v=4.1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://stream.zeno.fm" crossorigin>
@@ -232,16 +232,6 @@
                 type="button"
                 class="map-tab-btn is-active"
                 aria-pressed="true"
-                data-zone="all"
-                data-label="Widok główny: Wszystkie lokalizacje i trasy KSH"
-                data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving"
-                data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.25354462719156%2C19.02474183050847&amp;z=14">
-                🗺️ Cała Mapa
-              </button>
-              <button
-                type="button"
-                class="map-tab-btn"
-                aria-pressed="false"
                 data-zone="wolni"
                 data-label="Śródmieście: Wolni Ludzie (ul. Mariacka 2) i darmowe parkingi"
                 data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving"
@@ -272,7 +262,7 @@
 
             <div class="map-hub-status" aria-live="polite">
               <span class="map-live-dot"></span>
-              <span id="map-active-label" class="map-active-label">Widok główny: Wszystkie lokalizacje i trasy KSH</span>
+              <span id="map-active-label" class="map-active-label">Śródmieście: Wolni Ludzie (ul. Mariacka 2) i darmowe parkingi</span>
             </div>
           </div>
 
@@ -288,7 +278,7 @@
             </div>
 
             <!-- Kafelek 2 (Góra-Prawo): Wolni Ludzie (Pod dachem) -->
-            <article class="card map-spot-card" data-zone="wolni">
+            <article class="card map-spot-card is-active" data-zone="wolni">
               <div class="map-spot-top">
                 <div class="map-spot-title-group">
                   <span class="map-spot-emoji">🍹</span>
