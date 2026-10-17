@@ -382,10 +382,12 @@ function updateSleepTimerUI() {
       const mins = Math.floor(remainingSec / 60);
       const secs = remainingSec % 60;
       const paddedSecs = secs < 10 ? `0${secs}` : `${secs}`;
-      statusEl.textContent = `Wyłączenie za ${mins}:${paddedSecs}`;
+      statusEl.textContent = `⏱ ${mins}:${paddedSecs}`;
+      statusEl.title = `Wyłączenie radia za ${mins}:${paddedSecs}`;
       statusEl.classList.remove('is-hidden');
     } else {
-      statusEl.textContent = '';
+      statusEl.textContent = '⏱ 00:00';
+      statusEl.removeAttribute('title');
       statusEl.classList.add('is-hidden');
     }
   }
