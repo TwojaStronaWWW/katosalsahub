@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v11';
+const CACHE_NAME = 'ksh-pwa-v12';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -16,13 +16,13 @@ const STATIC_ASSETS = [
   '/assets/css/sections.css?v=3.7',
   '/assets/css/radio.css?v=3.7',
   '/assets/css/wiki.css?v=3.7',
-  '/assets/js/router.js?v=3.7',
-  '/assets/js/home.js?v=3.7',
-  '/assets/js/radio.js?v=3.7',
-  '/assets/js/wiki.js?v=3.7',
-  '/assets/js/contact.js?v=3.7',
-  '/assets/js/cookies.js?v=3.7',
-  '/assets/js/ai-widget.js?v=3.7',
+  '/assets/js/router.js?v=3.8',
+  '/assets/js/home.js?v=3.8',
+  '/assets/js/radio.js?v=3.8',
+  '/assets/js/wiki.js?v=3.8',
+  '/assets/js/contact.js?v=3.8',
+  '/assets/js/cookies.js?v=3.8',
+  '/assets/js/ai-widget.js?v=3.8',
   '/assets/data/salsopedia.json',
   '/assets/data/kato-salsa-hub-mapa.kml',
   '/assets/images/logo.jpg',
