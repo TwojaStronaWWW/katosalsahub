@@ -113,7 +113,7 @@ jobs:
             -e "
               set net:timeout 60;
               set sftp:auto-confirm yes;
-              mirror -R --verbose --exclude-glob assets/data/pending_edits.json --exclude-glob assets/data/*.bak --exclude-glob assets/php/rate_limits/rate_*.json ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
+              mirror -R --verbose --exclude-glob assets/data/pending_edits.json --exclude-glob assets/data/moderators.json --exclude-glob assets/data/login_attempts.json --exclude-glob assets/data/*.bak --exclude-glob assets/php/rate_limits/rate_*.json ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
               mirror -R --verbose --exclude-glob data/*.bak --exclude-glob data/*.tmp ./dancepuls.pl /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }};
               quit
             "

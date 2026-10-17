@@ -500,7 +500,11 @@ function setupEventListeners() {
         if (el) {
             el.addEventListener('click', (e) => {
                 if (e.target === el) {
-                    el.classList.remove('open', 'is-open');
+                    if (modalId === 'teamModal') {
+                        window.closeTeamModal();
+                    } else {
+                        el.classList.remove('open', 'is-open');
+                    }
                 }
             });
         }
@@ -1665,6 +1669,11 @@ window.openTeamModal = async function (isForced = false) {
 };
 
 window.closeTeamModal = function () {
+    if (AppState.forcePasswordChange) {
+        const msg = document.getElementById('changePasswordMessage');
+        showMessage(msg, 'error', 'Najpierw ustaw swoje nowe hasło docelowe przed przejściem do panelu moderacji.');
+        return;
+    }
     const modal = document.getElementById('teamModal');
     if (modal) modal.classList.remove('is-open', 'open');
 };

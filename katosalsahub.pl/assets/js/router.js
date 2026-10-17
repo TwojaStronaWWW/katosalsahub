@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const href = link.getAttribute('href');
         if (!href) return;
 
-        // Kotwica na bieżącej stronie (#...) – płynne przewinięcie i zamknięcie menu mobilnego
+        // Kotwica na bieżącej stronie (#...) – płynne przewinięcie lub powrót do index.html#... z podstrony SPA
         if (href.startsWith('#')) {
             if (href.length > 1) {
                 const target = document.getElementById(href.slice(1));
@@ -43,6 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     if (navLinks) navLinks.classList.remove('active');
                     if (burger) burger.classList.remove('active');
+                } else {
+                    const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+                    if (currentFile !== 'index.html') {
+                        e.preventDefault();
+                        navigateTo('index.html' + href);
+                    }
                 }
             }
             return;

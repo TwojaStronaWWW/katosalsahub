@@ -99,6 +99,7 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
 
     const deployContent = fs.readFileSync(path.join(ROOT_DIR, '.github', 'workflows', 'deploy.yml'), 'utf-8');
     assert.match(deployContent, /--exclude-glob\s+assets\/data\/pending_edits\.json/i, 'Brak ochrony pending_edits.json podczas wdrożenia SFTP');
+    assert.match(deployContent, /--exclude-glob\s+assets\/data\/moderators\.json/i, 'Brak ochrony moderators.json podczas wdrożenia SFTP');
   });
 
   it('konfiguracja audytu Lighthouse CI (.lighthouserc.json) powinna istnieć i definiować asercje jakościowe', () => {
@@ -138,6 +139,12 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
 
     const blockedPending = srv.resolveSafeFilePath('/assets/data/pending_edits.json');
     assert.strictEqual(blockedPending.isAllowed, false, 'Plik pending_edits.json musi być zablokowany');
+
+    const blockedModerators = srv.resolveSafeFilePath('/assets/data/moderators.json');
+    assert.strictEqual(blockedModerators.isAllowed, false, 'Plik moderators.json musi być zablokowany');
+
+    const blockedAttempts = srv.resolveSafeFilePath('/assets/data/login_attempts.json');
+    assert.strictEqual(blockedAttempts.isAllowed, false, 'Plik login_attempts.json musi być zablokowany');
   });
 
   it('kluczowe pliki źródłowe nie mogą zawierać pozostałości po konfliktach gita (merge conflict markers)', () => {

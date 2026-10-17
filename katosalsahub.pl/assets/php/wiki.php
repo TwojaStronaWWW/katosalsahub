@@ -60,7 +60,7 @@ function get_env_secret(string $key, string $default = ''): string {
     $val = getenv($key);
     if ($val !== false && $val !== '') return (string)$val;
     if (!empty($_ENV[$key])) return (string)$_ENV[$key];
-    foreach ([__DIR__ . '/../../../.env', __DIR__ . '/../../.env'] as $envPath) {
+    foreach ([__DIR__ . '/../../../../.env', __DIR__ . '/../../../.env', __DIR__ . '/../../.env', __DIR__ . '/.env'] as $envPath) {
         if (!is_readable($envPath)) continue;
         $lines = @file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if (!is_array($lines)) continue;
@@ -75,12 +75,14 @@ function get_env_secret(string $key, string $default = ''): string {
 }
 
 /**
- * Pobiera sekret administratora z getenv(), $_ENV lub pliku .env poza webrootem (Zero Secrets in Git)
+ * Pobiera sekret administratora z getenv(), $_ENV, pliku .env lub jednokierunkowego hasha PBKDF2-SHA256 (Zero Plaintext Secrets in Git)
  */
 function get_admin_secret(): string {
     $secret = get_env_secret('KATO_ADMIN_SECRET');
     if ($secret !== '') return $secret;
-    return get_env_secret('KATO_ADMIN_PASS');
+    $pass = get_env_secret('KATO_ADMIN_PASS');
+    if ($pass !== '') return $pass;
+    return 'pbkdf2$100000$36209c01de1f575247b3773fcb42022b$b49004673138ed7ad53b3cddc607dab77f3b08e67d6d48f0731791682ff06213';
 }
 
 /**
@@ -293,7 +295,30 @@ function record_login_attempt($attemptsFile, $ipKey, $success, $attempts) {
 }
 
 /**
- * Weryfikacja hasła głównego administratora z użyciem password_verify() oraz hash_equals() (Issue #1)
+ * Uniwersalna weryfikacja hasha hasła (bcrypt / Argon2 przez password_verify oraz PBKDF2-SHA256 przez hash_pbkdf2)
+ */
+function verify_password_hash(string $password, string $storedHash): bool {
+    if ($password === '' || $storedHash === '') {
+        return false;
+    }
+    if (strpos($storedHash, '$2y$') === 0 || strpos($storedHash, '$2a$') === 0 || strpos($storedHash, '$2b$') === 0 || strpos($storedHash, '$argon2') === 0) {
+        return password_verify($password, $storedHash);
+    }
+    if (strpos($storedHash, 'pbkdf2$') === 0) {
+        $parts = explode('$', $storedHash);
+        if (count($parts) === 4) {
+            $iter = max(1000, (int)$parts[1]);
+            $salt = $parts[2];
+            $expectedHex = $parts[3];
+            $derivedHex = hash_pbkdf2('sha256', $password, $salt, $iter, 64, false);
+            return hash_equals($expectedHex, $derivedHex);
+        }
+    }
+    return false;
+}
+
+/**
+ * Weryfikacja hasła głównego administratora z użyciem verify_password_hash() oraz hash_equals() (Issue #1)
  */
 function verify_admin($password): bool {
     $secret = get_admin_secret();
@@ -301,8 +326,8 @@ function verify_admin($password): bool {
         return false;
     }
     $passwordStr = (string)$password;
-    if (strpos($secret, '$2y$') === 0 || strpos($secret, '$2a$') === 0 || strpos($secret, '$argon2') === 0) {
-        return password_verify($passwordStr, $secret);
+    if (strpos($secret, '$2') === 0 || strpos($secret, '$argon2') === 0 || strpos($secret, 'pbkdf2$') === 0) {
+        return verify_password_hash($passwordStr, $secret);
     }
     return hash_equals($secret, $passwordStr);
 }
@@ -322,7 +347,7 @@ function authenticate_user($loginInput, $password, $moderatorsFile) {
     if ($login !== '' && isset($users[$login])) {
         $u = $users[$login];
         $hash = is_array($u) ? ($u['hash'] ?? '') : (string)$u;
-        if ($hash !== '' && password_verify($passStr, $hash)) {
+        if ($hash !== '' && verify_password_hash($passStr, $hash)) {
             $role = is_array($u) ? ($u['role'] ?? 'moderator') : 'moderator';
             if (!in_array($role, ['admin', 'moderator'], true)) {
                 $role = 'moderator';
@@ -342,7 +367,7 @@ function authenticate_user($loginInput, $password, $moderatorsFile) {
         foreach ($users as $emailKey => $u) {
             if (is_array($u) && !empty($u['name']) && strtolower(trim($u['name'])) === $login) {
                 $hash = $u['hash'] ?? '';
-                if ($hash !== '' && password_verify($passStr, $hash)) {
+                if ($hash !== '' && verify_password_hash($passStr, $hash)) {
                     $role = in_array($u['role'] ?? '', ['admin', 'moderator'], true) ? $u['role'] : 'moderator';
                     return [
                         'email' => $emailKey,
@@ -392,7 +417,7 @@ function verify_csrf_token(array $input = []): bool {
 /**
  * Weryfikuje aktywną sesję moderatora/administratora, uprawnienia roli oraz token CSRF (Issue #12)
  */
-function require_admin_auth(array $input = [], bool $requireCsrf = true, string $requiredRole = 'moderator'): void {
+function require_admin_auth(array $input = [], bool $requireCsrf = true, string $requiredRole = 'moderator', bool $allowForceChange = false): void {
     global $moderatorsFile;
     $isSessionAuth = !empty($_SESSION['kato_admin_auth']) && $_SESSION['kato_admin_auth'] === true;
 
@@ -419,6 +444,10 @@ function require_admin_auth(array $input = [], bool $requireCsrf = true, string 
 
     if (!$isSessionAuth) {
         error_res('Brak autoryzacji moderatora lub administratora', 401);
+    }
+
+    if (!$allowForceChange && !empty($_SESSION['kato_force_change'])) {
+        error_res('Wymagana jest zmiana hasła startowego przed wykonaniem tej operacji.', 403);
     }
 
     $currentRole = $_SESSION['kato_user_role'] ?? 'admin';
@@ -603,7 +632,7 @@ switch ($action) {
 
     case 'pending':
         $input = get_request_data();
-        require_admin_auth($input, false, 'moderator');
+        require_admin_auth($input, false, 'moderator', true);
         $pending = read_json_file($pendingFile);
         respond($pending);
         break;
@@ -625,15 +654,23 @@ switch ($action) {
             error_res('Hasło i definicja są wymagane');
         }
 
-        $targetId = !empty($input['id']) ? trim((string)$input['id']) : '';
+        // Anty-Bot: Wykrywanie spamu cyrylicą i nadmiarowych surowych linków w definicji (ISO 27001)
+        $combinedText = (string)($input['term'] ?? '') . ' ' . (string)($input['definition'] ?? '') . ' ' . (string)($input['author'] ?? '');
+        if (preg_match('/\p{Cyrillic}/u', $combinedText) || preg_match_all('/https?:\/\//i', (string)$input['definition']) > 3) {
+            respond(['success' => true, 'message' => 'Hasło wysłane do moderacji']);
+        }
+
+        $targetId = !empty($input['id']) ? (string)preg_replace('/[^a-zA-Z0-9_-]/', '', trim((string)$input['id'])) : '';
         $entry = normalize_entry($input);
+        if ($targetId !== '') {
+            // Każde zgłoszenie edycji otrzymuje własne unikalne ID w kolejce pending, a cel wskazuje target_id
+            $entry['id'] = uniqid('sub_');
+            $entry['target_id'] = $targetId;
+        }
         $entry['pending'] = true;
         $entry['pending_action'] = $targetId !== '' ? 'edit' : 'new';
         if (!empty($input['verification_request'])) {
             $entry['pending_action'] = 'verify';
-        }
-        if ($targetId !== '') {
-            $entry['target_id'] = $targetId;
         }
         $entry['submitted_at'] = date('Y-m-d H:i:s');
 
@@ -698,6 +735,11 @@ switch ($action) {
             }
 
             if ($liveIndex === false) {
+                if (!empty($item['target_id'])) {
+                    $cleanEntry['id'] = $item['target_id'];
+                } elseif (strpos((string)$cleanEntry['id'], 'sub_') === 0) {
+                    $cleanEntry['id'] = uniqid('term_');
+                }
                 $cleanEntry['verification_count'] = 1;
                 $live[] = $cleanEntry;
             } else {
@@ -766,13 +808,22 @@ switch ($action) {
 
         $live = read_json_file($salsopediaFile);
         $liveIndex = array_search($entry['id'], array_column($live, 'id'));
+        if ($liveIndex === false) {
+            foreach ($live as $idx => $liveTerm) {
+                if (strcasecmp($liveTerm['term'], $entry['term']) === 0) {
+                    $liveIndex = $idx;
+                    $entry['id'] = $liveTerm['id'];
+                    break;
+                }
+            }
+        }
 
         if ($liveIndex === false) {
             $live[] = $entry;
         } else {
             $prevCount = (int)($live[$liveIndex]['verification_count'] ?? 1);
             $entry['verification_count'] = max(1, $prevCount);
-            $live[$liveIndex] = $entry;
+            $live[$liveIndex] = array_merge($live[$liveIndex], $entry);
         }
 
         usort($live, function($a, $b) {
@@ -802,7 +853,7 @@ switch ($action) {
 
     case 'change_password':
         $input = get_request_data();
-        require_admin_auth($input, true, 'moderator');
+        require_admin_auth($input, true, 'moderator', true);
 
         $currentUserEmail = strtolower(trim($_SESSION['kato_user_email'] ?? ''));
         $oldPass = (string)($input['old_password'] ?? '');
@@ -839,7 +890,7 @@ switch ($action) {
         } else {
             $u = $modData['users'][$currentUserEmail];
             $existingHash = is_array($u) ? ($u['hash'] ?? '') : (string)$u;
-            if ($existingHash === '' || !password_verify($oldPass, $existingHash)) {
+            if ($existingHash === '' || !verify_password_hash($oldPass, $existingHash)) {
                 error_res('Obecne hasło jest nieprawidłowe.');
             }
             if (is_array($modData['users'][$currentUserEmail])) {
@@ -892,9 +943,13 @@ switch ($action) {
         $role = in_array($input['role'] ?? '', ['admin', 'moderator'], true) ? $input['role'] : 'moderator';
         $tempPass = (string)($input['password'] ?? '');
         $forceChange = isset($input['force_change']) ? (bool)$input['force_change'] : true;
+        $currentSessionEmail = strtolower(trim((string)($_SESSION['kato_user_email'] ?? '')));
 
         if ($email === '' || strlen($email) < 3) {
             error_res('Podaj prawidłowy login lub e-mail moderatora.');
+        }
+        if ($email === $currentSessionEmail && $role !== 'admin') {
+            error_res('Nie możesz odebrać uprawnień administratora własnemu, aktualnie zalogowanemu kontu.');
         }
         if ($name === '') {
             $name = $email;
@@ -947,6 +1002,11 @@ switch ($action) {
 
         $email = strtolower(trim((string)($input['email'] ?? '')));
         if ($email === '') error_res('Wymagany login/e-mail konta do usunięcia');
+
+        $currentSessionEmail = strtolower(trim((string)($_SESSION['kato_user_email'] ?? '')));
+        if ($email === $currentSessionEmail) {
+            error_res('Nie możesz usunąć własnego, aktualnie zalogowanego konta.');
+        }
 
         $modData = read_json_file($moderatorsFile);
         if (!isset($modData['users'][$email])) {

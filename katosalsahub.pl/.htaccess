@@ -22,8 +22,8 @@ AddType 'image/webp' webp
   php_flag log_errors On
 </IfModule>
 
-# Blokada bezpośredniego dostępu HTTP do kolejki moderacji, kopii zapasowych i plików środowiskowych
-<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|orig|psd|sh|sql|sw[op]|tmp)|~|pending_edits\.json|\.env.*)$">
+# Blokada bezpośredniego dostępu HTTP do kolejki moderacji, kont moderatorów, kopii zapasowych i plików środowiskowych
+<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|orig|psd|sh|sql|sw[op]|tmp)|~|pending_edits\.json|moderators\.json|login_attempts\.json|\.env.*)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
