@@ -2001,7 +2001,12 @@ async function deleteModeratorAccount(email) {
     }
 }
 
+const inFlightMutations = new Set();
+
 window.quickVerifyTerm = async function (id) {
+    const lockKey = `verify:${id}`;
+    if (inFlightMutations.has(lockKey)) return;
+    inFlightMutations.add(lockKey);
     try {
         const res = await fetch(API_URL + '?action=quick_verify', {
             method: 'POST',
@@ -2029,10 +2034,15 @@ window.quickVerifyTerm = async function (id) {
         }
     } catch (err) {
         console.error('Błąd szybkiej weryfikacji:', err);
+    } finally {
+        inFlightMutations.delete(lockKey);
     }
 };
 
 window.unverifyTerm = async function (id) {
+    const lockKey = `verify:${id}`;
+    if (inFlightMutations.has(lockKey)) return;
+    inFlightMutations.add(lockKey);
     try {
         const res = await fetch(API_URL + '?action=quick_verify', {
             method: 'POST',
@@ -2061,11 +2071,16 @@ window.unverifyTerm = async function (id) {
         }
     } catch (err) {
         console.error('Błąd cofania weryfikacji:', err);
+    } finally {
+        inFlightMutations.delete(lockKey);
     }
 };
 
 window.approvePendingTerm = async function (id) {
+    const lockKey = `moderate:${id}`;
+    if (inFlightMutations.has(lockKey)) return;
     if (!confirm('Czy na pewno chcesz zatwierdzić to zgłoszenie i opublikować je w bazie Salsopedii?')) return;
+    inFlightMutations.add(lockKey);
     try {
         const res = await fetch(API_URL + '?action=moderate', {
             method: 'POST',
@@ -2091,11 +2106,16 @@ window.approvePendingTerm = async function (id) {
         }
     } catch (err) {
         console.error('Błąd zatwierdzania:', err);
+    } finally {
+        inFlightMutations.delete(lockKey);
     }
 };
 
 window.rejectPendingTerm = async function (id) {
+    const lockKey = `moderate:${id}`;
+    if (inFlightMutations.has(lockKey)) return;
     if (!confirm('Czy na pewno chcesz odrzucić to zgłoszenie? Zostanie ono trwale usunięte z kolejki.')) return;
+    inFlightMutations.add(lockKey);
     try {
         const res = await fetch(API_URL + '?action=moderate', {
             method: 'POST',
@@ -2120,6 +2140,8 @@ window.rejectPendingTerm = async function (id) {
         }
     } catch (err) {
         console.error('Błąd odrzucania:', err);
+    } finally {
+        inFlightMutations.delete(lockKey);
     }
 };
 
@@ -2146,7 +2168,10 @@ window.deleteLiveTerm = async function (id) {
         alert('Tylko główny Administrator może bezpowrotnie usuwać hasła z bazy.');
         return;
     }
+    const lockKey = `delete:${id}`;
+    if (inFlightMutations.has(lockKey)) return;
     if (!confirm('UWAGA: Czy na pewno chcesz bezpowrotnie usunąć to hasło z bazy Salsopedii?')) return;
+    inFlightMutations.add(lockKey);
     try {
         const res = await fetch(API_URL + '?action=admin_delete', {
             method: 'POST',
@@ -2171,6 +2196,8 @@ window.deleteLiveTerm = async function (id) {
         }
     } catch (err) {
         console.error('Błąd usuwania hasła:', err);
+    } finally {
+        inFlightMutations.delete(lockKey);
     }
 };
 

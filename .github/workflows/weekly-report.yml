@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: weekly-report-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   generate-report:
     name: 📅 Generowanie cotygodniowego raportu DancePuls
@@ -36,5 +40,6 @@ jobs:
             echo "Brak zmian w danych wydarzeń i raporcie."
           else
             git commit -m "chore(dancepuls): automatyczna aktualizacja raportu tygodniowego i events.json"
+            git pull --rebase origin ${{ github.ref_name }}
             git push
           fi

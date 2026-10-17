@@ -576,11 +576,19 @@ function parseDatabase(mdContent) {
     return sections;
 }
 
-// Atomowy zapis pliku JSON/MD (zgodnie z ISO 27001 / AGENTS.md 4.3)
+// Atomowy zapis pliku JSON/MD z izolacją PID przeciw wyścigom procesów (zgodnie z ISO 27001 / AGENTS.md 4.3)
 function writeFileAtomically(filePath, content) {
-    const tmpPath = `${filePath}.tmp`;
-    fs.writeFileSync(tmpPath, content, 'utf8');
-    fs.renameSync(tmpPath, filePath);
+    const uniqueSuffix = `${process.pid}.${Date.now()}.${Math.random().toString(36).slice(2, 8)}`;
+    const tmpPath = `${filePath}.${uniqueSuffix}.tmp`;
+    try {
+        fs.writeFileSync(tmpPath, content, 'utf8');
+        fs.renameSync(tmpPath, filePath);
+    } catch (err) {
+        try {
+            if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
+        } catch (_) { /* ignore cleanup error */ }
+        throw err;
+    }
 }
 
 // 3. Generate dancepuls.pl/data/events.json
@@ -974,6 +982,7 @@ module.exports = {
     normalizeLocation,
     normalizeStreetAddress,
     deduplicateEvents,
+    writeFileAtomically,
     VENUE_MAP,
     FOOTER
 };

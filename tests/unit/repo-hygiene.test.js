@@ -172,4 +172,17 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
 
     scanDir(ROOT_DIR);
   });
+
+  it('ochrona transakcyjna współbieżności powinna obejmować wiki.php (update_json_file + session_write_close), wiki.js (inFlightMutations), sync_engine.js (writeFileAtomically z PID) oraz potoki CI/CD', () => {
+    const wikiPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'wiki.php'), 'utf-8');
+    const wikiJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'wiki.js'), 'utf-8');
+    const syncEngineJs = fs.readFileSync(path.join(ROOT_DIR, 'dancepuls.pl', 'tools', 'sync_engine.js'), 'utf-8');
+    const weeklyWf = fs.readFileSync(path.join(ROOT_DIR, '.github', 'workflows', 'weekly-report.yml'), 'utf-8');
+
+    assert.match(wikiPhp, /function\s+update_json_file\s*\(/, 'Brak transakcyjnej funkcji update_json_file() w wiki.php');
+    assert.match(wikiPhp, /session_write_close\s*\(\s*\)/, 'Brak wczesnego zwalniania blokady sesji session_write_close() w wiki.php');
+    assert.match(wikiJs, /inFlightMutations/, 'Brak strażnika inFlightMutations przeciw podwójnym kliknięciom w wiki.js');
+    assert.match(syncEngineJs, /process\.pid/, 'Brak izolacji PID w writeFileAtomically w sync_engine.js');
+    assert.match(weeklyWf, /concurrency:/, 'Brak bloku concurrency w weekly-report.yml');
+  });
 });
