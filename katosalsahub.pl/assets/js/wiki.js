@@ -674,10 +674,18 @@ function findOriginalLiveTerm(pendingOrEditItem) {
     return null;
 }
 
+function isSafeHttpUrl(url) {
+    return typeof url === 'string' && /^https?:\/\/[^\s"'<>]+$/i.test(url.trim());
+}
+
 function createTermCard(item, isPending = false) {
+    const rawId = String(item.id || '').replace(/[^a-zA-Z0-9_-]/g, '');
+    const safeId = escapeHtml(rawId || item.id || '');
+    const safeTerm = escapeHtml(item.term || '');
+
     const card = document.createElement('div');
     card.className = `wiki-card ${isPending ? 'pending-card' : ''}`;
-    card.id = `card-${item.id}`;
+    card.id = `card-${rawId}`;
 
     let ribbonHtml = '';
     let inlineDiffHtml = '';
@@ -710,7 +718,7 @@ function createTermCard(item, isPending = false) {
 
     let verifiedHtml = '';
     if (item.status === 'verified') {
-        const count = item.verification_count || 1;
+        const count = Number.parseInt(item.verification_count, 10) || 1;
         const verifier = item.verified_by ? ` (ost. ${escapeHtml(item.verified_by)})` : '';
         verifiedHtml = `<span class="status-verified" title="Zweryfikowane merytorycznie (${count}x)${verifier}"><i class="fas fa-check"></i> ${count}</span>`;
     } else if (AppState.isAdmin && !isPending) {
@@ -721,7 +729,9 @@ function createTermCard(item, isPending = false) {
     const cats = Array.isArray(item.category) ? item.category : [item.category];
     cats.forEach(c => {
         if (!c) return;
-        badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${escapeHtml(c)}">${escapeHtml(CATEGORY_NAMES[c] || c)}</span>`;
+        const safeCat = escapeHtml(c);
+        const safeCatName = escapeHtml(CATEGORY_NAMES[c] || c);
+        badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${safeCat}">${safeCatName}</span>`;
     });
 
     const subs = Array.isArray(item.subcategory) ? item.subcategory : (item.subcategory ? [item.subcategory] : []);
@@ -736,47 +746,50 @@ function createTermCard(item, isPending = false) {
         sourcesHtml = '<div class="source-container-preview">';
         sources.forEach(src => {
             const name = typeof src === 'object' ? (src.name || 'Źródło') : src;
-            const url = typeof src === 'object' ? src.url : '';
-            if (url && url.startsWith('http')) {
-                sourcesHtml += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Źródło / odnośnik zewnętrzny: ${escapeHtml(name)}"><i class="fas fa-external-link-alt"></i> ${escapeHtml(name)}</a>`;
+            const url = typeof src === 'object' ? (src.url || '') : '';
+            if (isSafeHttpUrl(url)) {
+                const iconClass = url.includes('youtube.com') ? 'fa-play-circle' : 'fa-external-link-alt';
+                sourcesHtml += `<a href="${escapeHtml(url.trim())}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Otwórz w nowej karcie: ${escapeHtml(name)}"><i class="fas ${iconClass}"></i> ${escapeHtml(name)}</a>`;
             } else if (name) {
-                sourcesHtml += `<span class="source-pill" title="Źródło merytoryczne / dziedzina: ${escapeHtml(name)}"><i class="fas fa-book-open"></i> ${escapeHtml(name)}</span>`;
+                const ytFallback = `https://www.youtube.com/results?search_query=${encodeURIComponent((item.term || '') + ' Salsa Cubana')}`;
+                sourcesHtml += `<a href="${escapeHtml(ytFallback)}" target="_blank" rel="noopener noreferrer" class="source-pill" title="Zobacz prezentację wideo na YouTube: ${safeTerm}"><i class="fas fa-play-circle"></i> ${escapeHtml(name)}</a>`;
             }
         });
         sourcesHtml += '</div>';
     }
 
-    let authorHtml = `<span class="author-meta">Autor: <strong>${escapeHtml(item.author || 'Społeczność')}</strong></span>`;
-    if (item.author_link && item.author_link.startsWith('http')) {
-        authorHtml = `<span class="author-meta">Autor: <a href="${escapeHtml(item.author_link)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(item.author)}</strong> <i class="fas fa-link"></i></a></span>`;
+    const safeAuthor = escapeHtml(item.author || 'Społeczność');
+    let authorHtml = `<span class="author-meta">Autor: <strong>${safeAuthor}</strong></span>`;
+    if (isSafeHttpUrl(item.author_link)) {
+        authorHtml = `<span class="author-meta">Autor: <a href="${escapeHtml(item.author_link.trim())}" target="_blank" rel="noopener noreferrer"><strong>${safeAuthor}</strong> <i class="fas fa-link"></i></a></span>`;
     }
 
     let actionsHtml = '';
     if (isPending) {
         actionsHtml = `
             <div class="moderation-actions">
-                <button type="button" class="btn-approve" data-action="approve" data-id="${escapeHtml(item.id)}" title="Zatwierdź i opublikuj w bazie">
+                <button type="button" class="btn-approve" data-action="approve" data-id="${safeId}" title="Zatwierdź i opublikuj w bazie">
                     <i class="fas fa-check"></i> Zatwierdź
                 </button>
-                <button type="button" class="btn-edit-admin" data-action="edit-pending" data-id="${escapeHtml(item.id)}" title="Otwórz w Studio (Podgląd Diff i edycja przed zatwierdzeniem)">
+                <button type="button" class="btn-edit-admin" data-action="edit-pending" data-id="${safeId}" title="Otwórz w Studio (Podgląd Diff i edycja przed zatwierdzeniem)">
                     <i class="fas fa-sliders-h"></i> Edytuj / Diff
                 </button>
-                <button type="button" class="btn-reject" data-action="reject" data-id="${escapeHtml(item.id)}" title="Odrzuć propozycję">
+                <button type="button" class="btn-reject" data-action="reject" data-id="${safeId}" title="Odrzuć propozycję">
                     <i class="fas fa-times"></i>
                 </button>
             </div>`;
     } else if (AppState.isAdmin) {
         const quickVerifyBtn = item.status !== 'verified'
-            ? `<button type="button" class="btn-quick-verify" data-action="quick-verify" data-id="${escapeHtml(item.id)}" title="Potwierdź poprawność tego hasła 1-klikiem">
+            ? `<button type="button" class="btn-quick-verify" data-action="quick-verify" data-id="${safeId}" title="Potwierdź poprawność tego hasła 1-klikiem">
                    <i class="fas fa-check"></i> Zweryfikuj
                </button>`
-            : `<button type="button" class="btn-quick-verify is-verified-plus" data-action="quick-verify" data-id="${escapeHtml(item.id)}" title="Dodaj kolejne potwierdzenie instruktorskie (+1)">
+            : `<button type="button" class="btn-quick-verify is-verified-plus" data-action="quick-verify" data-id="${safeId}" title="Dodaj kolejne potwierdzenie instruktorskie (+1)">
                    <i class="fas fa-plus"></i> +1
                </button>`;
 
         // Tylko główny Admin może bezpowrotnie usuwać hasła z bazy (RBAC)
         const deleteBtn = AppState.userRole === 'admin'
-            ? `<button type="button" class="btn-delete-admin" data-action="delete-live" data-id="${escapeHtml(item.id)}" title="Usuń z bazy (tylko Admin)">
+            ? `<button type="button" class="btn-delete-admin" data-action="delete-live" data-id="${safeId}" title="Usuń z bazy (tylko Admin)">
                    <i class="fas fa-trash-alt"></i>
                </button>`
             : '';
@@ -784,14 +797,14 @@ function createTermCard(item, isPending = false) {
         actionsHtml = `
             <div class="moderation-actions">
                 ${quickVerifyBtn}
-                <button type="button" class="btn-edit-admin" data-action="edit-live" data-id="${escapeHtml(item.id)}" title="Edytuj hasło w Salsopedia Studio">
+                <button type="button" class="btn-edit-admin" data-action="edit-live" data-id="${safeId}" title="Edytuj hasło w Salsopedia Studio">
                     <i class="fas fa-edit"></i> Edytuj
                 </button>
                 ${deleteBtn}
             </div>`;
     } else {
         actionsHtml = `
-            <button type="button" class="btn-verify" data-action="verify" data-id="${escapeHtml(item.id)}" title="Zaproponuj poprawkę lub uzupełnienie do tego hasła">
+            <button type="button" class="btn-verify" data-action="verify" data-id="${safeId}" title="Zaproponuj poprawkę lub uzupełnienie do tego hasła">
                 <i class="fas fa-pencil-alt"></i> Zgłoś poprawkę
             </button>`;
     }
@@ -799,7 +812,7 @@ function createTermCard(item, isPending = false) {
     card.innerHTML = `
         ${ribbonHtml}
         <div class="wiki-card-header">
-            <h3>${escapeHtml(item.term)}</h3>
+            <h3>${safeTerm}</h3>
             ${verifiedHtml}
         </div>
         <div class="badges">
@@ -807,7 +820,7 @@ function createTermCard(item, isPending = false) {
         </div>
         ${inlineDiffHtml}
         <div class="definition">
-            ${linkifyDefinition(item.definition || '', item.id)}
+            ${linkifyDefinition(item.definition || '', rawId)}
         </div>
         ${sourcesHtml}
         <div class="wiki-card-footer">
@@ -2050,29 +2063,50 @@ const POLISH_KEYWORD_ALIASES = {
     'Musicality': ['Musicality', 'Muzykalność', 'Muzykalności'],
     'La Clave (Katowice)': ['La Clave'],
     'Mil Pasos (Katowice)': ['Mil Pasos'],
+    'Salsa Los Amigos (Katowice / Sosnowiec)': ['Salsa Los Amigos'],
+    'Nova Szkoła Tańca (Katowice)': ['Nova Szkoła Tańca', 'Novej Szkole Tańca'],
     'Evolution Dance Studio (Katowice)': ['Evolution Dance Studio'],
     'KIZLAB (Katowice)': ['KIZLAB'],
     'VAMULA.pl Akademia Kizomby (Katowice)': ['VAMULA.pl', 'Vamula'],
-    'Gravitacja / Dance Plus Plus (Katowice)': ['Gravitacja', 'Dance Plus Plus'],
+    'Gravitacja / Dance Plus Plus (Katowice)': ['Gravitacja', 'Gravitacji', 'Dance Plus Plus', 'Punkt 44'],
     'Dolina Trzech Stawów — Kato Salsa Hub (Katowice)': ['Dolina Trzech Stawów', 'Doliny Trzech Stawów', 'Dolinie Trzech Stawów', 'Kato Salsa Hub'],
     'Śląska Szkoła Tańca Dariusz Kurzeja (Katowice / Śląsk)': ['Śląska Szkoła Tańca', 'Śląskiej Szkoły Tańca', 'Śląską Szkołę Tańca'],
     'Szkoła Tańca Mohito (Gliwice / Tychy)': ['Szkoła Tańca Mohito', 'Mohito'],
     'DANCE#LOVEit & Corazon (Bielsko-Biała)': ['DANCE#LOVEit', 'Corazon'],
-    'Pedro y Bella': ['Pedro y Bella', 'Pedro'],
-    'Ela Stępień': ['Ela Stępień', 'Eli Stępień', 'Elę Stępień'],
-    'Michał Rozewski': ['Michał Rozewski', 'Michała Rozewskiego', 'Michałem Rozewskim'],
-    'Daniel Rojewski': ['Daniel Rojewski', 'Daniela Rojewskiego', 'Danielem Rojewskim'],
-    'Maja Modliszewska': ['Maja Modliszewska', 'Mai Modliszewskiej', 'Mają Modliszewską'],
-    'Regla (Kuba / Katowice)': ['Regla', 'Regli', 'Reglą'],
-    'Ania „Ana” Kurowska': ['Ania „Ana” Kurowska', 'Anią „Aną” Kurowską', 'Ani Kurowskiej', 'Ania Kurowska'],
-    'Dariusz Kurzeja': ['Dariusz Kurzeja', 'Dariusza Kurzei', 'Dariuszem Kurzeją'],
+    'Sebastian Ciosiński (La Clave)': ['Sebastian Ciosiński', 'Sebastiana Ciosińskiego', 'Sebastianem Ciosińskim'],
+    'Ania Seruga (La Clave)': ['Ania Seruga', 'Ani Serugi', 'Anią Serugą'],
+    'Dariusz „Darek” Gruszczyk (La Clave)': ['Dariusz Gruszczyk', 'Dariusza Gruszczyka', 'Darek Gruszczyk'],
+    'Ziemek i Olita (La Clave)': ['Ziemek i Olita', 'Ziemek & Olita'],
+    'Klaudia i Adriano (La Clave)': ['Klaudia i Adriano', 'Klaudia & Adriano'],
+    'Marzena „Marziiik” i Jacek (La Clave)': ['Marzena „Marziiik” i Jacek', 'Marziiik'],
+    'Maciek Zahorodny (La Clave)': ['Maciek Zahorodny', 'Maćka Zahorodnego'],
+    'Justyna Sarzyńska (La Clave)': ['Justyna Sarzyńska', 'Justyny Sarzyńskiej'],
+    'Daniel Galas (Mil Pasos)': ['Daniel Galas', 'Daniela Galasa', 'Danielem Galasem'],
+    'Anita i Grzegorz (Mil Pasos)': ['Anita i Grzegorz'],
+    'Iza i Krystian (Mil Pasos)': ['Iza i Krystian'],
+    'Wiola i Konrad (Mil Pasos)': ['Wiola i Konrad'],
+    'Jędrzej „Jędrek” Górski (Salsa Los Amigos)': ['Jędrzej „Jędrek” Górski', 'Jędrzej Górski', 'Jędrka Górskiego', 'Jędrek Górski'],
+    'Iwona (Salsa Los Amigos)': ['Iwona'],
+    'Regla Maria Peñalver Hernández (Kuba / Katowice)': ['Regla Maria Peñalver Hernández', 'Regla', 'Regli', 'Reglą'],
+    'Daniel Machalica (Katowice)': ['Daniel Machalica', 'Daniela Machalicę', 'Daniela Machalicy'],
+    'Dariusz Kurzeja (Śląska Szkoła Tańca)': ['Dariusz Kurzeja', 'Dariusza Kurzei', 'Dariuszem Kurzeją', 'Dariusza Kurzeję'],
+    'Pedro y Bella (VAMULA.pl)': ['Pedro y Bella', 'Pedro'],
+    'Ela Stępień i Michał Rozewski (KIZLAB)': ['Ela Stępień i Michał Rozewski', 'Ela Stępień', 'Eli Stępień', 'Michał Rozewski', 'Michała Rozewskiego'],
+    'Daniel Rojewski i Maja Modliszewska': ['Daniel Rojewski i Maja Modliszewska', 'Daniel Rojewski', 'Maja Modliszewska'],
     'Damian Ratajczak (FeelTheSalsa)': ['Damian Ratajczak', 'Damiana Ratajczaka', 'FeelTheSalsa'],
-    'Leidel Portuondo (Kuba)': ['Leidel Portuondo', 'Leidela Portuondo']
+    'Leidel Portuondo (Kuba)': ['Leidel Portuondo', 'Leidela Portuondo'],
+    'Paso Básico (Krok podstawowy)': ['Paso Básico', 'Krok podstawowy', 'kroku podstawowego', 'krok podstawowy'],
+    'Lateral (Cucaracha)': ['Cucaracha', 'Lateral'],
+    'Punta y Talón': ['Punta y Talón', 'Punta y Talon'],
+    'Suzy Q (Susie Q)': ['Suzy Q', 'Susie Q'],
+    'Setenta (70)': ['Setenta', 'Setenty', 'Setencie']
 };
 
 const GEO_IGNORE_TOKENS = new Set([
     'katowice', 'kuba', 'śląsk', 'gliwice / tychy', 'bielsko-biała',
-    'katowice / śląsk', 'kuba / katowice', 'w salsie', 'orishas', '70'
+    'katowice / śląsk', 'kuba / katowice', 'katowice / sosnowiec',
+    'w salsie', 'orishas', '70', '7', '71', 'la clave', 'mil pasos',
+    'salsa los amigos', 'śląska szkoła tańca', 'kizlab', 'vamula.pl', 'krok podstawowy'
 ]);
 
 function escapeRegex(str) {
@@ -2201,7 +2235,8 @@ function escapeHtml(str) {
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 // --- Integracja ze zdarzeniami cyklu życia (Router SPA i Direct Load) ---
@@ -2233,6 +2268,8 @@ if (typeof window !== 'undefined') {
     window.jumpToTermCard = jumpToTermCard;
     window.computeWordDiff = computeWordDiff;
     window.buildTermDiffHtml = buildTermDiffHtml;
+    window.escapeHtml = escapeHtml;
+    window.isSafeHttpUrl = isSafeHttpUrl;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -2242,6 +2279,8 @@ if (typeof module !== 'undefined' && module.exports) {
         computeWordDiff,
         buildTermDiffHtml,
         linkifyDefinition,
-        buildKeywordEntries
+        buildKeywordEntries,
+        escapeHtml,
+        isSafeHttpUrl
     };
 }

@@ -16,12 +16,16 @@ dist/
 # PHP sessions, logs & local cache (ISO 27001 / Zero Data Leakage)
 api/sessions/*
 api/rate_limits/*.json
+**/rate_limits/rate_*.json
 api/leads_*.csv
 katosalsahub.pl/assets/data/moderators.json
 katosalsahub.pl/assets/data/login_attempts.json
 *.bak
 *.log
+*.bak
+*.tmp
 npm-debug.log*
+smoke-diagnostics/
 
 # OS Files
 .DS_Store

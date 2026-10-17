@@ -1,7 +1,7 @@
 /**
  * Lekki, bezbiblioteczny serwer HTTP do lokalnego podglądu i rozwoju Kato Salsa Hub & DancePuls.
  * Zero zewnętrznych zależności - wykorzystuje wbudowany moduł node:http.
- * 
+ *
  * Obsługuje routing:
  * - http://localhost:3000/           -> Portal Kato Salsa Hub (katosalsahub.pl)
  * - http://localhost:3000/dancepuls/ -> Agregator DancePuls (dancepuls.pl)
@@ -21,12 +21,15 @@ const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
   '.pdf': 'application/pdf',
   '.xml': 'application/xml; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
@@ -34,36 +37,77 @@ const MIME_TYPES = {
   '.webp': 'image/webp',
 };
 
-const server = http.createServer((req, res) => {
-  let rawUrl = decodeURI((req.url || '/').split('?')[0]);
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+};
 
-  let targetBase = KSH_DIR;
-  let relPath = rawUrl;
+const BLOCKED_FILE_PATTERN = /(^|[\/\\])(\.env.*|\.htaccess|\.git.*|pending_edits\.json|.*\.(php|bak|tmp|log|sql|sh|swp))$/i;
 
-  // Routing DancePuls
-  if (rawUrl === '/dancepuls' || rawUrl.startsWith('/dancepuls/')) {
-    targetBase = DANCEPULS_DIR;
-    relPath = rawUrl.replace(/^\/dancepuls(\/)?/, '') || 'index.html';
-  } else {
-    if (relPath === '/' || relPath === '') {
-      relPath = 'index.html';
-    }
+function resolveSafeFilePath(rawInputUrl = '/', customBaseDir = null) {
+  let decodedUrl;
+  try {
+    decodedUrl = decodeURI(String(rawInputUrl || '/').split('?')[0]);
+  } catch {
+    return { filePath: '', isAllowed: false, isMalformed: true };
   }
 
-  // Sanitizacja ścieżki i ochrona przed Directory Traversal
-  const safePath = path.normalize(relPath).replace(/^(\.\.[\/\\])+/, '');
-  const filePath = path.join(targetBase, safePath);
+  let targetBase = customBaseDir ? path.resolve(customBaseDir) : KSH_DIR;
+  let relPath = decodedUrl;
 
-  if (!filePath.startsWith(targetBase)) {
-    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+  if (!customBaseDir && (decodedUrl === '/dancepuls' || decodedUrl.startsWith('/dancepuls/'))) {
+    targetBase = DANCEPULS_DIR;
+    relPath = decodedUrl.replace(/^\/dancepuls(\/)?/, '') || 'index.html';
+  } else if (relPath === '/' || relPath === '') {
+    relPath = 'index.html';
+  }
+
+  const hasTraversalAttempt = /(^|[\/\\])\.\.([\/\\]|$)/.test(decodedUrl);
+  const relativeTarget = relPath.replace(/^[\/\\]+/, '');
+  const filePath = path.resolve(targetBase, relativeTarget);
+
+  const withinBase =
+    !hasTraversalAttempt &&
+    (filePath === targetBase || filePath.startsWith(targetBase + path.sep));
+
+  const isSensitiveBlocked = BLOCKED_FILE_PATTERN.test(filePath);
+
+  return {
+    filePath,
+    isAllowed: withinBase && !isSensitiveBlocked,
+    isMalformed: false,
+  };
+}
+
+const server = http.createServer((req, res) => {
+  const { filePath, isAllowed, isMalformed } = resolveSafeFilePath(req.url);
+
+  if (isMalformed) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain; charset=utf-8',
+      ...SECURITY_HEADERS,
+    });
+    res.end('400 Nieprawidłowy adres URL');
+    return;
+  }
+
+  if (!isAllowed) {
+    res.writeHead(403, {
+      'Content-Type': 'text/plain; charset=utf-8',
+      ...SECURITY_HEADERS,
+    });
     res.end('403 Dostęp zabroniony');
     return;
   }
 
   fs.stat(filePath, (err, stats) => {
     if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end(`404 Nie znaleziono pliku: ${rawUrl}`);
+      res.writeHead(404, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        ...SECURITY_HEADERS,
+      });
+      res.end('404 Nie znaleziono pliku');
       return;
     }
 
@@ -71,8 +115,11 @@ const server = http.createServer((req, res) => {
     if (stats.isDirectory()) {
       finalPath = path.join(filePath, 'index.html');
       if (!fs.existsSync(finalPath)) {
-        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end(`404 Brak index.html w katalogu: ${rawUrl}`);
+        res.writeHead(404, {
+          'Content-Type': 'text/plain; charset=utf-8',
+          ...SECURITY_HEADERS,
+        });
+        res.end('404 Brak index.html w katalogu');
         return;
       }
     }
@@ -83,9 +130,19 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, {
       'Content-Type': contentType,
       'Cache-Control': 'no-cache',
+      ...SECURITY_HEADERS,
     });
 
     const stream = fs.createReadStream(finalPath);
+    stream.on('error', () => {
+      if (!res.headersSent) {
+        res.writeHead(500, {
+          'Content-Type': 'text/plain; charset=utf-8',
+          ...SECURITY_HEADERS,
+        });
+      }
+      res.end('500 Błąd odczytu pliku');
+    });
     stream.pipe(res);
   });
 });
@@ -98,5 +155,9 @@ if (require.main === module) {
     console.log(`[Dev Server] Wciśnij Ctrl+C, aby zatrzymać.`);
   });
 }
+
+server.resolveSafeFilePath = resolveSafeFilePath;
+server.SECURITY_HEADERS = SECURITY_HEADERS;
+server.MIME_TYPES = MIME_TYPES;
 
 module.exports = server;

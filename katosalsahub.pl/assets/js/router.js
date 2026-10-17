@@ -7,14 +7,46 @@
 let navToken = 0; // Concurrency Token
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Aktualizacja roku w stopce (#rok)
+    const rokEl = document.getElementById('rok');
+    if (rokEl) {
+        rokEl.textContent = String(new Date().getFullYear());
+    }
+
+    // Obsługa mobilnego menu (.burger-menu)
+    const burger = document.querySelector('.burger-menu');
+    const navLinks = document.querySelector('.nav-links');
+    if (burger && navLinks) {
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('active');
+        });
+    }
 
     // Intercept Links
     document.body.addEventListener('click', e => {
+        // Kliknięcie obsłużone wcześniej (np. link między hasłami Salsopedii)
+        if (e.defaultPrevented) return;
+
         const link = e.target.closest('a');
         if (!link) return;
 
         const href = link.getAttribute('href');
         if (!href) return;
+
+        // Kotwica na bieżącej stronie (#...) – płynne przewinięcie i zamknięcie menu mobilnego
+        if (href.startsWith('#')) {
+            if (href.length > 1) {
+                const target = document.getElementById(href.slice(1));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (burger) burger.classList.remove('active');
+                }
+            }
+            return;
+        }
 
         // Ignore special targets
         if (link.target === '_blank' || link.hasAttribute('download') || link.relList.contains('external')) return;

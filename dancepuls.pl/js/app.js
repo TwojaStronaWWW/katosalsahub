@@ -1090,7 +1090,7 @@ function initInbox() {
 					const row = rows[i]
 					const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || row.split(',')
 					const cleanCols = cols.map(c => c.replace(/^"|"$/g, '').trim())
-					const linkIndex = cleanCols.findIndex(c => c.includes('facebook.com') || c.includes('fb.me'))
+					const linkIndex = cleanCols.findIndex(c => /^https?:\/\//i.test(c) && (c.includes('facebook.com') || c.includes('fb.me')))
 
 					if (linkIndex !== -1) {
 						const link = cleanCols[linkIndex]
@@ -1171,8 +1171,9 @@ function initInbox() {
 			contentDiv.style.wordBreak = 'break-all'
 
 			const linkText = document.createElement('a')
-			linkText.href = link
+			linkText.href = /^https?:\/\//i.test(link) ? link : '#'
 			linkText.target = '_blank'
+			linkText.rel = 'noopener noreferrer'
 			linkText.textContent = link
 			linkText.style.color = 'var(--cuban-blue)'
 			linkText.style.textDecoration = 'none'

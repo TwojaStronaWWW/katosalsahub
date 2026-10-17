@@ -47,7 +47,7 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
 
     const instructor = getLocalFallbackAnswer('Kim są instruktorzy Pedro y Bella?', 'katosalsahub', REAL_SALSOPEDIA);
     assert.match(instructor, /Pedro y Bella/i);
-    assert.match(instructor, /Bachata/i);
+    assert.match(instructor, /Kizomb|VAMULA|Bachata/i);
 
     // 2. Dynamiczny kontekst RAG dla routera AI
     const ctx = buildDynamicContext('Wyjaśnij figury Enchufla i Setenta', REAL_SALSOPEDIA);

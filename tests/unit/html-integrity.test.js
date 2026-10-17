@@ -49,10 +49,12 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="gdpr_consent"[^>]*required/i);
     });
 
-    it('nie powinien zawierać publicznego linku do Panelu Moderacji w stopce (#5) ani stylów inline (SoC) oraz powinien ładować Asystenta AI', () => {
+    it('nie powinien zawierać publicznego linku do Panelu Moderacji w stopce (#5), pustych linków href="#", stylów inline ani bloków inline <script> (SoC) oraz powinien ładować Asystenta AI', () => {
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
+      assert.doesNotMatch(html, /href\s*=\s*["']#["']/i, 'Wykryto pusty odnośnik href="#" w index.html');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w index.html');
-      assert.doesNotMatch(html, /\s+onclick\s*=/i, 'Wykryto atrybut onclick="..." w index.html');
+      assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w index.html');
+      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w index.html');
       assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
       assert.match(html, /data-site-id="katosalsahub"/i);
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
@@ -68,8 +70,9 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /imię lub pseudonim/i);
     });
 
-    it('nie powinna zawierać bloków <style>, stylów inline ani linku moderacji w stopce (#5, SoC) oraz powinna ładować Asystenta AI', () => {
+    it('nie powinna zawierać bloków <style>, bloków inline <script>, stylów inline ani linku moderacji w stopce (#5, SoC) oraz powinna ładować Asystenta AI', () => {
       assert.doesNotMatch(html, /<style[\s>]/i);
+      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w privacy.html');
       assert.doesNotMatch(html, /\s+style\s*=/i);
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
       assert.match(html, /src="assets\/js\/ai-widget\.js"/i);
@@ -94,21 +97,22 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
 
-    it('plik salsopedia.html nie powinien zawierać styli inline, inline event handlerów ani publicznego linku moderacji w stopce (#5, SoC)', () => {
+    it('plik salsopedia.html nie powinien zawierać styli inline, inline event handlerów, inline <script> ani publicznego linku moderacji w stopce (#5, SoC)', () => {
       const html = fs.readFileSync(SALSOPEDIA_HTML, 'utf-8');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w salsopedia.html naruszający SoC');
-      assert.doesNotMatch(html, /\s+onclick\s*=/i, 'Wykryto atrybut onclick="..." w salsopedia.html naruszający SoC');
-      assert.doesNotMatch(html, /\s+onsubmit\s*=/i, 'Wykryto atrybut onsubmit="..." w salsopedia.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w salsopedia.html naruszający SoC');
+      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w salsopedia.html');
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
     });
   });
 
   describe('DancePuls (dancepuls.pl/index.html)', () => {
-    it('plik index.html powinien istnieć, mieć poprawny szkielet i zawierać panel 6-sekcyjnego raportu KSH', () => {
+    it('plik index.html powinien istnieć, mieć poprawny szkielet, meta description i zawierać panel 6-sekcyjnego raportu KSH', () => {
       assert.ok(fs.existsSync(DANCEPULS_HTML));
       const html = fs.readFileSync(DANCEPULS_HTML, 'utf-8');
       assert.match(html, /<!DOCTYPE html>/i);
       assert.match(html, /<html\s+lang="pl">/i);
+      assert.match(html, /<meta\s+name="description"\s+content="[^"]+"/i);
       assert.match(html, /id="load-report-btn"/i);
       assert.match(html, /id="open-audit-btn"/i);
       assert.match(html, /id="wynik-przyszle"/i);
@@ -116,11 +120,11 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="copy-all-poll-btn"/i);
     });
 
-    it('plik dancepuls.pl/index.html nie powinien zawierać stylów inline ani inline event handlerów (SoC)', () => {
+    it('plik dancepuls.pl/index.html nie powinien zawierać stylów inline, inline event handlerów ani inline <script> (SoC)', () => {
       const html = fs.readFileSync(DANCEPULS_HTML, 'utf-8');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w dancepuls.pl/index.html naruszający SoC');
-      assert.doesNotMatch(html, /\s+onclick\s*=/i, 'Wykryto atrybut onclick="..." w dancepuls.pl/index.html naruszający SoC');
-      assert.doesNotMatch(html, /\s+onsubmit\s*=/i, 'Wykryto atrybut onsubmit="..." w dancepuls.pl/index.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w dancepuls.pl/index.html naruszający SoC');
+      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w dancepuls.pl/index.html');
     });
   });
 });

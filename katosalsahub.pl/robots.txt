@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /assets/php/
+Disallow: /assets/data/pending_edits.json
+
+Sitemap: https://katosalsahub.pl/sitemap.xml
