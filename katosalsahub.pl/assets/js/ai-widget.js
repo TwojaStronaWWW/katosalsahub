@@ -53,7 +53,11 @@ function formatMarkdown(text) {
   safe = safe.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
   safe = safe.replace(/<\/ul>\s*<ul>/g, '');
 
-  // Klikalne adresy e-mail oraz linki wewnętrzne do sekcji (#kontakt, #cennik, salsopedia.html)
+  // Klikalne adresy URL (https://...), e-mail oraz linki wewnętrzne (#kontakt, salsopedia.html)
+  safe = safe.replace(
+    /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="tsw-ai-link">$1</a>'
+  );
   safe = safe.replace(
     /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
     '<a href="mailto:$1" class="tsw-ai-link">$1</a>'
@@ -63,8 +67,8 @@ function formatMarkdown(text) {
     '$1<a href="$2" class="tsw-ai-link">$2</a>'
   );
   safe = safe.replace(
-    /\b(salsopedia\.html(?:#[a-zA-Z0-9_-]+)?)/g,
-    '<a href="$1" class="tsw-ai-link">$1</a>'
+    /(^|[\s(])(salsopedia\.html(?:#[a-zA-Z0-9_-]+)?)/g,
+    '$1<a href="$2" class="tsw-ai-link">$2</a>'
   );
 
   // Podział na akapity i nowe linie
@@ -160,12 +164,12 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
     figures: ['figur', 'rueda', 'ruedzie', 'komend', 'casino', 'wystep'],
     styles: ['styl', 'odmian', 'gatun', 'rodzaj'],
     music: ['muzyk', 'rytm', 'clave', 'utwor', 'piosen'],
-    instruments: ['instrument', 'beben', 'bebny', 'perkuj', 'conga', 'timbales', 'clave'],
+    instruments: ['instrument', 'beben', 'bebny', 'perkuj', 'perkus', 'conga', 'timbales', 'bongo', 'campana', 'guiro', 'guira', 'marakas', 'tres', 'bata', 'cajon', 'chekere', 'requinto', 'clave'],
     bands: ['zespol', 'orkiestr', 'artyst', 'kapel', 'spiewa', 'muzykant', 'van', 'havana'],
     history: ['histori', 'korzen', 'pochodz', 'tradycj', 'kuba'],
     gods: ['orish', 'orisza', 'bog', 'bostw', 'santeri', 'yorub', 'afro', 'chango', 'eleggua', 'yemaya', 'oshun'],
     instructors: ['instruktor', 'nauczyciel', 'prowadz', 'trener', 'uczy'],
-    schools: ['szkol', 'kurs', 'zajec', 'lekcj', 'gdzie uczyc']
+    schools: ['szkol', 'kurs', 'zajec', 'lekcj', 'gdzie uczyc', 'good mood']
   };
 
   const matchedCategories = new Set();
@@ -390,7 +394,7 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       return (
         `📍 **Gdzie tańczymy w Katowicach i na Śląsku?**\n` +
         `- **Dolina Trzech Stawów (Katowice):** Nasza kultowa miejscówka plenerowa przy Kamiennym Kręgu (*Salsowy Chillout*).\n` +
-        `- **Centrum Katowic:** Szkoły i kluby partnerskie (m.in. La Clave, Mil Pasos, Evolution Dance Studio, KIZLAB, Gravitacja / Dance++) wokół Rynku, ul. Mariackiej, Chorzowskiej i Kamiennej.\n` +
+        `- **Centrum Katowic:** Szkoły i kluby partnerskie (m.in. La Clave, Mil Pasos, Good Mood, Evolution Dance Studio, KIZLAB, VAMULA.pl, Gravitacja / Dance++) wokół Rynku, ul. Paderewskiego, Chorzowskiej, Kamiennej i Gliwickiej.\n` +
         `- Pełne zestawienie szkół i miejsc znajdziesz w sekcji **#mapa** oraz w kategorii **Szkoły Tańca** w salsopedia.html.`
       );
     }

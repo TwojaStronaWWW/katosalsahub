@@ -151,13 +151,18 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       }
     });
 
-    it('salsopedia.json powinna zawierać pełną bazę szkół tańca (schools), instruktorów (instructors) z La Clave / Mil Pasos oraz klikalne linki źródłowe', () => {
+    it('salsopedia.json powinna zawierać pełną bazę szkół tańca (w tym Good Mood), instruktorów, rozbudowaną sekcję instrumentów oraz klikalne linki źródłowe', () => {
       const entries = JSON.parse(fs.readFileSync(SALSOPEDIA_JSON, 'utf-8'));
       const schools = entries.filter(e => Array.isArray(e.category) && e.category.includes('schools'));
       const instructors = entries.filter(e => Array.isArray(e.category) && e.category.includes('instructors'));
+      const instruments = entries.filter(e => Array.isArray(e.category) && e.category.includes('instruments'));
 
-      assert.ok(schools.length >= 12, `Oczekiwano min. 12 szkół tańca w Katowicach/Śląsku, znaleziono: ${schools.length}`);
-      assert.ok(instructors.length >= 20, `Oczekiwano min. 20 instruktorów z katowickich szkół, znaleziono: ${instructors.length}`);
+      assert.ok(schools.length >= 13, `Oczekiwano min. 13 szkół tańca w Katowicach/Śląsku, znaleziono: ${schools.length}`);
+      assert.ok(schools.some(s => /Good Mood/i.test(s.term)), 'Brak Szkoły Tańca Good Mood w kategorii schools');
+      assert.ok(instructors.length >= 30, `Oczekiwano min. 30 instruktorów z katowickich szkół, znaleziono: ${instructors.length}`);
+      assert.ok(instructors.some(i => /Dronszczyk/i.test(i.term)), 'Brak Adriana „Dronsona” Dronszczyka (Good Mood) w kategorii instructors');
+      assert.ok(instructors.some(i => /Claudio Mineo/i.test(i.term)), 'Brak Claudio Mineo (Good Mood) w kategorii instructors');
+      assert.ok(instruments.length >= 18, `Oczekiwano min. 18 instrumentów w Salsopedii, znaleziono: ${instruments.length}`);
 
       for (const entry of entries) {
         assert.ok(Array.isArray(entry.source) && entry.source.length > 0, `Hasło ${entry.term} nie posiada źródła`);

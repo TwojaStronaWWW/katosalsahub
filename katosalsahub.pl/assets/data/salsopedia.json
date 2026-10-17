@@ -264,10 +264,17 @@
   {
     "id": "term_16",
     "term": "Clave (Instrument)",
-    "definition": "Dwa drewniane patyki, instrument perkusyjny wyznaczający rytm. Serce muzyki kubańskiej.",
+    "definition": "Para cylindrycznych pałeczek z twardego, rezonującego drewna (np. palisander, heban lub granadillo), stanowiąca fundament i serce muzyki kubańskiej. Podczas gry jedna pałeczka (hembra – „kobieta”) spoczywa lekko w zagłębieniu dłoni tworzącym pudło rezonansowe, a druga (macho – „mężczyzna”) uderza w nią z góry, wyznaczając niezmienny klucz rytmiczny Clave (Rytm) w Sonie, Salsie, Timbie i Rumbie.",
     "category": [
       "instruments",
       "music"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Son",
+      "Timba",
+      "Rumba",
+      "rhythm"
     ],
     "source": [
       {
@@ -336,10 +343,17 @@
   {
     "id": "term_19",
     "term": "Conga (Instrument)",
-    "definition": "Wysoki, wąski bęben używany w muzyce afrokubańskiej. W salsie i timbie zestaw cong (tumbadoras) tworzy podstawę rytmiczną ('marcha').",
+    "definition": "Wysoki, beczkowaty bęben afrokubański (właściwa kubańska nazwa to tumbadora). W orkiestrze salsowej, timbowej i rumbowej wykorzystuje się zestaw trzech bębnów o różnym stroju: najniższą tumbadorę (salidor), średnią congę (segundo / tres dos) oraz najwyżej strojone quinto używane do improwizacji. Congi wygrywają kołyszący rytm Tumbao (marcha) z wyraźnym uderzeniem otwartym na „4 i 4-i” oraz slapa na „2”, prowadząc stopy tancerzy.",
     "category": [
       "instruments",
       "music"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Timba",
+      "Rumba",
+      "Son",
+      "rhythm"
     ],
     "source": [
       {
@@ -1970,7 +1984,7 @@
       "Kizomba",
       "Zouk"
     ],
-    "definition": "Przestrzeń taneczno-klubowa w Centrum Rozrywki Punkt 44 w Katowicach (ul. Gliwicka 44). Odbywają się tu regularne kursy Salsy Kubańskiej (prowadzone m.in. przez Daniela Machalicę) oraz cykliczne imprezy i warsztaty Kizomba / Bachata / Zouk organizowane przez inicjatywę Dance Plus Plus (Wioletta Morawiec).",
+    "definition": "Przestrzeń taneczno-klubowa w Centrum Rozrywki Punkt 44 w Katowicach (ul. Gliwicka 44). Odbywają się tu regularne kursy Salsy Kubańskiej (prowadzone m.in. przez Daniela „Kokosza” Machalicę we współpracy ze Szkołą Tańca Good Mood) oraz cykliczne imprezy i warsztaty Kizomba / Bachata / Zouk organizowane przez inicjatywę Dance Plus Plus (Wioletta Morawiec).",
     "author": "Niezweryfikowane",
     "author_link": "https://gravitacja.pl",
     "source": [
@@ -2074,6 +2088,36 @@
       {
         "name": "Oficjalna strona: danceloveit.pl",
         "url": "https://danceloveit.pl"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_school_13",
+    "term": "Good Mood — Szkoła Tańca (Katowice)",
+    "category": [
+      "schools",
+      "dance"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Salsa LA",
+      "Bachata",
+      "Kizomba",
+      "Zouk"
+    ],
+    "definition": "Popularna katowicka szkoła tańca z siedzibą przy ul. Paderewskiego 35 (prowadząca również zajęcia i wydarzenia taneczne w przestrzeni Gravitacja przy ul. Gliwickiej 44), założona przez Adriana „Dronsona” Dronszczyka (współtwórcę projektów Salsa Connection, Salsopolis Group i Summer Salsa Trip). Specjalizuje się w tańcach socialowych: Salsie Kubańskiej (Casino), Salsie Los Angeles (On1) i On2, Bachacie, Kizombie, Zouku Brazylijskim, Tangu Argentyńskim oraz Latino Solo. W kadrze instruktorskiej uczą m.in. Adrian „Dronson” Dronszczyk, Daniel „Kokosz” Machalica, Claudio Mineo, Patrycja Franczak (Stosio), Krystian Domian, Katarzyna Terech, Brajan Nosal, Milena „Mili” Jakubowska, Krzysztof Kardaś, Joanna Fujawa oraz Judyta Mężyk „Niyaf”.",
+    "author": "Niezweryfikowane",
+    "author_link": "https://goodmood.dance",
+    "source": [
+      {
+        "name": "Oficjalna strona: goodmood.dance",
+        "url": "https://goodmood.dance"
+      },
+      {
+        "name": "Profil FB: Szkoła Tańca Good Mood",
+        "url": "https://www.facebook.com/goodmooddance"
       }
     ],
     "status": "unverified",
@@ -2420,18 +2464,24 @@
   },
   {
     "id": "term_inst_16",
-    "term": "Daniel Machalica (Katowice)",
+    "term": "Daniel „Kokosz” Machalica (Good Mood / Gravitacja)",
     "category": [
       "instructors",
-      "dance"
+      "dance",
+      "music"
     ],
     "subcategory": [
       "Salsa Cubana",
-      "Rueda de Casino"
+      "Rueda de Casino",
+      "rhythm"
     ],
-    "definition": "Instruktor Salsy Kubańskiej i rytmów karaibskich w Katowicach, prowadzący regularne kursy i warsztaty m.in. w przestrzeni tanecznej Gravitacja (Punkt 44 przy ul. Gliwickiej 44).",
+    "definition": "Doświadczony tancerz, instruktor Salsy Kubańskiej (Casino) i Ruedy de Casino oraz DJ muzyki salsowej w Katowicach. Prowadzi regularne kursy i warsztaty w Szkole Tańca Good Mood (ul. Paderewskiego 35) oraz w przestrzeni tanecznej Gravitacja (Punkt 44 przy ul. Gliwickiej 44), stawiając na rytmikę Clave (Rytm), płynne prowadzenie i pozytywną energię na parkiecie.",
     "author": "Niezweryfikowane",
     "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
+      },
       {
         "name": "Gravitacja Katowice",
         "url": "https://gravitacja.pl"
@@ -2574,6 +2624,192 @@
       {
         "name": "Warsztaty Kubańskie na Śląsku",
         "url": "https://katosalsahub.pl"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_23",
+    "term": "Adrian „Dronson” Dronszczyk (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Salsa LA",
+      "Salsa Cubana",
+      "Bachata",
+      "partnerwork"
+    ],
+    "definition": "Założyciel i właściciel Szkoły Tańca Good Mood w Katowicach (ul. Paderewskiego 35), instruktor Salsy Liniowej (Los Angeles On1 / On2) oraz Bachaty. Pomysłodawca i współorganizator ogólnopolskich inicjatyw tanecznych, m.in. Salsa Connection, Salsopolis Group oraz wyjazdów integracyjnych Summer Salsa Trip.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Szkoła Tańca Good Mood",
+        "url": "https://goodmood.dance"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_24",
+    "term": "Claudio Mineo (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Salsa",
+      "Bachata",
+      "technique"
+    ],
+    "definition": "Pochodzący z Włoch tancerz, instruktor i choreograf tańców latynoamerykańskich oraz karaibskich związany z tańcem od 2006 roku, prowadzący zajęcia w katowickiej Szkole Tańca Good Mood. Na kursach łączy południowy temperament i ekspresję z precyzyjną pracą nad techniką ruchu i izolacjami.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_25",
+    "term": "Patrycja Franczak / Stosio (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Salsa",
+      "Bachata",
+      "shines",
+      "follow"
+    ],
+    "definition": "Tancerka i instruktorka w Szkole Tańca Good Mood w Katowicach, specjalizująca się w Salsie (Crossbody On1, Mambo On2, Lady Styling & Bodymovement), Bachacie oraz tańcu towarzyskim. Na zajęciach stawia na płynność ruchu (flow), improwizację (freestyle), kobiecą grację i świadomą komunikację w parze.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_26",
+    "term": "Krystian Domian (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Kizomba",
+      "Zouk",
+      "lead",
+      "partnerwork"
+    ],
+    "definition": "Instruktor Kizomby oraz jeden z prekursorów Zouka Brazylijskiego na Górnym Śląsku, związany z katowicką Szkołą Tańca Good Mood. Na zajęciach podkreśla wagę naturalnego połączenia w parze, uważnego prowadzenia oraz autentycznej radości płynącej z tańca socialowego.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_27",
+    "term": "Katarzyna Terech i Brajan Nosal (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Zouk",
+      "partnerwork",
+      "technique"
+    ],
+    "definition": "Duet instruktorski specjalizujący się w Zouku Brazylijskim w Szkole Tańca Good Mood w Katowicach. Swoje umiejętności warsztatowe rozwijali bezpośrednio w Brazylii (m.in. w Rio de Janeiro; Katarzyna jest członkinią międzynarodowego projektu Zouk Needs You Team), ucząc płynnego prowadzenia głową i klatką piersiową, oddechu w parze oraz miękkiej pracy stóp.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_28",
+    "term": "Milena „Mili” Jakubowska (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Kizomba",
+      "follow",
+      "partnerwork"
+    ],
+    "definition": "Instruktorka Kizomby związana ze Szkołą Tańca Good Mood w Katowicach (prowadząca zajęcia w parach m.in. z Krystianem Domianem). Skupia się na komforcie w objęciu, wrażliwości na mikro-sygnały w prowadzeniu (Lead & Follow) oraz płynnej pracy bioder (Ginga).",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_29",
+    "term": "Krzysztof Kardaś (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "lead",
+      "partnerwork",
+      "technique"
+    ],
+    "definition": "Instruktor Tanga Argentyńskiego w Szkole Tańca Good Mood w Katowicach. Popularyzuje kulturę milongi, precyzyjną komunikację w bliskim objęciu (abrazo) oraz muzykalną improwizację, z której chętnie czerpią również tancerze Salsy, Kizomby i Bachaty (np. w figurach takich jak Ocho Cortado).",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_inst_30",
+    "term": "Joanna Fujawa i Judyta Mężyk „Niyaf” (Good Mood)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "shines",
+      "technique"
+    ],
+    "definition": "Instruktorki technik solowych, choreografii i świadomości ciała w katowickiej Szkole Tańca Good Mood. Joanna Fujawa odpowiada za przygotowanie motoryczne, pilates, mobilność i choreografię, natomiast Judyta Mężyk „Niyaf” (wielokrotnie nagradzana tancerka orientalna) uczy precyzyjnych izolacji klatki piersiowej i bioder wykorzystywanych w kobiecym stylingu.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Kadra Good Mood Katowice",
+        "url": "https://goodmood.dance"
       }
     ],
     "status": "unverified",
@@ -2999,6 +3235,407 @@
       {
         "name": "Zobacz na YouTube: Ponle Sabor Rueda",
         "url": "https://www.youtube.com/results?search_query=Ponle+Sabor+Rueda+de+Casino"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_1",
+    "term": "Bongó (Bongosy)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Son",
+      "Salsa Cubana",
+      "Bachata",
+      "rhythm"
+    ],
+    "definition": "Para niewielkich, połączonych ze sobą drewnianym mostkiem bębenków o otwartym dnie, trzymanych między kolanami. Mniejszy i wyżej strojony bębenek to macho („mężczyzna”), a większy i niższy to hembra („kobieta”). W Sonie Kubańskim i Salsie muzyk (bongosero) wygrywa na nich podstawowy ośmioósemkowy rytm Martillo („młotek”), a w kulminacyjnej sekcji Montuno odkłada bongosy, by chwycić duży dzwonek ręczny (Campana). W Bachacie bongosy wyznaczają charakterystyczne akcenty na „4” i „8”, podkreślane przez tancerzy ruchem biodra i tapem.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj brzmienia: Bongó Martillo",
+        "url": "https://www.youtube.com/results?search_query=Bongo+Martillo+Son+Cubano+Salsa"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_2",
+    "term": "Timbales (Pailas)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Timba",
+      "rhythm"
+    ],
+    "definition": "Zestaw dwóch płytkich bębnów o metalowych korpusach (mosiężnych lub stalowych) osadzonych na statywie, uzupełniony o dzwonki (mambo bell, cha-cha bell), drewniany blok (jam block) i talerz. Wywodzą się z kubańskich kotłów używanych w orkiestrach Danzón. W zwrotkach utworu muzyk (timbalero) wystukuje pałeczkami na bocznej ściance korpusu rytm Cáscara, a przed wejściem w sekcję Montuno wykonuje efektowne przejście (abanico / roll) i przechodzi na dzwonek.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj rytmu: Timbales & Cáscara",
+        "url": "https://www.youtube.com/results?search_query=Timbales+Cascara+Salsa+Cubana+Timba"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_3",
+    "term": "Campana (Cencerro / Cowbell)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Timba",
+      "Son",
+      "rhythm"
+    ],
+    "definition": "Metalowy dzwonek perkusyjny bez serca, uderzany drewnianą pałeczką. W orkiestrze salsowej i timbowej występują dwa główne rodzaje: gruby, trzymany w dłoni dzwonek bongosisty (bongo bell / campana), który mocno akcentuje uderzenia „1” i „3” w sekcji Montuno, oraz wyżej brzmiący dzwonek montowany przy timbalesach (mambo bell / contracampana). Dla początkujących i zaawansowanych tancerzy Campana jest najczytelniejszym kompasem pozwalającym utrzymać timing „na 1”.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj rytmu: Campana Bongo Bell",
+        "url": "https://www.youtube.com/results?search_query=Bongo+Bell+Campana+Salsa+rhythm"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_4",
+    "term": "Güiro (Guayo)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Son",
+      "Salsa Cubana",
+      "rhythm"
+    ],
+    "definition": "Tradycyjny kubański idiofon wykonany z wydrążonej, wysuszonej tykwy z poprzecznymi nacięciami na powierzchni. Muzyk pociera karbowany korpus drewnianym pręcikiem (púa), wydobywając na przemian długie i krótkie szeleszczące dźwięki. Güiro pełni rolę „kleju rytmicznego” spajającego całą sekcję perkusyjną w Sonie Kubańskim, Cha-Cha-Cha, Danzónie, Charandze oraz klasycznej Salsie.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj rytmu: Güiro Cubano",
+        "url": "https://www.youtube.com/results?search_query=Guiro+Cubano+Son+Salsa+rhythm"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_5",
+    "term": "Güira Dominicana",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Bachata",
+      "rhythm"
+    ],
+    "definition": "Metalowy cylinder pokryty drobnymi wypustkami (przypominający tarkę), na którym gra się za pomocą specjalnego drucianego grzebienia (gancho). Wywodzi się z Dominikany i stanowi jeden z pięciu filarów instrumentalnych Bachaty oraz Merengue. Zmiana sposobu gry na güirze natychmiast sygnalizuje tancerzom na parkiecie przejście między trzema głównymi sekcjami utworu bachatowego: Derecho, Majao oraz energetycznym Mambo.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj rytmu: Güira w Bachacie",
+        "url": "https://www.youtube.com/results?search_query=Guira+Dominicana+Bachata+rhythm+derecho+majao+mambo"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_6",
+    "term": "Marakasy (Maracas)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Son",
+      "Salsa Cubana",
+      "rhythm"
+    ],
+    "definition": "Para grzechotek perkusyjnych wykonanych z wysuszonych owoców drzewa güira lub ze sztywnej skóry, wypełnionych drobnymi nasionami bądź kamyczkami i osadzonych na drewnianych trzonkach. Podobnie jak w bongosach i clave, marakasy dzielą się na wyżej brzmiący instrument macho oraz niżej brzmiący hembra. W tradycyjnym Sonie Kubańskim i Salsie często gra na nich sam wokalista, zagęszczając puls ósemkowy i szesnastkowy.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj rytmu: Maracas w Sonie i Salsie",
+        "url": "https://www.youtube.com/results?search_query=Maracas+Cubanas+Son+Salsa+technique"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_7",
+    "term": "Tres Cubano",
+    "category": [
+      "instruments",
+      "music",
+      "history"
+    ],
+    "subcategory": [
+      "Son",
+      "Salsa Cubana",
+      "Timba"
+    ],
+    "definition": "Narodowy kubański instrument strunowy szarpany, powstały we wschodniej części wyspy (Oriente). Przypomina niewielką gitarę wyposażoną w trzy podwójne chóry stalowych strun (łącznie 6 strun strojonych w oktawach i unisono). Jego jasne, metaliczne i przenikliwe brzmienie wygrywające zapętlone figury melodyczno-rytmiczne (guajeo / montuno) jest znakiem rozpoznawczym Sonu Kubańskiego, Changüí oraz tradycyjnego Casino.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj brzmienia: Tres Cubano",
+        "url": "https://www.youtube.com/results?search_query=Tres+Cubano+Son+Guajeo"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_8",
+    "term": "Batá (Bębny Batá)",
+    "category": [
+      "instruments",
+      "music",
+      "gods",
+      "history"
+    ],
+    "subcategory": [
+      "Afro",
+      "Timba",
+      "rhythm"
+    ],
+    "definition": "Święty zestaw trzech dwustronnych bębnów o klepsydrowym kształcie, przywieziony na Kubę przez lud Joruba z terenów dzisiejszej Nigerii i używany w ceremoniach religii Santería (Regla de Ocha) ku czci bóstw Orishas (takich jak Eleggua, Chango, Yemaya, Oshun czy Oya). Zestaw tworzą: największy bęben matka Iyá (prowadzący rozmowę i sygnalizujący zmiany rytmu), średni Itótele oraz najmniejszy Okónkolo utrzymujący stałą bazę. Współcześnie bębny Batá są również wplatane w aranżacje kubańskiej Timby.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj rytmu: Bębny Batá (Toques de Santo)",
+        "url": "https://www.youtube.com/results?search_query=Tambores+Bata+Afro+Cuban+Orishas"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_9",
+    "term": "Cajón Cubano",
+    "category": [
+      "instruments",
+      "music",
+      "history"
+    ],
+    "subcategory": [
+      "Rumba",
+      "Afro",
+      "rhythm"
+    ],
+    "definition": "Drewniana skrzynia perkusyjna będąca historycznym przodkiem bębnów Conga w Rumbie Kubańskiej. W XIX wieku, gdy kolonialne władze zakazały niewolnikom używania tradycyjnych afrykańskich bębnów skórzanych, dokerzy w portach Hawany i Matanzas zaczęli wygrywać rytmy Rumby (szczególnie powolnego Yambú oraz ognistej Columbii) na drewnianych skrzyniach po solonym dorszu (bacalao) i świecach. Do dziś Cajón Cubano stanowi fundament tradycyjnych spotkań rumbowych (Cajón pa' los muertos).",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj brzmienia: Cajón w Rumbie Kubańskiej",
+        "url": "https://www.youtube.com/results?search_query=Cajon+Cubano+Rumba+Yambu"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_10",
+    "term": "Catá (Guagua)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Rumba",
+      "Afro",
+      "rhythm"
+    ],
+    "definition": "Kubański idiofon drewniany w kształcie wydrążonego pnia lub grubego cylindra bambusowego zawieszonego na stojaku, na którym gra się dwiema drewnianymi pałeczkami. W Rumbie Kubańskiej (Guaguancó i Columbia) oraz w historycznym stylu Tumba Francesa wygrywa szybki, przenikliwy wzorzec rytmiczny (często oparty na figurze cinquillo lub cáscara), który splata się bezpośrednio z rytmem Clave.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj rytmu: Catá (Guagua) w Rumbie",
+        "url": "https://www.youtube.com/results?search_query=Cata+Guagua+Rumba+Cubana+instrument"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_11",
+    "term": "Chekeré (Shekeré / Agbe)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Afro",
+      "Rumba",
+      "Timba",
+      "rhythm"
+    ],
+    "definition": "Afrokubański instrument perkusyjny wykonany z dużej, wysuszonej tykwy oplecionej luźną siatką z nanizanymi nasionami, muszelkami cauri lub koralikami. Muzyk potrząsa tykwą i uderza otwartą dłonią w jej dolną część, uzyskując jednocześnie głęboki, basowy rezonans powietrza oraz głośny, metaliczny szelest koralików. Niezastąpiony w muzyce Orishas (zespołach bembé / güiro), Rumbie oraz kubańskiej Timbie.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj brzmienia: Chekeré (Shekeré)",
+        "url": "https://www.youtube.com/results?search_query=Chekere+Afro+Cuban+percussion"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_12",
+    "term": "Piano (Fortepian — Montuno / Tumbao)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Timba",
+      "Son",
+      "rhythm"
+    ],
+    "definition": "Harmoniczny i rytmiczny motor napędowy orkiestry salsowej oraz timbowej. Zamiast klasycznego akompaniamentu akordowego pianista gra w Salsie i Timbie silnie synkopowane, zapętlone figury dwuręczne zwane Tumbao (lub Guajeo / Montuno), które przejęły historyczną rolę kubańskiego Tresu. W nowoczesnej Timbie partie fortepianu są niezwykle wirtuozerskie i bezpośrednio podpowiadają tancerzom zmiany energii w utworze.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj: Piano Tumbao w Salsie i Timbie",
+        "url": "https://www.youtube.com/results?search_query=Piano+Tumbao+Montuno+Salsa+Timba"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_13",
+    "term": "Baby Bass (Kontrabas / Bas w Salsie)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Son",
+      "Timba",
+      "rhythm"
+    ],
+    "definition": "Elektryczny kontrabas o charakterystycznym, smukłym korpusie z tworzywa (stworzony przez braci Zorko i spopularyzowany przez Ampeg w latach 60.) lub 5- i 6-strunowa gitara basowa w nowoczesnej Timbie. Basista w Sonie i Salsie gra rytm Tumbao z synkopowanym wyprzedzeniem pierwszego uderzenia taktu (tzw. anticipated bass na „i-2-i” oraz „4”), co nadaje muzyce nieodparty, kołyszący puls prowadzący kroki na Contratiempo i a Tiempo.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj: Baby Bass Tumbao w Salsie",
+        "url": "https://www.youtube.com/results?search_query=Baby+Bass+Salsa+Tumbao"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_14",
+    "term": "Bombo i Songo Drumset (Perkusja w Timbie)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Timba",
+      "Salsa Cubana",
+      "rhythm"
+    ],
+    "definition": "Hybrydowy zestaw łączący klasyczne Timbalesy z bębnem basowym (bombo / kick drum), werblem i hi-hatem, spopularyzowany w 1969 roku przez Changuito i zespół Los Van Van w rytmie Songo. Stanowi fundament współczesnej Timby, umożliwiając orkiestrze płynne wrzucanie kolejnych „biegów” rytmicznych (gears): od lekkiej Marchy, przez synkopowaną Presión i potężną Bombę (zachęcającą tancerzy do Despelote i Tembleque), aż po wybuchowe zatrzymania (Bloques).",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj: Timba Drumset & Songo Gears",
+        "url": "https://www.youtube.com/results?search_query=Timba+Drums+Timbales+Bombo+Songo"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_15",
+    "term": "Requinto (Gitara prowadząca w Bachacie)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Bachata",
+      "shines",
+      "rhythm"
+    ],
+    "definition": "Główna, prowadząca gitara w Bachacie (zazwyczaj elektroakustyczna lub elektryczna z założonym kapodastrem), odpowiadająca za krystaliczne, wysokie arpeggia i wirtuozerskie solówki. Współpracuje z gitarą rytmiczną (Segunda). Dla tancerzy Bachaty Dominikańskiej, Moderna i Sensual zmiany dynamiki Requinto są najważniejszym sygnałem do wplecenia szybkiego footworku (shines), izolacji klatki piersiowej i akcentów muzycznych.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj brzmienia: Requinto w Bachacie",
+        "url": "https://www.youtube.com/results?search_query=Requinto+Bachata+guitar+solo+mambo"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_16",
+    "term": "Trompeta i Trombón (Sekcja dęta / Metales)",
+    "category": [
+      "instruments",
+      "music"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Timba",
+      "Son",
+      "rhythm"
+    ],
+    "definition": "Trąbki, puzony i saksofony tworzące ognistą sekcję dętą (metales) w orkiestrach salsowych i timbowych. Trąbka (znana już z tradycyjnych septetów Sonu i Conjunto) wnosi ostry, przenikliwy blask, natomiast puzony nadają muzyce ciężkie, drapieżne brzmienie typowe dla salsy nowojorskiej i Timby. Sekcja dęta gra potężne riffy w częściach Mambo i Moña, które tancerze akcentują zatrzymaniami i stylingiem (Alarde).",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj: Sekcja dęta (Mambo & Moña) w Salsie i Timbie",
+        "url": "https://www.youtube.com/results?search_query=Salsa+Timba+horn+section+mambo+mona"
+      }
+    ],
+    "status": "unverified",
+    "verification_count": 0
+  },
+  {
+    "id": "term_instr_17",
+    "term": "Marímbula (Bas kubański w Changüí i Sonie)",
+    "category": [
+      "instruments",
+      "music",
+      "history"
+    ],
+    "subcategory": [
+      "Son",
+      "Afro",
+      "rhythm"
+    ],
+    "definition": "Tradycyjny kubański instrument basowy (lamellofon wywodzący się z afrykańskiej sanzy/mbiry) używany w stylu Changüí oraz wczesnym Sonie Kubańskim z rejonu Guantánamo i Santiago de Cuba. Składa się z dużego drewnianego pudła rezonansowego, na którym siedzi muzyk, szarpiąc palcami stalowe blaszki (flejes) wydające głęboki, pulsujący ton basowy poprzedzający erę kontrabasu.",
+    "author": "Niezweryfikowane",
+    "source": [
+      {
+        "name": "Posłuchaj brzmienia: Marímbula w Changüí i Sonie",
+        "url": "https://www.youtube.com/results?search_query=Marimbula+Cubana+Changui+Son"
       }
     ],
     "status": "unverified",
