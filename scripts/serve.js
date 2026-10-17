@@ -32,6 +32,7 @@ const MIME_TYPES = {
   '.woff2': 'font/woff2',
   '.pdf': 'application/pdf',
   '.xml': 'application/xml; charset=utf-8',
+  '.kml': 'application/vnd.google-earth.kml+xml; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
   '.md': 'text/markdown; charset=utf-8',
   '.webp': 'image/webp',

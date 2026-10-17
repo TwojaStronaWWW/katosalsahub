@@ -221,13 +221,186 @@
         <div class="section-header center">
           <span class="section-tag">Znajdź nas</span>
           <h2 class="section-title">Gdzie <span class="text-gradient">Tańczymy?</span> 📍</h2>
-          <p class="section-subtitle">Najczęściej spotykamy się na Dolinie Trzech Stawów - serce tanecznego Katowic!</p>
+          <p class="section-subtitle">Tańczymy plenerowo w Dolinie Trzech Stawów i pod NOSPR-em, a od niedzieli także pod dachem w lokalu Wolni Ludzie (ul. Mariacka 2). Wybierz strefę, sprawdź darmowe parkingi i włącz nawigację jednym kliknięciem!</p>
         </div>
-        <div class="map-container">
-          <iframe
-            title="Mapa miejsc tanecznych Kato Salsa Hub w Katowicach"
-            src="https://www.google.com/maps/d/u/1/embed?mid=19lozCUSx249XISvWjEG65y_0ohpWQ3Q&ehbc=2E312F&noprof=1"
-            allowfullscreen="" loading="lazy"></iframe>
+
+        <div class="map-hub">
+          <!-- Pasek górny widgetu: aktywna strefa + przełączniki widoku -->
+          <div class="map-hub-header">
+            <div class="map-hub-status" aria-live="polite">
+              <span class="map-live-dot"></span>
+              <span id="map-active-label" class="map-active-label">Widok główny: Wszystkie lokalizacje i trasy KSH</span>
+            </div>
+
+            <div class="map-tabs" role="group" aria-label="Wybierz widok mapy">
+              <button
+                type="button"
+                class="map-tab-btn is-active"
+                aria-pressed="true"
+                data-zone="all"
+                data-label="Widok główny: Wszystkie lokalizacje i trasy KSH"
+                data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.25354462719156%2C19.02474183050847&amp;z=14">
+                🗺️ Cała Mapa
+              </button>
+              <button
+                type="button"
+                class="map-tab-btn"
+                aria-pressed="false"
+                data-zone="wolni"
+                data-label="Śródmieście: Wolni Ludzie (ul. Mariacka 2) i darmowe parkingi"
+                data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2577281%2C19.0248325&amp;z=16">
+                🍹 Wolni Ludzie (Pod dachem)
+              </button>
+              <button
+                type="button"
+                class="map-tab-btn"
+                aria-pressed="false"
+                data-zone="stawy"
+                data-label="Dolina 3 Stawów: Kamienny Krąg, Wiata i 3 Toalety"
+                data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2449289%2C19.046362&amp;z=16">
+                🌴 Dolina 3 Stawów
+              </button>
+              <button
+                type="button"
+                class="map-tab-btn"
+                aria-pressed="false"
+                data-zone="nospr"
+                data-label="Strefa Kultury: Amfiteatr i Parking Rekomendowany pod NOSPR-em"
+                data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2641287%2C19.0304412&amp;z=16">
+                🏛️ NOSPR &amp; Parking
+              </button>
+            </div>
+          </div>
+
+          <!-- Główna część widgetu: Mapa po lewej + Interaktywne karty lokalizacji po prawej -->
+          <div class="map-hub-grid">
+            <div class="map-stage">
+              <div class="map-container" id="ksh-map-container">
+                <iframe
+                  id="ksh-map-iframe"
+                  title="Mapa miejsc tanecznych, parkingów i infrastruktury Kato Salsa Hub w Katowicach"
+                  src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.25354462719156%2C19.02474183050847&amp;z=14"
+                  allowfullscreen="" loading="lazy"></iframe>
+              </div>
+
+              <div class="map-stage-footer">
+                <div class="map-legend" aria-label="Legenda mapy">
+                  <span class="legend-item"><span class="legend-dot legend-dot--gold"></span> Pod dachem (Mariacka 2)</span>
+                  <span class="legend-item"><span class="legend-dot legend-dot--blue"></span> Plener i Wiata</span>
+                  <span class="legend-item"><span class="legend-dot legend-dot--purple"></span> Darmowe Parkingi i Trasy</span>
+                  <span class="legend-item"><span class="legend-dot legend-dot--green"></span> Toalety i Autobus</span>
+                </div>
+
+                <div class="map-toolbar-actions">
+                  <a href="https://www.google.com/maps/d/viewer?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ll=50.25354462719156%2C19.02474183050847&amp;z=14" target="_blank" rel="noopener noreferrer" class="map-tool-btn">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                    <span>Pełna mapa Google</span>
+                  </a>
+                  <a href="assets/data/kato-salsa-hub-mapa.kml" download="kato-salsa-hub-mapa.kml" class="map-tool-btn">
+                    <i class="fas fa-download"></i>
+                    <span>Pobierz .KML</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel boczny ze strefami tanecznymi i parkingami -->
+            <div class="map-spot-list">
+              <!-- 1. Wolni Ludzie (Pod dachem) -->
+              <article class="map-spot-card" data-zone="wolni">
+                <div class="map-spot-top">
+                  <div class="map-spot-title-group">
+                    <span class="map-spot-emoji">🍹</span>
+                    <div>
+                      <h3>Wolni Ludzie – Pod dachem</h3>
+                      <span class="map-spot-address">ul. Mariacka 2 (róg ul. Mielęckiego)</span>
+                    </div>
+                  </div>
+                  <span class="map-spot-badge map-spot-badge--gold">Od niedzieli</span>
+                </div>
+                <ul class="map-spot-points">
+                  <li><strong>⭐ Parking Rekomendowany (12 min):</strong> ogromny, darmowy w niedzielę parking pod NOSPR-em z wyznaczoną trasą pieszą przez kładkę!</li>
+                  <li><strong>🅿️ Darmowe ulice wokół (niedziele i po 17:00):</strong> Warszawska / Św. Stanisława (1 min), Tylna Mariacka / Dworcowa (2 min), Wojewódzka (3 min), pl. Szramka (4 min).</li>
+                </ul>
+                <div class="map-spot-actions">
+                  <button
+                    type="button"
+                    class="map-focus-btn"
+                    data-zone="wolni"
+                    data-label="Śródmieście: Wolni Ludzie (ul. Mariacka 2) i darmowe parkingi"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2577281%2C19.0248325&amp;z=16">
+                    <i class="fas fa-crosshairs"></i> Pokaż na mapie
+                  </button>
+                  <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.2577281,19.0248325" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                    <i class="fas fa-location-arrow"></i> Nawiguj GPS
+                  </a>
+                </div>
+              </article>
+
+              <!-- 2. Kamienny Krąg (Dolina 3 Stawów) -->
+              <article class="map-spot-card" data-zone="stawy">
+                <div class="map-spot-top">
+                  <div class="map-spot-title-group">
+                    <span class="map-spot-emoji">💃</span>
+                    <div>
+                      <h3>Kamienny Krąg – 3 Stawy</h3>
+                      <span class="map-spot-address">ul. Trzech Stawów 22 (obok przystani i La Cantina)</span>
+                    </div>
+                  </div>
+                  <span class="map-spot-badge map-spot-badge--blue">Plener</span>
+                </div>
+                <ul class="map-spot-points">
+                  <li><strong>☔ Wiata w razie deszczu:</strong> zadaszona wiata przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10).</li>
+                  <li><strong>⭐ Parking Rekomendowany (13 min):</strong> darmowy parking Południe / Rolkostrada z zaznaczoną trasą pieszą + Najbliższy przy La Cantina (1 min).</li>
+                  <li><strong>🚻 Infrastruktura:</strong> 3 toalety na mapie oraz przystanek <em>Kolonia Zuzanna</em>.</li>
+                </ul>
+                <div class="map-spot-actions">
+                  <button
+                    type="button"
+                    class="map-focus-btn"
+                    data-zone="stawy"
+                    data-label="Dolina 3 Stawów: Kamienny Krąg, Wiata i 3 Toalety"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2449289%2C19.046362&amp;z=16">
+                    <i class="fas fa-crosshairs"></i> Pokaż na mapie
+                  </button>
+                  <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.2449289,19.046362" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                    <i class="fas fa-location-arrow"></i> Nawiguj GPS
+                  </a>
+                </div>
+              </article>
+
+              <!-- 3. Amfiteatr i Parking Rekomendowany pod NOSPR-em -->
+              <article class="map-spot-card" data-zone="nospr">
+                <div class="map-spot-top">
+                  <div class="map-spot-title-group">
+                    <span class="map-spot-emoji">🏛️</span>
+                    <div>
+                      <h3>Amfiteatr i Parking NOSPR</h3>
+                      <span class="map-spot-address">pl. Wojciecha Kilara 1 / ul. Olimpijska</span>
+                    </div>
+                  </div>
+                  <span class="map-spot-badge map-spot-badge--purple">Strefa Kultury</span>
+                </div>
+                <ul class="map-spot-points">
+                  <li><strong>💃 Parkiet plenerowy:</strong> od wschodniej strony gmachu NOSPR przy fontannach.</li>
+                  <li><strong>⭐ Darmowy w niedzielę parking rekomendowany:</strong> ogromne parkingi od ul. Olimpijskiej i Muzeum Śląskiego (2 min pod NOSPR, 12 min trasą pieszą na Mariacką 2).</li>
+                </ul>
+                <div class="map-spot-actions">
+                  <button
+                    type="button"
+                    class="map-focus-btn"
+                    data-zone="nospr"
+                    data-label="Strefa Kultury: Amfiteatr i Parking Rekomendowany pod NOSPR-em"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2641287%2C19.0304412&amp;z=16">
+                    <i class="fas fa-crosshairs"></i> Pokaż na mapie
+                  </button>
+                  <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                    <i class="fas fa-parking"></i> Nawiguj na Parking
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
       </div>
     </section>

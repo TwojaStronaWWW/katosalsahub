@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Miejsca spotkań, parkingi i toalety – Kato Salsa Hub</name>
+    <description>Oficjalna mapa uczestników wydarzeń Kato Salsa Hub w Katowicach. Obejmuje: Kamienny Krąg w Dolinie Trzech Stawów (z wiatą taneczną w razie deszczu, 3 toaletami i trasą pieszą z Parkingu Rekomendowanego), lokal Wolni Ludzie (ul. Mariacka 2 – potańcówki pod dachem wraz z darmowymi parkingami wokół oraz trasą pieszą z Parkingu Rekomendowanego pod NOSPR-em) oraz Amfiteatr pod NOSPR-em w Strefie Kultury.</description>
+
+    <!-- ==================== STYLE PINEZEK, TRAS I OBSZARÓW ==================== -->
+    <Style id="danceSpot-normal">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1.25</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/blu-stars.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.0</scale></LabelStyle>
+    </Style>
+    <Style id="danceSpot-highlight">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1.45</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/blu-stars.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.15</scale></LabelStyle>
+    </Style>
+    <StyleMap id="danceSpot">
+      <Pair><key>normal</key><styleUrl>#danceSpot-normal</styleUrl></Pair>
+      <Pair><key>highlight</key><styleUrl>#danceSpot-highlight</styleUrl></Pair>
+    </StyleMap>
+
+    <Style id="indoorSpot-normal">
+      <IconStyle>
+        <color>ff00b4ff</color>
+        <scale>1.3</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/ylw-stars.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.05</scale></LabelStyle>
+    </Style>
+    <Style id="indoorSpot-highlight">
+      <IconStyle>
+        <color>ff00b4ff</color>
+        <scale>1.5</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/ylw-stars.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.2</scale></LabelStyle>
+    </Style>
+    <StyleMap id="indoorSpot">
+      <Pair><key>normal</key><styleUrl>#indoorSpot-normal</styleUrl></Pair>
+      <Pair><key>highlight</key><styleUrl>#indoorSpot-highlight</styleUrl></Pair>
+    </StyleMap>
+
+    <Style id="infoSpot-normal">
+      <IconStyle>
+        <color>ff589d0f</color>
+        <scale>1.1</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>0.95</scale></LabelStyle>
+    </Style>
+    <Style id="infoSpot-highlight">
+      <IconStyle>
+        <color>ff589d0f</color>
+        <scale>1.3</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.1</scale></LabelStyle>
+    </Style>
+    <StyleMap id="infoSpot">
+      <Pair><key>normal</key><styleUrl>#infoSpot-normal</styleUrl></Pair>
+      <Pair><key>highlight</key><styleUrl>#infoSpot-highlight</styleUrl></Pair>
+    </StyleMap>
+
+    <Style id="parkingRec-normal">
+      <IconStyle>
+        <color>ff4f0e88</color>
+        <scale>1.2</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/P.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.0</scale></LabelStyle>
+    </Style>
+    <Style id="parkingRec-highlight">
+      <IconStyle>
+        <color>ff4f0e88</color>
+        <scale>1.4</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/P.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.15</scale></LabelStyle>
+    </Style>
+    <StyleMap id="parkingRec">
+      <Pair><key>normal</key><styleUrl>#parkingRec-normal</styleUrl></Pair>
+      <Pair><key>highlight</key><styleUrl>#parkingRec-highlight</styleUrl></Pair>
+    </StyleMap>
+
+    <Style id="parkingStd-normal">
+      <IconStyle>
+        <color>ffb73a67</color>
+        <scale>1.05</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/purple-circle.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>0.9</scale></LabelStyle>
+    </Style>
+    <Style id="parkingStd-highlight">
+      <IconStyle>
+        <color>ffb73a67</color>
+        <scale>1.25</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/purple-circle.png</href></Icon>
+      </IconStyle>
+      <LabelStyle><scale>1.05</scale></LabelStyle>
+    </Style>
+    <StyleMap id="parkingStd">
+      <Pair><key>normal</key><styleUrl>#parkingStd-normal</styleUrl></Pair>
+      <Pair><key>highlight</key><styleUrl>#parkingStd-highlight</styleUrl></Pair>
+    </StyleMap>
+
+    <Style id="polyDance">
+      <LineStyle>
+        <color>ffd18802</color>
+        <width>2.4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>59d18802</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+
+    <Style id="polyParking">
+      <LineStyle>
+        <color>ffb73a67</color>
+        <width>2.0</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>4db73a67</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+
+    <Style id="walkRoute">
+      <LineStyle>
+        <color>ffff6712</color>
+        <width>5.5</width>
+      </LineStyle>
+    </Style>
+
+    <!-- ==================== WARSTWA 1: MIEJSCA POTAŃCÓWEK, WIATA I TOALETY ==================== -->
+    <Folder>
+      <name>Miejsca potańcówek, wiata i toalety</name>
+
+      <Placemark>
+        <name>💃 Kamienny Krąg – Dolina Trzech Stawów (Plener)</name>
+        <description>Główne miejsce plenerowych potańcówek Kato Salsa Hub w Dolinie Trzech Stawów – przy przystani wodnej, obok restauracji La Cantina i Campingu 215 (ul. Trzech Stawów 22).</description>
+        <styleUrl>#danceSpot</styleUrl>
+        <Point>
+          <coordinates>19.046362,50.2449289,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa parkietu: Kamienny Krąg</name>
+        <description>Obrys plenerowego parkietu tanecznego na Kamiennym Kręgu w Dolinie Trzech Stawów.</description>
+        <styleUrl>#polyDance</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0464984,50.2450405,0
+                19.0462301,50.2450422,0
+                19.0462382,50.2448741,0
+                19.0465064,50.2448775,0
+                19.0464984,50.2450405,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>🍹 Wolni Ludzie – Tańczymy pod dachem (ul. Mariacka 2)</name>
+        <description>Nasza miejscówka pod dachem w samym sercu Katowic (ul. Mariacka 2 / róg ul. Mielęckiego, dawny Złoty Róg). Od niedzieli tańczymy tu pod dachem w karaibskim klimacie! W niedziele oraz codziennie po godz. 17:00 wszystkie parkingi miejskie wokół lokalu oraz pod NOSPR-em są DARMOWE.</description>
+        <styleUrl>#indoorSpot</styleUrl>
+        <Point>
+          <coordinates>19.0248325,50.2577281,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa lokalu: Wolni Ludzie (ul. Mariacka 2)</name>
+        <description>Lokal Wolni Ludzie na rogu ul. Mariackiej 2 i ul. Mielęckiego – potańcówki pod dachem.</description>
+        <styleUrl>#polyDance</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.02472,50.25781,0
+                19.02496,50.25781,0
+                19.02496,50.25765,0
+                19.02472,50.25765,0
+                19.02472,50.25781,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>💃 Amfiteatr pod NOSPR-em – Strefa Kultury</name>
+        <description>Miejsce plenerowych potańcówek Kato Salsa Hub w Katowickiej Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony gmachu NOSPR przy fontannach).</description>
+        <styleUrl>#danceSpot</styleUrl>
+        <Point>
+          <coordinates>19.0304412,50.2641287,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>☔ Wiata – gdzie tańczymy w razie deszczu</name>
+        <description>Zadaszona wiata przy północnym brzegu Stawu Kajakowego (obok przystani UKS 4 Katowice i SUP Tomi, ul. Trzech Stawów 10). Tutaj przenosimy się i tańczymy w razie deszczu!</description>
+        <styleUrl>#danceSpot</styleUrl>
+        <Point>
+          <coordinates>19.0471200,50.2485200,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>🚻 Toaleta Publiczna – Aleja Spacerowa / Plaża (do 20:00)</name>
+        <description>Toaleta miejska przy alei spacerowej i plaży po północno-zachodniej stronie Stawu Kajakowego (czynna do godz. 20:00).</description>
+        <styleUrl>#infoSpot</styleUrl>
+        <Point>
+          <coordinates>19.0421245,50.2480851,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>🚻 Toaleta – przy AMO Pizza / ul. Trzech Stawów</name>
+        <description>Toaleta po wschodniej stronie Stawu Kajakowego (przy restauracji AMO - Pizza Pasta Amore, ul. Trzech Stawów 15, ok. 2 min pieszo od Kamiennego Kręgu).</description>
+        <styleUrl>#infoSpot</styleUrl>
+        <Point>
+          <coordinates>19.0484200,50.2459200,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>🚻 Toaleta – za wiaduktem A4 / ul. Trzech Stawów</name>
+        <description>Toaleta przy ul. Trzech Stawów tuż na południe od wiaduktu autostrady A4 (w stronę rolkostrady, ok. 3 min pieszo od Kamiennego Kręgu).</description>
+        <styleUrl>#infoSpot</styleUrl>
+        <Point>
+          <coordinates>19.0473500,50.2419500,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>🚌 Przystanek: Kolonia Zuzanna / Porcelanowa</name>
+        <description>Najbliższy przystanek autobusowy od północnej strony Doliny Trzech Stawów (ok. 7 min pieszo do Kamiennego Kręgu). Autobusy: 1, 1N, 4, 672N, 673, 674, 900, 920.</description>
+        <styleUrl>#infoSpot</styleUrl>
+        <Point>
+          <coordinates>19.0489502,50.2496877,0</coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+
+    <!-- ==================== WARSTWA 2: PARKINGI I TRASA PIESZA – DOLINA TRZECH STAWÓW ==================== -->
+    <Folder>
+      <name>Parkingi i trasa – Dolina Trzech Stawów</name>
+
+      <Placemark>
+        <name>⭐ Parking Rekomendowany – Dolina 3 Stawów Południe / Rolkostrada (13 min)</name>
+        <description>Główny rekomendowany, duży i bezpłatny parking na południowym odcinku ul. Trzech Stawów (przy rolkostradzie na Muchowcu). Proste dojście asfaltową aleją prosto do Kamiennego Kręgu (13 min pieszo lub 4 min na rolkach).</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0470498,50.2370851,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking Rekomendowany – Południe / Rolkostrada</name>
+        <description>Obrys dużego bezpłatnego parkingu rekomendowanego przy rolkostradzie.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0475698,50.2375334,0
+                19.0463279,50.2373413,0
+                19.0466712,50.2365453,0
+                19.0479587,50.2367477,0
+                19.0475698,50.2375334,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>🚶 Trasa piesza: Parking Rekomendowany ↔ Kamienny Krąg (13 min)</name>
+        <description>Prosta, oświetlona trasa piesza (oraz dla rolek i rowerów) wzdłuż alei spacerowej i ul. Trzech Stawów od Parkingu Rekomendowanego prosto na parkiet Kamiennego Kręgu.</description>
+        <styleUrl>#walkRoute</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            19.0470498,50.2370851,0
+            19.0473800,50.2371500,0
+            19.0472800,50.2381000,0
+            19.0472000,50.2392000,0
+            19.0471600,50.2404000,0
+            19.0470380,50.2412490,0
+            19.0470930,50.2417070,0
+            19.0470950,50.2422970,0
+            19.0471280,50.2429810,0
+            19.0470800,50.2435570,0
+            19.0467180,50.2435290,0
+            19.0464060,50.2436540,0
+            19.0463360,50.2438050,0
+            19.0464120,50.2442610,0
+            19.0463930,50.2444430,0
+            19.0462560,50.2446190,0
+            19.0463600,50.2447510,0
+            19.0463250,50.2448580,0
+            19.0463620,50.2449289,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+
+      <Placemark>
+        <name>⭐ Parking Najbliższy – La Cantina / Camping 215 (1 min)</name>
+        <description>Parking tuż przy samym Kamiennym Kręgu (ul. Trzech Stawów 22). Najbliższy (1 min pieszo), ale w pogodne weekendy bardzo szybko się zapełnia.</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0474309,50.2448644,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking Najbliższy (ul. Trzech Stawów 22)</name>
+        <description>Obrys parkingu bezpośrednio przy Kamiennym Kręgu i restauracji La Cantina.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0476314,50.2450759,0
+                19.0472291,50.2450759,0
+                19.0472599,50.2446582,0
+                19.0474517,50.2446668,0
+                19.047563,50.2446866,0
+                19.047669,50.2450828,0
+                19.0476314,50.2450759,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking ul. Trzech Stawów – Środek (6 min)</name>
+        <description>Bezpłatny parking w środkowej części ul. Trzech Stawów (ok. 6 min pieszo do Kamiennego Kręgu, blisko wiaty tanecznej).</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.0477198,50.2473931,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking ul. Trzech Stawów – Środek</name>
+        <description>Obrys zatoki parkingowej w środkowym biegu ul. Trzech Stawów.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0477941,50.2474771,0
+                19.0477069,50.2475019,0
+                19.0476654,50.2474488,0
+                19.0476064,50.247453,0
+                19.0475246,50.2473347,0
+                19.0476184,50.2473175,0
+                19.0477539,50.2473733,0
+                19.0479014,50.2473356,0
+                19.0479832,50.2473964,0
+                19.0477941,50.2474771,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking ul. Trzech Stawów – Północ (9 min)</name>
+        <description>Zatoki parkingowe wzdłuż północnego odcinka ul. Trzech Stawów (ok. 9 min pieszo do Kamiennego Kręgu, 2 min do wiaty).</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.0486467,50.2497249,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking ul. Trzech Stawów – Północ</name>
+        <description>Pas miejsc postojowych wzdłuż ul. Trzech Stawów od strony północnej.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0482992,50.2501564,0
+                19.0482294,50.2501169,0
+                19.0486103,50.249731,0
+                19.0487444,50.2492765,0
+                19.0488383,50.2492731,0
+                19.0487095,50.2497756,0
+                19.0482992,50.2501564,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking pod wiaduktem A4 / Woda Beach Bar (9 min)</name>
+        <description>Parking w okolicach wiaduktu autostrady A4 i Woda Beach Bar po zachodniej stronie stawu (ok. 9 min pieszo).</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.0432815,50.2426878,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking pod wiaduktem A4 / Woda Beach Bar</name>
+        <description>Obrys parkingu przy wiadukcie autostrady A4 i Woda Beach Bar.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0439043,50.2430072,0
+                19.043282,50.2429385,0
+                19.0432337,50.2430209,0
+                19.0425471,50.2429145,0
+                19.0427885,50.2424274,0
+                19.0441028,50.2426092,0
+                19.0439043,50.2430072,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking przy Cmentarzu Komunalnym – Al. Murckowska 9 (10 min)</name>
+        <description>Wygodny parking przy wjeździe w ul. Trzech Stawów (Al. Murckowska 9). Pozwala ominąć korek w głąb doliny w słoneczne weekendy (ok. 10 min pieszo).</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.0473776,50.2506849,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking przy Cmentarzu Komunalnym (Al. Murckowska 9)</name>
+        <description>Obrys parkingu przy Cmentarzu Komunalnym na Al. Murckowskiej 9.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0474643,50.2508655,0
+                19.0472457,50.2508149,0
+                19.0474389,50.250471,0
+                19.0476373,50.2505199,0
+                19.0474643,50.2508655,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking przy Sztauwajery / ul. Pułaskiego (13 min)</name>
+        <description>Parking po zachodniej stronie stawu (dojście spacerem przez groblę, ok. 13 min). Uwaga: bezpośrednio pod sklepem Lidl (ul. Graniczna 65) obowiązuje limit czasu dla klientów.</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.0401549,50.2464581,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking Sztauwajery / ul. Pułaskiego</name>
+        <description>Obrys strefy parkingowej po zachodniej stronie Doliny Trzech Stawów.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0399461,50.2468283,0
+                19.0396216,50.2462571,0
+                19.0404879,50.2460702,0
+                19.0405818,50.2463052,0
+                19.0406971,50.2463189,0
+                19.0404718,50.2470547,0
+                19.0399971,50.2469912,0
+                19.0399461,50.2468283,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking CH 3 Stawy / Decathlon – ul. Pułaskiego 60 (20 min)</name>
+        <description>Bardzo duży, bezpłatny parking przy Centrum Handlowym 3 Stawy i sklepie Decathlon (ul. Pułaskiego 60 / Alpejska 5). Zawsze dostępne wolne miejsca i szybki wyjazd na A4.</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.0347333,50.2437472,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking CH 3 Stawy / Decathlon</name>
+        <description>Obrys dużego parkingu przy CH 3 Stawy / Decathlon.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0360744,50.2442893,0
+                19.0341647,50.2440971,0
+                19.0334459,50.2441589,0
+                19.0327914,50.2437404,0
+                19.0339716,50.2433836,0
+                19.0352376,50.2435482,0
+                19.0355595,50.2435825,0
+                19.0355809,50.243363,0
+                19.0360315,50.2434453,0
+                19.0360744,50.2442893,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+    </Folder>
+
+    <!-- ==================== WARSTWA 3: DARMOWE PARKINGI I TRASA – WOLNI LUDZIE (MARIACKA 2) ==================== -->
+    <Folder>
+      <name>Darmowe Parkingi – Wolni Ludzie (Mariacka 2)</name>
+
+      <Placemark>
+        <name>🚶 Trasa piesza: Parking Rekomendowany NOSPR ↔ Wolni Ludzie (12 min)</name>
+        <description>Wygodna trasa spacerowa z ogromnego, darmowego w niedzielę Parkingu Rekomendowanego pod NOSPR-em przez kładkę dla pieszych nad al. Roździeńskiego, ul. Uniwersytecką, Bankową, Warszawską i Mielęckiego prosto do lokalu Wolni Ludzie (ul. Mariacka 2).</description>
+        <styleUrl>#walkRoute</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            19.030855,50.263787,0
+            19.030690,50.263496,0
+            19.030526,50.263275,0
+            19.030524,50.262487,0
+            19.030333,50.262343,0
+            19.030151,50.262250,0
+            19.030072,50.262006,0
+            19.029908,50.261905,0
+            19.029228,50.261987,0
+            19.029084,50.261548,0
+            19.028827,50.261587,0
+            19.028749,50.261332,0
+            19.027026,50.261543,0
+            19.026650,50.260401,0
+            19.026548,50.260278,0
+            19.026407,50.259979,0
+            19.026230,50.260009,0
+            19.025811,50.259038,0
+            19.025531,50.258970,0
+            19.025450,50.258787,0
+            19.024934,50.258880,0
+            19.024907,50.258804,0
+            19.024753,50.258286,0
+            19.0248325,50.2577281,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+
+      <Placemark>
+        <name>⭐ Darmowy Parking (Niedziela i po 17:00) – ul. Warszawska / Św. Stanisława (1 min)</name>
+        <description>Najbliższe miejsca parkingowe tuż przy ul. Mielęckiego i ul. Św. Stanisława (wzdłuż ul. Warszawskiej). W niedziele, święta oraz w tygodniu po godz. 17:00 parkowanie w całej strefie jest całkowicie DARMOWE (1 min pieszo do Wolnych Ludzi).</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0256000,50.2584500,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Darmowy Parking ul. Warszawska / Mielęckiego (1 min)</name>
+        <description>Pas miejsc postojowych wzdłuż ul. Warszawskiej (darmowy w niedziele i po godz. 17:00).</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.02465,50.25862,0
+                19.02685,50.25842,0
+                19.02680,50.25825,0
+                19.02460,50.25845,0
+                19.02465,50.25862,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>⭐ Darmowy Parking (Niedziela i po 17:00) – ul. Tylna Mariacka / Dworcowa (2 min)</name>
+        <description>Miejsca postojowe na ul. Tylnej Mariackiej oraz wzdłuż zrewitalizowanej ul. Dworcowej (za wiaduktem kolejowym, tuż za plecami ul. Mariackiej). W niedziele i po 17:00 całkowicie DARMOWE (2 min pieszo do Wolnych Ludzi).</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0265903,50.2570026,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Darmowy Parking ul. Tylna Mariacka / Dworcowa (2 min)</name>
+        <description>Zatoki parkingowe przy ul. Tylnej Mariackiej i Dworcowej (darmowe w niedziele i po 17:00).</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.02520,50.25718,0
+                19.02780,50.25698,0
+                19.02775,50.25680,0
+                19.02515,50.25700,0
+                19.02520,50.25718,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>⭐ Darmowy Parking (Niedziela i po 17:00) – ul. Wojewódzka (3 min)</name>
+        <description>Bardzo duża liczba miejsc postojowych wzdłuż ul. Wojewódzkiej (pomiędzy ul. Mielęckiego a ul. Francuską). W niedziele oraz po godz. 17:00 całkowicie DARMOWY – szybkie przejście pod wiaduktem prosto na ul. Mariacką 2 (3 min pieszo).</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0251004,50.2562583,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Darmowy Parking ul. Wojewódzka (3 min)</name>
+        <description>Długi pas bezpłatnych w niedzielę miejsc parkingowych wzdłuż ul. Wojewódzkiej.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.02350,50.25640,0
+                19.02720,50.25620,0
+                19.02718,50.25602,0
+                19.02348,50.25622,0
+                19.02350,50.25640,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>⭐ Darmowy Parking (Niedziela i po 17:00) – Plac ks. Emila Szramka / Kościół Mariacki (4 min)</name>
+        <description>Duży parking na Placu ks. Emila Szramka tuż za Kościołem Mariackim (wschodni koniec deptaka ul. Mariackiej). W niedziele i po 17:00 całkowicie DARMOWY – 4 minuty spacerem prosto przez ul. Mariacką do Wolnych Ludzi.</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0306399,50.2574185,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Darmowy Parking Plac ks. Emila Szramka (4 min)</name>
+        <description>Obrys strefy parkingowej na Placu Szramka przy Kościele Mariackim.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.03015,50.25768,0
+                19.03112,50.25760,0
+                19.03105,50.25715,0
+                19.03008,50.25723,0
+                19.03015,50.25768,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Darmowy Parking (Niedziela i po 17:00) – ul. Francuska / Damrota (4 min)</name>
+        <description>Miejsca postojowe wzdłuż ul. Francuskiej oraz ul. Damrota – łatwy wjazd od strony autostrady A4, całkowicie darmowe w niedziele i po godz. 17:00 (ok. 4–5 min pieszo na ul. Mariacką 2).</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.0280014,50.2560062,0</coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+
+    <!-- ==================== WARSTWA 4: PARKINGI – STREFA KULTURY (NOSPR) ==================== -->
+    <Folder>
+      <name>Parkingi – Strefa Kultury (NOSPR)</name>
+
+      <Placemark>
+        <name>⭐ Parking Rekomendowany NOSPR – Wschód / Muzeum Śląskie (Darmowy w niedzielę)</name>
+        <description>Rekomendowany, ogromny parking naziemny pod NOSPR-em (w niedziele całkowicie BEZPŁATNY i zawsze posiada mnóstwo wolnych miejsc!). 2 min pieszo do Amfiteatru pod NOSPR-em lub 12 min prostą trasą spacerową przez kładkę nad al. Roździeńskiego do Wolnych Ludzi (ul. Mariacka 2).</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0313587,50.263743,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking Rekomendowany NOSPR – Wschód</name>
+        <description>Obrys wschodniego parkingu naziemnego pod NOSPR-em (rekomendowany również na niedzielne potańcówki w Wolnych Ludziach).</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0311064,50.2644305,0
+                19.0305002,50.2634532,0
+                19.0318252,50.2631651,0
+                19.0322222,50.2637447,0
+                19.0315248,50.2643516,0
+                19.0311064,50.2644305,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>⭐ Parking Rekomendowany NOSPR – Północ / ul. Olimpijska (Darmowy w niedzielę)</name>
+        <description>Główny parking naziemny przy NOSPR od strony ul. Olimpijskiej (w niedziele całkowicie bezpłatny; 2 min pieszo do Amfiteatru pod NOSPR-em lub 12 min spacerem na ul. Mariacką 2).</description>
+        <styleUrl>#parkingRec</styleUrl>
+        <Point>
+          <coordinates>19.0296797,50.2651922,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Strefa: Parking Rekomendowany NOSPR – Północ / ul. Olimpijska</name>
+        <description>Obrys północnego parkingu naziemnego w Strefie Kultury przy NOSPR.</description>
+        <styleUrl>#polyParking</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                19.0288751,50.2654802,0
+                19.0287141,50.2652505,0
+                19.0308223,50.264743,0
+                19.0310852,50.2651339,0
+                19.0295563,50.2655282,0
+                19.0288751,50.2654802,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking podziemny Muzeum Śląskie – ul. Dobrowolskiego 1 (4 min)</name>
+        <description>Wielopoziomowy, zadaszony parking podziemny Muzeum Śląskiego (ok. 4 min spacerem do Amfiteatru pod NOSPR-em).</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.03450,50.26330,0</coordinates>
+        </Point>
+      </Placemark>
+
+      <Placemark>
+        <name>Parking przy MCK / Spodku – ul. Olimpijska (5 min)</name>
+        <description>Alternatywne miejsca postojowe wzdłuż ul. Olimpijskiej przy Międzynarodowym Centrum Kongresowym.</description>
+        <styleUrl>#parkingStd</styleUrl>
+        <Point>
+          <coordinates>19.02680,50.26560,0</coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>

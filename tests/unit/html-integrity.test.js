@@ -64,6 +64,31 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /data-site-id="katosalsahub"/i);
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
+
+    it('powinien zawierać zaktualizowaną mapę Google My Maps (mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI), widget .map-hub z przełącznikiem widoków oraz poprawny plik KML z rzeczywistymi współrzędnymi GPS', () => {
+      assert.match(html, /mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI/);
+      assert.match(html, /class="map-hub"/);
+      assert.match(html, /id="ksh-map-iframe"/);
+      assert.match(html, /class="map-tab-btn is-active"/);
+      assert.match(html, /class="map-focus-btn"/);
+      assert.match(html, /Wolni Ludzie/i);
+      assert.match(html, /href="assets\/data\/kato-salsa-hub-mapa\.kml"/);
+
+      const kmlPath = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'kato-salsa-hub-mapa.kml');
+      assert.ok(fs.existsSync(kmlPath), 'Brak pliku kato-salsa-hub-mapa.kml w katosalsahub.pl/assets/data/');
+      const kml = fs.readFileSync(kmlPath, 'utf-8');
+      assert.match(kml, /<kml\s+xmlns="http:\/\/www\.opengis\.net\/kml\/2\.2">/);
+      assert.match(kml, /19\.046362,50\.2449289,0/, 'Brak dokładnych współrzędnych Kamiennego Kręgu w pliku KML');
+      assert.match(kml, /19\.0248325,50\.2577281,0/, 'Brak dokładnych współrzędnych lokalu Wolni Ludzie (ul. Mariacka 2) w pliku KML');
+      assert.match(kml, /19\.0471200,50\.2485200,0/, 'Brak współrzędnych Wiaty tanecznej w razie deszczu w pliku KML');
+      assert.match(kml, /19\.0484200,50\.2459200,0/, 'Brak nowej pinezki toalety przy AMO Pizza w pliku KML');
+      assert.match(kml, /19\.0473500,50\.2419500,0/, 'Brak nowej pinezki toalety za wiaduktem A4 w pliku KML');
+      assert.match(kml, /Trasa piesza: Parking Rekomendowany ↔ Kamienny Krąg/, 'Brak trasy pieszej od Parkingu Rekomendowanego do Kamiennego Kręgu');
+      assert.match(kml, /Trasa piesza: Parking Rekomendowany NOSPR ↔ Wolni Ludzie/, 'Brak trasy pieszej od Parkingu Rekomendowanego NOSPR do Wolnych Ludzi');
+      assert.doesNotMatch(kml, /Trasa piesza: Parking CH 3 Stawy/, 'Stara trasa piesza z CH 3 Stawy powinna zostać usunięta');
+      assert.match(kml, /19\.0304412,50\.2641287,0/, 'Brak dokładnych współrzędnych Amfiteatru pod NOSPR-em w pliku KML');
+      assert.doesNotMatch(kml, /http:\/\/maps\.google\.com/i, 'Ikony w KML powinny używać protokołu HTTPS');
+    });
   });
 
   describe('Polityka Prywatności (katosalsahub.pl/privacy.html)', () => {

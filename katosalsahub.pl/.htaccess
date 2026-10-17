@@ -6,6 +6,7 @@ AddType 'text/css; charset=UTF-8' css
 AddType 'application/javascript; charset=UTF-8' js
 AddType 'application/json; charset=UTF-8' json
 AddType 'application/manifest+json; charset=UTF-8' webmanifest
+AddType 'application/vnd.google-earth.kml+xml; charset=UTF-8' kml
 AddType 'image/webp' webp
 
 # Nagłówki bezpieczeństwa OWASP / ISO 27001

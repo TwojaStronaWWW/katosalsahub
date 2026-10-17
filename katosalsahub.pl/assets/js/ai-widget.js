@@ -380,22 +380,33 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       );
     }
 
-    // 1e. Pytania o lokalizacje, gdzie tańczymy, Dolinę Trzech Stawów i Katowice
+    // 1e. Pytania o lokalizacje, gdzie tańczymy, Wolnych Ludzi, parkingi, NOSPR, Dolinę Trzech Stawów i Katowice
     if (
       qNorm.includes('gdzie') ||
       qNorm.includes('lokalizac') ||
       qNorm.includes('katowic') ||
       qNorm.includes('trzech staw') ||
       qNorm.includes('3 staw') ||
+      qNorm.includes('kamienn') ||
+      qNorm.includes('wolni ludzie') ||
+      qNorm.includes('wolnych ludzi') ||
+      qNorm.includes('mariack') ||
+      qNorm.includes('pod dachem') ||
+      qNorm.includes('wiat') ||
+      qNorm.includes('toalet') ||
+      qNorm.includes('nospr') ||
+      qNorm.includes('parking') ||
+      qNorm.includes('zaparkow') ||
+      qNorm.includes('dojazd') ||
       qNorm.includes('slask') ||
       qNorm.includes('adres') ||
       qNorm.includes('mapa')
     ) {
       return (
-        `📍 **Gdzie tańczymy w Katowicach i na Śląsku?**\n` +
-        `- **Dolina Trzech Stawów (Katowice):** Nasza kultowa miejscówka plenerowa przy Kamiennym Kręgu (*Salsowy Chillout*).\n` +
-        `- **Centrum Katowic:** Szkoły i kluby partnerskie (m.in. La Clave, Mil Pasos, Good Mood, Evolution Dance Studio, KIZLAB, VAMULA.pl, Gravitacja / Dance++) wokół Rynku, ul. Paderewskiego, Chorzowskiej, Kamiennej i Gliwickiej.\n` +
-        `- Pełne zestawienie szkół i miejsc znajdziesz w sekcji **#mapa** oraz w kategorii **Szkoły Tańca** w salsopedia.html.`
+        `📍 **Gdzie tańczymy i jak zaparkować w Katowicach?**\n` +
+        `- **🍹 Wolni Ludzie – Pod dachem (ul. Mariacka 2):** Nasza miejscówka pod dachem w ścisłym centrum Katowic (róg ul. Mariackiej i Mielęckiego), gdzie tańczymy od niedzieli! W niedziele oraz po godz. 17:00 wszystkie parkingi miejskie wokół (ul. Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są **DARMOWE**, a jako **Parking Rekomendowany** z ogromną liczbą miejsc polecamy darmowy w niedzielę **Parking pod NOSPR-em** (12 min wyznaczoną trasą pieszą przez kładkę nad al. Roździeńskiego).\n` +
+        `- **💃 Kamienny Krąg (Dolina Trzech Stawów):** Główny parkiet plenerowy (ul. Trzech Stawów 22). W razie deszczu przenosimy się pod **zadaszoną wiatę przy przystani kajakowej** (UKS 4 / SUP Tomi, ul. Trzech Stawów 10). Na mapie zaznaczyliśmy 3 toalety oraz prostą 13-minutową trasę pieszą z darmowego **Parkingu Rekomendowanego (Południe / Rolkostrada)**.\n` +
+        `- **🏛️ Amfiteatr pod NOSPR-em i Szkoły Partnerskie:** Plenerowy parkiet od wschodniej strony NOSPR (pl. Wojciecha Kilara 1) oraz szkoły tańca w centrum Katowic (m.in. La Clave, Mil Pasos, Good Mood, Evolution Dance Studio, KIZLAB, VAMULA.pl, Gravitacja / Dance++). Pełną mapę i plik KML znajdziesz w sekcji **#mapa** oraz w salsopedia.html!`
       );
     }
 
