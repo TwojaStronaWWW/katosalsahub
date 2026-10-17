@@ -529,7 +529,7 @@ function normalize_entry(array $input, bool $isUpdate = false): array {
         'id' => $safeId,
         'term' => mb_substr(trim(strip_tags((string)($input['term'] ?? ''))), 0, 150),
         'definition' => mb_substr(trim(strip_tags((string)($input['definition'] ?? ''))), 0, 5000),
-        'author' => mb_substr(trim(strip_tags((string)($input['author'] ?? 'Społeczność'))), 0, 100) ?: 'Społeczność',
+        'author' => mb_substr(trim(strip_tags((string)($input['author'] ?? 'Niezweryfikowane'))), 0, 100) ?: 'Niezweryfikowane',
         'author_link' => sanitize_http_url($input['author_link'] ?? ''),
         'category' => $cats,
         'subcategory' => $subs,
@@ -788,6 +788,7 @@ switch ($action) {
         if (!empty($input['unverify'])) {
             $live[$index]['status'] = 'unverified';
             $live[$index]['verification_count'] = 0;
+            $live[$index]['author'] = 'Niezweryfikowane';
             unset($live[$index]['verified_by']);
             $live[$index]['last_updated'] = date('Y-m-d');
             save_json_file($salsopediaFile, $live);
@@ -801,6 +802,9 @@ switch ($action) {
         $live[$index]['status'] = 'verified';
         $live[$index]['verification_count'] = ((int)($live[$index]['verification_count'] ?? 0)) + 1;
         $live[$index]['verified_by'] = $moderatorName;
+        if (empty($live[$index]['author']) || $live[$index]['author'] === 'Niezweryfikowane') {
+            $live[$index]['author'] = $moderatorName;
+        }
         $live[$index]['last_updated'] = date('Y-m-d');
 
         save_json_file($salsopediaFile, $live);

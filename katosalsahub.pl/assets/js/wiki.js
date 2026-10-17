@@ -759,8 +759,8 @@ function createTermCard(item, isPending = false) {
         const count = Number.parseInt(item.verification_count, 10) || 1;
         const verifier = item.verified_by ? ` (ost. ${escapeHtml(item.verified_by)})` : '';
         verifiedHtml = `<span class="status-verified" title="Zweryfikowane merytorycznie (${count}x)${verifier}"><i class="fas fa-check"></i> ${count}</span>`;
-    } else if (AppState.isAdmin && !isPending) {
-        verifiedHtml = `<span class="status-unverified-badge" title="Hasło oczekuje na potwierdzenie merytoryczne instruktora/moderatora">Niezweryfikowane</span>`;
+    } else if (!isPending) {
+        verifiedHtml = `<span class="status-unverified-badge" title="Szablonowa odpowiedź oczekująca na weryfikację merytoryczną">Niezweryfikowane</span>`;
     }
 
     let badgesHtml = '';
@@ -796,7 +796,7 @@ function createTermCard(item, isPending = false) {
         sourcesHtml += '</div>';
     }
 
-    const safeAuthor = escapeHtml(item.author || 'Społeczność');
+    const safeAuthor = escapeHtml(item.author || 'Niezweryfikowane');
     let authorHtml = `<span class="author-meta">Autor: <strong>${safeAuthor}</strong></span>`;
     if (isSafeHttpUrl(item.author_link)) {
         authorHtml = `<span class="author-meta">Autor: <a href="${escapeHtml(item.author_link.trim())}" target="_blank" rel="noopener noreferrer"><strong>${safeAuthor}</strong> <i class="fas fa-link"></i></a></span>`;
@@ -1281,7 +1281,7 @@ function getDraftTermFromForm() {
         id: document.getElementById('termId')?.value.trim() || 'preview_draft',
         term: document.getElementById('termInput')?.value.trim() || 'Nazwa pojęcia...',
         definition: document.getElementById('definitionInput')?.value.trim() || 'Tutaj pojawi się podgląd definicji wraz z automatycznym podświetleniem powiązanych haseł...',
-        author: document.getElementById('authorInput')?.value.trim() || 'Społeczność KSH',
+        author: document.getElementById('authorInput')?.value.trim() || 'Niezweryfikowane',
         author_link: document.getElementById('authorLinkInput')?.value.trim() || '',
         user_category: document.getElementById('userCategoryInput')?.value.trim() || '',
         change_note: document.getElementById('changeNoteInput')?.value.trim() || '',
@@ -1356,11 +1356,16 @@ function updateStudioLivePreviewAndDiff() {
             sourcesHtml += '</div>';
         }
 
+        const isPreviewVerified = AppState.editingOriginalTerm && AppState.editingOriginalTerm.status === 'verified';
+        const previewStatusBadge = isPreviewVerified
+            ? `<span class="status-verified"><i class="fas fa-check"></i> Zweryfikowane</span>`
+            : `<span class="status-unverified-badge">Niezweryfikowane</span>`;
+
         previewContainer.innerHTML = `
             <div class="wiki-card preview-wiki-card">
                 <div class="wiki-card-header">
                     <h3>${escapeHtml(draft.term)}</h3>
-                    <span class="status-verified"><i class="fas fa-check"></i> Podgląd</span>
+                    ${previewStatusBadge}
                 </div>
                 <div class="badges">${badgesHtml}</div>
                 <div class="definition">${linkedDefHtml}</div>
