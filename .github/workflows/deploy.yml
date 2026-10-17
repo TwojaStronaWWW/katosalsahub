@@ -1,72 +1,27 @@
-name: CI + Deploy to LH
+name: CD — Deploy to LH
 on:
-  push:
+  workflow_run:
+    workflows: ["CI & Quality Gate"]
+    types: [completed]
     branches: [ "main", "staging" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  group: deploy-${{ github.event.workflow_run.head_branch || github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
-  quality-gate:
-    name: 🧪 Quality Gate & Testy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-
-      - name: Uruchomienie pełnego Quality Gate (składnia + testy jednostkowe)
-        run: npm run check
-
-      - name: Walidacja HTML (opcjonalna)
-        run: |
-          npm install -g htmlhint
-          for file in katosalsahub.pl/*.html dancepuls.pl/*.html; do
-            [ -f "$file" ] || continue
-            if head -5 "$file" | grep -qi 'doctype'; then
-              echo "✅ Walidacja: $file"
-              htmlhint "$file" --config .htmlhintrc || true
-            else
-              echo "⏭️ Pomijam partial: $file"
-            fi
-          done
-
-      - name: Sprawdzanie referencji lokalnych linków i zasobów
-        run: |
-          for dir in katosalsahub.pl dancepuls.pl; do
-            echo "🔍 Sprawdzanie referencji w $dir..."
-            for html_file in $dir/*.html; do
-              [ -f "$html_file" ] || continue
-              base=$(dirname "$html_file")
-              grep -oP '(?:src|href)="(?!https?://|#|javascript:|mailto:|tel:)([^"]+)"' "$html_file" | \
-              sed 's/.*="\(.*\)"/\1/' | sed 's/[?#].*//' | \
-              while read -r ref; do
-                [ -z "$ref" ] && continue
-                if [ ! -f "$base/$ref" ] && [ ! -d "$base/$ref" ]; then
-                  echo "❌ BRAK ZASOBU: $html_file → $ref"
-                  exit 1
-                fi
-              done
-            done
-          done
-          echo "✅ Sprawdzanie referencji zakończone pomyślnie."
-
   backup:
     name: 💾 Backup serwera (LH.pl)
-    needs: quality-gate
-    if: github.event_name == 'push'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     timeout-minutes: 3
     env:
-      MAIN_PATH: ${{ github.ref_name == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
-      DANCE_PATH: ${{ github.ref_name == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
+      TARGET_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+      MAIN_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
+      DANCE_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
     steps:
       - name: Pobierz aktualną wersję z serwera przez SFTP
         run: |
@@ -88,25 +43,27 @@ jobs:
       - name: Zapisz backup jako artefakt
         uses: actions/upload-artifact@v7
         with:
-          name: backup-${{ github.ref_name }}-${{ github.run_number }}
+          name: backup-${{ env.TARGET_BRANCH }}-${{ github.run_number }}
           path: backup/
           retention-days: 7
 
   deploy:
-    name: 🚀 Deploy na serwer (${{ github.ref_name }})
+    name: 🚀 Deploy na serwer (${{ github.event.workflow_run.head_branch || github.ref_name }})
     needs: backup
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
       actions: write
     env:
-      MAIN_PATH: ${{ github.ref_name == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
-      DANCE_PATH: ${{ github.ref_name == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
+      TARGET_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+      MAIN_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
+      DANCE_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
     steps:
-      - name: Checkout code
+      - name: Checkout zwalidowanego commita (head_sha)
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Upload via SFTP (lftp)
         run: |
@@ -125,7 +82,7 @@ jobs:
             "
 
       - name: Cloudflare Purge Cache (Edge Invalidation)
-        if: github.ref_name == 'main'
+        if: env.TARGET_BRANCH == 'main'
         env:
           CF_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -144,9 +101,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "🧹 Czyszczenie starych artefaktów backup-${{ github.ref_name }}-* (pozostawianie 2 najnowszych)..."
+          echo "🧹 Czyszczenie starych artefaktów backup-${{ env.TARGET_BRANCH }}-* (pozostawianie 2 najnowszych)..."
           OLD_IDS=$(gh api "repos/${{ github.repository }}/actions/artifacts" \
-            --jq '.artifacts | map(select(.name | startswith("backup-${{ github.ref_name }}-") and (.expired == false))) | sort_by(.created_at) | reverse | .[2:] | .[].id' || true)
+            --jq '.artifacts | map(select(.name | startswith("backup-${{ env.TARGET_BRANCH }}-") and (.expired == false))) | sort_by(.created_at) | reverse | .[2:] | .[].id' || true)
           for id in $OLD_IDS; do
             echo "Usuwanie przestarzałego artefaktu backupu ID: $id"
             gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/$id" || true

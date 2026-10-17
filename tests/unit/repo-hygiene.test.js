@@ -98,6 +98,9 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.match(ciContent, /smoke-diagnostics/i);
 
     const deployContent = fs.readFileSync(path.join(ROOT_DIR, '.github', 'workflows', 'deploy.yml'), 'utf-8');
+    assert.match(deployContent, /workflow_run:/i, 'deploy.yml powinien używać wyzwalacza workflow_run po zakończeniu CI & Quality Gate');
+    assert.match(deployContent, /cancel-in-progress:\s*false/i, 'deploy.yml powinien chronić aktywny transfer SFTP (cancel-in-progress: false)');
+    assert.match(deployContent, /head_sha/i, 'deploy.yml powinien pobierać zwalidowany commit (head_sha)');
     assert.match(deployContent, /--exclude-glob\s+assets\/data\/pending_edits\.json/i, 'Brak ochrony pending_edits.json podczas wdrożenia SFTP');
     assert.match(deployContent, /--exclude-glob\s+assets\/data\/moderators\.json/i, 'Brak ochrony moderators.json podczas wdrożenia SFTP');
   });
