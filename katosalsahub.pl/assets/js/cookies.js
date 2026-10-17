@@ -28,7 +28,7 @@
   if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('sw.js?v=4', { updateViaCache: 'none' })
+        .register('sw.js?v=5', { updateViaCache: 'none' })
         .then((reg) => {
           if (reg && typeof reg.update === 'function') {
             reg.update().catch(() => {});

@@ -107,26 +107,32 @@ a:focus-visible:not(.btn) {
 /* FAB */
 .fab-add {
   position: fixed;
-  bottom: 92px;
-  right: 24px;
+  bottom: 100px;
+  right: 27px;
   width: 54px;
   height: 54px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--red), var(--orange));
   color: white;
-  border: none;
+  border: 2px solid rgba(251, 191, 36, 0.45);
   font-size: 24px;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.45);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fab-add:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 22px rgba(251, 191, 36, 0.35);
 }
 
 @media (max-width: 600px) {
   .fab-add {
-    bottom: 80px;
+    bottom: 84px;
     right: 16px;
   }
 }

@@ -724,6 +724,11 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
       height: 28px;
       fill: currentColor;
     }
+    .fab-add,
+    #addTermBtn {
+      bottom: 100px !important;
+      right: 27px !important;
+    }
     .tsw-ai-window {
       position: fixed;
       bottom: 96px;
@@ -759,6 +764,11 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
         right: 16px;
         width: 54px;
         height: 54px;
+      }
+      .fab-add,
+      #addTermBtn {
+        bottom: 84px !important;
+        right: 16px !important;
       }
       .tsw-ai-window {
         bottom: 80px;
