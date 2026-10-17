@@ -361,7 +361,7 @@ main {
 
 .radio-wrapper {
     display: grid;
-    grid-template-columns: 1fr; /* Mobile */
+    grid-template-columns: minmax(0, 1fr); /* Mobile */
     gap: 40px;
     align-items: center;
     
@@ -383,13 +383,20 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 30px;
+    min-width: 0;
+}
+
+.radio-content {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Vinyl Disc moved to components.css */
 
 @media (min-width: 968px) {
     .radio-wrapper {
-        grid-template-columns: 1fr 1.5fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
         padding: clamp(24px, 4vw, 60px);
     }
 }

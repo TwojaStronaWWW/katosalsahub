@@ -41,6 +41,14 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       const radioJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'radio.js'), 'utf-8');
       assert.match(radioJs, /function\s+warmUpStream\b/, 'Brak funkcji pre-warmingu warmUpStream w radio.js');
       assert.doesNotMatch(radioJs, /crossOrigin\s*=\s*['"]anonymous['"]/, 'Zbędny crossOrigin="anonymous" spowalniający przekierowanie 302 strumienia');
+
+      const sectionsCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'sections.css'), 'utf-8');
+      assert.match(sectionsCss, /grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*1\.5fr\)/, 'Brak minmax(0, ...) w .radio-wrapper zapobiegającego przesuwaniu widgetu przy zmianie piosenki');
+      assert.match(sectionsCss, /\.radio-content\s*\{[^}]*min-width:\s*0/s, 'Brak min-width: 0 w .radio-content');
+
+      const radioCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'radio.css'), 'utf-8');
+      assert.match(radioCss, /\.radio-now-playing\s*\{[^}]*overflow:\s*hidden/s, 'Brak overflow: hidden w .radio-now-playing');
+      assert.match(radioCss, /\.now-playing-meta\s*\{[^}]*flex:\s*1\s+1\s+0%/s, 'Brak flex: 1 1 0% w .now-playing-meta');
     });
 
     it('powinien wykorzystywać format WebP oraz atrybut loading="lazy" dla grafiki Hero (#23)', () => {

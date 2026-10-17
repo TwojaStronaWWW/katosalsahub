@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v8';
+const CACHE_NAME = 'ksh-pwa-v9';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
