@@ -57,7 +57,8 @@ const SUBCATEGORY_NAMES = {
 
 async function mountWiki() {
     const root = document.getElementById('wikiGrid');
-    if (!root) return;
+    if (!root || root.dataset.wikiMounted === '1') return;
+    root.dataset.wikiMounted = '1';
 
     // Sprawdź aktywną sesję moderatora/administratora przez ciasteczko HttpOnly i token CSRF
     const cachedCsrf = sessionStorage.getItem('kato_csrf_token');
@@ -221,6 +222,10 @@ async function fetchPendingTerms() {
 // --- Zarządzanie Zdarzeniami DOM ---
 
 function setupEventListeners() {
+    const root = document.getElementById('wikiGrid');
+    if (!root || root.dataset.wikiListenersBound === '1') return;
+    root.dataset.wikiListenersBound = '1';
+
     // 1. Wyszukiwarka
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearchBtn');
@@ -476,6 +481,8 @@ function setupEventListeners() {
                 window.openVerifyModal(id);
             } else if (action === 'quick-verify' && id) {
                 window.quickVerifyTerm(id);
+            } else if (action === 'unverify' && id) {
+                window.unverifyTerm(id);
             } else if (action === 'approve' && id) {
                 window.approvePendingTerm(id);
             } else if (action === 'reject' && id) {
@@ -490,6 +497,22 @@ function setupEventListeners() {
                 switchViewMode('live');
             } else if (action === 'retry-fetch') {
                 fetchTerms();
+            }
+        });
+    }
+
+    // 13b. Kliknięcie kategorii/podkategorii bezpośrednio na karcie podglądu na żywo w Studio
+    const livePreviewContainer = document.getElementById('livePreviewContainer');
+    if (livePreviewContainer) {
+        livePreviewContainer.addEventListener('click', (e) => {
+            const catBadge = e.target.closest('[data-toggle-cat]');
+            if (catBadge && catBadge.dataset.toggleCat) {
+                toggleChipByValue('categoryChips', catBadge.dataset.toggleCat);
+                return;
+            }
+            const subBadge = e.target.closest('[data-toggle-sub]');
+            if (subBadge && subBadge.dataset.toggleSub) {
+                toggleChipByValue('subcategoryChips', subBadge.dataset.toggleSub);
             }
         });
     }
@@ -513,13 +536,24 @@ function setupEventListeners() {
 
 function setupChipsInteractions(containerId) {
     const container = document.getElementById(containerId);
-    if (!container) return;
+    if (!container || container.dataset.chipsBound === '1') return;
+    container.dataset.chipsBound = '1';
     container.addEventListener('click', (e) => {
         const chip = e.target.closest('.chip');
         if (!chip) return;
         chip.classList.toggle('active');
         updateStudioLivePreviewAndDiff();
     });
+}
+
+function toggleChipByValue(containerId, val) {
+    const container = document.getElementById(containerId);
+    if (!container || !val) return;
+    const chip = Array.from(container.querySelectorAll('.chip')).find(c => c.dataset.val === val);
+    if (chip) {
+        chip.classList.toggle('active');
+        updateStudioLivePreviewAndDiff();
+    }
 }
 
 // --- Filtrowanie i Renderowanie ---
@@ -789,6 +823,9 @@ function createTermCard(item, isPending = false) {
                </button>`
             : `<button type="button" class="btn-quick-verify is-verified-plus" data-action="quick-verify" data-id="${safeId}" title="Dodaj kolejne potwierdzenie instruktorskie (+1)">
                    <i class="fas fa-plus"></i> +1
+               </button>
+               <button type="button" class="btn-edit-admin" data-action="unverify" data-id="${safeId}" title="Cofnij status do Niezweryfikowane">
+                   <i class="fas fa-undo"></i>
                </button>`;
 
         // Tylko główny Admin może bezpowrotnie usuwać hasła z bazy (RBAC)
@@ -985,7 +1022,7 @@ function buildTermDiffHtml(originalTerm, proposedTerm) {
             </div>`);
     }
 
-    // 3. Porównanie kategorii
+    // 3. Porównanie kategorii i podkategorii
     const oldCats = (Array.isArray(originalTerm.category) ? originalTerm.category : [originalTerm.category]).filter(Boolean).sort().join(', ');
     const newCats = (Array.isArray(proposedTerm.category) ? proposedTerm.category : [proposedTerm.category]).filter(Boolean).sort().join(', ');
     if (oldCats !== newCats) {
@@ -996,6 +1033,19 @@ function buildTermDiffHtml(originalTerm, proposedTerm) {
                 <del class="diff-removed">${escapeHtml(oldCats || 'brak')}</del>
                 <i class="fas fa-arrow-right diff-arrow"></i>
                 <ins class="diff-added">${escapeHtml(newCats || 'brak')}</ins>
+            </div>`);
+    }
+
+    const oldSubs = (Array.isArray(originalTerm.subcategory) ? originalTerm.subcategory : (originalTerm.subcategory ? [originalTerm.subcategory] : [])).filter(Boolean).sort().join(', ');
+    const newSubs = (Array.isArray(proposedTerm.subcategory) ? proposedTerm.subcategory : (proposedTerm.subcategory ? [proposedTerm.subcategory] : [])).filter(Boolean).sort().join(', ');
+    if (oldSubs !== newSubs) {
+        totalChanges++;
+        rows.push(`
+            <div class="diff-field-row">
+                <span class="diff-field-label">Podkategorie:</span>
+                <del class="diff-removed">${escapeHtml(oldSubs || 'brak')}</del>
+                <i class="fas fa-arrow-right diff-arrow"></i>
+                <ins class="diff-added">${escapeHtml(newSubs || 'brak')}</ins>
             </div>`);
     }
 
@@ -1287,10 +1337,10 @@ function updateStudioLivePreviewAndDiff() {
 
         let badgesHtml = '';
         (draft.category.length ? draft.category : ['dance']).forEach(c => {
-            badgesHtml += `<span class="cat-badge main-cat">${escapeHtml(CATEGORY_NAMES[c] || c)}</span>`;
+            badgesHtml += `<span class="cat-badge main-cat" data-toggle-cat="${escapeHtml(c)}" title="Kliknij, aby przełączyć kategorię">${escapeHtml(CATEGORY_NAMES[c] || c)}</span>`;
         });
         draft.subcategory.forEach(s => {
-            badgesHtml += `<span class="cat-badge sub-cat">${escapeHtml(SUBCATEGORY_NAMES[s] || s)}</span>`;
+            badgesHtml += `<span class="cat-badge sub-cat" data-toggle-sub="${escapeHtml(s)}" title="Kliknij, aby przełączyć podkategorię">${escapeHtml(SUBCATEGORY_NAMES[s] || s)}</span>`;
         });
 
         let sourcesHtml = '';
@@ -1388,8 +1438,19 @@ function resetChips(containerId) {
 function activateChips(containerId, values) {
     const container = document.getElementById(containerId);
     if (!container || !values) return;
-    container.querySelectorAll('.chip').forEach(chip => {
-        if (values.includes(chip.dataset.val)) {
+    const existingChips = Array.from(container.querySelectorAll('.chip'));
+    values.filter(Boolean).forEach(val => {
+        let chip = existingChips.find(c => c.dataset.val === val);
+        if (!chip && containerId === 'subcategoryChips') {
+            chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'chip';
+            chip.dataset.val = val;
+            chip.textContent = SUBCATEGORY_NAMES[val] || val;
+            container.appendChild(chip);
+            existingChips.push(chip);
+        }
+        if (chip) {
             chip.classList.add('active');
         }
     });
@@ -1854,6 +1915,38 @@ window.quickVerifyTerm = async function (id) {
         }
     } catch (err) {
         console.error('Błąd szybkiej weryfikacji:', err);
+    }
+};
+
+window.unverifyTerm = async function (id) {
+    try {
+        const res = await fetch(API_URL + '?action=quick_verify', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': AppState.csrfToken
+            },
+            body: JSON.stringify({
+                csrf_token: AppState.csrfToken,
+                id,
+                unverify: true
+            })
+        });
+        const result = await res.json();
+        if (result.success && result.entry) {
+            const idx = AppState.terms.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                AppState.terms[idx] = result.entry;
+            }
+            notifyKnowledgeUpdated();
+            updateCategoryCounters();
+            renderCurrentView();
+        } else {
+            alert('Błąd zmiany statusu: ' + (result.error || 'Nieznany'));
+        }
+    } catch (err) {
+        console.error('Błąd cofania weryfikacji:', err);
     }
 };
 

@@ -785,6 +785,19 @@ switch ($action) {
         if ($index === false) error_res('Nie znaleziono hasła o podanym ID');
 
         $moderatorName = $_SESSION['kato_user_name'] ?? 'Moderator';
+        if (!empty($input['unverify'])) {
+            $live[$index]['status'] = 'unverified';
+            $live[$index]['verification_count'] = 0;
+            unset($live[$index]['verified_by']);
+            $live[$index]['last_updated'] = date('Y-m-d');
+            save_json_file($salsopediaFile, $live);
+            respond([
+                'success' => true,
+                'message' => 'Hasło zostało oznaczone jako niezweryfikowane.',
+                'entry' => $live[$index]
+            ]);
+        }
+
         $live[$index]['status'] = 'verified';
         $live[$index]['verification_count'] = ((int)($live[$index]['verification_count'] ?? 0)) + 1;
         $live[$index]['verified_by'] = $moderatorName;
@@ -809,9 +822,6 @@ switch ($action) {
 
         $moderatorName = $_SESSION['kato_user_name'] ?? 'Moderator';
         $entry = normalize_entry($entryData, true);
-        $entry['status'] = 'verified';
-        $entry['verified_by'] = $moderatorName;
-        if ($entry['verification_count'] < 1) $entry['verification_count'] = 1;
 
         $live = read_json_file($salsopediaFile);
         $liveIndex = array_search($entry['id'], array_column($live, 'id'));
@@ -826,10 +836,19 @@ switch ($action) {
         }
 
         if ($liveIndex === false) {
+            if (!isset($entryData['status'])) {
+                $entry['status'] = 'unverified';
+                $entry['verification_count'] = 0;
+            }
             $live[] = $entry;
         } else {
-            $prevCount = (int)($live[$liveIndex]['verification_count'] ?? 1);
-            $entry['verification_count'] = max(1, $prevCount);
+            if (!isset($entryData['status'])) {
+                $entry['status'] = $live[$liveIndex]['status'] ?? 'unverified';
+                $entry['verification_count'] = (int)($live[$liveIndex]['verification_count'] ?? 0);
+                if (!empty($live[$liveIndex]['verified_by'])) {
+                    $entry['verified_by'] = $live[$liveIndex]['verified_by'];
+                }
+            }
             $live[$liveIndex] = array_merge($live[$liveIndex], $entry);
         }
 
