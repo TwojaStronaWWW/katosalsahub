@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
-      contents: read
+      contents: write
       actions: write
     env:
       TARGET_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
@@ -64,6 +64,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
 
       - name: Upload via SFTP (lftp)
         run: |
@@ -95,6 +96,19 @@ jobs:
               --data '{"purge_everything":true}'
           else
             echo "ℹ️ Pominięto Cloudflare Purge Cache (brak sekretów CLOUDFLARE_ZONE_ID / CLOUDFLARE_API_TOKEN)."
+          fi
+
+      - name: Tagowanie wydania produkcyjnego (Release Tag)
+        if: env.TARGET_BRANCH == 'main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          VERSION="v$(date +'%Y.%m.%d')-$(git rev-parse --short HEAD)"
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION już istnieje – pomijanie."
+          else
+            git tag "$VERSION"
+            git push origin "$VERSION" || true
           fi
 
       - name: Czyszczenie starych artefaktów backupów (max 2 ostatnie)

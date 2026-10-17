@@ -80,6 +80,10 @@ katosalsahub/
   - **Puste zapytanie (Tryb przeglądania):** Sortowanie alfabetyczne A–Z (`localeCompare(..., 'pl', { sensitivity: 'base' })`).
   - **Aktywne zapytanie (Tryb wyszukiwania):** Sortowanie malejąco wg wagi trafności: dokładny tytuł (`100 pkt`) $\rightarrow$ główny człon tytułu przed nawiasem (`90 pkt`) $\rightarrow$ prefiks tytułu (`80 pkt`) $\rightarrow$ prefiks polskiego rdzenia fleksyjnego (`75 pkt`) $\rightarrow$ pełne słowo / podciąg / odmiana w tytule (`70–60 pkt`) $\rightarrow$ wystąpienie w definicji (`25–20 pkt`), z alfabetycznym tie-breakerem przy remisie.
 
+### 4.6 Stabilność Geometryczna UI (`CLS = 0` / Anti-Floating Controls)
+- **Stała geometria pasków zakładek i przełączników:** Przyciski przełączników (np. `.map-tabs`, `.radio-sleep-timer`) muszą znajdować się w stałej siatce CSS Grid (`grid-template-columns: repeat(N, minmax(0, 1fr))`) o stałej wysokości (`height`) i `white-space: nowrap`, bez przesunięć `transform` zmieniających układ podczas klikania.
+- **Izolacja dynamicznych napisów statusu:** Elementy o zmiennej długości tekstu (`#map-active-label`, `#radio-track-title`, `#sleep-timer-status`) muszą być osadzone w kontenerach o stałej wysokości i szerokości (`min-width: 0`, `overflow: hidden`, `text-overflow: ellipsis`) lub ukrywane przez `visibility: hidden` zamiast `display: none`, aby zmiana tekstu nigdy nie przesuwała sąsiednich przycisków.
+
 ---
 
 ## 5. STANDARD JĘZYKA BIZNESOWEGO (ZASADA ANTI-AI / ANTI-JARGON)
@@ -89,17 +93,17 @@ katosalsahub/
 
 ---
 
-## 6. POTOK CI/CD (GITHUB ACTIONS QUALITY GATE)
-1. **Quality Gate & Testy Jednostkowe:**
+## 6. POTOK CI/CD (ZERO-TRUST SEQUENTIAL GITHUB ACTIONS)
+1. **Etap 1 – `CI & Quality Gate` (`ci.yml`, na `push` i `pull_request`, `cancel-in-progress: true`):**
    - Weryfikacja plików wejściowych obu serwisów (`katosalsahub.pl/index.html`, `dancepuls.pl/index.html`).
-   - Ochrona przed wyciekiem sekretów.
-   - Walidacja składni PHP (`php -l`) oraz JavaScript (`npm run check:syntax`).
-   - Weryfikacja referencji lokalnych linków i zasobów (eliminacja 404).
-   - Testy jednostkowe z raportem pokrycia (`npm run test:coverage`).
-2. **Audyt Lighthouse CI:**
-   - Progi jakościowe dla dostępności (a11y), SEO i dobrych praktyk.
-3. **Pre-Deploy Snapshot & Wdrożenie SFTP:**
-   - Automatyczny snapshot istniejących plików ze zdalnego serwera LH.pl do artefaktów GitHub Actions (retencja 7 dni) przed transferem.
+   - Skaner sekretów **Gitleaks** oraz ochrona przed wyciekiem danych wrażliwych.
+   - Walidacja składni PHP (`php -l`), JavaScript (`npm run check:syntax`) oraz referencji lokalnych linków (eliminacja 404).
+   - Testy jednostkowe z raportem pokrycia (`node:test`) oraz przeglądarkowy **UI Smoke Test (Playwright Chromium)**.
+   - Audyt **Lighthouse CI** (a11y, SEO, Best Practices).
+2. **Etap 2 – `CD — Deploy to LH` (`deploy.yml`, wyzwalany sekwencyjnie przez `workflow_run` po sukcesie CI, `cancel-in-progress: false`):**
+   - Uruchamia się wyłącznie po ukończeniu `CI & Quality Gate` ze statusem `success` (brak duplikacji testów i brak wyścigu przed zakończeniem audytu).
+   - **Pre-Deploy Snapshot (Off-Site Backup):** Pobiera aktualny stan z serwera LH.pl po SFTP w trybie odczytu do artefaktów GitHub Actions (retencja 7 dni, rotacja 2 najnowszych paczek) tuż przed nadpisaniem plików.
+   - **Wdrożenie SFTP (`head_sha`) + Ochrona żywych baz:** Wysyła zwalidowany commit (`ref: head_sha`) z wykluczeniem żywych plików (`pending_edits.json`, `moderators.json`, `login_attempts.json`, `*.bak`, `rate_*.json`), czyści cache Cloudflare CDN i tworzy tag wydania `vYYYY.MM.DD-<sha>`.
 
 ---
 

@@ -72,13 +72,11 @@ npm run sync
 
 ---
 
-## 4. Procedura Wdrożeniowa
+## 4. Procedura Wdrożeniowa (Zero-Trust Sequential CI $\rightarrow$ CD)
 
 1. Zmiany deweloperskie wprowadzać na gałęziach `feat/...` lub `fix/...`.
-2. Push na gałąź `staging` uruchamia weryfikację CI i wdrożenie na środowisko Staging:
-   - `staging.katosalsahub.pl`
-   - `staging.katosalsahub.pl/dancepuls`
-3. Po akceptacji pull request do `main` powoduje:
-   - Pełny audyt Quality Gate
-   - Snapshot zapasowy produkcji do artefaktów GitHub Actions
-   - Wdrożenie produkcyjne obu domen na serwerze LH.pl
+2. Push na gałąź `staging` lub `main` uruchamia **wyłącznie jeden potok weryfikacyjny**: `CI & Quality Gate` (`ci.yml` – Gitleaks, PHP, `node:test`, Playwright UI Smoke Test, Lighthouse CI).
+3. Dopiero po zakończeniu `CI & Quality Gate` ze statusem `success` automatycznie wyzwala się potok wdrożeniowy `CD — Deploy to LH` (`deploy.yml` przez `on: workflow_run` z `cancel-in-progress: false`):
+   - Pobiera *Pre-Deploy Snapshot* (Off-Site Backup z serwera LH.pl w trybie odczytu) do artefaktów GitHub Actions (retencja 7 dni, rotacja 2 najnowszych paczek).
+   - Wdraża zwalidowany commit (`head_sha`) po SFTP z ochroną żywych plików (`--exclude-glob` dla `pending_edits.json`, `moderators.json`, `login_attempts.json`, `*.bak`, `rate_*.json`).
+   - Dla gałęzi `main` automatycznie czyści cache Cloudflare CDN i tworzy tag wydania `vYYYY.MM.DD-<sha>`.
