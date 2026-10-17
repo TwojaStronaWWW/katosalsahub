@@ -65,12 +65,20 @@ katosalsahub/
 - Prywatne katalogi API muszą posiadać regułę `Deny from all` w plikach `.htaccess`.
 - Formularze chronione wielowarstwową mitygacją botów: Honeypot, weryfikacja tokena wykonania JS (`js_check`), minimalny czas wypełniania formularza (`submission_seconds >= 2.5s`), filtr cyrylicy.
 
-### 4.3 Ochrona transakcyjna współbieżności
-- Wszystkie operacje zapisu do plików płaskich (`events.json`, `salsopedia.json`, `pending_edits.json`) muszą być realizowane atomowo z blokadą wyłączną (`LOCK_EX` w PHP / bezpieczny zapis w Node.js).
+### 4.3 Ochrona transakcyjna współbieżności (Anti-TOCTOU, Session Unlocking & In-Flight Guards)
+- **Pełna transakcja Read-Modify-Write (`update_json_file` w PHP):** Zakaz rozdzielania odczytu (`LOCK_SH`) i zapisu (`LOCK_EX`) przy modyfikacji plików płaskich (`salsopedia.json`, `pending_edits.json`, `moderators.json`, `login_attempts.json`). Wszystkie mutacje muszą trzymać jedną nieprzerwaną blokadę wyłączną `flock($fp, LOCK_EX)` przez cały cykl: `Odczyt -> Modyfikacja -> Kopia .bak -> Zapis -> Zwolnienie blokady`.
+- **Wczesne zwalnianie sesji PHP (`@session_write_close()`):** Plik sesji musi być zwalniany natychmiast po odczytaniu/zapisaniu zmiennych `$_SESSION`, przed operacjami plikowymi oraz wywołaniami sieciowymi cURL (`notify_osticket`).
+- **Izolacja PID przy zapisach atomowych w Node.js (`writeFileAtomically`):** Pliki tymczasowe (`events.json`, `latest_report.md`) przed `fs.renameSync()` muszą zawierać unikalny sufiks `${filePath}.${process.pid}.${Date.now()}.${rand}.tmp`.
+- **Strażnik In-Flight na frontendzie (`inFlightMutations`):** Wszystkie akcje moderacyjne i formularze muszą blokować wielokrotne kliknięcia do czasu zakończenia żądania `fetch` (`finally`).
 
 ### 4.4 Zero-Dependency Testing
 - Testy oparte wyłącznie na wbudowanym module `node:test` i `node:assert/strict`.
 - Zakaz instalowania zewnętrznych bibliotek testowych (Jest, Mocha, Karma, jsdom).
+
+### 4.5 Dwutrybowy Ranking Trafności Wyszukiwania (Search Relevance Ranking vs. A–Z)
+- Wyszukiwarka Salsopedii (`sortAndFilterTermsByQuery` / `computeSearchRelevance`) działa w dwóch trybach:
+  - **Puste zapytanie (Tryb przeglądania):** Sortowanie alfabetyczne A–Z (`localeCompare(..., 'pl', { sensitivity: 'base' })`).
+  - **Aktywne zapytanie (Tryb wyszukiwania):** Sortowanie malejąco wg wagi trafności: dokładny tytuł (`100 pkt`) $\rightarrow$ główny człon tytułu przed nawiasem (`90 pkt`) $\rightarrow$ prefiks tytułu (`80 pkt`) $\rightarrow$ prefiks polskiego rdzenia fleksyjnego (`75 pkt`) $\rightarrow$ pełne słowo / podciąg / odmiana w tytule (`70–60 pkt`) $\rightarrow$ wystąpienie w definicji (`25–20 pkt`), z alfabetycznym tie-breakerem przy remisie.
 
 ---
 
