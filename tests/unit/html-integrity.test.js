@@ -31,11 +31,16 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(match[1], /Kato Salsa Hub/i);
     });
 
-    it('powinien zawierać przycisk odtwarzacza radiowego, metadane utworu (#20) oraz wyłącznik czasowy (#19)', () => {
+    it('powinien zawierać przycisk odtwarzacza radiowego, preconnect do Zeno.fm, metadane utworu (#20) oraz wyłącznik czasowy (#19)', () => {
       assert.match(html, /id="header-radio-play"[^>]*aria-label="[^"]+"/i);
+      assert.match(html, /rel="preconnect"\s+href="https:\/\/stream\.zeno\.fm"/i);
       assert.match(html, /id="radio-now-playing"/i);
       assert.match(html, /id="radio-track-title"/i);
       assert.match(html, /class="sleep-timer-btn"\s+data-minutes="15"/i);
+
+      const radioJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'radio.js'), 'utf-8');
+      assert.match(radioJs, /function\s+warmUpStream\b/, 'Brak funkcji pre-warmingu warmUpStream w radio.js');
+      assert.doesNotMatch(radioJs, /crossOrigin\s*=\s*['"]anonymous['"]/, 'Zbędny crossOrigin="anonymous" spowalniający przekierowanie 302 strumienia');
     });
 
     it('powinien wykorzystywać format WebP oraz atrybut loading="lazy" dla grafiki Hero (#23)', () => {

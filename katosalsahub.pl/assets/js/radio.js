@@ -11,12 +11,17 @@ const STREAM_METADATA_URL = 'https://api.zeno.fm/mounts/metadata/subscribe/g0zpm
 const ICECAST_STATUS_URL = 'https://stream.zeno.fm/status-json.xsl?mount=/g0zpm0pypuhvv';
 const METADATA_POLL_INTERVAL = 20000;
 
-let radioAudio = new Audio(STREAM_URL);
+let radioAudio = new Audio();
 radioAudio.preload = 'none';
-radioAudio.crossOrigin = 'anonymous';
+
+const STREAM_WARM_TTL_MS = 25000;
+const STREAM_WARM_IDLE_TIMEOUT_MS = 15000;
 
 let isPlaying = false;
 let isLoading = false;
+let isStreamWarm = false;
+let lastWarmUpTime = 0;
+let warmUpExpireTimer = null;
 
 // Stan wyłącznika czasowego (Sleep Timer - #19)
 let sleepTimerTimeout = null;
@@ -27,10 +32,59 @@ let activeSleepMinutes = 0;
 
 // Stan metadanych utworu (#20)
 let metadataPollTimer = null;
+let metadataInitialTimeout = null;
 let currentTrack = {
   artist: 'Timba Nation Radio',
   title: 'Kubańska Energia 24/7 (Salsa & Timba)'
 };
+
+function clearWarmUpExpireTimer() {
+  if (warmUpExpireTimer) {
+    clearTimeout(warmUpExpireTimer);
+    warmUpExpireTimer = null;
+  }
+}
+
+/**
+ * Proaktywnie rozwiązuje przekierowanie 302 Zeno.fm i buforuje pierwsze ramki
+ * audio (burst-on-connect), aby po kliknięciu Play muzyka grała bez opóźnienia.
+ */
+function warmUpStream(force = false) {
+  if (isPlaying) return;
+
+  const now = Date.now();
+  if (!force && isStreamWarm && now - lastWarmUpTime < STREAM_WARM_TTL_MS) {
+    return;
+  }
+
+  clearWarmUpExpireTimer();
+  isStreamWarm = true;
+  lastWarmUpTime = now;
+
+  try {
+    radioAudio.preload = 'auto';
+    if (radioAudio.src !== STREAM_URL) {
+      radioAudio.src = STREAM_URL;
+    }
+    if (typeof radioAudio.load === 'function') {
+      radioAudio.load();
+    }
+  } catch {
+    // Ignoruj w środowiskach bez pełnego wsparcia HTMLMediaElement
+  }
+
+  warmUpExpireTimer = setTimeout(() => {
+    warmUpExpireTimer = null;
+    if (!isPlaying && !isLoading) {
+      isStreamWarm = false;
+      try {
+        radioAudio.preload = 'metadata';
+      } catch {
+        // Ignoruj
+      }
+    }
+  }, STREAM_WARM_IDLE_TIMEOUT_MS);
+}
 
 function initRadioOnce() {
   if (radioInitialized) {
@@ -45,8 +99,10 @@ function initRadioOnce() {
 function initRadio() {
   window.updateGlobalRadioUI = updateGlobalUI;
   window.setRadioSleepTimer = setSleepTimer;
+  window.warmUpRadioStream = warmUpStream;
   setupMediaSession();
   updateGlobalUI();
+  warmUpStream();
 }
 
 /**
@@ -122,21 +178,53 @@ function parseRawStreamTitle(rawTitle) {
 }
 
 async function fetchStreamMetadata() {
-  if (!isPlaying) return;
+  if (!isPlaying || typeof fetch !== 'function') return;
 
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 4000);
 
-    const response = await fetch(ICECAST_STATUS_URL, {
+    const response = await fetch(STREAM_METADATA_URL, {
       method: 'GET',
-      headers: { Accept: 'application/json' },
+      headers: { Accept: 'text/event-stream, application/json' },
       signal: controller.signal
     });
-    clearTimeout(timeoutId);
 
-    if (!response.ok) return;
-    const data = await response.json();
+    if (!response || !response.ok) {
+      clearTimeout(timeoutId);
+      return;
+    }
+
+    let data = null;
+    const contentType =
+      response.headers && typeof response.headers.get === 'function'
+        ? response.headers.get('content-type') || ''
+        : '';
+
+    if (
+      contentType.includes('text/event-stream') &&
+      response.body &&
+      typeof response.body.getReader === 'function'
+    ) {
+      const reader = response.body.getReader();
+      const { value } = await reader.read();
+      clearTimeout(timeoutId);
+      controller.abort();
+      if (value) {
+        const chunkText = new TextDecoder().decode(value);
+        const dataLine = chunkText
+          .split(/\r?\n/)
+          .find((line) => line.startsWith('data:'));
+        if (dataLine) {
+          data = JSON.parse(dataLine.slice(5).trim());
+        }
+      }
+    } else if (typeof response.json === 'function') {
+      clearTimeout(timeoutId);
+      data = await response.json();
+    } else {
+      clearTimeout(timeoutId);
+    }
 
     let rawTitle = null;
     if (data && data.icestats && data.icestats.source) {
@@ -155,17 +243,24 @@ async function fetchStreamMetadata() {
       updateMediaSessionMetadata();
     }
   } catch {
-    // Strumień lub endpoint Icecast może nie zwracać CORS JSON - zachowujemy domyślne metadane
+    // Strumień lub endpoint metadanych może być chwilowo niedostępny - zachowujemy domyślne metadane
   }
 }
 
 function startMetadataPolling() {
   stopMetadataPolling();
-  fetchStreamMetadata();
+  metadataInitialTimeout = setTimeout(() => {
+    metadataInitialTimeout = null;
+    fetchStreamMetadata();
+  }, 300);
   metadataPollTimer = setInterval(fetchStreamMetadata, METADATA_POLL_INTERVAL);
 }
 
 function stopMetadataPolling() {
+  if (metadataInitialTimeout) {
+    clearTimeout(metadataInitialTimeout);
+    metadataInitialTimeout = null;
+  }
   if (metadataPollTimer) {
     clearInterval(metadataPollTimer);
     metadataPollTimer = null;
@@ -296,8 +391,25 @@ function updateSleepTimerUI() {
   }
 }
 
+// Intent Pre-warming: rozgrzej strumień przy zbliżeniu kursora, dotyku lub fokusie na kontrolkach radia
+function handleRadioIntentWarmUp(e) {
+  if (isPlaying || !e || !e.target || typeof e.target.closest !== 'function') return;
+  const radioTrigger = e.target.closest(
+    '#header-radio-play, #radio-play, .sleep-timer-btn, .section-radio, a[href*="#radio"]'
+  );
+  if (radioTrigger) {
+    warmUpStream();
+  }
+}
+
+document.addEventListener('mouseover', handleRadioIntentWarmUp, { passive: true });
+document.addEventListener('touchstart', handleRadioIntentWarmUp, { passive: true });
+document.addEventListener('focusin', handleRadioIntentWarmUp, { passive: true });
+
 // Global Click Listener (Event Delegation)
 document.addEventListener('click', (e) => {
+  if (!e || !e.target || typeof e.target.closest !== 'function') return;
+
   const playBtn = e.target.closest('#header-radio-play, #radio-play');
   if (playBtn) {
     e.preventDefault();
@@ -347,12 +459,15 @@ radioAudio.addEventListener('waiting', () => {
 
 radioAudio.addEventListener('error', () => {
   isLoading = false;
+  isStreamWarm = false;
   updateGlobalUI();
 });
 
 function stopRadio() {
+  clearWarmUpExpireTimer();
   isLoading = false;
   isPlaying = false;
+  isStreamWarm = false;
   stopMetadataPolling();
   try {
     radioAudio.pause();
@@ -361,6 +476,7 @@ function stopRadio() {
     // Ignoruj
   }
   updateGlobalUI();
+  warmUpStream(true);
 }
 
 function toggleRadio() {
@@ -368,15 +484,25 @@ function toggleRadio() {
     clearSleepTimerInternal();
     stopRadio();
   } else {
+    clearWarmUpExpireTimer();
     isPlaying = true;
     isLoading = false;
+
+    const now = Date.now();
+    const hasFreshWarmBuffer = isStreamWarm && now - lastWarmUpTime < STREAM_WARM_TTL_MS;
+
     try {
       radioAudio.volume = 1.0;
+      radioAudio.preload = 'auto';
+      if (!hasFreshWarmBuffer || !radioAudio.src) {
+        radioAudio.src = STREAM_URL;
+      }
     } catch {
       // Ignoruj
     }
-    updateGlobalUI();
-    startMetadataPolling();
+
+    isStreamWarm = true;
+    lastWarmUpTime = now;
 
     const playPromise = radioAudio.play();
     if (playPromise && typeof playPromise.catch === 'function') {
@@ -386,6 +512,9 @@ function toggleRadio() {
         updateGlobalUI();
       });
     }
+
+    updateGlobalUI();
+    startMetadataPolling();
   }
 }
 
@@ -442,6 +571,7 @@ function updateUI(headerBtn, sectionBtn) {
 }
 
 window.initRadio = initRadioOnce;
+window.warmUpRadioStream = warmUpStream;
 window.parseRawStreamTitle = parseRawStreamTitle;
 
 if (document.readyState === 'loading') {

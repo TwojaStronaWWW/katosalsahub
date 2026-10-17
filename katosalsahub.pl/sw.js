@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v5';
+const CACHE_NAME = 'ksh-pwa-v7';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -60,9 +60,11 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
 
-  // Never intercept live radio streams, AI router requests or dynamic PHP API endpoints
+  // Never intercept cross-origin requests (live radio streams on zeno.fm / surfernetwork.com, AI router, maps) or dynamic PHP API endpoints
   if (
+    url.origin !== self.location.origin ||
     url.hostname.includes('zeno.fm') ||
+    url.hostname.includes('surfernetwork.com') ||
     url.hostname.includes('google.com') ||
     url.hostname.includes('twojastronawww.pl') ||
     url.pathname.endsWith('.php')
@@ -70,7 +72,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network-First for HTML pages, CSS, ai-widget.js and salsopedia.json so UI/KB updates are immediately visible,
+  // Network-First for HTML pages, CSS, JS and salsopedia.json so UI/KB updates are immediately visible,
   // with full offline fallback when network is unavailable
   const isHtmlNav =
     request.mode === 'navigate' ||
@@ -80,8 +82,8 @@ self.addEventListener('fetch', (event) => {
   if (
     isHtmlNav ||
     url.pathname.endsWith('.css') ||
-    url.pathname.endsWith('/salsopedia.json') ||
-    url.pathname.endsWith('/ai-widget.js')
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('/salsopedia.json')
   ) {
     event.respondWith(
       fetch(request)
