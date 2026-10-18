@@ -64,12 +64,16 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="gdpr_consent"[^>]*required/i);
     });
 
-    it('nie powinien zawierać publicznego linku do Panelu Moderacji w stopce (#5), pustych linków href="#", stylów inline ani bloków inline <script> (SoC) oraz powinien ładować Asystenta AI', () => {
+    it('nie powinien zawierać publicznego linku do Panelu Moderacji w stopce (#5), pustych linków href="#", stylów inline ani wykonywalnych bloków inline <script> (SoC) oraz powinien ładować Asystenta AI i linkować do Salsopedii w stopce (#32)', () => {
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
       assert.doesNotMatch(html, /href\s*=\s*["']#["']/i, 'Wykryto pusty odnośnik href="#" w index.html');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w index.html');
       assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w index.html');
-      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w index.html');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w index.html');
+      assert.match(html, /rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/"/i);
+      assert.match(html, /property="og:title"/i);
+      assert.match(html, /type="application\/ld\+json"/i);
+      assert.match(html, /class="footer-links"[\s\S]*?<a\s+href="salsopedia\.html">Salsopedia<\/a>/i, 'Brak linku do salsopedia.html w stopce index.html (#32)');
       assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
       assert.match(html, /data-site-id="katosalsahub"/i);
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
@@ -109,7 +113,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(kml, /19\.0484200,50\.2459200,0/, 'Brak nowej pinezki toalety przy AMO Pizza w pliku KML');
       assert.match(kml, /19\.0473500,50\.2419500,0/, 'Brak nowej pinezki toalety za wiaduktem A4 w pliku KML');
       assert.match(kml, /Trasa piesza: Parking Rekomendowany ↔ Kamienny Krąg/, 'Brak trasy pieszej od Parkingu Rekomendowanego do Kamiennego Kręgu');
-      assert.match(kml, /Trasa piesza: Parking Rekomendowany NOSPR ↔ Wolni Ludzie/, 'Brak trasy pieszej od Parkingu Rekomendowanego NOSPR do Wolnych Ludzi');
+      assert.match(kml, /Trasa piesza: Parking Rekomendowany NOSPR ↔ Wolnych Ludzi|Trasa piesza: Parking Rekomendowany NOSPR ↔ Wolni Ludzie/, 'Brak trasy pieszej od Parkingu Rekomendowanego NOSPR do Wolnych Ludzi');
       assert.doesNotMatch(kml, /Trasa piesza: Parking CH 3 Stawy/, 'Stara trasa piesza z CH 3 Stawy powinna zostać usunięta');
       assert.match(kml, /19\.0304412,50\.2641287,0/, 'Brak dokładnych współrzędnych Amfiteatru pod NOSPR-em w pliku KML');
       assert.doesNotMatch(kml, /http:\/\/maps\.google\.com/i, 'Ikony w KML powinny używać protokołu HTTPS');
@@ -119,28 +123,35 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
   describe('Polityka Prywatności (katosalsahub.pl/privacy.html)', () => {
     const html = fs.readFileSync(PRIVACY_HTML, 'utf-8');
 
-    it('powinna zawierać informacje o systemie Helpdesk, anonimizacji IP (#7) oraz analityce Cookieless (#22)', () => {
+    it('powinna zawierać informacje o systemie Helpdesk, anonimizacji IP (#7) oraz analityce Cookieless (#22, #34)', () => {
       assert.match(html, /Helpdesk/i);
       assert.match(html, /Cookieless/i);
       assert.match(html, /imię lub pseudonim/i);
+      const cookiesJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'cookies.js'), 'utf-8');
+      assert.match(cookiesJs, /https:\/\/ai\.twojastronawww\.pl\/analytics/, 'Brak podłączenia kolektora analityki Cookieless w cookies.js (#34)');
+      assert.match(cookiesJs, /trackCookielessSearch/, 'Brak funkcji trackCookielessSearch w cookies.js (#34)');
     });
 
-    it('nie powinna zawierać bloków <style>, bloków inline <script>, stylów inline ani linku moderacji w stopce (#5, SoC) oraz powinna ładować Asystenta AI', () => {
+    it('nie powinna zawierać bloków <style>, wykonywalnych bloków inline <script>, stylów inline ani linku moderacji w stopce (#5, SoC) oraz powinna ładować Asystenta AI', () => {
       assert.doesNotMatch(html, /<style[\s>]/i);
-      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w privacy.html');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w privacy.html');
       assert.doesNotMatch(html, /\s+style\s*=/i);
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
+      assert.match(html, /rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/privacy\.html"/i);
       assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
     });
   });
 
   describe('Salsopedia (katosalsahub.pl/salsopedia.html)', () => {
-    it('plik salsopedia.html powinien posiadać poprawny szkielet HTML5, Salsopedia Studio (Live Preview + Diff), modal ról Admin/Moderator oraz Asystenta AI', () => {
+    it('plik salsopedia.html powinien posiadać poprawny szkielet HTML5, Salsopedia Studio, statyczny wsad SEO ~200 haseł (#32), JSON-LD DefinedTermSet oraz Asystenta AI', () => {
       assert.ok(fs.existsSync(SALSOPEDIA_HTML));
       const html = fs.readFileSync(SALSOPEDIA_HTML, 'utf-8');
       assert.match(html, /<!DOCTYPE html>/i);
       assert.match(html, /<html\s+lang="pl">/i);
       assert.match(html, /<title>.*Salsopedia.*<\/title>/i);
+      assert.match(html, /rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/salsopedia\.html"/i);
+      assert.match(html, /"@type":\s*"DefinedTermSet"/);
+      assert.match(html, /data-term-id="term_1"/, 'Brak statycznie wyrenderowanych haseł Salsopedii w czystym HTML (#32)');
       assert.match(html, /id="wikiGrid"/i);
       assert.match(html, /id="wikiModal"/i);
       assert.match(html, /id="adminToolbar"/i);
@@ -152,11 +163,11 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
     });
 
-    it('plik salsopedia.html nie powinien zawierać styli inline, inline event handlerów, inline <script> ani publicznego linku moderacji w stopce (#5, SoC)', () => {
+    it('plik salsopedia.html nie powinien zawierać styli inline, inline event handlerów, wykonywalnych bloków inline <script> ani publicznego linku moderacji w stopce (#5, SoC)', () => {
       const html = fs.readFileSync(SALSOPEDIA_HTML, 'utf-8');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w salsopedia.html naruszający SoC');
       assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w salsopedia.html naruszający SoC');
-      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w salsopedia.html');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w salsopedia.html');
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
     });
   });

@@ -40,25 +40,83 @@
     });
   }
 
-  // Lekka analityka Cookieless zgodna z RODO (#22 - kompatybilna z Umami / Plausible)
+  // Lekka analityka Cookieless zgodna z RODO (#22, #34 - Zero-Bloat VPS Collector + kompatybilność z Umami)
+  const ANALYTICS_ENDPOINT = 'https://ai.twojastronawww.pl/analytics';
+  const SITE_ID = 'katosalsahub';
+
+  function sendAnalyticsBeacon(payload) {
+    if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
+      return;
+    }
+    try {
+      const body = JSON.stringify({ site_id: SITE_ID, ...payload });
+      if (typeof fetch === 'function') {
+        fetch(ANALYTICS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body,
+          keepalive: true,
+          mode: 'cors',
+        }).catch(() => {});
+      }
+    } catch {
+      // Ciche pominięcie w razie braku sieci lub blokady
+    }
+  }
+
   function trackCookielessPageview(pagePath) {
     if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
       return;
     }
 
-    // Jeśli skonfigurowano instancję Umami, przekaż zdarzenie bez użycia ciasteczek
+    const rawPath = pagePath || (window.location.pathname + (window.location.hash || ''));
+    let utmSource = '';
+    let searchTerm = '';
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      utmSource = params.get('utm_source') || '';
+      searchTerm = params.get('term') || params.get('q') || params.get('utm_term') || '';
+    } catch {
+      // Ignoruj błędy parsowania query string
+    }
+
+    sendAnalyticsBeacon({
+      type: 'pageview',
+      path: rawPath,
+      referrer: document.referrer || '',
+      utm_source: utmSource,
+      term: searchTerm,
+    });
+
+    // Kompatybilność wsteczna z opcjonalnym obiektem window.umami
     if (window.umami && typeof window.umami.track === 'function') {
       window.umami.track((props) => ({
         ...props,
-        url: pagePath || window.location.pathname
+        url: rawPath,
       }));
     }
   }
 
-  trackCookielessPageview(window.location.pathname);
+  window.trackCookielessSearch = function (term) {
+    const clean = String(term || '').trim();
+    if (clean.length < 2) return;
+    sendAnalyticsBeacon({
+      type: 'search',
+      path: window.location.pathname || '/salsopedia.html',
+      term: clean,
+    });
+  };
+
+  trackCookielessPageview(window.location.pathname + (window.location.hash || ''));
 
   document.addEventListener('page:loaded', (e) => {
     const targetPath = (e && e.detail && e.detail.url) || window.location.pathname;
     trackCookielessPageview(targetPath);
+  });
+
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash) {
+      trackCookielessPageview((window.location.pathname || '/') + window.location.hash);
+    }
   });
 })();

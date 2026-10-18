@@ -226,14 +226,20 @@ function setupEventListeners() {
     if (!root || root.dataset.wikiListenersBound === '1') return;
     root.dataset.wikiListenersBound = '1';
 
-    // 1. Wyszukiwarka
+    // 1. Wyszukiwarka + bezciasteczkowa telemetria wyszukiwanych fraz (#34)
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearchBtn');
+    const trackSearchDebounced = debounce((query) => {
+        if (query && query.length >= 3 && typeof window.trackCookielessSearch === 'function') {
+            window.trackCookielessSearch(query);
+        }
+    }, 1000);
     if (searchInput) {
         searchInput.addEventListener('input', debounce((e) => {
             AppState.searchQuery = e.target.value.trim().toLowerCase();
             if (clearBtn) clearBtn.classList.toggle('is-hidden', !AppState.searchQuery);
             renderCurrentView();
+            trackSearchDebounced(AppState.searchQuery);
         }, 200));
     }
 

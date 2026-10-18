@@ -7,6 +7,14 @@
   <meta name="description" content="Kato Salsa Hub - oficjalny portal społecznościowy tancerzy Salsy Cubana, Bachaty i Kizomby w Katowicach i na Śląsku. Radio Timba Nation 24/7 oraz Salsopedia.">
   <meta name="theme-color" content="#fbbf24">
   <title>Kato Salsa Hub ⚡ Kubańska Energia w Katowicach</title>
+  <link rel="canonical" href="https://katosalsahub.pl/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="Kato Salsa Hub">
+  <meta property="og:title" content="Kato Salsa Hub ⚡ Kubańska Energia w Katowicach">
+  <meta property="og:description" content="Oficjalny portal społecznościowy tancerzy Salsy Cubana, Bachaty i Kizomby w Katowicach i na Śląsku. Radio Timba Nation 24/7, mapa miejscówek oraz Salsopedia.">
+  <meta property="og:url" content="https://katosalsahub.pl/">
+  <meta property="og:image" content="https://katosalsahub.pl/assets/images/logo.jpg">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="assets/css/style.css?v=4.2">
   <link rel="stylesheet" href="assets/css/components.css?v=4.2">
@@ -17,12 +25,45 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://stream.zeno.fm" crossorigin>
   <link rel="preconnect" href="https://api.zeno.fm" crossorigin>
+  <link rel="preconnect" href="https://ai.twojastronawww.pl" crossorigin>
   <link rel="dns-prefetch" href="https://stream.zeno.fm">
   <link rel="dns-prefetch" href="https://api.zeno.fm">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;800&display=swap"
     rel="stylesheet">
   <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://katosalsahub.pl/#organization",
+        "name": "Kato Salsa Hub",
+        "url": "https://katosalsahub.pl/",
+        "logo": "https://katosalsahub.pl/assets/images/logo.jpg",
+        "description": "Społeczność tancerzy Salsy Kubańskiej (Casino, Rueda de Casino, Timba), Bachaty i Kizomby w Katowicach i na Śląsku.",
+        "areaServed": "Katowice, Śląsk, Polska",
+        "sameAs": [
+          "https://www.facebook.com/groups/519446499987373"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://katosalsahub.pl/#website",
+        "url": "https://katosalsahub.pl/",
+        "name": "Kato Salsa Hub",
+        "inLanguage": "pl-PL",
+        "publisher": { "@id": "https://katosalsahub.pl/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://katosalsahub.pl/salsopedia.html?term={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -449,6 +490,7 @@
         <a href="#hero">Start</a>
         <a href="#onas">O nas</a>
         <a href="#style">Style</a>
+        <a href="salsopedia.html">Salsopedia</a>
         <a href="#kontakt">Kontakt</a>
         <a href="privacy.html">Polityka Prywatności</a>
         <a href="https://dancepuls.katosalsahub.pl/" target="_blank" rel="noopener noreferrer">DancePuls Generator</a>
