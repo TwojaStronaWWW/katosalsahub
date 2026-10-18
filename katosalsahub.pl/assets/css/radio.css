@@ -337,10 +337,23 @@ body.radio-playing .btn-radio {
 @media (max-width: 560px) {
   .radio-sleep-timer {
     flex-wrap: wrap;
-    height: 86px;
-    min-height: 86px;
-    max-height: 86px;
+    height: auto;
+    min-height: 76px;
+    max-height: none;
     align-content: space-between;
+  }
+
+  .sleep-timer-buttons {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 32px;
+    max-width: 100%;
+  }
+
+  .sleep-timer-btn,
+  .sleep-timer-cancel {
+    padding: 0 9px;
+    font-size: 0.74rem;
   }
 }
 

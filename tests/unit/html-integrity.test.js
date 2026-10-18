@@ -91,6 +91,14 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /Kamienny Krąg/i);
       assert.match(html, /Amfiteatr i Parking NOSPR/i);
 
+      const styleCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'style.css'), 'utf-8');
+      assert.match(styleCss, /html\s*\{[^}]*overflow-x:\s*hidden/s, 'Brak blokady overflow-x: hidden na elemencie html w style.css');
+      assert.match(styleCss, /body\s*\{[^}]*overflow-x:\s*hidden/s, 'Brak blokady overflow-x: hidden na elemencie body w style.css');
+
+      const sectionsCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'sections.css'), 'utf-8');
+      assert.match(sectionsCss, /\.map-hub-grid\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/s, 'Brak minmax(0, 1fr) w .map-hub-grid zapobiegającego rozpychaniu sekcji mapy na telefonie');
+      assert.match(sectionsCss, /\.map-spot-top\s*\{[^}]*flex-wrap:\s*wrap/s, 'Brak flex-wrap: wrap w .map-spot-top zapobiegającego wychodzeniu napisów poza ramki kart lokalizacji');
+
       const kmlPath = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'kato-salsa-hub-mapa.kml');
       assert.ok(fs.existsSync(kmlPath), 'Brak pliku kato-salsa-hub-mapa.kml w katosalsahub.pl/assets/data/');
       const kml = fs.readFileSync(kmlPath, 'utf-8');

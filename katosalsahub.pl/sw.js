@@ -4,18 +4,18 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v14';
+const CACHE_NAME = 'ksh-pwa-v15';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/salsopedia.html',
   '/privacy.html',
   '/manifest.json',
-  '/assets/css/style.css?v=3.9',
-  '/assets/css/components.css?v=3.9',
-  '/assets/css/sections.css?v=3.9',
-  '/assets/css/radio.css?v=3.9',
-  '/assets/css/wiki.css?v=3.9',
+  '/assets/css/style.css?v=4.2',
+  '/assets/css/components.css?v=4.2',
+  '/assets/css/sections.css?v=4.2',
+  '/assets/css/radio.css?v=4.2',
+  '/assets/css/wiki.css?v=4.2',
   '/assets/js/router.js?v=3.9',
   '/assets/js/home.js?v=3.9',
   '/assets/js/radio.js?v=3.9',

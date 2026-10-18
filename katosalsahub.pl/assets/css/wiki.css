@@ -346,14 +346,17 @@
 .wiki-content {
   flex: 1;
   min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .active-filter-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 10px 12px;
   margin-bottom: 22px;
-  padding: 10px 18px;
+  padding: 10px 16px;
   background: rgba(22, 25, 40, 0.7);
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -393,13 +396,14 @@
 
 .wiki-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 22px;
+  width: 100%;
 }
 
 @media (min-width: 680px) {
   .wiki-grid {
-    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }
 
@@ -409,10 +413,13 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   position: relative;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }

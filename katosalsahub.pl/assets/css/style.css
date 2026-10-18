@@ -29,10 +29,18 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  position: relative;
   font-family: 'Montserrat', sans-serif;
   background:
     radial-gradient(
@@ -53,6 +61,15 @@ body {
     var(--bg);
   color: var(--fg);
   line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
 }
 
 img {
