@@ -34,9 +34,9 @@ AddType 'image/webp' webp
   </IfModule>
 </FilesMatch>
 
-# Brak agresywnego cache'owania dla Service Workera, widoków HTML, arkuszy CSS/JS i dynamicznej bazy Salsopedii
+# Walidacja świeżości dla Service Workera, widoków HTML, arkuszy CSS/JS i dynamicznej bazy Salsopedii (bez no-store pogarszającego TTFB dla Googlebota)
 <IfModule mod_headers.c>
   <FilesMatch "^(sw\.js|.*\.(html|css|js)|salsopedia\.json)$">
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Cache-Control "no-cache, must-revalidate"
   </FilesMatch>
 </IfModule>

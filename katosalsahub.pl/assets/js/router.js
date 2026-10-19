@@ -121,6 +121,9 @@ async function loadPage(url) {
 
         if (token !== navToken) return; // Cancelled by newer navigation check 2
 
+        if (doc.title) {
+            document.title = doc.title;
+        }
         appContent.innerHTML = newContent.innerHTML;
 
         // Router is now "Dumb" - Emits Event

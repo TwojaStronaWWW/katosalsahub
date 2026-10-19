@@ -25,10 +25,17 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /<link\s+rel="manifest"\s+href="manifest\.json">/i);
     });
 
-    it('powinien definiować precyzyjny tytuł <title> z marką Kato Salsa Hub', () => {
+    it('powinien definiować precyzyjny tytuł <title> z frazą kluczową "Salsa Katowice" oraz marką "Kato Salsa Hub", link canonical, Open Graph i dane strukturalne Schema.org (DanceGroup + FAQPage)', () => {
       const match = html.match(/<title>(.*?)<\/title>/i);
       assert.ok(match, 'Brak znacznika <title>');
+      assert.match(match[1], /Salsa Katowice/i, 'Brak głównej frazy kluczowej "Salsa Katowice" w <title>');
       assert.match(match[1], /Kato Salsa Hub/i);
+      assert.match(html, /<link\s+rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/">/i, 'Brak linku canonical w index.html');
+      assert.match(html, /<meta\s+property="og:title"\s+content="[^"]*Salsa Katowice[^"]*"/i, 'Brak tagu og:title z frazą Salsa Katowice');
+      assert.match(html, /itemtype="https:\/\/schema\.org\/DanceGroup"/i, 'Brak mikrodanych Schema.org/DanceGroup');
+      assert.match(html, /itemtype="https:\/\/schema\.org\/FAQPage"/i, 'Brak sekcji FAQ z mikrodanymi Schema.org/FAQPage');
+      assert.match(html, /<h1[^>]*>[\s\S]*?Katowicach[\s\S]*?<\/h1>/i, 'Nagłówek <h1> powinien zawierać lokalizację (Katowicach/Katowice)');
+      assert.doesNotMatch(html, /<h1[^>]*>[\s\S]*?<div\b[\s\S]*?<\/h1>/i, 'Nagłówek <h1> nie może zawierać elementu blokowego <div>');
     });
 
     it('powinien zawierać przycisk odtwarzacza radiowego, preconnect do Zeno.fm, metadane utworu (#20) oraz wyłącznik czasowy (#19)', () => {
