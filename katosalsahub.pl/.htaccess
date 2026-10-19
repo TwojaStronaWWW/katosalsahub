@@ -1,5 +1,12 @@
 Options -Indexes
 
+# Kanoniczne przekierowanie 301 z www na domenę bez www (eliminacja duplikatów w Google)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^www\.katosalsahub\.pl$ [NC]
+  RewriteRule ^(.*)$ https://katosalsahub.pl/$1 [R=301,L]
+</IfModule>
+
 AddDefaultCharset UTF-8
 AddType 'text/html; charset=UTF-8' html
 AddType 'text/css; charset=UTF-8' css

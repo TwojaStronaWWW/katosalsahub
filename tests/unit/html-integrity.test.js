@@ -180,17 +180,21 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
   });
 
   describe('DancePuls (dancepuls.pl/index.html)', () => {
-    it('plik index.html powinien istnieć, mieć poprawny szkielet, meta description i zawierać panel 6-sekcyjnego raportu KSH', () => {
+    it('plik index.html powinien istnieć, mieć poprawny szkielet, meta description, canonical i zawierać panel 6-sekcyjnego raportu KSH', () => {
       assert.ok(fs.existsSync(DANCEPULS_HTML));
       const html = fs.readFileSync(DANCEPULS_HTML, 'utf-8');
       assert.match(html, /<!DOCTYPE html>/i);
       assert.match(html, /<html\s+lang="pl">/i);
       assert.match(html, /<meta\s+name="description"\s+content="[^"]+"/i);
+      assert.match(html, /<link\s+rel="canonical"\s+href="https:\/\/dancepuls\.katosalsahub\.pl\/">/i);
       assert.match(html, /id="load-report-btn"/i);
       assert.match(html, /id="open-audit-btn"/i);
       assert.match(html, /id="wynik-przyszle"/i);
       assert.match(html, /id="copy-comment2-btn"/i);
       assert.match(html, /id="copy-all-poll-btn"/i);
+
+      const htaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.htaccess'), 'utf-8');
+      assert.match(htaccess, /RewriteCond\s+%\{HTTP_HOST\}\s+\^www\\\.katosalsahub\\\.pl\$/, 'Brak przekierowania 301 z www.katosalsahub.pl w .htaccess');
     });
 
     it('plik dancepuls.pl/index.html nie powinien zawierać stylów inline, inline event handlerów ani inline <script> (SoC)', () => {
