@@ -34,6 +34,7 @@ NIEDZIELA|Niedziela w Katowicach to warsztaty Salsa Street z Anną Cibis w Mil P
 24–25.10|SA|Marco Faravelli wraca do Sabrosy,warsztaty weekendowe|Mambo/Salsa On2|https://www.facebook.com/groups/1202777840091298/posts/2864429500592782/|Sabrosa; 11.10 publiczne ogłoszenie potwierdza daty 24–25.10.2026; bezpośrednie wydarzenie FB nieodnalezione; nowe w bazie 11.10
 24.10|MP|K Experience + Early Vibes & Goodnights Pumpkin Edition,warsztaty i impreza|Bachata/Kizomba|F:1040992492288985|Mil Pasos/Michał Rozewski; 03.10 oficjalna strona potwierdza zajęcia 16–20 oraz imprezę 20–02 (Kamienna 4)
 24.10|FT|Halloween Hogwarts|Salsa/Bachata|F:1061231330083326|Forum Tańca
+25.10|WL|Salsa Habana Picante vol. 68|Cubana|F:891329324066083|KATO SALSA HUB; 15–18 CET; ⭐ własne wydarzenie
 25.10|MY,Teatro Cubano,Jagiellońska10|Bachata at Teatro Cubano|Bachata|O:bUBcJYprLm1Iak6fHe3B|Mykhailo Burdeinyi
 28.10|MP|Upiorna nagrywka z Izabelą,zajęcia specjalne|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|18:00, pomiń koniec 19:55 vs 20:00; 03.10 strona oficjalna, FB brak
 30.10|Tychy,Mohito,al.Jana PawłaII14|Wielka Biba Halloween+Urodziny Zuzi|Salsa/Bachata/Kizomba|O:439ca0f1bb6c4322b797|Mohito Tychy; 21:00; FB nieodnaleziony

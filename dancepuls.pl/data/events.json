@@ -448,6 +448,23 @@
     "events": [
       {
         "checked": true,
+        "promote": true,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Wolni Ludzie",
+        "miejsceInne": "Wolni Ludzie (ul. Mariacka 2)",
+        "adres": "ul. Mariacka 2",
+        "lat": 50.2577,
+        "lng": 19.0248,
+        "tytul": "Salsa Habana Picante vol. 68",
+        "opis": "Salsa Habana Picante vol. 68 - KATO SALSA HUB; 15–18 CET; ⭐ własne wydarzenie",
+        "link": "https://www.facebook.com/events/891329324066083/",
+        "style": [
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
         "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",

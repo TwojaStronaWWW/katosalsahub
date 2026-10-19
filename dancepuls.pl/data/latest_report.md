@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 15.10.2026
 - **Stan zestawienia na weekend 16–18.10.2026:** **16 pozycji** (2 pt + 10 sb + 4 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **35 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **36 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (15.10 — 6 pozycji, data publikacji nieustalona):**
   - **Praktis IMPRO z Samborem** | 15.10.2026 | Kraków, Forum Tańca | Sensual Impro | https://onlydanceapp.com/event/1b697a7fb3e249feae92
@@ -116,6 +116,9 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 🗓️ SOBOTA (24.10.2026)
 ➡️ Kraków: Forum Tańca, Halloween Hogwarts (Salsa/Bachata)
 🔗 https://www.facebook.com/events/1061231330083326/
+🗓️ NIEDZIELA (25.10.2026)
+⭐ Katowice: Wolni Ludzie, Salsa Habana Picante vol. 68 (Cubana)
+🔗 https://www.facebook.com/events/891329324066083/
 🗓️ NIEDZIELA (25.10.2026)
 ➡️ Kraków: Teatro Cubano, Bachata at Teatro Cubano (Bachata)
 🔗 https://onlydanceapp.com/event/bUBcJYprLm1Iak6fHe3B
