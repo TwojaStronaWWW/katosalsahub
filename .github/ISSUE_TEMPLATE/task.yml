@@ -15,7 +15,7 @@ body:
         - "Sprint 5: SEO 'Salsa Katowice', Branding & Ochrona Marki"
         - "Sprint 6: Społeczność, Lokal (Wolni Ludzie) & Grupy Festiwalowe"
         - "Sprint 3: Salsopedia, Content & Automatyzacja DancePuls"
-        - "Sprint 7: Wyjazd Integracyjny KSH (9–11 marca, do 100 osób)"
+        - "Sprint 7: Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób)"
         - "Inny / Dług techniczny"
     validations:
       required: true
