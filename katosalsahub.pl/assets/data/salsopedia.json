@@ -2033,17 +2033,17 @@
       "Bachata",
       "Kizomba"
     ],
-    "definition": "Kultowa plenerowa lokalizacja społeczności Kato Salsa Hub w Katowicach (przy rolkostradzie i przystani wodnej na Dolinie Trzech Stawów). W sezonie wiosenno-letnim odbywają się tu otwarte salsoteki pod gołym niebem, animacje Ruedy de Casino oraz integracje łączące tancerzy ze wszystkich śląskich szkół.",
-    "author": "Niezweryfikowane",
+    "definition": "Kultowa plenerowa lokalizacja społeczności Kato Salsa Hub w Katowicach — główny parkiet znajduje się na Kamiennym Kręgu (ul. Trzech Stawów 22, obok przystani i La Cantina). W razie deszczu tańczymy pod zadaszoną wiatą przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10). Na mapie oznaczyliśmy 3 toalety (w tym przy AMO Pizza) oraz 13-minutową trasę pieszą z darmowego Parkingu Rekomendowanego (Południe / Rolkostrada).",
+    "author": "Kato Salsa Hub",
     "author_link": "https://katosalsahub.pl",
     "source": [
       {
-        "name": "Lokalizacja na mapie KSH",
+        "name": "Lokalizacja i parkingi na mapie KSH",
         "url": "https://katosalsahub.pl/#mapa"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_school_11",
@@ -3640,5 +3640,82 @@
     ],
     "status": "unverified",
     "verification_count": 0
+  },
+  {
+    "id": "term_ksh_wolni_ludzie",
+    "term": "Wolni Ludzie — Niedzielne Potańcówki Kato Salsa Hub (ul. Mariacka 2, Katowice)",
+    "category": [
+      "schools",
+      "dance"
+    ],
+    "subcategory": [
+      "Potańcówki",
+      "Salsa Cubana",
+      "Bachata",
+      "Kizomba",
+      "Rueda de Casino"
+    ],
+    "definition": "Nasza główna miejscówka taneczna pod dachem w ścisłym centrum Katowic (ul. Mariacka 2, róg ul. Mielęckiego). W każdą niedzielę w godzinach 15:00–18:00 odbywają się tu regularne, otwarte potańcówki i praktyki społeczności Kato Salsa Hub (Salsa Cubana / Casino, Timba, Rueda de Casino, Son Cubano, Bachata i Kizomba). Nie trzeba przychodzić z własną parą — rotujemy w parach w luźnej, przyjaznej atmosferze! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są darmowe, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://katosalsahub.pl",
+    "source": [
+      {
+        "name": "Mapa dojazdu i darmowych parkingów (Wolni Ludzie)",
+        "url": "https://katosalsahub.pl/#mapa"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 10
+  },
+  {
+    "id": "term_ksh_dzialalnosc",
+    "term": "Kato Salsa Hub — Działalność Społeczności i Fundacji (Salsa Katowice)",
+    "category": [
+      "dance",
+      "history",
+      "schools"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Timba",
+      "Rueda de Casino",
+      "Bachata",
+      "Kizomba"
+    ],
+    "definition": "Niezależna społeczność i Fundacja łącząca tancerzy Salsy Kubańskiej (Casino, Timba, Rueda de Casino), Bachaty i Kizomby z Katowic i całego Śląska ponad podziałami szkolnymi. Nasza pełna działalność obejmuje: 1) Niedzielne potańcówki i praktyki pod dachem w lokalu Wolni Ludzie (ul. Mariacka 2 w Katowicach — w każdą niedzielę od 15:00 do 18:00), 2) Darmowe plenery taneczne w Dolinie Trzech Stawów (Kamienny Krąg przy ul. Trzech Stawów 22 oraz zadaszona wiata UKS 4 w razie deszczu) i pod Amfiteatrem NOSPR (pl. Wojciecha Kilara 1), 3) Salsopedię — otwartą encyklopedię ponad 200 figur, rytmów, instruktorów i szkół tańca, 4) Całodobowe Radio Timba Nation 24/7 bez reklam (działające przy zablokowanym telefonie i z wyłącznikiem czasowym), 5) Agregator imprez DancePuls (cotygodniowe zestawienia wszystkich imprez i warsztatów na Śląsku i w Krakowie), 6) Comiesięczne spotkania integracyjne z systemem opasek (Leaders/Followers), grupy zniżkowe na festiwale oraz wielki wiosenny Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób).",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://katosalsahub.pl",
+    "source": [
+      {
+        "name": "Oficjalna strona Kato Salsa Hub",
+        "url": "https://katosalsahub.pl/"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 10
+  },
+  {
+    "id": "term_ksh_nospr",
+    "term": "Amfiteatr NOSPR — Plenery i Parking Rekomendowany (Katowice)",
+    "category": [
+      "schools",
+      "dance"
+    ],
+    "subcategory": [
+      "Plener",
+      "Salsa Cubana",
+      "Parking"
+    ],
+    "definition": "Plenerowa lokalizacja taneczna społeczności Kato Salsa Hub w katowickiej Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony gmachu NOSPR przy fontannach). Bezpośrednio przy NOSPR i Muzeum Śląskim (od ul. Olimpijskiej) znajduje się nasz główny, ogromny i całkowicie darmowy w niedziele Parking Rekomendowany — zaledwie 2 minuty od Amfiteatru oraz 12 minut wyznaczoną trasą pieszą przez kładkę do lokalu Wolni Ludzie (ul. Mariacka 2).",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://katosalsahub.pl",
+    "source": [
+      {
+        "name": "Nawigacja na Parking Rekomendowany NOSPR",
+        "url": "https://katosalsahub.pl/#mapa"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 8
   }
 ]

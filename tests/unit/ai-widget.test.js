@@ -55,12 +55,20 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     assert.match(ctx, /Setenta/);
     assert.ok(searchKnowledgeEntries('Los Van Van', REAL_SALSOPEDIA).length > 0);
 
-    // 3. Pytania o działanie Salsopedii, Radio Timba Nation, DancePuls, lokalizacje i kursy P0
+    // 3. Pytania o działanie Salsopedii, Radio Timba Nation, DancePuls, lokalizacje (w tym Wolni Ludzie w niedziele 15:00-18:00) i działalność KSH
     assert.match(getLocalFallbackAnswer('Czym jest Salsopedia i jak dodać hasło?', 'katosalsahub', REAL_SALSOPEDIA), /Salsopedia Studio/i);
     assert.match(getLocalFallbackAnswer('Jak działa Radio Timba Nation i sleep timer?', 'katosalsahub', []), /Timba Nation/i);
     assert.match(getLocalFallbackAnswer('Gdzie znaleźć kalendarz imprez DancePuls na weekend?', 'katosalsahub', []), /DancePuls/i);
     assert.match(getLocalFallbackAnswer('Gdzie tańczymy na Dolinie Trzech Stawów?', 'katosalsahub', []), /Dolina Trzech Stawów/i);
     assert.match(getLocalFallbackAnswer('Jak zacząć od podstaw P0 i czy działa Multisport?', 'katosalsahub', []), /Multisport/i);
+
+    const wolni = getLocalFallbackAnswer('Co dzieje się w Wolnych Ludziach w każdą niedzielę?', 'katosalsahub', REAL_SALSOPEDIA);
+    assert.match(wolni, /15:00–18:00/);
+    assert.match(wolni, /Mariacka 2/i);
+
+    const kshCtx = buildDynamicContext('Kiedy są imprezy w Wolnych Ludziach?', REAL_SALSOPEDIA);
+    assert.match(kshCtx, /15:00–18:00/);
+    assert.match(kshCtx, /Wolni Ludzie/i);
   });
 
   it('initAiWidget tworzy strukturę DOM, obsługuje otwieranie/zamykanie (w tym Escape) i chroni przed duplikacją', () => {
