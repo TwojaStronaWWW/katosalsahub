@@ -26,7 +26,7 @@ Zautomatyzowany generator zestawień imprezowych dla społeczności tanecznej na
   - Skróty linków automatycznie rozwijane przez `sync_engine.js`:
     - `F:ID` -> `https://www.facebook.com/events/ID/`
     - `O:ID` -> `https://onlydanceapp.com/event/ID`
-  - Skróty miejsc (`VENUE_MAP`): `LC`, `EV`, `MP`, `GR`, `KL`, `TS`, `DL`, `SA`, `FT`, `PR`, `LO`, `ZW`, `MY` (dla `MY` lokal podawany po przecinku, np. `MY,Mojitos,Mikołajska13`).
+  - Skróty miejsc (`VENUE_MAP`): `LC`, `EV`, `MP`, `GM`, `GR`, `KL`, `TS` (Dolina Trzech Stawów), `WL` (Wolni Ludzie, ul. Mariacka 2), `DL`, `SA`, `FT`, `PR`, `LO`, `ZW`, `MY` (dla `MY` lokal podawany po przecinku, np. `MY,Mojitos,Mikołajska13`).
 - **JSON dla aplikacji DancePuls:** `dancepuls.pl/data/events.json`
 - **Gotowy 6-sekcyjny raport:** `dancepuls.pl/data/latest_report.md`
 - **Silnik automatyzacji:** `dancepuls.pl/tools/sync_engine.js` (uruchamiany przez `npm run report` lub `node dancepuls.pl/tools/sync_engine.js`).
@@ -48,3 +48,14 @@ Zautomatyzowany generator zestawień imprezowych dla społeczności tanecznej na
 4. **Sekcja 4 (KOMENTARZ 1 — weekend):** Pełna lista z miejscami/stylami identycznymi z ankietą (`⭐` wyłącznie dla własnej imprezy KSH, `➡️` dla pozostałych), linkiem `🔗` i dokładną stopką KSH.
 5. **Sekcja 5 (KOMENTARZ 2 — przyszłość):** Nagłówek `🎉 Zaplanowane wydarzenia — kolejne tygodnie`, pełna chronologiczna lista zapowiedzi w formacie `🗓️ DZIEŃ (DD.MM.RRRR)` (lub zakres dla festiwali / `OD DD.MM.RRRR`), `➡️ Miasto: Miejsce, nazwa (style)`, `🔗 link` oraz dokładna stopka KSH.
 6. **Sekcja 6 (PRYWATNIE):** Wydarzenia `pn–cz` bieżącego tygodnia poza ankietą, wstrzymane/niepewne tropy z powodami, konflikty danych i kolejne konkretne kroki.
+
+## 5. Protokół SEO przy dodawaniu własnego wydarzenia Kato Salsa Hub
+Gdy użytkownik podaje link do nowego wydarzenia własnego KSH na Facebooku (`https://www.facebook.com/events/ID`), wykonaj automatycznie przez CLI:
+1. Odczytaj tytuł, datę i miejsce (`WL` dla Wolnych Ludzi ul. Mariacka 2 lub `TS` dla Doliny Trzech Stawów).
+2. Dopisz wiersz do `dancepuls.pl/data/events_database.md` z adnotacją `KATO SALSA HUB; ...; ⭐ własne wydarzenie`.
+3. Uruchom `node dancepuls.pl/tools/sync_engine.js` w celu odświeżenia `events.json` oraz `latest_report.md`.
+4. Zaktualizuj obiekt `@type: "DanceEvent"` w bloku JSON-LD w `katosalsahub.pl/index.html` o nową datę `startDate`/`endDate`, nazwę i link URL wydarzenia.
+5. Wyświetl użytkownikowi gotowe bloki **Kopiuj–Wklej** z `BLUEPRINT.md` (Sekcja 5.2 i 5.3):
+   - **Stopkę SEO na dół opisu wydarzenia na Facebooku** (z linkami do `https://katosalsahub.pl/` i `https://dancepuls.katosalsahub.pl/` oraz hashtagami `#SalsaKatowice #KatoSalsaHub`),
+   - **Dane do wpisu `Posts -> Event` w Wizytówce Google** (tytuł `<= 58 znaków` zaczynający się od `Salsa Katowice: ...`, opis bez kropki domenowej `.pl` w treści oraz link do przycisku `Learn more`).
+

@@ -84,6 +84,11 @@ katosalsahub/
 - **Stała geometria pasków zakładek i przełączników:** Przyciski przełączników (np. `.map-tabs`, `.radio-sleep-timer`) muszą znajdować się w stałej siatce CSS Grid (`grid-template-columns: repeat(N, minmax(0, 1fr))`) o stałej wysokości (`height`) i `white-space: nowrap`, bez przesunięć `transform` zmieniających układ podczas klikania.
 - **Izolacja dynamicznych napisów statusu:** Elementy o zmiennej długości tekstu (`#map-active-label`, `#radio-track-title`, `#sleep-timer-status`) muszą być osadzone w kontenerach o stałej wysokości i szerokości (`min-width: 0`, `overflow: hidden`, `text-overflow: ellipsis`) lub ukrywane przez `visibility: hidden` zamiast `display: none`, aby zmiana tekstu nigdy nie przesuwała sąsiednich przycisków.
 
+### 4.7 Standardy SEO, Wizytówka Google (GBP) i Automatyzacja Wydarzeń
+- **Ochrona Snippetów Google (`data-nosnippet`):** Kontener czatu AI (`#ksh-ai-widget`) oraz baner cookies (`#cookie-banner`) muszą zawsze posiadać atrybut `data-nosnippet`, aby Googlebot nigdy nie używał komunikatu bota jako opisu strony w wynikach wyszukiwania.
+- **Kanoniczne URL-e i `Schema.org`:** Wymuszone przekierowanie `301` z `www.` na `https://katosalsahub.pl/` w `.htaccess`, jawne `<link rel="canonical">` na wszystkich stronach oraz pełny graf JSON-LD (`Organization` + `DanceGroup`, `WebSite`, `FAQPage`, `DanceEvent` oraz `sameAs`: Fanpage FB, Grupa FB, Instagram).
+- **Automatyzacja nowych wydarzeń KSH:** Po otrzymaniu od użytkownika linku do nowego wydarzenia FB (`https://www.facebook.com/events/ID`), agent automatycznie dodaje je do `events_database.md` (skrót `WL` lub `TS`), uruchamia `sync_engine.js`, aktualizuje obiekt `DanceEvent` w `katosalsahub.pl/index.html` i zwraca gotowe szablony Kopiuj–Wklej z `BLUEPRINT.md` (Sekcja 5.2 i 5.3: stopka SEO na FB oraz wpis `Event` do Wizytówki Google z tytułem `<= 58 znaków` i opisem bez kropki domenowej `.pl`).
+
 ---
 
 ## 5. STANDARD JĘZYKA BIZNESOWEGO (ZASADA ANTI-AI / ANTI-JARGON)
