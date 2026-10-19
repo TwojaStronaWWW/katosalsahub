@@ -1,0 +1,9 @@
+# DancePuls — Radar Imprez, Potańcówek i Warsztatów Tanecznych (Katowice & Śląsk)
+
+> DancePuls (https://dancepuls.katosalsahub.pl/) to automatycznie aktualizowany agregator i kalendarz wydarzeń tanecznych (Salsa Kubańska, Salsa LA/NY, Bachata Sensual, Kizomba, Urbankiz, Zouk) w Katowicach i całej aglomeracji górnośląskiej.
+
+## Co znajdziesz na DancePuls
+
+- **6-sekcyjny Raport KSH:** Cotygodniowe zestawienie potwierdzonych imprez (socials), praktyk tanecznych, warsztatów weekendowych, festiwali oraz darmowych plenerów na Śląsku.
+- **Współrzędne GPS i nawigacja:** Każde wydarzenie posiada znormalizowaną lokalizację, miasto, obiekt oraz bezpośrednie linki źródłowe.
+- **Powiązanie z portalem głównym:** [Kato Salsa Hub](https://katosalsahub.pl/) oraz encyklopedią [Salsopedia](https://katosalsahub.pl/salsopedia.html).
