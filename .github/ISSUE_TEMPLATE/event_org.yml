@@ -1,0 +1,69 @@
+name: 💃 Inicjatywa Społeczności / Event / Organizacja
+description: Zgłoszenie zadania organizacyjnego (wyjazd, spotkanie, lokal, finanse Fundacji, promocja)
+title: "[EVENT/ORG] "
+labels: ["enhancement", "eventy & logistyka"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Szablon dla zespołu i zarządu **Fundacji Kato Salsa Hub** do planowania wydarzeń, wyjazdów integracyjnych, rozmów z lokalami oraz spraw finansowo-prawnych.
+  - type: dropdown
+    id: sprint
+    attributes:
+      label: Docelowy Sprint (Kamień milowy)
+      options:
+        - "Sprint 5: SEO 'Salsa Katowice', Branding & Ochrona Marki"
+        - "Sprint 6: Społeczność, Lokal (Wolni Ludzie) & Grupy Festiwalowe"
+        - "Sprint 3: Salsopedia, Content & Automatyzacja DancePuls"
+        - "Sprint 7: Wyjazd Integracyjny KSH (9–11 marca, do 100 osób)"
+        - "Inna inicjatywa społeczności"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Główny obszar odpowiedzialności
+      options:
+        - "Eventy & Logistyka (hotel, lokal, autokar, opaski, sprzęt)"
+        - "Finanse & Prawo (konto fundacji, bramka płatności, umowy SLA, polisa NNW/OC)"
+        - "SEO & Marketing (wizytówka Google, Social Media, promocja wydarzeń)"
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorytet realizacji
+      options:
+        - "CRITICAL 🔴 (Bloker ścieżki krytycznej – od tego zaczynamy)"
+        - "HIGH 🟠 (Ważne zadanie w bieżącym etapie)"
+        - "MEDIUM 🟡 (Kolejny etap po domknięciu blokerów)"
+        - "LOW 🟢 (Pomysł dodatkowy / opcjonalny)"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Cel inicjatywy i korzyść dla społeczności
+      description: Co chcemy zorganizować lub wynegocjować i jaką wartość da to tancerzom / partnerom?
+      placeholder: Opisz krótko cel (np. rezerwacja sali, zakup opasek, uruchomienie grupy festiwalowej)...
+    validations:
+      required: true
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Lista zadań do wykonania (Checklist)
+      description: Wypisz konkretne kroki, które można odhaczać w miarę postępów prac
+      value: |
+        - [ ] Krok 1: 
+        - [ ] Krok 2: 
+        - [ ] Krok 3: 
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Zależności, budżet lub termin graniczny (opcjonalnie)
+      description: Czy to zadanie wymaga wcześniejszego ukończenia innego etapu (np. #43 Konto fundacyjne)?
+      placeholder: np. Wymaga wcześniejszego otwarcia konta (#43), termin do końca miesiąca...
+    validations:
+      required: false

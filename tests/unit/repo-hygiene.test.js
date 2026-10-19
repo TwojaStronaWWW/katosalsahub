@@ -41,6 +41,9 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'manifest.json')), 'Brak manifest.json (#21)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sw.js')), 'Brak sw.js (#21)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'pull_request_template.md')), 'Brak .github/pull_request_template.md');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'ISSUE_TEMPLATE', 'bug_report.yml')), 'Brak .github/ISSUE_TEMPLATE/bug_report.yml');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'ISSUE_TEMPLATE', 'task.yml')), 'Brak .github/ISSUE_TEMPLATE/task.yml');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'ISSUE_TEMPLATE', 'event_org.yml')), 'Brak .github/ISSUE_TEMPLATE/event_org.yml');
   });
 
   it('kod źródłowy PHP i JS (w tym ai-widget.js) nie może zawierać zahardkodowanych haseł ani kluczy API oraz musi stosować rate_limit i HTTP_CF_CONNECTING_IP (#1, #2, ISO 27001)', () => {
