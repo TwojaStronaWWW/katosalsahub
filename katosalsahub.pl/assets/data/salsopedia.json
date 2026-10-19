@@ -3682,7 +3682,7 @@
       "Bachata",
       "Kizomba"
     ],
-    "definition": "Niezależna społeczność i Fundacja łącząca tancerzy Salsy Kubańskiej (Casino, Timba, Rueda de Casino), Bachaty i Kizomby z Katowic i całego Śląska ponad podziałami szkolnymi. Nasza pełna działalność obejmuje: 1) Niedzielne potańcówki i praktyki pod dachem w lokalu Wolni Ludzie (ul. Mariacka 2 w Katowicach — w każdą niedzielę od 15:00 do 18:00), 2) Darmowe plenery taneczne w Dolinie Trzech Stawów (Kamienny Krąg przy ul. Trzech Stawów 22 oraz zadaszona wiata UKS 4 w razie deszczu) i pod Amfiteatrem NOSPR (pl. Wojciecha Kilara 1), 3) Salsopedię — otwartą encyklopedię ponad 200 figur, rytmów, instruktorów i szkół tańca, 4) Całodobowe Radio Timba Nation 24/7 bez reklam (działające przy zablokowanym telefonie i z wyłącznikiem czasowym), 5) Agregator imprez DancePuls (cotygodniowe zestawienia wszystkich imprez i warsztatów na Śląsku i w Krakowie), 6) Comiesięczne spotkania integracyjne z systemem opasek (Leaders/Followers), grupy zniżkowe na festiwale oraz wielki wiosenny Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób).",
+    "definition": "Niezależna społeczność i Fundacja łącząca tancerzy Salsy Kubańskiej (Casino, Timba, Rueda de Casino), Bachaty i Kizomby z Katowic i całego Śląska ponad podziałami szkolnymi. Nasza pełna działalność obejmuje: 1) Niedzielne potańcówki i praktyki pod dachem w lokalu Wolni Ludzie (ul. Mariacka 2 w Katowicach — w każdą niedzielę od 15:00 do 18:00), 2) Darmowe plenery taneczne w Dolinie Trzech Stawów (Kamienny Krąg przy ul. Trzech Stawów 22 oraz zadaszona wiata UKS 4 w razie deszczu) i pod Amfiteatrem NOSPR (pl. Wojciecha Kilara 1), 3) Salsopedię — otwartą encyklopedię ponad 200 figur, rytmów, instruktorów i szkół tańca, 4) Wbudowany na stronie odtwarzacz całodobowego Radia Timba Nation 24/7 (niezależnej stacji kubańskiej DJ Maikiu z Zurychu nadającej na Zeno.FM bez reklam, z naszym wyłącznikiem czasowym i obsługą ekranu blokady), 5) Agregator imprez DancePuls (cotygodniowe zestawienia wszystkich imprez i warsztatów na Śląsku i w Krakowie), 6) Comiesięczne spotkania integracyjne z systemem opasek (Leaders/Followers), grupy zniżkowe na festiwale oraz wielki wiosenny Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób).",
     "author": "Kato Salsa Hub",
     "author_link": "https://katosalsahub.pl",
     "source": [
@@ -3717,5 +3717,29 @@
     ],
     "status": "verified",
     "verification_count": 8
+  },
+  {
+    "id": "term_timba_nation_radio",
+    "term": "Timba Nation Radio (DJ Maikiu — Zurych / Zeno.FM)",
+    "category": [
+      "music",
+      "bands"
+    ],
+    "subcategory": [
+      "Timba",
+      "Salsa Cubana",
+      "Radio"
+    ],
+    "definition": "Niezależna internetowa stacja radiowa z siedzibą w Zurychu (Szwajcaria), założona i prowadzona przez DJ Maikiu na platformie Zeno.FM (https://zeno.fm/radio/timba-nation-radio/). Nadaje 24/7 bez komercyjnych bloków reklamowych wyselekcjonowaną współczesną muzykę kubańską — Timbę, Salsę Cubana (Casino), Son oraz autorskie sety z serii Cuban Salsa Mix promujące nową generację kubańskich artystów. Stacja nie należy do Kato Salsa Hub — na naszym portalu udostępniamy tancerzom dedykowany odtwarzacz tego strumienia z podglądem granego utworu na żywo, obsługą ekranu blokady smartfona (MediaSession) oraz wyłącznikiem czasowym (Sleep Timer: 15, 30, 60 min).",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://katosalsahub.pl",
+    "source": [
+      {
+        "name": "Timba Nation Radio na platformie Zeno.FM",
+        "url": "https://zeno.fm/radio/timba-nation-radio/"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 10
   }
 ]

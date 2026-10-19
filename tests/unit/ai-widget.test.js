@@ -55,9 +55,21 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     assert.match(ctx, /Setenta/);
     assert.ok(searchKnowledgeEntries('Los Van Van', REAL_SALSOPEDIA).length > 0);
 
-    // 3. Pytania o działanie Salsopedii, Radio Timba Nation, DancePuls, lokalizacje (w tym Wolni Ludzie w niedziele 15:00-18:00) i działalność KSH
+    // 3. Pytania o działanie Salsopedii, Radio Timba Nation (DJ Maikiu z Zurychu na Zeno.FM), DancePuls, lokalizacje (w tym Wolni Ludzie w niedziele 15:00-18:00) i działalność KSH
     assert.match(getLocalFallbackAnswer('Czym jest Salsopedia i jak dodać hasło?', 'katosalsahub', REAL_SALSOPEDIA), /Salsopedia Studio/i);
-    assert.match(getLocalFallbackAnswer('Jak działa Radio Timba Nation i sleep timer?', 'katosalsahub', []), /Timba Nation/i);
+
+    const radioFallback = getLocalFallbackAnswer('Dlaczego te radio jest bez reklam i skąd pochodzi?', 'katosalsahub', REAL_SALSOPEDIA);
+    assert.match(radioFallback, /Timba Nation/i);
+    assert.match(radioFallback, /DJ Maikiu/i);
+    assert.match(radioFallback, /Zurych|Szwajcari/i);
+    assert.match(radioFallback, /Zeno\.FM/i);
+    assert.doesNotMatch(radioFallback, /tworzymy z pasji dla naszej śląskiej społeczności/i);
+
+    const radioCtx = buildDynamicContext('Czyje jest Radio Timba Nation i dlaczego nie ma reklam?', REAL_SALSOPEDIA);
+    assert.match(radioCtx, /DJ Maikiu/i);
+    assert.match(radioCtx, /Zurych/i);
+    assert.match(radioCtx, /Zeno\.FM/i);
+
     assert.match(getLocalFallbackAnswer('Gdzie znaleźć kalendarz imprez DancePuls na weekend?', 'katosalsahub', []), /DancePuls/i);
     assert.match(getLocalFallbackAnswer('Gdzie tańczymy na Dolinie Trzech Stawów?', 'katosalsahub', []), /Dolina Trzech Stawów/i);
     assert.match(getLocalFallbackAnswer('Jak zacząć od podstaw P0 i czy działa Multisport?', 'katosalsahub', []), /Multisport/i);

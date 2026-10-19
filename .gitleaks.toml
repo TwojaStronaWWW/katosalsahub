@@ -16,10 +16,13 @@ regex = '''katoAdmin202[0-9]'''
 tags = ["password", "salsopedia", "security"]
 
 [allowlist]
-description = "Wykluczenie szablonów przykładowych i testów jednostkowych weryfikujących brak haseł"
+description = "Wykluczenie szablonów przykładowych, publicznego pliku weryfikacji IndexNow i testów jednostkowych"
 paths = [
   '''^\.?env\.example$''',
   '''^\.?gitleaks\.toml$''',
   '''^tests/.*''',
   '''^\.git/.*'''
+]
+regexes = [
+  '''4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a'''
 ]

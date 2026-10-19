@@ -98,11 +98,12 @@ npm run sync
    - `DanceEvent` – zawsze zaktualizowany do najbliższego własnego wydarzenia Kato Salsa Hub (potańcówka lub plener), aby Google wyświetlał imprezę w karuzeli **„Wydarzenia w pobliżu: Katowice”**.
 4. **Szybka indeksacja (GSC + IndexNow API):**
    - Obie domeny (`https://katosalsahub.pl/` oraz `https://dancepuls.katosalsahub.pl/`) są zweryfikowane w Google Search Console z przesłanymi mapami `sitemap.xml`.
-   - Klucz IndexNow: `4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a` (plik `/4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a.txt`). Komenda CLI do natychmiastowego pingowania wyszukiwarek:
+   - Publiczny identyfikator pliku IndexNow: `4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a` (plik `/4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a.txt`). Komenda CLI do natychmiastowego pingowania wyszukiwarek:
      ```bash
+     INDEXNOW_ID="4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a"
      curl -s -X POST "https://api.indexnow.org/indexnow" \
        -H "Content-Type: application/json; charset=utf-8" \
-       -d '{"host":"katosalsahub.pl","key":"4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a","keyLocation":"https://katosalsahub.pl/4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a.txt","urlList":["https://katosalsahub.pl/","https://katosalsahub.pl/salsopedia.html"]}'
+       -d "{\"host\":\"katosalsahub.pl\",\"key\":\"${INDEXNOW_ID}\",\"keyLocation\":\"https://katosalsahub.pl/${INDEXNOW_ID}.txt\",\"urlList\":[\"https://katosalsahub.pl/\",\"https://katosalsahub.pl/salsopedia.html\"]}"
      ```
 
 ---

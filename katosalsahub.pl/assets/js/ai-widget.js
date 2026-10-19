@@ -165,7 +165,7 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
     steps: ['krok', 'kroki', 'podstaw', 'basico', 'guapea'],
     figures: ['figur', 'rueda', 'ruedzie', 'komend', 'casino', 'wystep'],
     styles: ['styl', 'odmian', 'gatun', 'rodzaj'],
-    music: ['muzyk', 'rytm', 'clave', 'utwor', 'piosen'],
+    music: ['muzyk', 'rytm', 'clave', 'utwor', 'piosen', 'radio', 'timba nation', 'maikiu', 'zeno'],
     instruments: ['instrument', 'beben', 'bebny', 'perkuj', 'perkus', 'conga', 'timbales', 'bongo', 'campana', 'guiro', 'guira', 'marakas', 'tres', 'bata', 'cajon', 'chekere', 'requinto', 'clave'],
     bands: ['zespol', 'orkiestr', 'artyst', 'kapel', 'spiewa', 'muzykant', 'van', 'havana'],
     history: ['histori', 'korzen', 'pochodz', 'tradycj', 'kuba'],
@@ -245,7 +245,7 @@ const KSH_CORE_CONTEXT = [
   '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
   '- PLENERY TANECZNE W KATOWICACH (WIOSNA–LATO I CIEPŁE DNI): 1) Kamienny Krąg w Dolinie Trzech Stawów (ul. Trzech Stawów 22, obok przystani i La Cantina) — w razie deszczu tańczymy pod zadaszoną wiatą przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10); na mapie zaznaczyliśmy 3 toalety (w tym przy AMO Pizza) oraz 13-minutową trasę pieszą z darmowego Parkingu Rekomendowanego (Południe / Rolkostrada). 2) Amfiteatr pod NOSPR-em w Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony NOSPR przy fontannach) z darmowym w weekendy parkingiem od ul. Olimpijskiej.',
   '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Otwarta encyklopedia ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem społecznościowym Salsopedia Studio.',
-  '- RADIO TIMBA NATION 24/7: Całodobowe radio kubańskie na stronie głównej — zero reklam, działa przy zablokowanym ekranie telefonu (MediaSession) i posiada wyłącznik czasowy (Sleep Timer: 15, 30, 60 min).',
+  '- RADIO TIMBA NATION 24/7 (ODTWARZACZ NA STRONIE): Timba Nation Radio to niezależna internetowa stacja radiowa z Zurychu (Szwajcaria), założona i prowadzona przez DJ Maikiu na platformie Zeno.FM (https://zeno.fm/radio/timba-nation-radio/). To NIE jest radio tworzone ani finansowane przez Kato Salsa Hub — nasza społeczność udostępnia na stronie głównej dedykowany odtwarzacz tego strumienia (z podglądem granego utworu na żywo, obsługą ekranu blokady telefonu MediaSession oraz wyłącznikiem czasowym Sleep Timer: 15, 30, 60 min). Stacja gra 24/7 współczesną kubańską Timbę i Salsę Cubana (w tym autorskie sety DJ Maikiu - Cuban Salsa Mix) bez komercyjnych bloków reklamowych, ponieważ jest autorskim, pasjonackim projektem muzycznym DJ Maikiu promującym kubańską muzykę.',
   '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Nasz cotygodniowy radar i agregator wszystkich imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
   '- INTEGRACJE, SPOTKANIA COMIESIĘCZNE I WYJAZDY: Organizujemy comiesięczne spotkania grupowe społeczności z systemem opasek (Leaders/Followers), grupy zniżkowe KSH na festiwale oraz wielki wiosenny Wyjazd Integracyjny Kato Salsa Hub (9–11 kwietnia, do 100 osób).'
 ].join('\n');
@@ -315,9 +315,33 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
     if (isActivityOrEventScheduleQuestion) {
       return (
         `🌴 **Co dzieje się w Kato Salsa Hub i kiedy tańczymy w Wolnych Ludziach?**\n` +
-        `- **🍹 W każdą niedzielę (15:00–18:00) — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze cotygodniowe, otwarte potańcówki i praktyki pod dachem w samym sercu Katowic (róg ul. Mariackiej i Mielęckiego). Tańczymy **Salsę Kubańską (Casino), Timbę, Ruedę de Casino, Son, Bachatę i Kizombę** — nie musisz mieć własnej pary! W niedziele ulice wokół są darmowe, a jako główny **Parking Rekomendowany** polecamy ogromny, bezpłatny w niedzielę **Parking pod NOSPR-em** (12 min spacerem przez kładkę).\n` +
+        `- **🍹 W każdą niedzielę (15:00–18:00) — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze cotygodniowe, otwarte potańcówki i praktyki pod dachem w samym sercu Katowic (róg ul. Mielęckiego). Tańczymy **Salsę Kubańską (Casino), Timbę, Ruedę de Casino, Son, Bachatę i Kizombę** — nie musisz mieć własnej pary! W niedziele ulice wokół są darmowe, a jako główny **Parking Rekomendowany** polecamy ogromny, bezpłatny w niedzielę **Parking pod NOSPR-em** (12 min spacerem przez kładkę).\n` +
         `- **💃 Plenery taneczne (Kamienny Krąg na Dolinie 3 Stawów & Amfiteatr NOSPR):** W ciepłe dni tańczymy pod gołym niebem na **Kamiennym Kręgu (ul. Trzech Stawów 22)** — w razie deszczu pod zadaszoną wiatą **UKS 4 / SUP Tomi (ul. Trzech Stawów 10)** — oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
-        `- **🔥 Pełna działalność naszej Fundacji i Społeczności:** Tworzymy otwartą encyklopedię **Salsopedia** (ponad 200 figur, szkół i instruktorów w salsopedia.html), całodobowe **Radio Timba Nation 24/7** bez reklam (działa przy zablokowanym telefonie!), cotygodniowy radar imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), comiesięczne spotkania integracyjne z opaskami, grupy zniżkowe na festiwale oraz wiosenny **Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób)**!`
+        `- **🔥 Pełna działalność naszej Fundacji i Społeczności:** Tworzymy otwartą encyklopedię **Salsopedia** (ponad 200 figur, szkół i instruktorów w salsopedia.html), udostępniamy odtwarzacz całodobowego **Radia Timba Nation 24/7** (niezależnej stacji kubańskiej **DJ Maikiu** z Zurychu na Zeno.FM — z naszym wyłącznikiem czasowym i obsługą ekranu blokady!), prowadzimy cotygodniowy radar imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), comiesięczne spotkania integracyjne z opaskami, grupy zniżkowe na festiwale oraz wiosenny **Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób)**!`
+      );
+    }
+
+    // 1a-1. Priorytetowe pytania o Radio Timba Nation 24/7, DJ Maikiu, Zeno.FM, brak reklam i wyłącznik czasowy (Sleep Timer)
+    const isRadioQuestion =
+      qNorm.includes('radio') ||
+      qNorm.includes('radia') ||
+      qNorm.includes('radiu') ||
+      qNorm.includes('timba nation') ||
+      qNorm.includes('maikiu') ||
+      qNorm.includes('zeno') ||
+      qNorm.includes('odtwarzacz') ||
+      qNorm.includes('stream') ||
+      qNorm.includes('sleep') ||
+      qNorm.includes('timer') ||
+      qNorm.includes('wylacznik czasow') ||
+      qNorm.includes('reklam');
+
+    if (isRadioQuestion) {
+      return (
+        `📻 **Radio Timba Nation 24/7 — skąd pochodzi i dlaczego gra bez reklam?**\n` +
+        `- **Skąd jest to radio:** **Timba Nation Radio** to niezależna internetowa stacja radiowa z **Zurychu (Szwajcaria)**, założona i prowadzona przez **DJ Maikiu** na platformie **Zeno.FM** (https://zeno.fm/radio/timba-nation-radio/). To nie jest nasza własna rozgłośnia — na portalu Kato Salsa Hub udostępniamy tancerzom zintegrowany odtwarzacz tego strumienia.\n` +
+        `- **Dlaczego gra bez reklam:** Stacja jest autorskim, pasjonackim projektem muzycznym **DJ Maikiu** promującym współczesną kubańską **Timbę, Salsę Cubana (Casino) i Son** (w tym jego autorskie sety *Cuban Salsa Mix*), dzięki czemu nadaje czystą muzykę 24/7 bez komercyjnych bloków reklamowych.\n` +
+        `- **Funkcje naszego odtwarzacza:** Wyświetla aktualnie grany utwór na żywo, działa przy zablokowanym ekranie telefonu (MediaSession) i posiada **wyłącznik czasowy (Sleep Timer: 15, 30 lub 60 min)** z płynnym wyciszaniem dźwięku!`
       );
     }
 
@@ -389,21 +413,12 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       );
     }
 
-    // 1c. Pytania o Radio Timba Nation 24/7 i wyłącznik czasowy (Sleep Timer)
-    if (
-      qNorm.includes('radio') ||
-      qNorm.includes('timba nation') ||
-      qNorm.includes('odtwarzacz') ||
-      qNorm.includes('stream') ||
-      qNorm.includes('sleep') ||
-      qNorm.includes('timer') ||
-      qNorm.includes('muzyk')
-    ) {
+    // 1c. Pytania o muzykę kubańską (gdy nie padło słowo radio)
+    if (qNorm.includes('muzyk')) {
       return (
-        `📻 **Radio Timba Nation 24/7** działa bezpośrednio na naszej stronie:\n` +
-        `- Nadaje wyselekcjonowaną kubańską **Timbę, Salsę, Son Cubano i Bachatę** bez przerw i reklam.\n` +
-        `- Posiada **wizualizer audio na żywo**, obsługę ekranu blokady w telefonie (MediaSession) oraz **wyłącznik czasowy (Sleep Timer: 15, 30 lub 60 min)**.\n` +
-        `- Możesz je włączyć jednym kliknięciem w pasku na dole ekranu lub przyciskiem w nagłówku!`
+        `📻 **Muzyka kubańska i Radio Timba Nation 24/7 na naszej stronie:**\n` +
+        `- Na stronie głównej udostępniamy odtwarzacz **Timba Nation Radio** — niezależnej stacji kubańskiej z **Zurychu (Szwajcaria)** prowadzonej przez **DJ Maikiu** na platformie **Zeno.FM**, grającej 24/7 wyselekcjonowaną **Timbę, Salsę Cubana i Son** bez reklam.\n` +
+        `- Nasz odtwarzacz wyświetla aktualnie grany utwór, działa przy zablokowanym ekranie telefonu (MediaSession) oraz posiada **wyłącznik czasowy (Sleep Timer: 15, 30 lub 60 min)**!`
       );
     }
 
