@@ -64,7 +64,24 @@
     }
   }
 
-  function trackCookielessPageview(pagePath) {
+  window.__TSW_ANALYTICS_ACTIVE__ = true;
+
+  let lcpMeasured = 0;
+  try {
+    if (typeof PerformanceObserver !== 'undefined') {
+      const po = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        if (entries && entries.length > 0) {
+          lcpMeasured = Math.round(entries[entries.length - 1].startTime || 0);
+        }
+      });
+      po.observe({ type: 'largest-contentful-paint', buffered: true });
+    }
+  } catch {
+    // Brak wsparcia PerformanceObserver
+  }
+
+  function trackCookielessPageview(pagePath, includeLcp) {
     if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
       return;
     }
@@ -80,13 +97,17 @@
       // Ignoruj błędy parsowania query string
     }
 
-    sendAnalyticsBeacon({
+    const payload = {
       type: 'pageview',
       path: rawPath,
       referrer: document.referrer || '',
       utm_source: utmSource,
       term: searchTerm,
-    });
+    };
+    if (includeLcp && lcpMeasured > 0) {
+      payload.lcp_ms = lcpMeasured;
+    }
+    sendAnalyticsBeacon(payload);
 
     // Kompatybilność wsteczna z opcjonalnym obiektem window.umami
     if (window.umami && typeof window.umami.track === 'function') {
@@ -107,16 +128,58 @@
     });
   };
 
-  trackCookielessPageview(window.location.pathname + (window.location.hash || ''));
+  setTimeout(() => {
+    trackCookielessPageview(window.location.pathname + (window.location.hash || ''), true);
+  }, 500);
+
+  setTimeout(() => {
+    if (document.visibilityState !== 'hidden') {
+      sendAnalyticsBeacon({ type: 'engaged' });
+    }
+  }, 15000);
 
   document.addEventListener('page:loaded', (e) => {
     const targetPath = (e && e.detail && e.detail.url) || window.location.pathname;
-    trackCookielessPageview(targetPath);
+    trackCookielessPageview(targetPath, false);
   });
 
   window.addEventListener('hashchange', () => {
     if (window.location.hash) {
-      trackCookielessPageview((window.location.pathname || '/') + window.location.hash);
+      trackCookielessPageview((window.location.pathname || '/') + window.location.hash, false);
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const target = e.target && e.target.closest ? e.target : null;
+    if (!target) return;
+    const link = target.closest('a[href]');
+    if (link) {
+      const href = String(link.getAttribute('href') || '');
+      if (href.startsWith('tel:')) {
+        sendAnalyticsBeacon({ type: 'event', event: 'cta_phone_click' });
+      } else if (href.startsWith('mailto:')) {
+        sendAnalyticsBeacon({ type: 'event', event: 'cta_email_click' });
+      }
+    }
+    const radioBtn = target.closest('#radio-toggle, .radio-toggle, [data-radio-toggle], #radioPlayBtn');
+    if (radioBtn) {
+      sendAnalyticsBeacon({ type: 'event', event: 'radio_play' });
+    }
+    const chatBtn = target.closest('.tsw-ai-btn');
+    if (chatBtn) {
+      sendAnalyticsBeacon({ type: 'event', event: 'chat_open' });
+    }
+    const chipBtn = target.closest('.tsw-ai-chip');
+    if (chipBtn) {
+      sendAnalyticsBeacon({ type: 'event', event: 'quick_prompt_click' });
+    }
+  });
+
+  document.addEventListener('submit', (e) => {
+    const form = e.target;
+    if (form && form.id !== 'tsw-ai-form' && (form.id === 'contactForm' || (form.classList && form.classList.contains('contact-form')))) {
+      sendAnalyticsBeacon({ type: 'event', event: 'contact_form_submit' });
     }
   });
 })();
+
