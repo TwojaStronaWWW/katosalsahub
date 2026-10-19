@@ -1508,12 +1508,12 @@ ${opisNd}`
 		postOpisElem.value = gotowyPost
 	}
 
-	const hashtagiVal = document.getElementById('hashtagi')?.value || '#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice'
+	const hashtagiVal = document.getElementById('hashtagi')?.value || '#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia'
 	wynik += '@wszyscy Do zobaczenia na parkiecie! 💃🕺\n\n'
 	wynik +=
 		'📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649\n\n'
 	wynik +=
-		'📻 PS2: Chcesz posłuchać radia gdzie puszczają salsę bez reklam i w dodatku z opcją zablokowania telefonu? Masz taką opcję na naszej stronie: 👉 https://katosalsahub.pl\n\n'
+		'📻 PS2: Szukasz gdzie tańczyć salsę w Katowicach? Mapa miejscówek i darmowych parkingów, słownik ponad 200 figur Salsopedia oraz radio z salsą 24/7 bez reklam (działa przy zablokowanym telefonie!) czekają na naszej stronie Salsa Katowice: 👉 https://katosalsahub.pl/\n\n'
 	wynik +=
 		'☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
 	wynik += hashtagiVal

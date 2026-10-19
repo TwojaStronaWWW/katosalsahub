@@ -93,11 +93,11 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 
 📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649
 
-📻 PS2: Chcesz posłuchać radia gdzie puszczają salsę bez reklam i w dodatku z opcją zablokowania telefonu? Masz taką opcję na naszej stronie: 👉 https://katosalsahub.pl
+📻 PS2: Szukasz gdzie tańczyć salsę w Katowicach? Mapa miejscówek i darmowych parkingów, słownik ponad 200 figur Salsopedia oraz radio z salsą 24/7 bez reklam (działa przy zablokowanym telefonie!) czekają na naszej stronie Salsa Katowice: 👉 https://katosalsahub.pl/
 
 ☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
 
-#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice
+#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia
 
 ---
 
@@ -214,11 +214,11 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 
 📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649
 
-📻 PS2: Chcesz posłuchać radia gdzie puszczają salsę bez reklam i w dodatku z opcją zablokowania telefonu? Masz taką opcję na naszej stronie: 👉 https://katosalsahub.pl
+📻 PS2: Szukasz gdzie tańczyć salsę w Katowicach? Mapa miejscówek i darmowych parkingów, słownik ponad 200 figur Salsopedia oraz radio z salsą 24/7 bez reklam (działa przy zablokowanym telefonie!) czekają na naszej stronie Salsa Katowice: 👉 https://katosalsahub.pl/
 
 ☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
 
-#Salsa #Bachata #Kizomba #Taniec #Silesia #Katowice
+#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia
 
 ---
 
