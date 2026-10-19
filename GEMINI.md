@@ -116,3 +116,7 @@ katosalsahub/
    ```
 3. **Weryfikacja jakościowa:** Po każdej zmianie kodu uruchom `npm run check` i upewnij się, że 100% testów przechodzi pomyślnie.
 4. **Format commitów:** Zawsze stosuj konwencję Conventional Commits (`feat:`, `fix:`, `docs:`, `test:`, `ci:`, `chore:`).
+5. **Architektura Dwurepozytoryjna (Publiczny Kod + Prywatne Issues i Sprinty):**
+   - **Publiczne repozytorium kodu:** `TwojaStronaWWW/katosalsahub` (zakładka publicznych Issues jest wyłączona ze względów bezpieczeństwa i poufności).
+   - **Prywatne repozytorium zadań i Sprintów (Milestones):** `TwojaStronaWWW/katosalsahub-org` (dostępne wyłącznie dla zaproszonych członków zespołu).
+   - **Synchronizacja pracy nad kodem z prywatnymi zadaniami:** Podczas wdrażania zmian w kodzie `TwojaStronaWWW/katosalsahub` zawsze sprawdzaj, aktualizuj checkboxy i zamykaj odpowiadające im zgłoszenia w `TwojaStronaWWW/katosalsahub-org` (oraz stosuj odniesienia międzyrepozytoryjne `TwojaStronaWWW/katosalsahub-org#<nr>` w opisach commitów).
