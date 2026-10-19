@@ -108,11 +108,12 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.match(deployContent, /--exclude-glob\s+assets\/data\/moderators\.json/i, 'Brak ochrony moderators.json podczas wdrożenia SFTP');
   });
 
-  it('konfiguracja audytu Lighthouse CI (.lighthouserc.json) powinna istnieć i definiować asercje jakościowe', () => {
+  it('konfiguracja audytu Lighthouse CI (.lighthouserc.json) powinna istnieć i definiować asercje jakościowe oraz jawną listę stron URL (ochrona przed audytem plików google*.html)', () => {
     const lhciPath = path.join(ROOT_DIR, '.lighthouserc.json');
     assert.ok(fs.existsSync(lhciPath), 'Brak .lighthouserc.json');
     const cfg = JSON.parse(fs.readFileSync(lhciPath, 'utf-8'));
     assert.ok(cfg.ci && cfg.ci.assert && cfg.ci.assert.assertions);
+    assert.ok(Array.isArray(cfg.ci.collect.url) && cfg.ci.collect.url.length === 3, 'Brak jawnej listy 3 stron w collect.url w .lighthouserc.json');
   });
 
   it('konfiguracja Dependabot (.github/dependabot.yml) powinna istnieć i chronić npm oraz github-actions', () => {

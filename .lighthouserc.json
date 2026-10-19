@@ -2,6 +2,11 @@
   "ci": {
     "collect": {
       "staticDistDir": "./katosalsahub.pl",
+      "url": [
+        "http://localhost/index.html",
+        "http://localhost/salsopedia.html",
+        "http://localhost/privacy.html"
+      ],
       "numberOfRuns": 1
     },
     "assert": {
