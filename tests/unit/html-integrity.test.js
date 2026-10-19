@@ -84,6 +84,9 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
       assert.match(html, /data-site-id="katosalsahub"/i);
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
+      assert.match(html, /id="cookie-banner"[^>]*\bdata-nosnippet\b/i, 'Brak atrybutu data-nosnippet na banerze cookies');
+      const aiWidgetJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'ai-widget.js'), 'utf-8');
+      assert.match(aiWidgetJs, /setAttribute\s*\(\s*['"]data-nosnippet['"]/, 'Brak atrybutu data-nosnippet na kontenerze widgetu AI');
     });
 
     it('powinien zawierać zaktualizowaną mapę Google My Maps (mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI), widget .map-hub w układzie 4 kafelków 2x2 z nawigacją zawsze na Parking Rekomendowany oraz poprawny plik KML', () => {
