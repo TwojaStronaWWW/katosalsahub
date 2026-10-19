@@ -34,6 +34,8 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /<meta\s+property="og:title"\s+content="[^"]*Salsa Katowice[^"]*"/i, 'Brak tagu og:title z frazą Salsa Katowice');
       assert.match(html, /itemtype="https:\/\/schema\.org\/DanceGroup"/i, 'Brak mikrodanych Schema.org/DanceGroup');
       assert.match(html, /itemtype="https:\/\/schema\.org\/FAQPage"/i, 'Brak sekcji FAQ z mikrodanymi Schema.org/FAQPage');
+      assert.match(html, /https:\/\/www\.facebook\.com\/KatoSalsaHub/, 'Brak linku do oficjalnego fanpage Facebook KatoSalsaHub');
+      assert.match(html, /https:\/\/www\.instagram\.com\/katosalsahub\//, 'Brak linku do oficjalnego profilu Instagram katosalsahub');
       assert.match(html, /<h1[^>]*>[\s\S]*?Katowicach[\s\S]*?<\/h1>/i, 'Nagłówek <h1> powinien zawierać lokalizację (Katowicach/Katowice)');
       assert.doesNotMatch(html, /<h1[^>]*>[\s\S]*?<div\b[\s\S]*?<\/h1>/i, 'Nagłówek <h1> nie może zawierać elementu blokowego <div>');
     });
