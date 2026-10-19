@@ -5,6 +5,7 @@ Options -Indexes
   RewriteEngine On
   RewriteCond %{HTTP_HOST} ^www\.katosalsahub\.pl$ [NC]
   RewriteRule ^(.*)$ https://katosalsahub.pl/$1 [R=301,L]
+  RewriteRule ^zdjecia/?$ https://photos.app.goo.gl/faiU7NhFAgpTEPRt9 [R=302,L,NC]
 </IfModule>
 
 AddDefaultCharset UTF-8
