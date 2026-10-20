@@ -267,9 +267,10 @@ function stopMetadataPolling() {
   }
 }
 
-const DEFAULT_TRACK_TITLES = new Set([
+const RADIO_DEFAULT_TRACK_TITLES = new Set([
   'Kubańska Energia 24/7 (Salsa & Timba)',
   'Energía Cubana 24/7 (Salsa y Timba)',
+  'Energía Cubana 24/7 (Salsa & Timba)',
   'Cuban Energy 24/7 (Salsa & Timba)'
 ]);
 
@@ -289,7 +290,7 @@ function updateTrackUI() {
     artistEl.textContent = currentTrack.artist;
   }
   if (titleEl) {
-    if (DEFAULT_TRACK_TITLES.has(currentTrack.title)) {
+    if (RADIO_DEFAULT_TRACK_TITLES.has(currentTrack.title)) {
       titleEl.textContent = rt('radio.defaultTrack', currentTrack.title);
     } else {
       titleEl.textContent = currentTrack.title;

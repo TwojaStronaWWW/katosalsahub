@@ -6,6 +6,7 @@
  * - en: British English (en-GB — brytyjski angielski: car park, city centre, open-air, sheltered pavilion, organise, encyclopaedia, practise)
  */
 
+(function () {
 const STORAGE_KEY = 'ksh_lang';
 const SUPPORTED_LANGS = ['pl', 'es', 'en'];
 const LANG_HTML_MAP = {
@@ -1063,3 +1064,4 @@ if (typeof module !== 'undefined' && module.exports) {
     initI18n
   };
 }
+})();

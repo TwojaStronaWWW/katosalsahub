@@ -303,5 +303,19 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.equal(i18n.t('wiki.resultsShown', 'es', { shown: 12, total: 200 }), 'Mostrando: 12 de 200 términos');
       assert.equal(i18n.t('wiki.resultsShown', 'en', { shown: 12, total: 200 }), 'Showing: 12 of 200 entries');
     });
+
+    it('wszystkie skrypty katosalsahub.pl/assets/js/*.js ładowane wspólnie w przeglądarce nie powinny mieć kolizji globalnego zasięgu leksykalnego (let/const/class)', () => {
+      const vm = require('node:vm');
+      const jsDir = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js');
+      const jsFiles = fs.readdirSync(jsDir).filter((f) => f.endsWith('.js')).sort();
+      const combinedSource = jsFiles
+        .map((f) => `// === ${f} ===\n${fs.readFileSync(path.join(jsDir, f), 'utf-8')}`)
+        .join('\n\n');
+
+      assert.doesNotThrow(
+        () => new vm.Script(combinedSource, { filename: 'combined-browser-scripts.js' }),
+        'Wykryto kolizję deklaracji top-level (let/const/class) pomiędzy plikami JS ładowanymi wspólnie w przeglądarce'
+      );
+    });
   });
 });
