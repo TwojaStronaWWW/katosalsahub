@@ -224,4 +224,64 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     assert.ok(cachedAfterUpdate);
     assert.match(cachedAfterUpdate, /Nowa zweryfikowana definicja Enchufla/);
   });
+
+  it('Dyktowanie głosowe (Web Speech API — Tryb Bezpieczny): rozpoznaje mowę po polsku na żywo do pola tekstowego bez automatycznego wysyłania', () => {
+    const { document, window } = setupMockDom();
+
+    let lastInstance = null;
+    window.webkitSpeechRecognition = class MockSpeechRecognition {
+      constructor() {
+        this.lang = '';
+        this.continuous = true;
+        this.interimResults = false;
+        this.maxAlternatives = 1;
+        this.started = false;
+        lastInstance = this;
+      }
+      start() {
+        this.started = true;
+        if (typeof this.onstart === 'function') this.onstart();
+      }
+      stop() {
+        this.started = false;
+        if (typeof this.onend === 'function') this.onend();
+      }
+    };
+
+    const api = initAiWidget(document, window, {
+      siteId: 'katosalsahub',
+      initialKnowledge: REAL_SALSOPEDIA
+    });
+
+    assert.ok(api.voiceBtn, 'Przycisk mikrofonu #tswAiVoiceBtn musi istnieć w formularzu czatu');
+    assert.equal(api.voiceBtn.getAttribute('aria-pressed'), 'false');
+    assert.equal(api.isVoiceListening(), false);
+
+    // 1. Kliknięcie mikrofonu uruchamia nasłuchiwanie pl-PL z interimResults=true
+    api.voiceBtn.click();
+    assert.ok(lastInstance, 'Instancja SpeechRecognition powinna zostać utworzona');
+    assert.equal(lastInstance.lang, 'pl-PL');
+    assert.equal(lastInstance.interimResults, true);
+    assert.equal(lastInstance.continuous, false);
+    assert.equal(api.isVoiceListening(), true);
+    assert.equal(api.voiceBtn.getAttribute('aria-pressed'), 'true');
+    assert.equal(api.voiceBtn.classList.contains('tsw-listening'), true);
+
+    // 2. Transkrypcja na żywo (interim) wpisuje tekst do pola #tswAiInput
+    lastInstance.onresult({
+      results: [
+        Object.assign([{ transcript: 'Co to jest ' }], { isFinal: true }),
+        Object.assign([{ transcript: 'Dile Que No' }], { isFinal: false })
+      ]
+    });
+    assert.equal(api.chatInput.value, 'Co to jest Dile Que No');
+
+    // 3. Zakończenie wypowiedzi wyłącza mikrofon, ale zostawia tekst w polu do weryfikacji przed wysłaniem (Tryb 1 Bezpieczny)
+    lastInstance.stop();
+    assert.equal(api.isVoiceListening(), false);
+    assert.equal(api.voiceBtn.getAttribute('aria-pressed'), 'false');
+    assert.equal(api.voiceBtn.classList.contains('tsw-listening'), false);
+    assert.equal(api.chatInput.value, 'Co to jest Dile Que No');
+    assert.equal(api.getHistory().length, 0, 'Tryb bezpieczny nie może wysłać wiadomości automatycznie bez kliknięcia Wyślij');
+  });
 });
