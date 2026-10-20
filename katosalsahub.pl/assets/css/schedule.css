@@ -888,3 +888,87 @@
 .pricing-comparison-table tbody tr:hover {
   background: rgba(255, 255, 255, 0.03);
 }
+
+.pricing-table-wrapper {
+  margin-bottom: 24px;
+}
+
+.pricing-analysis-grid {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.pricing-analysis-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pricing-analysis-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 960px) {
+  .pricing-analysis-grid--two,
+  .pricing-analysis-grid--three {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-analysis-card {
+  background: rgba(18, 21, 35, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pricing-analysis-card--lc {
+  border-top: 4px solid #ef4444;
+}
+
+.pricing-analysis-card--gm {
+  border-top: 4px solid #f59e0b;
+}
+
+.pricing-analysis-card--mp {
+  border-top: 4px solid #3b82f6;
+}
+
+.pricing-analysis-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fde68a;
+  line-height: 1.4;
+}
+
+.pricing-analysis-card h4 {
+  margin: 6px 0 2px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.pricing-analysis-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+
+.pricing-analysis-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.pricing-analysis-list--warn {
+  color: #fcd34d;
+}

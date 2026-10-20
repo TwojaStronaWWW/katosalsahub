@@ -366,6 +366,19 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       const lcCard = singleCard8.find((r) => r.schoolId === 'LC');
       assert.strictEqual(lcCard.monthlyCost, 60, 'W La Clave przy 4 blokach 2x45 min i karcie 1x/dzień dopłata powinna wynosić 4 * 15 zł = 60 zł');
       assert.strictEqual(lcCard.isBestValue60Min, true);
+
+      // Weryfikacja odporności kalkulatora na pustą/zbuforowaną tablicę schools (Fallback) oraz dokładności wyliczeń dla 4 i 16 jedn.
+      const fallback4 = calculateSchoolPricingComparison([], { units: 4, profile: 'standard' });
+      assert.strictEqual(fallback4.length, 3, 'Kalkulator musi działać nawet przy pustej tablicy schools dzięki DEFAULT_SCHOOLS_WITH_PRICING');
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'GM').costPer60Min, 25);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'MP').costPerUnit, 29.75);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'MP').costPer60Min, 32.45);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'LC').costPerUnit, 27.25);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'LC').costPer60Min, 36.33);
+
+      const student16 = calculateSchoolPricingComparison([], { units: 16, profile: 'student' });
+      assert.strictEqual(student16.find((r) => r.schoolId === 'GM').costPer60Min, 16.25);
+      assert.strictEqual(student16.find((r) => r.schoolId === 'MP').costPerUnit, 16.82);
     });
   });
 });

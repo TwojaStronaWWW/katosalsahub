@@ -23,6 +23,89 @@ const WEEKDAY_FROM_JS_DAY = {
   6: 6,
 };
 
+/**
+ * Wbudowany, awaryjny wsad cennikowy 3 szkół (Circuit Breaker Fallback),
+ * gwarantujący 100% działanie kalkulatora nawet przed załadowaniem schedule.json lub przy starym cache.
+ */
+const DEFAULT_SCHOOLS_WITH_PRICING = [
+  {
+    id: 'GM',
+    name: 'Good Mood',
+    badgeClass: 'school-badge--gm',
+    pricing: {
+      unitMinutes: 60,
+      validityLabel: '28 dni (4 tygodnie)',
+      validityDays: 28,
+      isUnlimitedValidity: false,
+      singleEntryPrice: 35,
+      twoUnitsBlockPrice: 55,
+      threeUnitsBlockPrice: 80,
+      extraSecondUnitSurcharge: 25,
+      extraThirdUnitSurcharge: 25,
+      thirdUnitFreeWithTwoPunches: false,
+      passes: [
+        { id: 'gm_4', units: 4, name: 'Karnet 4h', price: 100, studentPrice: 90, validity: '28 dni' },
+        { id: 'gm_8', units: 8, name: 'Karnet 8h', price: 170, studentPrice: 160, validity: '28 dni' },
+      ],
+      openPassPrice: 260,
+      openPassStudentPrice: 260,
+      openPassValidity: '28 dni (4 tygodnie)',
+    },
+  },
+  {
+    id: 'LC',
+    name: 'La Clave',
+    badgeClass: 'school-badge--lc',
+    pricing: {
+      unitMinutes: 45,
+      validityLabel: 'Bezterminowy (wejścia nie przepadają)',
+      validityDays: null,
+      isUnlimitedValidity: true,
+      singleEntryPrice: 30,
+      twoUnitsBlockPrice: 45,
+      threeUnitsBlockPrice: 55,
+      extraSecondUnitSurcharge: 15,
+      extraThirdUnitSurcharge: 10,
+      thirdUnitFreeWithTwoPunches: true,
+      passes: [
+        { id: 'lc_4', units: 4, name: 'Karnet Start (4 wejścia)', price: 109, studentPrice: 109, validity: 'Bezterminowy' },
+        { id: 'lc_8', units: 8, name: 'Karnet Eko (8 wejść)', price: 189, studentPrice: 189, validity: 'Bezterminowy' },
+        { id: 'lc_10', units: 10, name: 'Karnet Pro (10 wejść)', price: 219, studentPrice: 219, validity: 'Bezterminowy' },
+      ],
+      openPassPrice: 300,
+      openPassStudentPrice: 300,
+      openPassValidity: '4 tygodnie (28 dni)',
+    },
+  },
+  {
+    id: 'MP',
+    name: 'Mil Pasos',
+    badgeClass: 'school-badge--mp',
+    pricing: {
+      unitMinutes: 55,
+      validityLabel: '4 tygodnie (28 dni)',
+      validityDays: 28,
+      isUnlimitedValidity: false,
+      singleEntryPrice: 35,
+      twoUnitsBlockPrice: 55,
+      threeUnitsBlockPrice: 90,
+      dayPassPrice: 90,
+      extraSecondUnitSurcharge: 35,
+      extraThirdUnitSurcharge: 35,
+      thirdUnitFreeWithTwoPunches: false,
+      passes: [
+        { id: 'mp_4', units: 4, name: 'Karnet 4h', price: 119, studentPrice: 107.1, validity: '4 tygodnie' },
+        { id: 'mp_8', units: 8, name: 'Karnet 8h', price: 199, studentPrice: 179.1, validity: '4 tygodnie' },
+        { id: 'mp_12', units: 12, name: 'Karnet 12h', price: 249, studentPrice: 224.1, validity: '4 tygodnie' },
+        { id: 'mp_16', units: 16, name: 'Karnet 16h', price: 299, studentPrice: 269.1, validity: '4 tygodnie' },
+      ],
+      openPassPrice: 399,
+      openPassStudentPrice: 359.1,
+      openPassValidity: '4 tygodnie (28 dni)',
+    },
+  },
+];
+
 const scheduleState = {
   activeTab: 'classes', // 'classes' | 'pricing' | 'events' | 'map'
   searchQuery: '',
@@ -33,7 +116,7 @@ const scheduleState = {
   eventCityFilter: 'all', // 'all' | 'Katowice' | 'Slask' | 'Krakow'
   pricingUnits: 8, // 4 | 8 | 12 | 16
   pricingProfile: 'standard', // 'standard' | 'student' | 'card_single' | 'card_multi'
-  schools: [],
+  schools: DEFAULT_SCHOOLS_WITH_PRICING.slice(),
   classes: [],
   eventsDays: [],
   loaded: false,
@@ -274,9 +357,37 @@ function buildClassCardHtml(item, schoolsMap) {
 function calculateSchoolPricingComparison(schools = [], options = {}) {
   const units = Number(options.units || 8);
   const profile = String(options.profile || 'standard');
+
+  const sourceList =
+    Array.isArray(schools) && schools.some((s) => s && s.pricing)
+      ? schools
+      : DEFAULT_SCHOOLS_WITH_PRICING;
+
+  const fallbackMap = new Map(DEFAULT_SCHOOLS_WITH_PRICING.map((s) => [s.id, s]));
+  const orderedIds = ['GM', 'LC', 'MP'];
+  const normalizedSchools = [];
+
+  for (const id of orderedIds) {
+    const found = sourceList.find((s) => s && s.id === id);
+    const fb = fallbackMap.get(id);
+    if (found && found.pricing) {
+      normalizedSchools.push(found);
+    } else if (found && fb) {
+      normalizedSchools.push({ ...found, pricing: fb.pricing });
+    } else if (fb) {
+      normalizedSchools.push(fb);
+    }
+  }
+
+  for (const s of sourceList) {
+    if (s && s.pricing && !orderedIds.includes(s.id)) {
+      normalizedSchools.push(s);
+    }
+  }
+
   const results = [];
 
-  for (const school of schools) {
+  for (const school of normalizedSchools) {
     if (!school || !school.pricing) continue;
     const p = school.pricing;
     const unitMin = Number(p.unitMinutes || 60);
@@ -285,35 +396,71 @@ function calculateSchoolPricingComparison(schools = [], options = {}) {
     let monthlyCost = 0;
     let planName = '';
     let planNote = '';
+    let blockRateInfo = '';
 
     if (profile === 'card_multi') {
       monthlyCost = 0;
       planName = 'Karta wielowejściowa (0 zł dopłat)';
-      planNote =
-        school.id === 'LC'
-          ? 'Odbicie karty co 45 min pokrywa pełne bloki 2–3x45 min za 0 zł.'
-          : 'Odbicie karty na każdą godzinę zajęć pokrywa wejście bez dopłat.';
+      if (school.id === 'LC') {
+        planNote = 'Odbijasz kartę co 45 minut i wchodzisz na cały blok 2×45 lub 3×45 min całkowicie za 0 zł.';
+        blockRateInfo = 'Bloki 2×45 min i 3×45 min: 0,00 zł / 60 min';
+      } else if (school.id === 'GM') {
+        planNote = 'Odbijasz kartę na każdą godzinę zajęć (60 min) — wejście bez dopłat.';
+        blockRateInfo = 'Bloki 2×60 min: 0,00 zł / 60 min (odbicie co 1h)';
+      } else {
+        planNote = 'Odbijasz kartę na każdą godzinę zajęć (55 min) — wejście bez dopłat.';
+        blockRateInfo = 'Bloki 2×55 min: 0,00 zł / 60 min (odbicie co 1h)';
+      }
     } else if (profile === 'card_single') {
       const blocksOfTwo = Math.max(1, Math.floor(units / 2));
-      const surcharge = Number(p.extraSecondUnitSurcharge || 20);
-      monthlyCost = blocksOfTwo * surcharge;
-      planName = `Karta 1x/dzień + dopłaty (${blocksOfTwo}x ${surcharge} zł)`;
-      planNote =
-        school.id === 'LC'
-          ? `1. jednostka z karty (0 zł), 2. jednostka +${surcharge} zł (3. jednostka +${p.extraThirdUnitSurcharge || 10} zł).`
-          : `1. godzina z karty (0 zł), dopłata do 2. godziny w bloku: +${surcharge} zł.`;
+      if (school.id === 'LC') {
+        const surcharge = Number(p.extraSecondUnitSurcharge || 15);
+        monthlyCost = blocksOfTwo * surcharge;
+        planName = `Karta 1×/dzień + dopłaty (${blocksOfTwo}× ${surcharge} zł)`;
+        planNote = `1. jednostka (45 min) z karty 0 zł, dopłata do 2. jednostki tylko +${surcharge} zł (do 3. jednostki +${p.extraThirdUnitSurcharge || 10} zł).`;
+        blockRateInfo = 'W bloku 3×45 min (2h 15m): dopłata 15+10 = 25 zł (11,11 zł / 60 min)!';
+      } else if (school.id === 'GM') {
+        const surcharge = Number(p.extraSecondUnitSurcharge || 25);
+        monthlyCost = blocksOfTwo * surcharge;
+        planName = `Karta 1×/dzień + dopłaty (${blocksOfTwo}× ${surcharge} zł)`;
+        planNote = `1. godzina (60 min) z karty 0 zł, dopłata do 2. godziny tego samego dnia wynosi +${surcharge} zł.`;
+        blockRateInfo = 'W bloku 2×60 min: 25 zł za 2h tańca (12,50 zł / 60 min)';
+      } else {
+        // Mil Pasos: 1. godzina z karty 0 zł, 2. godzina z karnetu (przy 4+ blokach) lub wejścia jednorazowego (35 zł)
+        const secondHourPass = passes.find((ps) => Number(ps.units) === blocksOfTwo);
+        if (secondHourPass && blocksOfTwo >= 4) {
+          monthlyCost = Number(secondHourPass.price);
+          planName = `Karta 1×/dzień + ${secondHourPass.name} na 2. godz.`;
+        } else if (blocksOfTwo === 6) {
+          monthlyCost = 149;
+          planName = 'Karta 1×/dzień + pakiet na 2. godzinę';
+        } else {
+          const singlePrice = Number(p.singleEntryPrice || 35);
+          monthlyCost = blocksOfTwo * singlePrice;
+          planName = `Karta 1×/dzień + ${blocksOfTwo}× wejście 35 zł`;
+        }
+        planNote = '1. godzina z karty (0 zł); brak specjalnej taniej dopłaty do karty 1×/dzień (2. godzina z karnetu lub 35 zł).';
+        blockRateInfo = 'Najkorzystniej łączyć kartę 1×/dzień z karnetem godzinowym na 2. godzinę.';
+      }
     } else {
       const isStudent = profile === 'student';
       const openPrice = Number(isStudent && p.openPassStudentPrice ? p.openPassStudentPrice : p.openPassPrice || 300);
-
-      // Szukaj dokładnego karnetu na zadaną liczbę jednostek
       const exactPass = passes.find((ps) => Number(ps.units) === units);
+
       if (exactPass) {
         const passPrice = Number(isStudent && exactPass.studentPrice ? exactPass.studentPrice : exactPass.price);
         if (passPrice <= openPrice) {
           monthlyCost = passPrice;
-          planName = isStudent && exactPass.studentPrice < exactPass.price ? `${exactPass.name} (Student)` : exactPass.name;
-          planNote = p.isUnlimitedValidity ? 'Karnet bezterminowy — niewykorzystane wejścia nie przepadają.' : `Ważność: ${p.validityLabel}`;
+          planName =
+            isStudent && exactPass.studentPrice < exactPass.price
+              ? `${exactPass.name} (Student -10%)`
+              : exactPass.name;
+          if (school.id === 'GM' && isStudent && exactPass.studentPrice < exactPass.price) {
+            planName = `${exactPass.name} (Student)`;
+          }
+          planNote = p.isUnlimitedValidity
+            ? 'Karnet BEZTERMINOWY — niewykorzystane wejścia nigdy nie przepadają!'
+            : `Ważność: ${p.validityLabel} (ścisły limit czasu)`;
         } else {
           monthlyCost = openPrice;
           planName = isStudent && openPrice < p.openPassPrice ? 'Karnet OPEN (Student)' : 'Karnet OPEN (Bez limitu)';
@@ -325,9 +472,9 @@ function calculateSchoolPricingComparison(schools = [], options = {}) {
         const p10Cost = pass10 ? Number(pass10.price) + 2 * Number(p.extraSecondUnitSurcharge || 15) : openPrice;
         if (p10Cost < openPrice) {
           monthlyCost = p10Cost;
-          planName = 'Karnet Pro (10x) + 2x dopłata 15 zł';
+          planName = 'Karnet Pro (10x za 219 zł) + 2× dopłata 15 zł';
           planNote = pass8
-            ? `W blokach 3x45 min (promocja 3. gratis): wystarczy Karnet Eko 8x za ${pass8.price} zł!`
+            ? `Bezterminowy (21,90 zł/okienko). W blokach 3×45 min (3. gratis) wystarczy Karnet Eko 8x za ${pass8.price} zł!`
             : 'Bezterminowy karnet Pro + dopłaty blokowe.';
         } else {
           monthlyCost = openPrice;
@@ -337,7 +484,36 @@ function calculateSchoolPricingComparison(schools = [], options = {}) {
       } else {
         monthlyCost = openPrice;
         planName = isStudent && openPrice < p.openPassPrice ? 'Karnet OPEN (Student)' : 'Karnet OPEN (Bez limitu)';
-        planNote = `Najbardziej opłacalny przy ${units}+ wejściach w miesiącu (${p.openPassValidity || '28 dni'}).`;
+        if (school.id === 'GM') {
+          planNote = `Najtańszy Karnet OPEN w Katowicach (260 zł na 28 dni) — zwraca się już przy 10–11h w miesiącu!`;
+        } else if (school.id === 'LC') {
+          planNote = `Karnet OPEN (300 zł / 4 tyg.) lub bezterminowy Karnet Pro 10x (219 zł = 21,90 zł/okienko) + dopłaty blokowe.`;
+        } else {
+          planNote = `Najbardziej opłacalny przy ${units}+ wejściach w miesiącu (${p.openPassValidity || '28 dni'}).`;
+        }
+      }
+
+      // Dodatkowa informacja o realnym koszcie w systemie blokowym / pakietowym (Punkt 3 i 4 analizy)
+      if (school.id === 'LC') {
+        if (units === 4) {
+          blockRateInfo = 'W bloku 2×45 / 3×45 min (dopłaty 15/10 zł lub 3. gratis): 19,47–23,63 zł / 60 min!';
+        } else if (units === 8) {
+          blockRateInfo = 'W bloku 3×45 min (promocja 3. gratis): realny koszt spada do 19,47–21,00 zł / 60 min!';
+        } else if (units === 12) {
+          blockRateInfo = 'W bloku 3×45 min (2 skreślenia = 3. gratis): 12 jedn. za 189 zł (21,00 zł / 60 min)!';
+        } else {
+          blockRateInfo = 'Przy 16h zegarowych na Open (300 zł): 18,75 zł / 60 min (lub Pro 10x w bloku: 19,47 zł / 60 min).';
+        }
+      } else if (school.id === 'GM') {
+        blockRateInfo =
+          units >= 12
+            ? 'Bezkonkurencyjna cena pakietu OPEN (przy 12h: 21,67 zł/h, przy 16h: 16,25 zł/h).'
+            : 'Najniższy próg wejścia dla 1–2h tygodniowo (28 dni ważności, aplikacja Fitssey).';
+      } else if (school.id === 'MP') {
+        blockRateInfo =
+          units >= 12
+            ? 'Pakiety 12h (249 zł) i 16h (299 zł / student 269,10 zł) zamiast drogiego Open (399 zł).'
+            : 'Zniżka -10% dla studentów na każdy karnet; Day Pass całodniowy za 90 zł.';
       }
     }
 
@@ -355,6 +531,7 @@ function calculateSchoolPricingComparison(schools = [], options = {}) {
       profile,
       planName,
       planNote,
+      blockRateInfo,
       monthlyCost,
       costPerUnit,
       costPer60Min,
@@ -384,13 +561,11 @@ function renderSchedulePricingView(doc = document) {
   const calcContainer = doc.getElementById('pricingCalculatorResults');
   if (!calcContainer) return;
 
-  const schoolsWithPricing = scheduleState.schools.filter((s) => s && s.pricing);
-  if (schoolsWithPricing.length === 0) return;
-
-  const comparison = calculateSchoolPricingComparison(schoolsWithPricing, {
+  const comparison = calculateSchoolPricingComparison(scheduleState.schools, {
     units: scheduleState.pricingUnits,
     profile: scheduleState.pricingProfile,
   });
+  if (comparison.length === 0) return;
 
   calcContainer.innerHTML = comparison
     .map((item) => {
@@ -402,6 +577,10 @@ function renderSchedulePricingView(doc = document) {
       if (item.isUnlimitedValidity) {
         topBadges.push('<span class="pricing-unlimited-badge">♾️ Bezterminowy</span>');
       }
+
+      const blockInfoLi = item.blockRateInfo
+        ? `<li><span>Efekt blokowy / pakiet:</span> <strong>${escapeHtml(item.blockRateInfo)}</strong></li>`
+        : '';
 
       return `
         <article class="pricing-result-card pricing-result-card--${escapeHtml(schoolLower)}${item.isBestValue60Min ? ' is-best-choice' : ''}">
@@ -415,6 +594,7 @@ function renderSchedulePricingView(doc = document) {
             <ul class="pricing-metrics-list">
               <li><span>Koszt 1 jednostki (${item.unitMinutes} min):</span> <strong>${escapeHtml(formatPln(item.costPerUnit))}</strong></li>
               <li><span>Realny koszt 60 min tańca:</span> <strong class="pricing-highlight-60m">${escapeHtml(formatPln(item.costPer60Min))} / 60 min</strong></li>
+              ${blockInfoLi}
               <li><span>Ważność / zasady:</span> <strong>${escapeHtml(item.planNote)}</strong></li>
             </ul>
           </div>
@@ -708,13 +888,19 @@ async function loadScheduleAndEventsData(doc = document) {
 
   try {
     const [schedRes, evRes] = await Promise.all([
-      fetch('assets/data/schedule.json').catch(() => null),
-      fetch('assets/data/events.json').catch(() => null),
+      fetch('assets/data/schedule.json', { cache: 'no-cache' }).catch(() => null),
+      fetch('assets/data/events.json', { cache: 'no-cache' }).catch(() => null),
     ]);
 
     if (schedRes && schedRes.ok) {
       const schedData = await schedRes.json();
-      scheduleState.schools = Array.isArray(schedData.schools) ? schedData.schools : [];
+      if (Array.isArray(schedData.schools) && schedData.schools.length > 0) {
+        const fallbackMap = new Map(DEFAULT_SCHOOLS_WITH_PRICING.map((s) => [s.id, s]));
+        scheduleState.schools = schedData.schools.map((s) => {
+          const fb = fallbackMap.get(s.id);
+          return s && s.pricing ? s : fb ? { ...s, pricing: fb.pricing } : s;
+        });
+      }
       scheduleState.classes = Array.isArray(schedData.classes) ? schedData.classes : [];
     }
 
@@ -722,7 +908,7 @@ async function loadScheduleAndEventsData(doc = document) {
       const evData = await evRes.json();
       scheduleState.eventsDays = Array.isArray(evData) ? evData : [];
     } else {
-      const fallbackRes = await fetch('/dancepuls/data/events.json').catch(() => null);
+      const fallbackRes = await fetch('/dancepuls/data/events.json', { cache: 'no-cache' }).catch(() => null);
       if (fallbackRes && fallbackRes.ok) {
         const evData = await fallbackRes.json();
         scheduleState.eventsDays = Array.isArray(evData) ? evData : [];
@@ -912,6 +1098,7 @@ function initSchedulePage() {
   const rootEl = document.getElementById('scheduleAppRoot');
   if (!rootEl) return;
   bindScheduleEvents(document);
+  renderSchedulePricingView(document);
   loadScheduleAndEventsData(document);
 }
 

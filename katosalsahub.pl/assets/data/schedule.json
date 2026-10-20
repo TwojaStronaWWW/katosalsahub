@@ -206,7 +206,7 @@
         "twoUnitsBlockPrice": 55,
         "threeUnitsBlockPrice": 90,
         "dayPassPrice": 90,
-        "extraSecondUnitSurcharge": 20,
+        "extraSecondUnitSurcharge": 35,
         "extraThirdUnitSurcharge": 35,
         "thirdUnitFreeWithTwoPunches": false,
         "passes": [
@@ -215,7 +215,7 @@
             "units": 4,
             "name": "Karnet 4h",
             "price": 119,
-            "studentPrice": 107,
+            "studentPrice": 107.1,
             "validity": "4 tygodnie"
           },
           {
@@ -223,7 +223,7 @@
             "units": 8,
             "name": "Karnet 8h",
             "price": 199,
-            "studentPrice": 179,
+            "studentPrice": 179.1,
             "validity": "4 tygodnie"
           },
           {
@@ -231,7 +231,7 @@
             "units": 12,
             "name": "Karnet 12h",
             "price": 249,
-            "studentPrice": 224,
+            "studentPrice": 224.1,
             "validity": "4 tygodnie"
           },
           {
@@ -239,12 +239,12 @@
             "units": 16,
             "name": "Karnet 16h",
             "price": 299,
-            "studentPrice": 269,
+            "studentPrice": 269.1,
             "validity": "4 tygodnie"
           }
         ],
         "openPassPrice": 399,
-        "openPassStudentPrice": 359,
+        "openPassStudentPrice": 359.1,
         "openPassValidity": "4 tygodnie (28 dni)",
         "studentDiscountLabel": "-10% zniżki studenckiej na karnety (np. 8h ~179 zł, 16h ~269 zł)",
         "sportsCardsRules": "MultiSport, Medicover Sport, FitProfit, FitSport, PZU Sport (wymagane odbicie karty za każdą godzinę zajęć).",

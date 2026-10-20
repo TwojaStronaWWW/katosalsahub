@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v21';
+const CACHE_NAME = 'ksh-pwa-v22';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -17,12 +17,12 @@ const STATIC_ASSETS = [
   '/assets/css/sections.css?v=4.3',
   '/assets/css/radio.css?v=4.3',
   '/assets/css/wiki.css?v=4.4',
-  '/assets/css/schedule.css?v=4.3',
+  '/assets/css/schedule.css?v=4.4',
   '/assets/js/router.js?v=3.9',
   '/assets/js/home.js?v=3.9',
   '/assets/js/radio.js?v=3.9',
   '/assets/js/wiki.js?v=3.9',
-  '/assets/js/schedule.js?v=3.9',
+  '/assets/js/schedule.js?v=4.0',
   '/assets/js/contact.js?v=3.9',
   '/assets/js/cookies.js?v=3.9',
   '/assets/js/ai-widget.js?v=4.4',
@@ -89,7 +89,9 @@ self.addEventListener('fetch', (event) => {
     isHtmlNav ||
     url.pathname.endsWith('.css') ||
     url.pathname.endsWith('.js') ||
-    url.pathname.endsWith('/salsopedia.json')
+    url.pathname.endsWith('/salsopedia.json') ||
+    url.pathname.endsWith('/schedule.json') ||
+    url.pathname.endsWith('/events.json')
   ) {
     event.respondWith(
       fetch(request, { cache: 'no-cache' })
