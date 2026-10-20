@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v16';
+const CACHE_NAME = 'ksh-pwa-v17';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -25,7 +25,7 @@ const STATIC_ASSETS = [
   '/assets/js/schedule.js?v=3.9',
   '/assets/js/contact.js?v=3.9',
   '/assets/js/cookies.js?v=3.9',
-  '/assets/js/ai-widget.js?v=4.1',
+  '/assets/js/ai-widget.js?v=4.2',
   '/assets/data/salsopedia.json',
   '/assets/data/schedule.json',
   '/assets/data/events.json',

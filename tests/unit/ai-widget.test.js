@@ -77,10 +77,20 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     const wolni = getLocalFallbackAnswer('Co dzieje się w Wolnych Ludziach w każdą niedzielę?', 'katosalsahub', REAL_SALSOPEDIA);
     assert.match(wolni, /15:00–18:00/);
     assert.match(wolni, /Mariacka 2/i);
+    assert.match(wolni, /Wspólny Grafik Szkół Tańca/i);
+    assert.doesNotMatch(wolni, /Bachat|Kizomb/i);
 
-    const kshCtx = buildDynamicContext('Kiedy są imprezy w Wolnych Ludziach?', REAL_SALSOPEDIA);
+    const kshActivity = getLocalFallbackAnswer('Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?', 'katosalsahub', REAL_SALSOPEDIA);
+    assert.match(kshActivity, /Salsy/i);
+    assert.match(kshActivity, /Wspólny Grafik Szkół Tańca/i);
+    assert.match(kshActivity, /grafik\.html/i);
+    assert.doesNotMatch(kshActivity, /Bachat|Kizomb/i);
+
+    const kshCtx = buildDynamicContext('Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?', REAL_SALSOPEDIA);
     assert.match(kshCtx, /15:00–18:00/);
     assert.match(kshCtx, /Wolni Ludzie/i);
+    assert.match(kshCtx, /WSPÓLNY GRAFIK SZKÓŁ TAŃCA/i);
+    assert.match(kshCtx, /nie zajmujemy się bachatą ani kizombą/i);
   });
 
   it('initAiWidget tworzy strukturę DOM, obsługuje otwieranie/zamykanie (w tym Escape) i chroni przed duplikacją', () => {

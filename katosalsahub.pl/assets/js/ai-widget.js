@@ -69,7 +69,7 @@ function formatMarkdown(text) {
     '$1<a href="$2" class="tsw-ai-link">$2</a>'
   );
   safe = safe.replace(
-    /(^|[\s(])(salsopedia\.html(?:#[a-zA-Z0-9_-]+)?)/g,
+    /(^|[\s(])((?:salsopedia|grafik)\.html(?:#[a-zA-Z0-9_-]+)?)/g,
     '$1<a href="$2" class="tsw-ai-link">$2</a>'
   );
 
@@ -241,12 +241,13 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
 
 const KSH_CORE_CONTEXT = [
   'PODSTAWOWE INFORMACJE O DZIAŁALNOŚCI KATO SALSA HUB (SALSA KATOWICE):',
-  '- Kim jesteśmy: Niezależna społeczność i Fundacja Kato Salsa Hub (https://katosalsahub.pl/) łącząca tancerzy Salsy Kubańskiej (Casino, Timba, Rueda de Casino), Sonu, Bachaty i Kizomby w Katowicach i na całym Śląsku ponad podziałami szkolnymi.',
-  '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
+  '- Kim jesteśmy (WAŻNE — TYLKO SALSA): Jesteśmy niezależną społecznością i Fundacją Kato Salsa Hub (https://katosalsahub.pl/) łączącą miłośników Salsy (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino, Sonu Kubańskiego, Rumby oraz Salsy Liniowej) w Katowicach i na całym Śląsku ponad podziałami szkolnymi. Nasza społeczność i fundacja skupia się wyłącznie na Salsie i kulturze kubańskiej (nie zajmujemy się bachatą ani kizombą).',
+  '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy Salsę w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
   '- PLENERY TANECZNE W KATOWICACH (WIOSNA–LATO I CIEPŁE DNI): 1) Kamienny Krąg w Dolinie Trzech Stawów (ul. Trzech Stawów 22, obok przystani i La Cantina) — w razie deszczu tańczymy pod zadaszoną wiatą przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10); na mapie zaznaczyliśmy 3 toalety (w tym przy AMO Pizza) oraz 13-minutową trasę pieszą z darmowego Parkingu Rekomendowanego (Południe / Rolkostrada). 2) Amfiteatr pod NOSPR-em w Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony NOSPR przy fontannach) z darmowym w weekendy parkingiem od ul. Olimpijskiej.',
-  '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Otwarta encyklopedia ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem społecznościowym Salsopedia Studio.',
+  '- WSPÓLNY GRAFIK SZKÓŁ TAŃCA W KATOWICACH (https://katosalsahub.pl/grafik.html): Tworzymy i prowadzimy ujednolicony, wspólny grafik katowickich szkół tańca (130 kursów tygodniowo: La Clave, Good Mood, Mil Pasos, Evolution) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH (P0 Od zera, P1 Podstawowy, P2 Podstawowy+, S1 Średniozaawansowany/Zaawansowany, OPEN), połączony z kalendarzem wydarzeń i mapą szkół.',
+  '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Tworzymy otwartą, społecznościową encyklopedię ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem Salsopedia Studio.',
   '- RADIO TIMBA NATION 24/7 (ODTWARZACZ NA STRONIE): Timba Nation Radio to niezależna internetowa stacja radiowa z Zurychu (Szwajcaria), założona i prowadzona przez DJ Maikiu na platformie Zeno.FM (https://zeno.fm/radio/timba-nation-radio/). To NIE jest radio tworzone ani finansowane przez Kato Salsa Hub — nasza społeczność udostępnia na stronie głównej dedykowany odtwarzacz tego strumienia (z podglądem granego utworu na żywo, obsługą ekranu blokady telefonu MediaSession oraz wyłącznikiem czasowym Sleep Timer: 15, 30, 60 min). Stacja gra 24/7 współczesną kubańską Timbę i Salsę Cubana (w tym autorskie sety DJ Maikiu - Cuban Salsa Mix) bez komercyjnych bloków reklamowych, ponieważ jest autorskim, pasjonackim projektem muzycznym DJ Maikiu promującym kubańską muzykę.',
-  '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Nasz cotygodniowy radar i agregator wszystkich imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
+  '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Tworzymy cotygodniowy radar i agregator imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
   '- INTEGRACJE, SPOTKANIA COMIESIĘCZNE I WYJAZDY: Organizujemy comiesięczne spotkania grupowe społeczności z systemem opasek (Leaders/Followers), grupy zniżkowe KSH na festiwale oraz wielki wiosenny Wyjazd Integracyjny Kato Salsa Hub (9–11 kwietnia, do 100 osób).'
 ].join('\n');
 
@@ -306,6 +307,9 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       qNorm.includes('18 00') ||
       qNorm.includes('dzialalnosc') ||
       qNorm.includes('czym sie zajmuj') ||
+      qNorm.includes('czym zajmuj') ||
+      qNorm.includes('fundacj') ||
+      qNorm.includes('spolecznosc') ||
       qNorm.includes('co robicie') ||
       qNorm.includes('kim jestescie') ||
       qNorm.includes('o was') ||
@@ -314,10 +318,11 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
 
     if (isActivityOrEventScheduleQuestion) {
       return (
-        `🌴 **Co dzieje się w Kato Salsa Hub i kiedy tańczymy w Wolnych Ludziach?**\n` +
-        `- **🍹 W każdą niedzielę (15:00–18:00) — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze cotygodniowe, otwarte potańcówki i praktyki pod dachem w samym sercu Katowic (róg ul. Mielęckiego). Tańczymy **Salsę Kubańską (Casino), Timbę, Ruedę de Casino, Son, Bachatę i Kizombę** — nie musisz mieć własnej pary! W niedziele ulice wokół są darmowe, a jako główny **Parking Rekomendowany** polecamy ogromny, bezpłatny w niedzielę **Parking pod NOSPR-em** (12 min spacerem przez kładkę).\n` +
-        `- **💃 Plenery taneczne (Kamienny Krąg na Dolinie 3 Stawów & Amfiteatr NOSPR):** W ciepłe dni tańczymy pod gołym niebem na **Kamiennym Kręgu (ul. Trzech Stawów 22)** — w razie deszczu pod zadaszoną wiatą **UKS 4 / SUP Tomi (ul. Trzech Stawów 10)** — oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
-        `- **🔥 Pełna działalność naszej Fundacji i Społeczności:** Tworzymy otwartą encyklopedię **Salsopedia** (ponad 200 figur, szkół i instruktorów w salsopedia.html), udostępniamy odtwarzacz całodobowego **Radia Timba Nation 24/7** (niezależnej stacji kubańskiej **DJ Maikiu** z Zurychu na Zeno.FM — z naszym wyłącznikiem czasowym i obsługą ekranu blokady!), prowadzimy cotygodniowy radar imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), comiesięczne spotkania integracyjne z opaskami, grupy zniżkowe na festiwale oraz wiosenny **Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób)**!`
+        `🌴 **Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?**\n` +
+        `Jesteśmy niezależną społecznością i fundacją łączącą miłośników **Salsy** (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino oraz Sonu) w Katowicach i na całym Śląsku ponad podziałami szkolnymi:\n` +
+        `- **🍹 Niedzielne potańcówki w Wolnych Ludziach (ul. Mariacka 2, Katowice):** W **każdą niedzielę w godz. 15:00–18:00** spotykamy się na otwartych potańcówkach i praktykach pod dachem (**Salsa Kubańska / Casino, Timba, Rueda de Casino, Son** — nie musisz mieć własnej pary!). W niedziele ulice wokół są darmowe, a jako główny **Parking Rekomendowany** polecamy bezpłatny w niedzielę **Parking pod NOSPR-em** (12 min spacerem przez kładkę).\n` +
+        `- **💃 Darmowe plenery taneczne:** W sezonie wiosenno-letnim tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** — w razie deszczu pod wiatą **UKS 4 / SUP Tomi (ul. Trzech Stawów 10)** — oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
+        `- **🗓️ Wspólny Grafik Szkół Tańca (grafik.html), 📖 Salsopedia (salsopedia.html) i 📊 DancePuls:** Tworzymy ujednolicony **Wspólny Grafik Szkół Tańca w Katowicach** (130 kursów z ustandaryzowanymi poziomami P0–OPEN), społecznościową encyklopedię **Salsopedię** (ponad 200 haseł), agregator imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), udostępniamy odtwarzacz **Radia Timba Nation 24/7** (stacji DJ Maikiu z Zurychu na Zeno.FM) oraz organizujemy wyjazdy i spotkania integracyjne!`
       );
     }
 
@@ -422,8 +427,10 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       );
     }
 
-    // 1d. Pytania o DancePuls, imprezy, sociale, warsztaty i kalendarz wydarzeń
+    // 1d. Pytania o Wspólny Grafik Szkół, DancePuls, imprezy, sociale, warsztaty i kalendarz wydarzeń
     if (
+      qNorm.includes('grafik') ||
+      qNorm.includes('rozklad') ||
       qNorm.includes('dancepuls') ||
       qNorm.includes('imprez') ||
       qNorm.includes('potancow') ||
@@ -434,10 +441,10 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       qNorm.includes('festiwal')
     ) {
       return (
-        `🔥 **Gdzie i kiedy bawimy się na imprezach Kato Salsa Hub?**\n` +
-        `- **🍹 W każdą niedzielę od 15:00 do 18:00 — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze regularne potańcówki i praktyki pod dachem (Salsa Cubana, Timba, Rueda de Casino, Bachata, Kizomba).\n` +
-        `- **💃 Plenery w Katowicach:** W ciepłe dni tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** (w razie deszczu pod wiatą UKS 4, ul. Trzech Stawów 10) oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
-        `- **📊 Zestawienie wszystkich imprez na Śląsku (DancePuls):** Pełny rozkład weekendowych imprez, warsztatów i festiwali znajdziesz na **https://dancepuls.katosalsahub.pl/** oraz na naszej grupie FB: **https://www.facebook.com/groups/519446499987373**.`
+        `🔥 **Wspólny Grafik Szkół Tańca i imprezy Kato Salsa Hub:**\n` +
+        `- **🗓️ Wspólny Grafik Szkół w Katowicach (grafik.html):** Zintegrowany rozkład 130 kursów tygodniowo (La Clave, Good Mood, Mil Pasos, Evolution) z ujednoliconą skalą poziomów (**P0, P1, P2, S1, OPEN**) oraz mapą szkół.\n` +
+        `- **🍹 W każdą niedzielę od 15:00 do 18:00 — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze regularne potańcówki i praktyki salsy pod dachem (Salsa Cubana / Casino, Timba, Rueda de Casino, Son).\n` +
+        `- **💃 Plenery w Katowicach & 📊 DancePuls:** W ciepłe dni tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**, a pełne zestawienie imprez na Śląsku znajdziesz na **https://dancepuls.katosalsahub.pl/**.`
       );
     }
 
@@ -492,11 +499,9 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       );
     }
 
-    // 1g. Pytania o style tańca (Salsa Cubana / Casino, Rueda, Timba, Son, Bachata, Kizomba, Rumba)
+    // 1g. Pytania o style tańca (Salsa Cubana / Casino, Rueda, Timba, Son, Rumba, Afro)
     if (
       qNorm.includes('styl') ||
-      qNorm.includes('bachat') ||
-      qNorm.includes('kizomb') ||
       qNorm.includes('rued') ||
       qNorm.includes('casino') ||
       qNorm.includes('timb') ||
@@ -507,16 +512,16 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
         `🎶 **Style tańca w społeczności Kato Salsa Hub:**\n` +
         `- **Salsa Kubańska (Casino) & Timba:** Energetyczny taniec po kole i improwizacja do współczesnej muzyki kubańskiej.\n` +
         `- **Rueda de Casino:** Spektakularny taniec wielu par w kole na komendę lidera (*Cantante* — figury takie jak *Dile Que No*, *Enchufla*, *Dame*, *Setenta*).\n` +
-        `- **Son Cubano, Rumba (Guaguancó, Yambú, Columbia), Bachata i Kizomba:** Od tradycyjnych korzeni kubańskich po zmysłowe tańce karaibskie i angolskie. Zapytaj mnie o dowolną figurę z **Salsopedii**!`
+        `- **Son Cubano, Rumba (Guaguancó, Yambú, Columbia), Afro Cubano i Salsa Liniowa:** Od tradycyjnych korzeni kubańskich po taniec liniowy. Zapytaj mnie o dowolną figurę z **Salsopedii** lub sprawdź kursy we **Wspólnym Grafiku Szkół** (grafik.html)!`
       );
     }
 
     // 1h. Domyślna odpowiedź Kato Salsa Hub
     return (
-      `Cześć! 💃🕺 Jestem Asystentem **Kato Salsa Hub**. Chętnie odpowiem na każde pytanie o naszą działalność i taniec w Katowicach:\n` +
+      `Cześć! 💃🕺 Jestem Asystentem **Kato Salsa Hub**. Chętnie odpowiem na każde pytanie o naszą działalność i salsę w Katowicach:\n` +
       `- **🍹 Niedzielne potańcówki w Wolnych Ludziach (ul. Mariacka 2):** w **każdą niedzielę od 15:00 do 18:00** + darmowe parkingi,\n` +
       `- **💃 Plenery taneczne:** Kamienny Krąg w **Dolinie Trzech Stawów** (z wiatą w razie deszczu) oraz **Amfiteatr NOSPR**,\n` +
-      `- **📖 Salsopedia (ponad 200 haseł), 📻 Radio Timba Nation 24/7, 📊 DancePuls** oraz nasze wyjazdy i spotkania integracyjne.\n` +
+      `- **🗓️ Wspólny Grafik Szkół Tańca (grafik.html), 📖 Salsopedia (ponad 200 haseł), 📻 Radio Timba Nation 24/7, 📊 DancePuls** oraz nasze wyjazdy i spotkania integracyjne.\n` +
       `O co chcesz zapytać?`
     );
   }
@@ -666,7 +671,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     (siteId === 'katosalsahub' ? 'assets/php/wiki.php?action=list' : '');
 
   const storageKey = 'tsw_ai_history_' + siteId;
-  const cacheStorageKey = 'tsw_ai_cache_' + siteId;
+  const cacheStorageKey = 'tsw_ai_cache_v42_' + siteId;
   const cacheTtlMs = Number(options.cacheTtlMs) || 24 * 60 * 60 * 1000;
   const quickPrompts = QUICK_PROMPTS_MAP[siteId] || QUICK_PROMPTS_MAP.katosalsahub;
 
@@ -1190,7 +1195,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     messagesContainer.innerHTML = '';
     const welcomeText =
       siteId === 'katosalsahub'
-        ? `Cześć! 💃🕺 Jestem wirtualnym asystentem **${title}**. Moim głównym centrum wiedzy jest **Salsopedia**, ale odpowiem też na wszystkie pytania o nasze potańcówki w Katowicach, style tańca, **Radio Timba Nation** i **DancePuls**. O co chcesz zapytać?`
+        ? `Cześć! 💃🕺 Jestem wirtualnym asystentem **${title}**. Moim głównym centrum wiedzy jest **Salsopedia**, ale odpowiem też na wszystkie pytania o nasze potańcówki salsy w Katowicach, **Wspólny Grafik Szkół Tańca (grafik.html)**, **Radio Timba Nation** i **DancePuls**. O co chcesz zapytać?`
         : `Cześć! 👋 Jestem wirtualnym doradcą **${title}**. W czym mogę Ci pomóc? Zapytaj o ofertę, wycenę lub współpracę!`;
 
     appendMessageElement('model', welcomeText);
