@@ -473,6 +473,23 @@ function bindGridAndModalDelegationEvents() {
             if (!target) return;
             const { action, id, cat } = target.dataset;
             if (action === 'filter-cat' && cat) setActiveCategory(cat);
+            else if (action === 'toggle-expand') {
+                const card = target.closest('.wiki-card');
+                if (card) {
+                    const isExpanded = card.classList.toggle('is-expanded');
+                    target.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                    const labelEl = target.querySelector('.btn-expand-label');
+                    const iconEl = target.querySelector('i');
+                    if (labelEl) {
+                        labelEl.textContent = isExpanded
+                            ? wt('wiki.collapseBtn', 'Zwiń opis')
+                            : wt('wiki.expandBtn', 'Rozwiń pełny opis');
+                    }
+                    if (iconEl) {
+                        iconEl.className = isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+                    }
+                }
+            }
             else if (action === 'jump-term' && id) { e.preventDefault(); jumpToTermCard(id); }
             else if (action === 'verify' && id) window.openVerifyModal(id);
             else if (action === 'quick-verify' && id) window.quickVerifyTerm(id);
@@ -930,6 +947,15 @@ function createTermCard(item, isPending = false) {
             </button>`;
     }
 
+    const rawDefText = String(item.definition || '').trim();
+    const isLongDef = !isPending && rawDefText.length > 200;
+    const expandBtnHtml = isLongDef
+        ? `<button type="button" class="btn-expand-def" data-action="toggle-expand" aria-expanded="false">
+               <span class="btn-expand-label">${escapeHtml(wt('wiki.expandBtn', 'Rozwiń pełny opis'))}</span>
+               <i class="fas fa-chevron-down" aria-hidden="true"></i>
+           </button>`
+        : '';
+
     card.innerHTML = `
         ${ribbonHtml}
         <div class="wiki-card-header">
@@ -943,6 +969,7 @@ function createTermCard(item, isPending = false) {
         <div class="definition">
             ${linkifyDefinition(item.definition || '', rawId)}
         </div>
+        ${expandBtnHtml}
         ${sourcesHtml}
         <div class="wiki-card-footer">
             ${authorHtml}
@@ -2004,6 +2031,15 @@ function showMessage(el, type, text) {
 function scrollToTerm(id) {
     const card = document.getElementById(`card-${id}`);
     if (card) {
+        const expandBtn = card.querySelector('[data-action="toggle-expand"]');
+        if (expandBtn && !card.classList.contains('is-expanded')) {
+            card.classList.add('is-expanded');
+            expandBtn.setAttribute('aria-expanded', 'true');
+            const labelEl = expandBtn.querySelector('.btn-expand-label');
+            const iconEl = expandBtn.querySelector('i');
+            if (labelEl) labelEl.textContent = wt('wiki.collapseBtn', 'Zwiń opis');
+            if (iconEl) iconEl.className = 'fas fa-chevron-up';
+        }
         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
         card.classList.add('is-highlighted');
         setTimeout(() => {

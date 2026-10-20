@@ -54,7 +54,15 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
 
       const radioJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'radio.js'), 'utf-8');
       assert.match(radioJs, /function\s+warmUpStream\b/, 'Brak funkcji pre-warmingu warmUpStream w radio.js');
+      assert.match(radioJs, /ensureAudioElementMounted/, 'Brak montowania elementu #ksh-radio-audio do DOM w radio.js');
+      assert.doesNotMatch(radioJs, /addEventListener\(\s*['"]stalled['"]/, 'Nasłuchiwanie stalled nie powinno przerywać i resetować buforowanego strumienia Zeno.fm');
       assert.doesNotMatch(radioJs, /crossOrigin\s*=\s*['"]anonymous['"]/, 'Zbędny crossOrigin="anonymous" spowalniający przekierowanie 302 strumienia');
+
+      const swJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sw.js'), 'utf-8');
+      const cookiesJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'cookies.js'), 'utf-8');
+      const swCacheMatch = swJs.match(/CACHE_NAME\s*=\s*['"]ksh-pwa-v(\d+)['"]/);
+      assert.ok(swCacheMatch, 'Brak CACHE_NAME = ksh-pwa-vXX w sw.js');
+      assert.match(cookiesJs, new RegExp(`sw\\.js\\?v=${swCacheMatch[1]}`), 'Wersja sw.js?v=XX w cookies.js musi odpowiadać wersji ksh-pwa-vXX w sw.js');
 
       const sectionsCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'sections.css'), 'utf-8');
       assert.match(sectionsCss, /grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*1\.5fr\)/, 'Brak minmax(0, ...) w .radio-wrapper zapobiegającego przesuwaniu widgetu przy zmianie piosenki');
@@ -178,6 +186,14 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="teamModal"/i);
       assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
       assert.match(html, /data-kb-url="assets\/data\/salsopedia\.json"/i);
+
+      const wikiCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'wiki.css'), 'utf-8');
+      assert.match(wikiCss, /\.wiki-grid\s*\{[^}]*align-items:\s*start/s, 'Brak align-items: start na .wiki-grid zapobiegającego rozciąganiu sąsiednich kart przez długie definicje');
+      assert.match(wikiCss, /-webkit-line-clamp:\s*5/, 'Brak -webkit-line-clamp: 5 ujednolicającego wysokość długich definicji w kartach Salsopedii');
+      assert.match(wikiCss, /\.btn-expand-def\b/, 'Brak stylów przycisku rozwijania długich opisów .btn-expand-def w wiki.css');
+
+      const wikiJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'wiki.js'), 'utf-8');
+      assert.match(wikiJs, /toggle-expand/, 'Brak obsługi akcji toggle-expand dla długich definicji w wiki.js');
     });
 
     it('plik salsopedia.html nie powinien zawierać styli inline, inline event handlerów, wykonywalnych bloków inline <script> ani publicznego linku moderacji w stopce (#5, SoC)', () => {

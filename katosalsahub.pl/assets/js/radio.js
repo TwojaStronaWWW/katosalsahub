@@ -36,6 +36,8 @@
   const radioAudio = typeof Audio !== 'undefined' ? new Audio() : {
     preload: 'none',
     volume: 1.0,
+    muted: false,
+    defaultMuted: false,
     src: '',
     load() {},
     play() { return Promise.resolve(); },
@@ -45,6 +47,9 @@
     addEventListener() {}
   };
   radioAudio.preload = 'none';
+  radioAudio.muted = false;
+  radioAudio.defaultMuted = false;
+  radioAudio.volume = 1.0;
   try {
     radioAudio.playsInline = true;
     if (typeof radioAudio.setAttribute === 'function') {
@@ -53,6 +58,25 @@
     }
   } catch {
     // Ignoruj w środowiskach bez pełnego DOM
+  }
+
+  function ensureAudioElementMounted() {
+    try {
+      if (
+        typeof document !== 'undefined' &&
+        document.body &&
+        typeof document.body.appendChild === 'function' &&
+        typeof Element !== 'undefined' &&
+        radioAudio instanceof Element &&
+        !radioAudio.parentElement
+      ) {
+        radioAudio.id = 'ksh-radio-audio';
+        radioAudio.className = 'is-hidden';
+        document.body.appendChild(radioAudio);
+      }
+    } catch {
+      // Ignoruj w środowiskach testowych MockDOM
+    }
   }
 
   const RadioState = {
@@ -174,22 +198,41 @@
 
   function scheduleStreamReconnect() {
     clearReconnectTimer();
-    if (!RadioState.userRequestedPlay || RadioState.reconnectAttempts >= 2) {
+    if (!RadioState.userRequestedPlay) {
+      return;
+    }
+    if (RadioState.reconnectAttempts >= 2) {
+      RadioState.userRequestedPlay = false;
+      RadioState.isPlaying = false;
+      RadioState.isLoading = false;
+      stopMetadataPolling();
+      updateGlobalUI();
       return;
     }
     if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      RadioState.isLoading = false;
+      updateGlobalUI();
       return;
     }
     RadioState.reconnectAttempts += 1;
+    RadioState.isLoading = true;
+    updateGlobalUI();
     RadioState.reconnectTimer = setTimeout(() => {
       RadioState.reconnectTimer = null;
       if (!RadioState.userRequestedPlay) return;
       try {
+        radioAudio.muted = false;
+        radioAudio.volume = 1.0;
         radioAudio.src = buildFreshStreamUrl();
         const p = radioAudio.play();
         if (p && typeof p.catch === 'function') {
           p.catch(() => {
-            RadioState.isLoading = false;
+            if (RadioState.reconnectAttempts >= 2) {
+              RadioState.userRequestedPlay = false;
+              RadioState.isPlaying = false;
+              RadioState.isLoading = false;
+              stopMetadataPolling();
+            }
             updateGlobalUI();
           });
         }
@@ -197,7 +240,7 @@
         RadioState.isLoading = false;
         updateGlobalUI();
       }
-    }, 2200);
+    }, 1500);
   }
 
   function toggleRadio() {
@@ -209,9 +252,11 @@
 
     clearWarmUpExpireTimer();
     clearReconnectTimer();
+    ensureAudioElementMounted();
+
     RadioState.userRequestedPlay = true;
     RadioState.isPlaying = true;
-    RadioState.isLoading = false;
+    RadioState.isLoading = true;
     RadioState.reconnectAttempts = 0;
 
     const now = Date.now();
@@ -219,9 +264,11 @@
     RadioState.lastWarmUpTime = now;
 
     try {
+      radioAudio.muted = false;
+      radioAudio.defaultMuted = false;
       radioAudio.volume = 1.0;
       radioAudio.preload = 'auto';
-      radioAudio.src = buildFreshStreamUrl();
+      radioAudio.src = RADIO_CONFIG.streamUrl;
     } catch {
       // Ignoruj
     }
@@ -240,13 +287,18 @@
           })
           .catch((err) => {
             if (!RadioState.userRequestedPlay) return;
-            RadioState.isLoading = false;
             if (err && err.name === 'NotAllowedError') {
               RadioState.userRequestedPlay = false;
               RadioState.isPlaying = false;
+              RadioState.isLoading = false;
+              stopMetadataPolling();
+              updateGlobalUI();
+              return;
             }
-            updateGlobalUI();
+            scheduleStreamReconnect();
           });
+      } else {
+        RadioState.isLoading = false;
       }
     } catch {
       RadioState.isLoading = false;
@@ -644,6 +696,13 @@
     }
   });
 
+  radioAudio.addEventListener('timeupdate', () => {
+    if (RadioState.isLoading && radioAudio.currentTime > 0) {
+      RadioState.isLoading = false;
+      updateGlobalUI();
+    }
+  });
+
   radioAudio.addEventListener('pause', () => {
     if (!RadioState.userRequestedPlay && !RadioState.isLoading) {
       RadioState.isPlaying = false;
@@ -651,22 +710,18 @@
     }
   });
 
-  radioAudio.addEventListener('stalled', () => {
-    if (RadioState.userRequestedPlay) {
-      scheduleStreamReconnect();
-    }
-  });
-
   radioAudio.addEventListener('error', () => {
-    RadioState.isLoading = false;
     RadioState.isStreamWarm = false;
     if (RadioState.userRequestedPlay) {
       scheduleStreamReconnect();
+    } else {
+      RadioState.isLoading = false;
+      updateGlobalUI();
     }
-    updateGlobalUI();
   });
 
   function initRadio() {
+    ensureAudioElementMounted();
     if (typeof window !== 'undefined') {
       window.updateGlobalRadioUI = updateGlobalUI;
       window.setRadioSleepTimer = setSleepTimer;

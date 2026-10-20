@@ -34,9 +34,9 @@
       window.location.reload();
     });
 
-    window.addEventListener('load', () => {
+    const registerFreshServiceWorker = () => {
       navigator.serviceWorker
-        .register('sw.js?v=24', { updateViaCache: 'none' })
+        .register('sw.js?v=27', { updateViaCache: 'none' })
         .then((reg) => {
           if (reg && typeof reg.update === 'function') {
             reg.update().catch(() => {});
@@ -45,7 +45,13 @@
         .catch(() => {
           // Ciche pominięcie w środowisku deweloperskim bez HTTPS
         });
-    });
+    };
+
+    if (document.readyState === 'complete') {
+      registerFreshServiceWorker();
+    } else {
+      window.addEventListener('load', registerFreshServiceWorker);
+    }
   }
 
   // Lekka analityka Cookieless zgodna z RODO (#22, #34 - Zero-Bloat VPS Collector + kompatybilność z Umami)
