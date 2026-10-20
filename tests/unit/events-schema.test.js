@@ -12,6 +12,7 @@ const {
   parseMilPasosEventsHtml,
   parseLoftodanceEventsHtml,
   parseKrajownikEventsHtml,
+  parseSabakiEventsHtml,
   parseFacebookEventHtml,
   extractFacebookEventUrlFromHtml
 } = require('../../dancepuls.pl/tools/sync_engine.js');
@@ -625,6 +626,33 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(orgEvents.length, 1);
       assert.strictEqual(orgEvents[0].isoStartDate, '2026-11-21');
       assert.strictEqual(orgEvents[0].venue, 'Sabrosa Dance Studio');
+
+      // 7. Test ekstrakcji Sabaki.dance JSON-LD (z filtrowaniem regularnych kursów tygodniowych) oraz pojedynczej godziny w Mil Pasos
+      const sampleSabakiLd = `
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"ItemList","itemListElement":[
+          {"@type":"ListItem","position":1,"item":{"@type":"Event","name":"BACHATA SOCIAL CLUB - impreza 100% social w La Clave","startDate":"2026-11-14T22:00:00.000Z","location":{"name":"La Clave","address":{"addressLocality":"Katowice"}},"organizer":{"name":"La Clave"},"sameAs":["https://facebook.com/events/28393357210359838"]}},
+          {"@type":"ListItem","position":2,"item":{"@type":"Event","name":"SALSA KUBAŃSKA OD ZERA | NOWY KURS | CZWARTKI 18:00","startDate":"2026-10-22T18:00:00.000Z","location":{"name":"La Clave","address":{"addressLocality":"Katowice"}},"organizer":{"name":"La Clave"},"sameAs":["https://facebook.com/events/1387152979507021"]}}
+        ]}
+        </script>
+      `;
+      const sabakiEvents = parseSabakiEventsHtml(sampleSabakiLd, 'Katowice');
+      assert.strictEqual(sabakiEvents.length, 1, 'Regularny kurs tygodniowy (CZWARTKI 18:00) musi zostać odfiltrowany');
+      assert.strictEqual(sabakiEvents[0].isoStartDate, '2026-11-14');
+      assert.strictEqual(sabakiEvents[0].venue, 'La Clave');
+      assert.strictEqual(sabakiEvents[0].url, 'https://www.facebook.com/events/28393357210359838/');
+
+      const singleTimeMpHtml = `
+        <div>
+          <p class="title">LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA</p>
+          <p>10.11.2026 22:00</p>
+          <p>Szkoła Tańca Mil Pasos</p>
+        </div>
+      `;
+      const singleMpEvents = parseMilPasosEventsHtml(singleTimeMpHtml);
+      assert.strictEqual(singleMpEvents.length, 1);
+      assert.strictEqual(singleMpEvents[0].rawDate, '10.11');
+      assert.strictEqual(singleMpEvents[0].isoStartDate, '2026-11-10');
     });
   });
 });

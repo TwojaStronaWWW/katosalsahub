@@ -82,6 +82,8 @@ const KNOWN_VENUES_GEO = [
     { match: /danceloveit|corazon|gra[zż]y[nń]skiego\s*12/i, city: 'Bielsko-Biała', venue: 'DANCE#LOVEit & Corazon', address: 'ul. Grażyńskiego 12', lat: 49.8294, lng: 19.0496 },
     { match: /sabrosa|mogilskie\s*1/i, city: 'Kraków', venue: 'Sabrosa Dance Studio', address: 'rondo Mogilskie 1', lat: 50.0658, lng: 19.9595 },
     { match: /forum\s+ta[nń]ca|konopnickiej\s*29/i, city: 'Kraków', venue: 'Forum Tańca', address: 'ul. Konopnickiej 29', lat: 50.0442, lng: 19.9348 },
+    { match: /salsa\s+house|zamoyskiego\s*79/i, city: 'Kraków', venue: 'Salsa House', address: 'ul. Jana Zamoyskiego 79A/3', lat: 50.0389, lng: 19.9412 },
+    { match: /party\s+house|szewska\s*21/i, city: 'Kraków', venue: 'Party House', address: 'ul. Szewska 21', lat: 50.0632, lng: 19.9360 },
     { match: /prominent|kamienna\s*17/i, city: 'Kraków', venue: 'PROMINENT', address: 'ul. Kamienna 17', lat: 50.0752, lng: 19.9398 },
     { match: /loftodance|kamienna\s*2/i, city: 'Kraków', venue: 'LOFToDANCE', address: 'ul. Kamienna 2–4', lat: 50.0736, lng: 19.9412 }
 ];
@@ -537,21 +539,22 @@ function parseMilPasosEventsHtml(html = '') {
 
     const results = [];
     for (let i = 1; i < lines.length; i++) {
-        const rangeMatch = lines[i].match(/^(\d{2}\.\d{2}\.(\d{4}))\s+(\d{2}:\d{2})\s*[–-]\s*(\d{2}\.\d{2}\.\d{4})\s+(\d{2}:\d{2})$/);
+        const rangeMatch = lines[i].match(/^(\d{2}\.\d{2}\.(\d{4}))\s+(\d{2}:\d{2})(?:\s*[–-]\s*(\d{2}\.\d{2}\.\d{4})\s+(\d{2}:\d{2}))?$/);
         if (!rangeMatch) continue;
         const fullStartDate = rangeMatch[1];
         const year = parseInt(rangeMatch[2], 10);
         const startTime = rangeMatch[3];
-        const endTime = rangeMatch[5];
+        const endTime = rangeMatch[5] || '';
         const rawTitle = lines[i - 1] || 'Wydarzenie w Mil Pasos';
         const cleanTitle = rawTitle
-            .replace(/\s*[-|–]\s*(?:sobota|piątek|niedziela|środa|czwartek|wtorek|poniedziałek)?\s*\d{1,2}\.\d{1,2}(?:\.\d{2,4})?.*$/i, '')
+            .replace(/\s*(?:[-|–]|\b(?:sobota|piątek|niedziela|środa|czwartek|wtorek|poniedziałek))\s*(?:sobota|piątek|niedziela|środa|czwartek|wtorek|poniedziałek)?\s*\d{1,2}\.\d{1,2}(?:\.\d{2,4})?.*$/i, '')
             .replace(/\s*\|\s*.*$/, '')
             .trim();
 
+        const descSnippet = lines.slice(i + 1, i + 12).join(' ');
         const rawDate = year === 2026 ? fullStartDate.slice(0, 5) : fullStartDate;
         const dateInfo = parseEventDateInfo(rawDate, year);
-        const styles = inferEventStyles(`${rawTitle} ${cleanTitle}`);
+        const styles = inferEventStyles(`${rawTitle} ${cleanTitle} ${descSnippet}`);
 
         results.push({
             rawDate,
@@ -563,7 +566,7 @@ function parseMilPasosEventsHtml(html = '') {
             title: cleanTitle || rawTitle,
             styles,
             url: 'https://www.milpasoskatowice.pl/?page=wydarzenia',
-            notes: `${startTime}–${endTime}; Mil Pasos Kamienna 4`
+            notes: `${endTime ? `${startTime}–${endTime}` : startTime}; Mil Pasos Kamienna 4`
         });
     }
     return results;
@@ -703,7 +706,7 @@ function parseFacebookEventHtml(html = '', fallbackUrl = '') {
 
     // Miasto z opisu FB ("w miejscowości Katowice" lub "miejscowość: Katowice" lub "Event in Katowice")
     const cityMatch = rawDesc.match(/(?:miejscowo[śs]ci|miejscowo[śs][ćc]:|Event in)\s+([A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż -]+?)(?:,|\s+organizowane|\s+by\s+|\s+w\s+dniu|$)/i);
-    const extractedCity = cityMatch ? cityMatch[1].trim() : 'Katowice';
+    const extractedCity = cityMatch ? cityMatch[1].trim() : '';
 
     // Organizator z opisu FB ("organizowane przez X w dniu" lub "organizator: X, data:")
     const orgMatch = rawDesc.match(/(?:organizowane przez|organizator:)\s+(.+?)(?:\s+w\s+dniu|,?\s+data:|$)/i);
@@ -723,7 +726,10 @@ function parseFacebookEventHtml(html = '', fallbackUrl = '') {
     const idMatch = (ogUrl || fallbackUrl).match(/events\/(?:[^\/]+\/[^\/]+\/)?(\d{8,})/i);
     const canonicalFbUrl = idMatch ? `https://www.facebook.com/events/${idMatch[1]}/` : (ogUrl || fallbackUrl);
 
-    const loc = normalizeLocation(`${extractedCity},${venueHint || organizer || rawTitle}`);
+    const locInput = extractedCity
+        ? `${extractedCity},${venueHint || organizer || rawTitle}`
+        : (venueHint || organizer || rawTitle);
+    const loc = normalizeLocation(locInput);
     const rawDate = year === 2026 ? `${day}.${month}` : `${day}.${month}.${year}`;
     const dateInfo = parseEventDateInfo(rawDate, year);
     const cleanTitle = rawTitle
@@ -911,11 +917,89 @@ function parseKrajownikEventsHtml(html = '', defaultCity = 'Katowice') {
 }
 
 /**
- * Zunifikowany skaner zewnętrznych źródeł wydarzeń tanecznych (Mil Pasos, LOFToDANCE, Krajownik Regional + Wyszukiwarka + ekstrakcja linków FB).
+ * Zunifikowany parser HTML / JSON-LD z agregatora tanecznego Sabaki.dance (https://sabaki.dance/events/Katowice, /events/Krakow, /venue/...).
+ * Wyciąga strukturalne obiekty Event z ItemList JSON-LD (wraz z bezpośrednimi linkami sameAs do wydarzeń na Facebooku)
+ * i odfiltrowuje cotygodniowe lekcje kursowe, pozostawiając imprezy, praktisy, warsztaty specjalne i festiwale.
+ */
+function parseSabakiEventsHtml(html = '', defaultCity = 'Katowice') {
+    const src = String(html || '');
+    if (!src) return [];
+
+    const results = [];
+    const seenUrls = new Set();
+    const regularClassRegex = /\b(wtorki|środy|srody|czwartki|piątki|piatki|poniedziałki|poniedzialki|niedziele|kurs\s+od\s+zera|od\s+zera|od\s+podstaw|kurs\s+regularny|nab[oó]r\s+do\s+grupy|dla\s+ta[nń]cz[aą]cych|3x45min|leading\s*&\s*following|salsation|zumba|west\s+coast\s+swing|lambada\s+w\s+parach|zouk\s+od\s+zera|kizup|lady\s+styling\s+w\s+krakowie|solo\s+footwork\s*&\s*styling|crash\s+course\s+krak[oó]w)\b/i;
+    const specialEventOverrideRegex = /\b(party|imprez[ay]|praktis|practice|festival|festiwal|social\s+club|warsztaty\s+weekendowe|zaj[eę]cia\s+specjalne|experience|dom[oó]wka|biba|sylwester|integracja|halloween)\b/i;
+
+    const ldScripts = [...src.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+    for (const sMatch of ldScripts) {
+        try {
+            const parsed = JSON.parse(sMatch[1]);
+            const list = Array.isArray(parsed?.itemListElement)
+                ? parsed.itemListElement
+                : Array.isArray(parsed)
+                    ? parsed
+                    : [parsed];
+            for (const el of list) {
+                const ev = el?.item || (el?.['@type'] === 'Event' ? el : null);
+                if (!ev || typeof ev !== 'object') continue;
+                const rawTitle = decodeHtmlEntities(String(ev.alternateName || ev.name || '').trim());
+                if (!rawTitle) continue;
+
+                const isRegularClass = regularClassRegex.test(rawTitle) && !specialEventOverrideRegex.test(rawTitle);
+                if (isRegularClass) continue;
+
+                const startIsoMatch = String(ev.startDate || '').match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}:\d{2}))?/);
+                if (!startIsoMatch) continue;
+
+                const sameAsRaw = Array.isArray(ev.sameAs) ? ev.sameAs[0] : (ev.sameAs || '');
+                const fbIdMatch = String(sameAsRaw || ev.image || '').match(/facebook(?:\.com\/events\/|_com_events_)(\d{8,})/i);
+                const url = fbIdMatch
+                    ? `https://www.facebook.com/events/${fbIdMatch[1]}/`
+                    : String(ev.url || '').trim();
+                if (!url || seenUrls.has(url)) continue;
+                seenUrls.add(url);
+
+                const year = parseInt(startIsoMatch[1], 10);
+                const month = startIsoMatch[2];
+                const day = startIsoMatch[3];
+                const startTime = startIsoMatch[4] || '';
+                const rawDate = year === 2026 ? `${day}.${month}` : `${day}.${month}.${year}`;
+                const dateInfo = parseEventDateInfo(rawDate, year);
+
+                const rawCity = decodeHtmlEntities(String(ev.location?.address?.addressLocality || defaultCity))
+                    .replace(/\bBielsko\s+Bia[lł]a\b/i, 'Bielsko-Biała');
+                const locName = decodeHtmlEntities(String(ev.location?.name || ''));
+                const orgName = decodeHtmlEntities(String(ev.organizer?.name || ''));
+                const loc = normalizeLocation(`${rawCity},${locName || orgName}`);
+                const styles = inferEventStyles(`${rawTitle} ${ev.keywords || ''} ${locName} ${orgName}`);
+
+                results.push({
+                    rawDate,
+                    isoStartDate: dateInfo.isoStartDate,
+                    isoEndDate: dateInfo.isoEndDate,
+                    venueCode: `${loc.city},${loc.venue}`,
+                    city: loc.city,
+                    venue: loc.venue,
+                    title: rawTitle,
+                    styles,
+                    url,
+                    notes: `${startTime ? startTime + '; ' : ''}${orgName || loc.venue}`
+                });
+            }
+        } catch {
+            // Ignoruj niepoprawne bloki JSON-LD
+        }
+    }
+
+    return results;
+}
+
+/**
+ * Zunifikowany skaner zewnętrznych źródeł wydarzeń tanecznych (Mil Pasos, LOFToDANCE, Krajownik Regional + Wyszukiwarka + Sabaki.dance + ekstrakcja linków FB).
  * Współdzieli architekturę konektorów z scripts/sync-schedules.js.
  */
 async function checkRemoteEventSources(existingDatabaseText = '', todayIso = getTodayIsoDate()) {
-    console.log('🌐 [1b/5] Zunifikowany skan zewnętrznych źródeł wydarzeń (Mil Pasos, LOFToDANCE, Krajownik, Facebook)...');
+    console.log('🌐 [1b/5] Zunifikowany skan zewnętrznych źródeł wydarzeń (Mil Pasos, LOFToDANCE, Krajownik, Sabaki, Facebook)...');
     const discovered = [];
 
     const tasks = [
@@ -928,6 +1012,16 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
             name: 'LOFToDANCE Wydarzenia',
             url: 'https://sklep.loftodance.pl/wydarzenia',
             parser: (html) => parseLoftodanceEventsHtml(html)
+        },
+        {
+            name: 'Sabaki Dance Katowice & Śląsk',
+            url: 'https://sabaki.dance/events/Katowice',
+            parser: (html) => parseSabakiEventsHtml(html, 'Katowice')
+        },
+        {
+            name: 'Sabaki Dance Kraków',
+            url: 'https://sabaki.dance/events/Krakow',
+            parser: (html) => parseSabakiEventsHtml(html, 'Kraków')
         },
         {
             name: 'Krajownik Katowice (Dzisiaj)',
@@ -1010,8 +1104,18 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
             parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
         },
         {
+            name: 'Krajownik Organizator: La Clave Katowice',
+            url: 'https://krajownik.pl/organizator/la-clave-6331',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
+        },
+        {
             name: 'Krajownik Organizator: Mil Pasos',
             url: 'https://krajownik.pl/organizator/szkola-tanca-mil-pasos-4946',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
+        },
+        {
+            name: 'Krajownik Organizator: Michał Rozewski (Mil Pasos)',
+            url: 'https://krajownik.pl/organizator/michal-rozewski-4948',
             parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
         },
         {
@@ -1096,8 +1200,10 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
     const uniqueDiscovered = deduplicateEvents(discovered);
     const dbLower = String(existingDatabaseText || '').toLowerCase();
     const freshEvents = uniqueDiscovered.filter(ev => {
-        if (ev.url && ev.url !== 'https://www.milpasoskatowice.pl/?page=wydarzenia' && dbLower.includes(ev.url.toLowerCase())) {
-            return false;
+        if (ev.url && ev.url !== 'https://www.milpasoskatowice.pl/?page=wydarzenia') {
+            if (dbLower.includes(ev.url.toLowerCase())) return false;
+            const fbIdMatch = ev.url.match(/facebook\.com\/events\/(\d{8,})/i);
+            if (fbIdMatch && dbLower.includes(`f:${fbIdMatch[1]}`)) return false;
         }
         const shortTitle = extractShortEventTitle(ev.title).toLowerCase();
         if (shortTitle && dbLower.includes(ev.rawDate.toLowerCase()) && dbLower.includes(shortTitle.slice(0, 14))) {
@@ -1850,6 +1956,7 @@ module.exports = {
     parseMilPasosEventsHtml,
     parseLoftodanceEventsHtml,
     parseKrajownikEventsHtml,
+    parseSabakiEventsHtml,
     parseFacebookEventHtml,
     fetchFacebookEventDetails,
     extractFacebookEventUrlFromHtml,

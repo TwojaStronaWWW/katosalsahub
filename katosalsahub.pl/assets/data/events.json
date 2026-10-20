@@ -69,6 +69,28 @@
         "style": [
           "Cubana"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (Jana Zamoyskiego 79A/3)",
+        "adres": "Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "Piątkowy Praktis w Salsa House – Urban Kiz & Kizomba",
+        "opis": "Piątkowy Praktis w Salsa House – Urban Kiz & Kizomba - 22:00; Salsa House Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "Piątkowy Praktis w Salsa House – Urban Kiz & Kizomba",
+        "dateLabel": "PIĄTEK (23.10.2026)",
+        "endDate": "2026-10-23",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1362394055692137/",
+        "style": [
+          "Urban Kiz",
+          "Kizomba"
+        ]
       }
     ]
   },
@@ -85,13 +107,13 @@
         "adres": "rondo Mogilskie 1",
         "lat": 50.0658,
         "lng": 19.9595,
-        "tytul": "Marco Faravelli wraca do Sabrosy",
-        "opis": "Marco Faravelli wraca do Sabrosy,warsztaty weekendowe - Sabrosa; 11.10 publiczne ogłoszenie potwierdza daty 24–25.10.2026; bezpośrednie wydarzenie FB nieodnalezione; nowe w bazie 11.10",
-        "opisPubliczny": "Marco Faravelli wraca do Sabrosy, warsztaty weekendowe",
+        "tytul": "HE IS BACK – Marco Faravelli w Krakowie",
+        "opis": "HE IS BACK – Marco Faravelli w Krakowie,warsztaty weekendowe - 11:00; Sabrosa Dance Studio; oficjalne wydarzenie FB uzupełnione 20.10",
+        "opisPubliczny": "HE IS BACK – Marco Faravelli w Krakowie, warsztaty weekendowe",
         "dateLabel": "SOBOTA–NIEDZIELA (24–25.10.2026)",
         "endDate": "2026-10-25",
         "soldOut": false,
-        "link": "https://www.facebook.com/groups/1202777840091298/posts/2864429500592782/",
+        "link": "https://www.facebook.com/events/2401867006965560/",
         "style": [
           "Mambo",
           "Salsa On2"
@@ -107,16 +129,59 @@
         "adres": "ul. Kamienna 4",
         "lat": 50.2569,
         "lng": 19.0121,
-        "tytul": "K Experience + Early Vibes & Goodnights Pumpkin Edition",
-        "opis": "K Experience + Early Vibes & Goodnights Pumpkin Edition,warsztaty i impreza - Mil Pasos/Michał Rozewski; 03.10 oficjalna strona potwierdza zajęcia 16–20 oraz imprezę 20–02 (Kamienna 4)",
-        "opisPubliczny": "K Experience + Early Vibes & Goodnights Pumpkin Edition, warsztaty i impreza",
+        "tytul": "Mil Pasos K Experience – Integracja środowiska",
+        "opis": "Mil Pasos K Experience – Integracja środowiska, zajęcia specjalne + praktis - 16:00–22:00; Mil Pasos / Michał Rozewski (Kamienna 4)",
+        "opisPubliczny": "Mil Pasos K Experience – Integracja środowiska, zajęcia specjalne + praktis",
         "dateLabel": "SOBOTA (24.10.2026)",
         "endDate": "2026-10-24",
         "soldOut": false,
         "link": "https://www.facebook.com/events/1040992492288985/",
         "style": [
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "Early Vibes & Goodnights Dance Party – Pumpkin Edition",
+        "opis": "Early Vibes & Goodnights Dance Party – Pumpkin Edition - 20:00–02:00; Mil Pasos (Kamienna 4); nowe osobne wydarzenie FB 20.10",
+        "opisPubliczny": "Early Vibes & Goodnights Dance Party – Pumpkin Edition",
+        "dateLabel": "SOBOTA (24.10.2026)",
+        "endDate": "2026-10-24",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/28458661560422914/",
+        "style": [
           "Bachata",
           "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (Jana Zamoyskiego 79A/3)",
+        "adres": "Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "warsztaty Rueda Dynamica con Paseos z Kleszką",
+        "opis": "warsztaty Rueda Dynamica con Paseos z Kleszką - 11:00; Salsa House Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "warsztaty Rueda Dynamica con Paseos z Kleszką",
+        "dateLabel": "SOBOTA (24.10.2026)",
+        "endDate": "2026-10-24",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1604154314424412/",
+        "style": [
+          "Cubana",
+          "Rueda"
         ]
       },
       {
@@ -129,9 +194,31 @@
         "adres": "ul. Konopnickiej 29",
         "lat": 50.0442,
         "lng": 19.9348,
-        "tytul": "Halloween Hogwarts",
-        "opis": "Halloween Hogwarts - Forum Tańca",
-        "opisPubliczny": "Halloween Hogwarts",
+        "tytul": "Halloween w Forum Tańca – Hogwarts Edition",
+        "opis": "Halloween w Forum Tańca – Hogwarts Edition,zajęcia weekendowe - 11:45; Forum Tańca Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "Halloween w Forum Tańca – Hogwarts Edition, zajęcia weekendowe",
+        "dateLabel": "SOBOTA (24.10.2026)",
+        "endDate": "2026-10-24",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1911733243127487/",
+        "style": [
+          "Salsa",
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Halloween Party – Hogwarts Edition",
+        "opis": "Halloween Party – Hogwarts Edition - 21:30; Forum Tańca Kraków",
+        "opisPubliczny": "Halloween Party – Hogwarts Edition",
         "dateLabel": "SOBOTA (24.10.2026)",
         "endDate": "2026-10-24",
         "soldOut": false,
@@ -191,6 +278,27 @@
       {
         "checked": true,
         "promote": false,
+        "miasto": "Siewierz",
+        "miastoInne": "",
+        "miejsce": "Beleza",
+        "miejsceInne": "Beleza (Rynek 11)",
+        "adres": "Rynek 11",
+        "lat": 50.4681,
+        "lng": 19.2358,
+        "tytul": "KIZOMBA SUNDAY – a tribute to music artists",
+        "opis": "KIZOMBA SUNDAY – a tribute to music artists - 19:00; Beleza Studio Tańca i Ruchu; nowe w bazie 20.10",
+        "opisPubliczny": "KIZOMBA SUNDAY – a tribute to music artists",
+        "dateLabel": "NIEDZIELA (25.10.2026)",
+        "endDate": "2026-10-25",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1159064733216184/",
+        "style": [
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
         "miejsce": "Teatro Cubano",
@@ -225,12 +333,38 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "Upiorna nagrywka z Izabelą",
-        "opis": "Upiorna nagrywka z Izabelą,zajęcia specjalne - 18:00, pomiń koniec 19:55 vs 20:00; 03.10 strona oficjalna, FB brak",
+        "opis": "Upiorna nagrywka z Izabelą,zajęcia specjalne - 18:00–20:00; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "Upiorna nagrywka z Izabelą, zajęcia specjalne",
         "dateLabel": "ŚRODA (28.10.2026)",
         "endDate": "2026-10-28",
         "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "link": "https://www.facebook.com/events/1614897007098369/",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-10-29",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Urodzinowy Praktis Bachatowy Justyny w Forum Tańca",
+        "opis": "Urodzinowy Praktis Bachatowy Justyny w Forum Tańca - 22:35; Forum Tańca Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "Urodzinowy Praktis Bachatowy Justyny w Forum Tańca",
+        "dateLabel": "CZWARTEK (29.10.2026)",
+        "endDate": "2026-10-29",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/2137456803520320/",
         "style": [
           "Bachata"
         ]
@@ -251,12 +385,12 @@
         "lat": 50.1121,
         "lng": 18.9876,
         "tytul": "Wielka Biba Halloween+Urodziny Zuzi",
-        "opis": "Wielka Biba Halloween+Urodziny Zuzi - Mohito Tychy; 21:00; FB nieodnaleziony",
+        "opis": "Wielka Biba Halloween+Urodziny Zuzi - Mohito Tychy; 21:00; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "Wielka Biba Halloween+Urodziny Zuzi",
         "dateLabel": "PIĄTEK (30.10.2026)",
         "endDate": "2026-10-30",
         "soldOut": false,
-        "link": "https://onlydanceapp.com/event/439ca0f1bb6c4322b797",
+        "link": "https://www.facebook.com/events/1483662706943298/",
         "style": [
           "Salsa",
           "Bachata",
@@ -295,13 +429,13 @@
         "adres": "rondo Mogilskie 1",
         "lat": 50.0658,
         "lng": 19.9595,
-        "tytul": "Halloween",
-        "opis": "Halloween - Sabrosa",
-        "opisPubliczny": "Halloween",
+        "tytul": "Halloween Party Salsa & Bachata",
+        "opis": "Halloween Party Salsa & Bachata - 21:30; Sabrosa; uzupełniono bezpośredni link FB 20.10",
+        "opisPubliczny": "Halloween Party Salsa & Bachata",
         "dateLabel": "PIĄTEK (30.10.2026)",
         "endDate": "2026-10-30",
         "soldOut": false,
-        "link": "https://onlydanceapp.com/event/b245a2c97eb94614a103",
+        "link": "https://www.facebook.com/events/2878397095879856/",
         "style": [
           "Salsa",
           "Bachata"
@@ -317,20 +451,68 @@
         "promote": false,
         "miasto": "Katowice",
         "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.266,
+        "lng": 19.0188,
+        "tytul": "Halloween Salsa Party – Día de los Muertos (2 sale: Cuba + Kizomba/Bachata)",
+        "opis": "Halloween Salsa Party – Día de los Muertos (2 sale: Cuba + Kizomba/Bachata) - 22:00; La Clave Chorzowska 11; wspólny bilet z imprezą w Gravitacji; nowe w bazie 20.10",
+        "opisPubliczny": "Halloween Salsa Party – Día de los Muertos (2 sale: Cuba + Kizomba/Bachata)",
+        "dateLabel": "SOBOTA (31.10.2026)",
+        "endDate": "2026-10-31",
+        "soldOut": false,
+        "link": "https://allevents.in/katowice/halloween-salsa-party-d%C3%8Da-de-los-muertos/200030785993244",
+        "style": [
+          "Cubana",
+          "Timba",
+          "Rueda",
+          "Kizomba",
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
         "miejsce": "Gravitacja",
         "miejsceInne": "Gravitacja (Gliwicka 44)",
         "adres": "Gliwicka 44",
         "lat": 50.2625,
         "lng": 19.006,
         "tytul": "Halloween Bachata Party–Día de los Muertos",
-        "opis": "Halloween Bachata Party–Día de los Muertos - La Clave; 21:30 z opisu; 03.10 OnlyDance; ten sam bilet też do La Clave",
+        "opis": "Halloween Bachata Party–Día de los Muertos - La Clave; 21:30; wspólny bilet z imprezą w La Clave; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "Halloween Bachata Party–Día de los Muertos",
         "dateLabel": "SOBOTA (31.10.2026)",
         "endDate": "2026-10-31",
         "soldOut": false,
-        "link": "https://onlydanceapp.com/event/ca531940745043df9786",
+        "link": "https://www.facebook.com/events/1662179081913529/",
         "style": [
           "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Gliwice",
+        "miastoInne": "",
+        "miejsce": "Mohito",
+        "miejsceInne": "Mohito (Zwycięstwa 52A)",
+        "adres": "Zwycięstwa 52A",
+        "lat": 50.2974,
+        "lng": 18.6746,
+        "tytul": "Strasznie Dobra Impreza – Oficjalne Gliwickie Halloween",
+        "opis": "Strasznie Dobra Impreza – Oficjalne Gliwickie Halloween - 21:00; Szkoła Tańca Mohito Gliwice; nowe w bazie 20.10",
+        "opisPubliczny": "Strasznie Dobra Impreza – Oficjalne Gliwickie Halloween",
+        "dateLabel": "SOBOTA (31.10.2026)",
+        "endDate": "2026-10-31",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1110470741478692/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
         ]
       },
       {
@@ -367,12 +549,12 @@
         "lat": 50.0736,
         "lng": 19.9412,
         "tytul": "warsztaty Unlock Your Freestyle–Level2",
-        "opis": "warsztaty Unlock Your Freestyle–Level2 - 15–18; oficjalny opis odczytany 01.10; FB nieodnaleziony",
+        "opis": "warsztaty Unlock Your Freestyle–Level2 - 15–18; LOFToDANCE; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "warsztaty Unlock Your Freestyle–Level2",
         "dateLabel": "SOBOTA (31.10.2026)",
         "endDate": "2026-10-31",
         "soldOut": false,
-        "link": "https://sklep.loftodance.pl/wydarzenie/unlock-your-freestyle-level-2,1281",
+        "link": "https://www.facebook.com/events/28452173844411271/",
         "style": [
           "Bachata solo",
           "Impro"
@@ -389,14 +571,37 @@
         "lat": 50.0736,
         "lng": 19.9412,
         "tytul": "Party w Trupa2026",
-        "opis": "Party w Trupa2026 - 22–03, 100% Bachata; LOFToDANCE; FB nieodnaleziony",
+        "opis": "Party w Trupa2026 - 22–03, 100% Bachata; LOFToDANCE; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "Party w Trupa2026",
         "dateLabel": "SOBOTA (31.10.2026)",
         "endDate": "2026-10-31",
         "soldOut": false,
-        "link": "https://onlydanceapp.com/event/cac634dc87f642b1b3ef",
+        "link": "https://www.facebook.com/events/1388506849611167/",
         "style": [
           "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Party House",
+        "miejsceInne": "Party House (Szewska 21)",
+        "adres": "Szewska 21",
+        "lat": 50.0632,
+        "lng": 19.936,
+        "tytul": "Kraków Latino Festival",
+        "opis": "Kraków Latino Festival - Party House Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "Kraków Latino Festival",
+        "dateLabel": "SOBOTA (31.10.2026)",
+        "endDate": "2026-10-31",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1570212034748706/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
         ]
       }
     ]
@@ -441,12 +646,12 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "B Experience",
-        "opis": "B Experience,zajęcia specjalne i praktis - 16:00 zajęcia, 20:00 praktis; pomiń koniec 00:00 vs 23:45; 03.10 oficjalny opis, FB brak",
+        "opis": "B Experience,zajęcia specjalne i praktis - 16:00 zajęcia, 20:00 praktis; Mil Pasos; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "B Experience, zajęcia specjalne i praktis",
         "dateLabel": "SOBOTA (07.11.2026)",
         "endDate": "2026-11-07",
         "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "link": "https://www.facebook.com/events/3128955417294577/",
         "style": [
           "Bachata"
         ]
@@ -525,12 +730,12 @@
         "lat": 50.0736,
         "lng": 19.9412,
         "tytul": "¡A bailar salsa!",
-        "opis": "¡A bailar salsa!,impreza i wcześniejsze warsztaty - impreza 20–24, warsztaty godzina TBA; 15.10 OnlyDance, Kamienna 2–4, FB nieodnaleziony; nowe w bazie 15.10",
+        "opis": "¡A bailar salsa!,impreza i wcześniejsze warsztaty - impreza 20–24, warsztaty godzina TBA; LOFToDANCE; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "¡A bailar salsa!, impreza i wcześniejsze warsztaty",
         "dateLabel": "SOBOTA (07.11.2026)",
         "endDate": "2026-11-07",
         "soldOut": false,
-        "link": "https://onlydanceapp.com/event/2b905e5e085c44a3924e",
+        "link": "https://www.facebook.com/events/1103289608857781/",
         "style": [
           "Salsa On1",
           "Salsa On2"
@@ -586,6 +791,34 @@
     ]
   },
   {
+    "date": "2026-11-10",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)",
+        "opis": "Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości) - 22:00; Mil Pasos Kamienna 4; nowe w bazie 20.10",
+        "opisPubliczny": "Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)",
+        "dateLabel": "WTOREK (10.11.2026)",
+        "endDate": "2026-11-10",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/2002548047123998/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-11-13",
     "events": [
       {
@@ -599,12 +832,12 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "LVL UP z Danielem Rojewskim",
-        "opis": "LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty - 18:00–20:55 z opisu; 03.10 oficjalna strona, FB brak",
+        "opis": "LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty - 18:00–20:55 z opisu; Mil Pasos; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "LVL UP z Danielem Rojewskim, Men Styling i Footwork, warsztaty",
         "dateLabel": "PIĄTEK (13.11.2026)",
         "endDate": "2026-11-13",
         "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "link": "https://www.facebook.com/events/4591812061145684/",
         "style": [
           "Bachata"
         ]
@@ -647,12 +880,33 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "LVL UP z Mają Modliszewską",
-        "opis": "LVL UP z Mają Modliszewską,warsztaty - 16–19; 03.10 oficjalna strona, FB brak",
+        "opis": "LVL UP z Mają Modliszewską,warsztaty - 16–19; Mil Pasos; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "LVL UP z Mają Modliszewską, warsztaty",
         "dateLabel": "SOBOTA (14.11.2026)",
         "endDate": "2026-11-14",
         "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "link": "https://www.facebook.com/events/1388826706219080/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.266,
+        "lng": 19.0188,
+        "tytul": "Bachata Social Club – impreza 100% social (Hits & Chill Edition)",
+        "opis": "Bachata Social Club – impreza 100% social (Hits & Chill Edition) - 22:00–03:00; La Clave Chorzowska 11; nowe w bazie 20.10",
+        "opisPubliczny": "Bachata Social Club – impreza 100% social (Hits & Chill Edition)",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/28393357210359838/",
         "style": [
           "Bachata"
         ]
@@ -699,12 +953,12 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "Cuban Ladies – Rumba Guaguancó",
-        "opis": "Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty - 16:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 20.10",
+        "opis": "Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty - 16:00–19:00; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies, warsztaty",
         "dateLabel": "SOBOTA (21.11.2026)",
         "endDate": "2026-11-21",
         "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "link": "https://www.facebook.com/events/1580872416500736/",
         "style": [
           "Cubana",
           "Rumba",
@@ -797,12 +1051,12 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis",
-        "opis": "Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis - 16:00–19:00 warsztaty, 19:00–22:00 praktis; Mil Pasos Kamienna 4; nowe w bazie 20.10",
+        "opis": "Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis - 16:00–19:00 warsztaty, 19:00–22:00 praktis; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis",
         "dateLabel": "SOBOTA (28.11.2026)",
         "endDate": "2026-11-28",
         "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "link": "https://www.facebook.com/events/1105825208696965/",
         "style": [
           "Kizomba",
           "Tarraxo"
@@ -886,6 +1140,27 @@
   {
     "date": "2026-12-05",
     "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "Ania Kurowska & Daniel Galas – muzyka na żywo! Live Music Interpretation",
+        "opis": "Ania Kurowska & Daniel Galas – muzyka na żywo! Live Music Interpretation - 11:00–15:00; Mil Pasos Kamienna 4; nowe w bazie 20.10",
+        "opisPubliczny": "Ania Kurowska & Daniel Galas – muzyka na żywo! Live Music Interpretation",
+        "dateLabel": "SOBOTA (05.12.2026)",
+        "endDate": "2026-12-05",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1080166424340009/",
+        "style": [
+          "Cubana"
+        ]
+      },
       {
         "checked": true,
         "promote": false,
@@ -1029,12 +1304,12 @@
         "lat": 50.0736,
         "lng": 19.9412,
         "tytul": "Sylwester",
-        "opis": "Sylwester - LOFToDANCE",
+        "opis": "Sylwester - LOFToDANCE; uzupełniono bezpośredni link FB 20.10",
         "opisPubliczny": "Sylwester",
         "dateLabel": "CZWARTEK (31.12.2026)",
         "endDate": "2026-12-31",
         "soldOut": false,
-        "link": "https://onlydanceapp.com/event/bd432805b60646cbb405",
+        "link": "https://www.facebook.com/events/1580412003488974/",
         "style": [
           "Bachata",
           "Sensual Impro"
