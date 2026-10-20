@@ -115,9 +115,12 @@
 
 .wiki-header h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 3.4rem;
+  font-size: clamp(2.1rem, 8vw, 3.4rem);
+  line-height: 1.08;
   letter-spacing: 2px;
   margin-bottom: 0.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
   background: linear-gradient(135deg, var(--yellow, #fbbf24), var(--orange, #f97316), var(--red, #ef4444));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -148,8 +151,17 @@
   color: #f8fafc;
   font-family: inherit;
   font-size: 1.05rem;
+  text-overflow: ellipsis;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   transition: all 0.25s ease;
+}
+
+@media (max-width: 480px) {
+  .search-input {
+    height: 48px;
+    padding: 0 42px 0 44px;
+    font-size: 0.9rem;
+  }
 }
 
 .search-input::placeholder {
@@ -274,8 +286,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
   border: 1px solid transparent;
   transition: all 0.2s ease;
+}
+
+.category-list li > span:first-child {
+  min-width: 0;
+  flex: 1 1 auto;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .category-list li:hover {
@@ -457,18 +478,24 @@
 
 .wiki-card-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px 12px;
   margin-bottom: 12px;
+  min-width: 0;
 }
 
 .wiki-card-header h3 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: clamp(1.18rem, 4.5vw, 1.4rem);
   font-weight: 700;
   color: #f8fafc;
   line-height: 1.3;
+  min-width: 0;
+  flex: 1 1 170px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .status-verified {
@@ -494,11 +521,16 @@
 
 .cat-badge {
   font-size: 0.76rem;
+  line-height: 1.3;
   padding: 4px 11px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
   color: #e2e8f0;
   font-weight: 500;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
@@ -545,6 +577,7 @@
 
 .source-pill {
   font-size: 0.78rem;
+  line-height: 1.35;
   color: #fef08a;
   text-decoration: none;
   background: rgba(245, 158, 11, 0.12);
@@ -554,6 +587,11 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   transition: all 0.2s ease;
 }
 
@@ -567,14 +605,19 @@
   padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px 12px;
+  min-width: 0;
 }
 
 .author-meta {
   font-size: 0.82rem;
   color: #94a3b8;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .author-meta strong {
@@ -611,6 +654,7 @@
 
 .moderation-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
 }

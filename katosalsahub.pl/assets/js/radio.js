@@ -40,17 +40,31 @@
     load() {},
     play() { return Promise.resolve(); },
     pause() {},
+    removeAttribute() {},
+    setAttribute() {},
     addEventListener() {}
   };
   radioAudio.preload = 'none';
+  try {
+    radioAudio.playsInline = true;
+    if (typeof radioAudio.setAttribute === 'function') {
+      radioAudio.setAttribute('playsinline', '');
+      radioAudio.setAttribute('webkit-playsinline', '');
+    }
+  } catch {
+    // Ignoruj w środowiskach bez pełnego DOM
+  }
 
   const RadioState = {
     initialized: false,
+    userRequestedPlay: false,
     isPlaying: false,
     isLoading: false,
     isStreamWarm: false,
     lastWarmUpTime: 0,
     warmUpExpireTimer: null,
+    reconnectTimer: null,
+    reconnectAttempts: 0,
     sleepTimerTimeout: null,
     sleepTimerCountdownInterval: null,
     fadeOutInterval: null,
@@ -82,9 +96,21 @@
     }
   }
 
+  function clearReconnectTimer() {
+    if (RadioState.reconnectTimer) {
+      clearTimeout(RadioState.reconnectTimer);
+      RadioState.reconnectTimer = null;
+    }
+  }
+
+  function buildFreshStreamUrl() {
+    const sep = RADIO_CONFIG.streamUrl.includes('?') ? '&' : '?';
+    return `${RADIO_CONFIG.streamUrl}${sep}_t=${Date.now()}`;
+  }
+
   /**
-   * Proaktywnie rozwiązuje przekierowanie 302 Zeno.fm i buforuje pierwsze ramki
-   * audio (burst-on-connect), aby po kliknięciu Play muzyka grała bez opóźnienia.
+   * Bezpieczny pre-warming DNS/TLS dla Zeno.fm bez otwierania i zamrażania gniazda
+   * strumienia MP3 przed kliknięciem użytkownika (ochrona przed wygaśnięciem tokenu 302 JWT).
    */
   function warmUpStream(force = false) {
     if (RadioState.isPlaying) return;
@@ -99,44 +125,79 @@
     RadioState.lastWarmUpTime = now;
 
     try {
-      radioAudio.preload = 'auto';
-      if (radioAudio.src !== RADIO_CONFIG.streamUrl) {
-        radioAudio.src = RADIO_CONFIG.streamUrl;
-      }
-      if (typeof radioAudio.load === 'function') {
-        radioAudio.load();
+      if (typeof document !== 'undefined' && document.head && typeof document.createElement === 'function') {
+        if (!document.getElementById('ksh-zeno-preconnect')) {
+          const link = document.createElement('link');
+          link.id = 'ksh-zeno-preconnect';
+          link.rel = 'preconnect';
+          link.href = 'https://stream.zeno.fm';
+          document.head.appendChild(link);
+        }
       }
     } catch {
-      // Ignoruj w środowiskach bez pełnego wsparcia HTMLMediaElement
+      // Ignoruj w środowiskach bez pełnego DOM
     }
 
     RadioState.warmUpExpireTimer = setTimeout(() => {
       RadioState.warmUpExpireTimer = null;
       if (!RadioState.isPlaying && !RadioState.isLoading) {
         RadioState.isStreamWarm = false;
-        try {
-          radioAudio.preload = 'metadata';
-        } catch {
-          // Ignoruj
-        }
       }
     }, RADIO_CONFIG.streamWarmIdleTimeoutMs);
   }
 
   function stopRadio() {
     clearWarmUpExpireTimer();
+    clearReconnectTimer();
+    RadioState.userRequestedPlay = false;
     RadioState.isLoading = false;
     RadioState.isPlaying = false;
     RadioState.isStreamWarm = false;
+    RadioState.reconnectAttempts = 0;
     stopMetadataPolling();
     try {
       radioAudio.pause();
+      if (typeof radioAudio.removeAttribute === 'function') {
+        radioAudio.removeAttribute('src');
+      } else {
+        radioAudio.src = '';
+      }
+      if (typeof radioAudio.load === 'function') {
+        radioAudio.load();
+      }
       radioAudio.volume = 1.0;
     } catch {
       // Ignoruj
     }
     updateGlobalUI();
-    warmUpStream(true);
+  }
+
+  function scheduleStreamReconnect() {
+    clearReconnectTimer();
+    if (!RadioState.userRequestedPlay || RadioState.reconnectAttempts >= 2) {
+      return;
+    }
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      return;
+    }
+    RadioState.reconnectAttempts += 1;
+    RadioState.reconnectTimer = setTimeout(() => {
+      RadioState.reconnectTimer = null;
+      if (!RadioState.userRequestedPlay) return;
+      try {
+        radioAudio.src = buildFreshStreamUrl();
+        const p = radioAudio.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {
+            RadioState.isLoading = false;
+            updateGlobalUI();
+          });
+        }
+      } catch {
+        RadioState.isLoading = false;
+        updateGlobalUI();
+      }
+    }, 2200);
   }
 
   function toggleRadio() {
@@ -147,33 +208,48 @@
     }
 
     clearWarmUpExpireTimer();
+    clearReconnectTimer();
+    RadioState.userRequestedPlay = true;
     RadioState.isPlaying = true;
     RadioState.isLoading = false;
+    RadioState.reconnectAttempts = 0;
 
     const now = Date.now();
-    const hasFreshWarmBuffer =
-      RadioState.isStreamWarm && now - RadioState.lastWarmUpTime < RADIO_CONFIG.streamWarmTtlMs;
+    RadioState.isStreamWarm = true;
+    RadioState.lastWarmUpTime = now;
 
     try {
       radioAudio.volume = 1.0;
       radioAudio.preload = 'auto';
-      if (!hasFreshWarmBuffer || !radioAudio.src) {
-        radioAudio.src = RADIO_CONFIG.streamUrl;
-      }
+      radioAudio.src = buildFreshStreamUrl();
     } catch {
       // Ignoruj
     }
 
-    RadioState.isStreamWarm = true;
-    RadioState.lastWarmUpTime = now;
-
-    const playPromise = radioAudio.play();
-    if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(() => {
-        // W środowisku headless lub przy blokadzie strumienia zachowujemy spójny stan UI
-        RadioState.isLoading = false;
-        updateGlobalUI();
-      });
+    try {
+      const playPromise = radioAudio.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise
+          .then(() => {
+            if (RadioState.userRequestedPlay) {
+              RadioState.isLoading = false;
+              RadioState.isPlaying = true;
+              RadioState.reconnectAttempts = 0;
+              updateGlobalUI();
+            }
+          })
+          .catch((err) => {
+            if (!RadioState.userRequestedPlay) return;
+            RadioState.isLoading = false;
+            if (err && err.name === 'NotAllowedError') {
+              RadioState.userRequestedPlay = false;
+              RadioState.isPlaying = false;
+            }
+            updateGlobalUI();
+          });
+      }
+    } catch {
+      RadioState.isLoading = false;
     }
 
     updateGlobalUI();
@@ -554,27 +630,39 @@
 
   radioAudio.addEventListener('playing', () => {
     RadioState.isLoading = false;
-    RadioState.isPlaying = true;
+    if (RadioState.userRequestedPlay) {
+      RadioState.isPlaying = true;
+      RadioState.reconnectAttempts = 0;
+    }
     updateGlobalUI();
   });
 
+  radioAudio.addEventListener('canplay', () => {
+    if (RadioState.isLoading) {
+      RadioState.isLoading = false;
+      updateGlobalUI();
+    }
+  });
+
   radioAudio.addEventListener('pause', () => {
-    if (!RadioState.isLoading) {
+    if (!RadioState.userRequestedPlay && !RadioState.isLoading) {
       RadioState.isPlaying = false;
       updateGlobalUI();
     }
   });
 
-  radioAudio.addEventListener('waiting', () => {
-    if (RadioState.isPlaying) {
-      RadioState.isLoading = true;
-      updateGlobalUI();
+  radioAudio.addEventListener('stalled', () => {
+    if (RadioState.userRequestedPlay) {
+      scheduleStreamReconnect();
     }
   });
 
   radioAudio.addEventListener('error', () => {
     RadioState.isLoading = false;
     RadioState.isStreamWarm = false;
+    if (RadioState.userRequestedPlay) {
+      scheduleStreamReconnect();
+    }
     updateGlobalUI();
   });
 

@@ -126,13 +126,20 @@ button {
   margin-bottom: 20px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  max-width: 100%;
+  line-height: 1.35;
+  text-align: center;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .section-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   line-height: 1.1;
   margin-bottom: 20px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .section-subtitle {
@@ -140,6 +147,8 @@ button {
   color: var(--fg-muted);
   max-width: 600px;
   margin: 0 auto;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .text-gradient {

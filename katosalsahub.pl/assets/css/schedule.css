@@ -18,24 +18,35 @@
 }
 
 .schedule-mode-btn {
-  height: 46px;
-  padding: 0 14px;
+  min-height: 46px;
+  height: auto;
+  padding: 8px 12px;
   border-radius: 12px;
   border: 1px solid transparent;
   background: transparent;
   color: #cbd5e1;
   font-family: inherit;
   font-size: 0.92rem;
+  line-height: 1.25;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.schedule-mode-btn > span:not(.schedule-mode-count) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .schedule-mode-btn:hover {
@@ -62,6 +73,7 @@
   font-weight: 800;
   background: rgba(0, 0, 0, 0.22);
   color: inherit;
+  flex-shrink: 0;
 }
 
 @media (max-width: 820px) {
@@ -72,9 +84,9 @@
 
 @media (max-width: 480px) {
   .schedule-mode-btn {
-    padding: 0 8px;
-    font-size: 0.8rem;
-    gap: 6px;
+    padding: 8px 8px;
+    font-size: 0.78rem;
+    gap: 5px;
   }
 }
 
@@ -101,19 +113,28 @@
 }
 
 .day-pill-btn {
-  height: 40px;
-  padding: 0 6px;
+  min-height: 40px;
+  height: auto;
+  padding: 6px 10px;
   border-radius: 10px;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.03);
   color: #cbd5e1;
   font-family: inherit;
   font-size: 0.8rem;
+  line-height: 1.25;
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -236,8 +257,10 @@
   display: inline-flex;
   align-items: center;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 1 1 auto;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* --- Nagłówki Dni w Siatce Grafiku --- */
@@ -256,17 +279,24 @@
   background: linear-gradient(90deg, rgba(251, 191, 36, 0.14), rgba(249, 115, 22, 0.04));
   border-left: 4px solid #fbbf24;
   border-radius: 0 12px 12px 0;
+  min-width: 0;
 }
 
 .schedule-day-heading h2 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.7rem;
+  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  line-height: 1.15;
   letter-spacing: 1.5px;
   color: #f8fafc;
   margin: 0;
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .schedule-day-badge {
@@ -288,11 +318,11 @@
 /* --- Karty Zajęć w Grafiku Szkół --- */
 .schedule-cards-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr));
   gap: 16px;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 640px) {
   .schedule-cards-list {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -308,6 +338,10 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -513,27 +547,42 @@
 
 .schedule-card-actions {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: stretch;
   gap: 8px;
   margin-top: 4px;
 }
 
+@media (max-width: 480px) {
+  .schedule-card-actions {
+    flex-direction: column;
+  }
+}
+
 .schedule-action-btn {
-  flex: 1;
-  height: 34px;
-  padding: 0 10px;
+  flex: 1 1 140px;
+  min-height: 38px;
+  height: auto;
+  padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.05);
   color: #e2e8f0;
   font-size: 0.78rem;
+  line-height: 1.25;
   font-weight: 600;
+  text-align: center;
   text-decoration: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -570,6 +619,10 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -648,7 +701,7 @@
 
 .schools-comparison-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 16px;
   margin-top: 24px;
 }
@@ -662,6 +715,10 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .school-info-card h3 {
@@ -766,6 +823,10 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
@@ -934,6 +995,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .pricing-analysis-card--lc {

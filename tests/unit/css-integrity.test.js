@@ -67,4 +67,17 @@ describe('Integralność i składnia arkuszy stylów CSS (Kato Salsa Hub & Dance
       'Brak stałej siatki CSS Grid 4-kolumnowej w .sleep-timer-buttons w radio.css (CLS = 0)'
     );
   });
+
+  it('przyciski, zakładki i karty w schedule.css, wiki.css oraz sections.css powinny chronić przed wylewaniem napisów poza ramki na urządzeniach mobilnych (white-space: normal, overflow-wrap: anywhere, flex-wrap: wrap)', () => {
+    const scheduleCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/schedule.css'), 'utf-8');
+    const wikiCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/wiki.css'), 'utf-8');
+    const sectionsCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/sections.css'), 'utf-8');
+
+    assert.match(scheduleCss, /\.schedule-mode-btn\s*\{[^}]*white-space:\s*normal/s, 'Brak white-space: normal w .schedule-mode-btn');
+    assert.match(scheduleCss, /\.day-pill-btn\s*\{[^}]*white-space:\s*normal/s, 'Brak white-space: normal w .day-pill-btn');
+    assert.match(scheduleCss, /\.schedule-action-btn\s*\{[^}]*min-height:\s*38px[^}]*height:\s*auto/s, 'Brak elastycznej wysokości w .schedule-action-btn');
+    assert.match(wikiCss, /\.wiki-card-header\s*\{[^}]*flex-wrap:\s*wrap/s, 'Brak flex-wrap: wrap w .wiki-card-header');
+    assert.match(wikiCss, /\.wiki-card-footer\s*\{[^}]*flex-wrap:\s*wrap/s, 'Brak flex-wrap: wrap w .wiki-card-footer');
+    assert.match(sectionsCss, /\.map-spot-badge\s*\{[^}]*overflow-wrap:\s*anywhere/s, 'Brak overflow-wrap: anywhere w .map-spot-badge');
+  });
 });
