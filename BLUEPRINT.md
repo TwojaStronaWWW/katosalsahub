@@ -151,14 +151,19 @@ Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 
 ---
 
-### 5.4 Szablon 3: Konfiguracja Wizytówki Google (`Kato Salsa Hub – Salsa Katowice`)
-Panel zarządzania: **[https://business.google.com/](https://business.google.com/)** (lub wpisz `moja firma` w Google).
+### 5.4 Szablon 3: Konfiguracja Wizytówki Google (`Kato Salsa Hub`) oraz punktu POI `Kamienny Krąg`
+Panel zarządzania: **[https://business.google.com/locations](https://business.google.com/locations)** (lub wpisz `moja firma` w Google).
 
-- **Nazwa profilu:** `Kato Salsa Hub – Salsa Katowice`
-- **Kategoria główna:** `Klub taneczny` (`Dance club`)
-- **Kategorie dodatkowe:** `Szkoła tańca` (`Dance school`), `Zespół taneczny` (`Dance company`) / `Organizator imprez` (`Event planner`)
-- **Obszar działania:** `Katowice, Polska`
+- **Nazwa profilu (podczas weryfikacji):** `Kato Salsa Hub` *(po pełnej weryfikacji można rozwinąć do `Kato Salsa Hub – Salsa Katowice`)*
+- **Kategoria główna:** `Organizator imprez` (`Event planner`) lub `Szkoła tańca` (`Dance school`) *(unikaj ustawiania `Klub taneczny` jako kategorii głównej przy braku własnego budynku na wyłączność)*
+- **Kategorie dodatkowe:** `Klub taneczny` (`Dance club`), `Zespół taneczny` (`Dance company`), `Stowarzyszenie lub organizacja` (`Association or organization`)
+- **Adres stacjonarny vs. Obszar działania (KRYTYCZNE – Service Area Business):**
+  - W sekcji **Lokalizacja (`Location`)** przełącznik **„Pokaż adres firmy klientom” (`Show business address to customers`)** musi być **WYŁĄCZONY (`OFF`)**, aby wizytówka nie kolidowała z adresem baru *Wolni Ludzie* (`ul. Mariacka 2`) ani restauracji *La Cantina* (`ul. Trzech Stawów 22`).
+  - **Obszar działania (`Service area`):** `Katowice, Polska` (opcjonalnie dodatkowo: `Chorzów`, `Sosnowiec`, `Gliwice`, `Tychy`).
 - **Godziny otwarcia (`Hours`):** `Open 24 hours` (Poniedziałek–Niedziela) lub `Open with no main hours` *(aby wizytówka nigdy nie wyświetlała czerwonego statusu „Zamknięte” w dni powszednie i zyskiwała bonus rankingowy „Openness” w Google Maps)*.
+- **Punkt na mapie `Kamienny Krąg – Dolina Trzech Stawów` (Zwykłe miejsce POI w Google Maps, NIE wizytówka firmowa!):**
+  - **Nigdy nie utrzymuj „Kamiennego Kręgu” jako wizytówki firmowej w `business.google.com`** (jeśli tam powstała – usuń ją przez *Ustawienia profilu firmy $\rightarrow$ Usuń profil firmy*).
+  - Jako zwykłe oznaczenie miejsca na mapie (Google Maps $\rightarrow$ *Opublikuj* $\rightarrow$ *Dodaj miejsce*) zgłaszaj wyłącznie z kategorią **`Atrakcja turystyczna`** lub **`Punkt widokowy`**, ze szpilką GPS ustawioną dokładnie na **`50.2449289, 19.046362`** (**bez wpisywania numeru budynku `ul. Trzech Stawów 22`**, bez strony WWW i bez numeru telefonu).
 - **Opis profilu (`Description` – do 750 znaków, bez `.pl`):**
   ```text
   Kato Salsa Hub to otwarta społeczność tancerzy salsy kubańskiej (Salsa Cubana / Casino), Timby, Rueda de Casino, Bachaty i Kizomby w Katowicach i na Śląsku. Organizujemy regularne niedzielne potańcówki i praktyki taneczne w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice) oraz darmowe plenery taneczne w Dolinie Trzech Stawów (Kamienny Krąg) i w Strefie Kultury pod Amfiteatrem NOSPR. Na naszej stronie internetowej znajdziesz interaktywną mapę parkietów i darmowych parkingów w Katowicach, całodobowe radio kubańskie Timba Nation 24/7 bez reklam, aktualny kalendarz imprez tanecznych na Śląsku DancePuls oraz Salsopedię – encyklopedię ponad 200 figur salsy, szkół tańca i instruktorów. Dołącz solo lub w parze!
