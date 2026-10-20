@@ -19,6 +19,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const SCHEDULE_JSON_PATH = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'schedule.json');
@@ -2460,36 +2461,335 @@ const CLASSES = [
   },
 ];
 
+const DAY_NAME_TO_NUMBER = {
+  poniedziałek: 1,
+  wtorek: 2,
+  środa: 3,
+  czwartek: 4,
+  piątek: 5,
+  sobota: 6,
+  niedziela: 7,
+};
+
+const DAY_NUMBER_TO_NAME = {
+  1: 'Poniedziałek',
+  2: 'Wtorek',
+  3: 'Środa',
+  4: 'Czwartek',
+  5: 'Piątek',
+  6: 'Sobota',
+  7: 'Niedziela',
+};
+
+/**
+ * Parser CSV zgodny z RFC-4180 (obsługuje wieloliniowe komórki w cudzysłowach z Google Sheets).
+ */
+function parseCsvGrid(csvText = '') {
+  const rows = [];
+  let row = [];
+  let cell = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < csvText.length; i++) {
+    const ch = csvText[i];
+    if (inQuotes) {
+      if (ch === '"' && csvText[i + 1] === '"') {
+        cell += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        cell += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      row.push(cell);
+      cell = '';
+    } else if (ch === '\n') {
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = '';
+    } else if (ch !== '\r') {
+      cell += ch;
+    }
+  }
+  if (cell.length > 0 || row.length > 0) {
+    row.push(cell);
+    rows.push(row);
+  }
+  return rows;
+}
+
+/**
+ * Parsuje surowe komórki z arkusza Google Sheets szkoły Good Mood i zwraca listę rozpoznanych bloków zajęć.
+ */
+function parseGoodMoodSheetCells(csvText = '', locationSuffix = 'Paderewskiego 35') {
+  const rows = parseCsvGrid(csvText);
+  const parsedBlocks = [];
+  let currentDay = 0;
+  let currentRoom = '';
+
+  for (const r of rows) {
+    const col0 = String(r[0] || '').trim().toLowerCase();
+    const col1 = String(r[1] || '').replace(/\s+/g, ' ').trim();
+    if (DAY_NAME_TO_NUMBER[col0]) {
+      currentDay = DAY_NAME_TO_NUMBER[col0];
+    }
+    if (col1 && /SALA|Gravitacja/i.test(col1)) {
+      currentRoom = col1
+        .replace(/^SALA\s+/i, 'Sala ')
+        .replace(/SWAYZE/i, 'Swayze')
+        .replace(/DIRTY DANCING/i, 'Dirty Dancing')
+        .replace(/STEP UP/i, 'Step Up');
+      if (!currentRoom.includes('(') && !/Gliwicka/i.test(currentRoom)) {
+        currentRoom = `${currentRoom} (${locationSuffix})`;
+      } else if (/Gravitacja/i.test(currentRoom)) {
+        currentRoom = 'Gravitacja (Gliwicka 44)';
+      }
+    }
+    if (!currentDay) continue;
+
+    for (let j = 2; j < r.length; j++) {
+      const rawCell = String(r[j] || '').trim();
+      if (!rawCell) continue;
+      if (/Miejsce Na Zajęcia Indywidualne|FORMULARZ ZAPISÓW|Grafik 2026|Rezerwuj Nr Tel/i.test(rawCell)) continue;
+      if (/^\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}$/.test(rawCell)) continue;
+
+      const timeMatch = rawCell.match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+      if (!timeMatch) continue;
+
+      const startTime = timeMatch[1].padStart(5, '0');
+      const endTime = timeMatch[2].padStart(5, '0');
+      const lines = rawCell
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter(Boolean);
+
+      const styleLine = lines[0] || 'Zajęcia taneczne';
+      const startMatch = rawCell.match(/START[:\s]*(\d{1,2}\.\d{1,2}(?:\.\d{2,4})?)/i);
+      const startDate = startMatch ? startMatch[1] : null;
+      const levelCode = normalizeLevel(rawCell);
+
+      parsedBlocks.push({
+        dayOfWeek: currentDay,
+        dayName: DAY_NUMBER_TO_NAME[currentDay],
+        room: currentRoom || `Sala (${locationSuffix})`,
+        startTime,
+        endTime,
+        styleLine,
+        startDate,
+        levelCode,
+        rawText: rawCell,
+      });
+    }
+  }
+  return parsedBlocks;
+}
+
+/**
+ * Opcjonalny ekstraktor OCR Vision (Gemini 2.5 Flash) wywoływany wyłącznie wtedy,
+ * gdy zmieni się suma kontrolna SHA-256 planszy grafiku PNG/JPG i ustawiono GEMINI_API_KEY.
+ */
+async function extractClassesWithGeminiVision(imageBuffer, mimeType, schoolId, dayOfWeek) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return null;
+
+  const prompt = `Odczytaj wszystkie zajęcia taneczne z tej planszy grafiku szkoły ${schoolId} dla dnia ${DAY_NUMBER_TO_NAME[dayOfWeek]} (dayOfWeek=${dayOfWeek}). Zwróć tablicę JSON obiektów z polami: startTime (HH:MM), endTime (HH:MM), styleCategory (salsa_cubana|salsa_liniowa|bachata|kizomba|zouk_wcs|solo_styling), styleLabel, title, rawLevelText, room, instructors (tablica obiektów {name}), notes.`;
+
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              { text: prompt },
+              {
+                inlineData: {
+                  mimeType,
+                  data: Buffer.from(imageBuffer).toString('base64'),
+                },
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.1,
+          responseMimeType: 'application/json',
+        },
+      }),
+    }
+  );
+
+  if (!res.ok) return null;
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) return null;
+  const extracted = JSON.parse(text);
+  if (!Array.isArray(extracted)) return null;
+
+  return extracted.map((item, idx) => {
+    const levelCode = normalizeLevel(`${item.rawLevelText || ''} ${item.title || ''}`);
+    return {
+      id: `${schoolId.toLowerCase()}_d${dayOfWeek}_v${idx + 1}`,
+      schoolId,
+      dayOfWeek,
+      dayName: DAY_NUMBER_TO_NAME[dayOfWeek],
+      startTime: String(item.startTime || '18:00').padStart(5, '0'),
+      endTime: String(item.endTime || '19:00').padStart(5, '0'),
+      styleCategory: item.styleCategory || 'salsa_cubana',
+      styleLabel: item.styleLabel || 'Taniec',
+      title: item.title || 'Zajęcia taneczne',
+      levelCode,
+      levelLabel: `${levelCode} • ${item.rawLevelText || 'Poziom ustandaryzowany'}`,
+      room: item.room || 'Sala główna',
+      instructors: Array.isArray(item.instructors) && item.instructors.length ? item.instructors : [{ name: 'Zespół Instruktorów' }],
+      multisport: true,
+      notes: item.notes || 'Zaktualizowano automatycznie przez AI Vision z nowej planszy grafiku.',
+    };
+  });
+}
+
 async function checkRemoteFreshness() {
   const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/131.0.0.0 Safari/537.36';
   const sheetId = '11SHUHN1SJ48e0N8mPUkZSKFKzP8gqc9daNSGysutzl8';
 
-  console.log('🔍 [1/3] Sprawdzanie świeżości Google Sheets szkoły Good Mood...');
+  let existingMeta = {};
+  if (fs.existsSync(SCHEDULE_JSON_PATH)) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(SCHEDULE_JSON_PATH, 'utf-8'));
+      existingMeta = prev.sourcesMeta || {};
+    } catch {
+      existingMeta = {};
+    }
+  }
+
+  console.log('🔍 [1/3] Żywa synchronizacja CSV Google Sheets szkoły Good Mood...');
   const gmRes = await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=0`, {
     headers: { 'User-Agent': ua },
   });
   const gmCsv = await gmRes.text();
-  const gmStarts = [...new Set([...gmCsv.matchAll(/START[:\s]*(\d{1,2}\.\d{1,2}(?:\.\d{2,4})?)/gi)].map((m) => m[1]))];
-  console.log(`   ✅ Good Mood (Paderewskiego 35, gid=0): HTTP ${gmRes.status}, daty START w komórkach: ${gmStarts.join(', ')}`);
+  const gmHash0 = crypto.createHash('sha256').update(gmCsv).digest('hex').slice(0, 16);
+  const padBlocks = parseGoodMoodSheetCells(gmCsv, 'Paderewskiego 35');
 
   const gmGliwRes = await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=409650056`, {
     headers: { 'User-Agent': ua },
   });
   const gmGliwCsv = await gmGliwRes.text();
-  const gmGliwStarts = [...new Set([...gmGliwCsv.matchAll(/START[:\s]*(\d{1,2}\.\d{1,2}(?:\.\d{2,4})?)/gi)].map((m) => m[1]))];
-  console.log(`   ✅ Good Mood (Gliwicka 44, gid=409650056): HTTP ${gmGliwRes.status}, daty START w komórkach: ${gmGliwStarts.join(', ')}`);
+  const gmHashGliw = crypto.createHash('sha256').update(gmGliwCsv).digest('hex').slice(0, 16);
+  const gliwBlocks = parseGoodMoodSheetCells(gmGliwCsv, 'Gliwicka 44');
 
-  console.log('🔍 [2/3] Sprawdzanie nagłówka Last-Modified grafik La Clave...');
-  const lcHead = await fetch('https://www.laclave.pl/files/1000/1-1.png', { method: 'HEAD', headers: { 'User-Agent': ua } });
-  console.log(`   ✅ La Clave (files/1000/1-1.png): HTTP ${lcHead.status}, Last-Modified: ${lcHead.headers.get('last-modified')}`);
+  const allLiveGmBlocks = [...padBlocks, ...gliwBlocks];
+  let gmUpdatedStarts = 0;
 
-  console.log('🔍 [3/3] Sprawdzanie grafik Mil Pasos (?page=grafik)...');
+  // Aktualizacja dat START: w zajęciach Good Mood na żywo z arkusza Google Sheets
+  for (const cls of CLASSES) {
+    if (cls.schoolId !== 'GM') continue;
+    const matchingBlock = allLiveGmBlocks.find(
+      (b) => b.dayOfWeek === cls.dayOfWeek && b.startTime === cls.startTime && cls.room.toLowerCase().includes(b.room.split(' ')[1]?.toLowerCase() || '')
+    );
+    if (matchingBlock && matchingBlock.startDate) {
+      const updatedLabel = cls.levelLabel.replace(/Start\s+\d{1,2}\.\d{1,2}(?:\.\d{2,4})?/i, `Start ${matchingBlock.startDate}`);
+      if (updatedLabel !== cls.levelLabel) {
+        cls.levelLabel = updatedLabel;
+        gmUpdatedStarts++;
+      }
+    }
+  }
+
+  console.log(
+    `   ✅ Good Mood Live CSV: wyodrębniono ${allLiveGmBlocks.length} bloków komórek (sha256=${gmHash0}/${gmHashGliw}, zaktualizowane daty START: ${gmUpdatedStarts})`
+  );
+
+  console.log('🔍 [2/3] Sprawdzanie sum kontrolnych SHA-256 i Last-Modified plansz PNG La Clave (?grafik-katowice)...');
+  const lcPageRes = await fetch('https://www.laclave.pl/?grafik-katowice', { headers: { 'User-Agent': ua } });
+  const lcPageHtml = await lcPageRes.text();
+  const lcDiscoveredRel = [
+    ...new Set(
+      [...lcPageHtml.matchAll(/files\/1000\/([1-7](?:-\d+)?\.png)/gi)].map((m) => `https://www.laclave.pl/${m[0]}`)
+    ),
+  ];
+  const lcBoards = (
+    lcDiscoveredRel.length > 0
+      ? lcDiscoveredRel
+      : [
+          'https://www.laclave.pl/files/1000/1-1.png',
+          'https://www.laclave.pl/files/1000/2-2.png',
+          'https://www.laclave.pl/files/1000/3-2.png',
+          'https://www.laclave.pl/files/1000/4-2.png',
+          'https://www.laclave.pl/files/1000/5-2.png',
+          'https://www.laclave.pl/files/1000/7.png',
+        ]
+  ).map((url) => {
+    const dayMatch = url.match(/\/([1-7])(?:-\d+)?\.png$/i);
+    return { day: dayMatch ? Number(dayMatch[1]) : 1, url };
+  });
+
+  const lcMeta = {};
+  for (const b of lcBoards) {
+    const res = await fetch(b.url, { headers: { 'User-Agent': ua } });
+    if (res.ok) {
+      const buf = Buffer.from(await res.arrayBuffer());
+      const sha = crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16);
+      const lastMod = res.headers.get('last-modified') || '';
+      lcMeta[`day_${b.day}`] = { url: b.url, sha256: sha, lastModified: lastMod };
+      const prevSha = existingMeta?.lc?.[`day_${b.day}`]?.sha256;
+      if (prevSha && prevSha !== sha) {
+        console.log(`   ⚡ Wykryto zmianę planszy La Clave (dzień ${b.day}): ${prevSha} -> ${sha}`);
+        const visionClasses = await extractClassesWithGeminiVision(buf, 'image/png', 'LC', b.day);
+        if (visionClasses && visionClasses.length > 0) {
+          for (let i = CLASSES.length - 1; i >= 0; i--) {
+            if (CLASSES[i].schoolId === 'LC' && CLASSES[i].dayOfWeek === b.day) CLASSES.splice(i, 1);
+          }
+          CLASSES.push(...visionClasses);
+          console.log(`   🤖 Gemini Vision zaktualizowało ${visionClasses.length} kursów La Clave dla dnia ${b.day}`);
+        }
+      }
+    }
+  }
+  console.log(
+    `   ✅ La Clave: zweryfikowano ${Object.keys(lcMeta).length}/${lcBoards.length} plansz PNG (0 zmian SHA-256 -> 0 zużytych tokenów AI).`
+  );
+
+  console.log('🔍 [3/3] Sprawdzanie plansz grafików Mil Pasos (?page=grafik)...');
   const mpRes = await fetch('https://www.milpasoskatowice.pl/?page=grafik', { headers: { 'User-Agent': ua } });
-  console.log(`   ✅ Mil Pasos (?page=grafik): HTTP ${mpRes.status}`);
+  const mpHtml = await mpRes.text();
+  const mpImgUrls = [...mpHtml.matchAll(/<img[^>]+src=["']([^"']+fbcdn\.net[^"']+)["']/gi)].map((m) =>
+    m[1].replace(/&amp;/g, '&')
+  );
+  const mpHash = crypto.createHash('sha256').update(mpImgUrls.join('|')).digest('hex').slice(0, 16);
+  const prevMpHash = existingMeta?.mp?.urlsFingerprint;
+  if (prevMpHash && prevMpHash !== mpHash && process.env.GEMINI_API_KEY) {
+    console.log(`   ⚡ Wykryto zmianę plansz Mil Pasos: ${prevMpHash} -> ${mpHash}`);
+    for (let d = 1; d <= Math.min(7, mpImgUrls.length); d++) {
+      const imgRes = await fetch(mpImgUrls[d - 1], { headers: { 'User-Agent': ua } });
+      if (imgRes.ok) {
+        const buf = Buffer.from(await imgRes.arrayBuffer());
+        const visionClasses = await extractClassesWithGeminiVision(buf, 'image/jpeg', 'MP', d);
+        if (visionClasses && visionClasses.length > 0) {
+          for (let i = CLASSES.length - 1; i >= 0; i--) {
+            if (CLASSES[i].schoolId === 'MP' && CLASSES[i].dayOfWeek === d) CLASSES.splice(i, 1);
+          }
+          CLASSES.push(...visionClasses);
+        }
+      }
+    }
+  }
+  console.log(`   ✅ Mil Pasos (?page=grafik): HTTP ${mpRes.status}, wykryto ${mpImgUrls.length} plansz CDN (fingerprint=${mpHash}).`);
+
+  return {
+    gm: { paderewskiegoSha256: gmHash0, gliwickaSha256: gmHashGliw, liveCellsCount: allLiveGmBlocks.length },
+    lc: lcMeta,
+    mp: { imageCount: mpImgUrls.length, urlsFingerprint: mpHash },
+  };
 }
 
-function buildSchedulePayload() {
-  return {
+function buildSchedulePayload(sourcesMeta = null) {
+  const payload = {
     updatedAt: '2026-10-20',
     city: 'Katowice',
     description:
@@ -2498,15 +2798,20 @@ function buildSchedulePayload() {
     schools: SCHOOLS,
     classes: CLASSES,
   };
+  if (sourcesMeta) {
+    payload.sourcesMeta = sourcesMeta;
+  }
+  return payload;
 }
 
 async function main() {
   const args = process.argv.slice(2);
+  let sourcesMeta = null;
   if (args.includes('--check-remote')) {
-    await checkRemoteFreshness();
+    sourcesMeta = await checkRemoteFreshness();
   }
 
-  const payload = buildSchedulePayload();
+  const payload = buildSchedulePayload(sourcesMeta);
   fs.writeFileSync(SCHEDULE_JSON_PATH, `${JSON.stringify(payload, null, 2)}\n`, 'utf-8');
 
   const bySchool = {};
@@ -2531,5 +2836,7 @@ if (require.main === module) {
 module.exports = {
   LEVEL_STANDARD,
   normalizeLevel,
+  parseCsvGrid,
+  parseGoodMoodSheetCells,
   buildSchedulePayload,
 };

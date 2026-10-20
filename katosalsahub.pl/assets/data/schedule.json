@@ -985,7 +985,7 @@
       "styleLabel": "Kizomba",
       "title": "Kizomba – Gr. Od Podstaw (Nowy Nabór!)",
       "levelCode": "P0",
-      "levelLabel": "P0 • Od podstaw (Start 06.10)",
+      "levelLabel": "P0 • Od podstaw (Start 6.10)",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
@@ -2318,7 +2318,7 @@
       "styleLabel": "Bachata",
       "title": "Bachata w Parach – Od Podstaw (Nowy Nabór!)",
       "levelCode": "P0",
-      "levelLabel": "P0 • Od podstaw (Start 09.10)",
+      "levelLabel": "P0 • Od podstaw (Start 9.10)",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
@@ -2339,7 +2339,7 @@
       "styleLabel": "Bachata Solo",
       "title": "Bachata Solo – Gr. Od Podstaw",
       "levelCode": "P0",
-      "levelLabel": "P0 • Od podstaw (Start 02.10)",
+      "levelLabel": "P0 • Od podstaw (Start 2.10)",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
@@ -2381,7 +2381,7 @@
       "styleLabel": "Latino Solo & Izolacje",
       "title": "Latino Solo Od Podstaw (19:50) + Izolacje Open (20:40)",
       "levelCode": "P0",
-      "levelLabel": "P0 • Start 02.10",
+      "levelLabel": "P0 • Start 2.10",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
@@ -2923,5 +2923,48 @@
       "multisport": false,
       "notes": "Cotygodniowa integracja katowickich szkół tańca przy muzyce z radia Kato Salsa Hub."
     }
-  ]
+  ],
+  "sourcesMeta": {
+    "gm": {
+      "paderewskiegoSha256": "236be8600eba1a90",
+      "gliwickaSha256": "1c4e4770c5dc4383",
+      "liveCellsCount": 87
+    },
+    "lc": {
+      "day_1": {
+        "url": "https://www.laclave.pl/files/1000/1-1.png",
+        "sha256": "ba903556b77c325c",
+        "lastModified": "Wed, 16 Sep 2026 09:30:39 GMT"
+      },
+      "day_2": {
+        "url": "https://www.laclave.pl/files/1000/2-1.png",
+        "sha256": "ee73a8b93dae01e6",
+        "lastModified": "Wed, 16 Sep 2026 09:50:23 GMT"
+      },
+      "day_3": {
+        "url": "https://www.laclave.pl/files/1000/3-1.png",
+        "sha256": "38392c2e5d79e8ee",
+        "lastModified": "Wed, 16 Sep 2026 09:51:11 GMT"
+      },
+      "day_4": {
+        "url": "https://www.laclave.pl/files/1000/4-1.png",
+        "sha256": "ad52ab4b97f6517b",
+        "lastModified": "Wed, 16 Sep 2026 09:51:42 GMT"
+      },
+      "day_5": {
+        "url": "https://www.laclave.pl/files/1000/5-1.png",
+        "sha256": "794718287355c067",
+        "lastModified": "Wed, 16 Sep 2026 09:52:13 GMT"
+      },
+      "day_7": {
+        "url": "https://www.laclave.pl/files/1000/7.png",
+        "sha256": "29bad8add32e6691",
+        "lastModified": "Wed, 16 Sep 2026 09:52:44 GMT"
+      }
+    },
+    "mp": {
+      "imageCount": 8,
+      "urlsFingerprint": "281a1d64a2bfd8af"
+    }
+  }
 }

@@ -268,8 +268,8 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         assert.ok(Array.isArray(cls.instructors) && cls.instructors.length > 0, `Zajęcia ${cls.id} muszą mieć przypisanego instruktora`);
       }
 
-      // Weryfikacja funkcji normalizeLevel z scripts/sync-schedules.js
-      const { normalizeLevel } = require('../../scripts/sync-schedules.js');
+      // Weryfikacja funkcji normalizeLevel oraz żywego parsera CSV Good Mood z scripts/sync-schedules.js
+      const { normalizeLevel, parseCsvGrid, parseGoodMoodSheetCells } = require('../../scripts/sync-schedules.js');
       assert.strictEqual(normalizeLevel('GR. OD PODSTAW START: 26.10.2026'), 'P0');
       assert.strictEqual(normalizeLevel('BACHATA OD ZERA'), 'P0');
       assert.strictEqual(normalizeLevel('P0 - CZ.1'), 'P0');
@@ -280,6 +280,16 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(normalizeLevel('GR. ŚR-ZAAWANSOWANA dla tańczących min. 6 miesięcy'), 'S1');
       assert.strictEqual(normalizeLevel('SALSA KUBAŃSKA P4 GRUPA ZAMKNIĘTA'), 'S1');
       assert.strictEqual(normalizeLevel('BACHATA PRAKTIS Z INSTRUKTOREM'), 'OPEN');
+
+      const sampleCsv = 'Poniedziałek,"SALA \nSWAYZE","SALSA CUBANA\n\nGR. OD PODSTAW\nSTART: 26.10.2026\n\n18:10 - 18:55\n\nDaniel"';
+      const rows = parseCsvGrid(sampleCsv);
+      assert.strictEqual(rows.length, 1);
+      const gmBlocks = parseGoodMoodSheetCells(sampleCsv, 'Paderewskiego 35');
+      assert.strictEqual(gmBlocks.length, 1);
+      assert.strictEqual(gmBlocks[0].dayOfWeek, 1);
+      assert.strictEqual(gmBlocks[0].startTime, '18:10');
+      assert.strictEqual(gmBlocks[0].startDate, '26.10.2026');
+      assert.strictEqual(gmBlocks[0].levelCode, 'P0');
     });
 
     it('funkcje filterScheduleClasses oraz filterDancepulsEvents w schedule.js powinny poprawnie filtrować kursy i imprezy', () => {
