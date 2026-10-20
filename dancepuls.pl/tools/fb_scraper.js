@@ -52,6 +52,20 @@
     .sort((a, b) => b.length - a.length)
     .join('|');
 
+  const WEEKDAYS_MAP = {
+    niedziela: 0, niedzielę: 0, niedziele: 0, ndz: 0, sunday: 0, sun: 0,
+    poniedziałek: 1, poniedzialek: 1, pon: 1, monday: 1, mon: 1,
+    wtorek: 2, wt: 2, tuesday: 2, tue: 2,
+    środa: 3, sroda: 3, środę: 3, srode: 3, śr: 3, wednesday: 3, wed: 3,
+    czwartek: 4, czw: 4, thursday: 4, thu: 4,
+    piątek: 5, piatek: 5, pt: 5, friday: 5, fri: 5,
+    sobota: 6, sobotę: 6, sobote: 6, sob: 6, saturday: 6, sat: 6,
+  };
+
+  const WEEKDAY_KEYS_PATTERN = Object.keys(WEEKDAYS_MAP)
+    .sort((a, b) => b.length - a.length)
+    .join('|');
+
   function toLocalYMD(dateObj) {
     if (!(dateObj instanceof Date) || Number.isNaN(dateObj.getTime())) return '';
     const y = dateObj.getFullYear();
@@ -113,39 +127,43 @@
 
     const lower = raw.toLowerCase();
 
-    // 2. Daty relatywne
-    if (/\b(dzisiaj|dziś|dzis|today)\b/i.test(lower)) {
+    // 2. Daty relatywne (uwaga: w JS \b nie działa dla polskich znaków diakrytycznych ś/ź/ń/ę/ł)
+    if (/(?<![a-ząćęłńóśźż])(dzisiaj|dziś|dzis|today)(?![a-ząćęłńóśźż])/i.test(lower)) {
       return new Date(todayStart);
     }
-    if (/\b(jutro|tomorrow)\b/i.test(lower)) {
+    if (/(?<![a-ząćęłńóśźż])(jutro|tomorrow)(?![a-ząćęłńóśźż])/i.test(lower)) {
       const d = new Date(todayStart);
       d.setDate(d.getDate() + 1);
       return d;
     }
-    if (/\bpojutrze\b/i.test(lower)) {
+    if (/(?<![a-ząćęłńóśźż])pojutrze(?![a-ząćęłńóśźż])/i.test(lower)) {
       const d = new Date(todayStart);
       d.setDate(d.getDate() + 2);
       return d;
     }
 
-    // 3. Format OpenGraph FB: "października 25 2026" / "October 25, 2026"
+    // 3. Format OpenGraph / kart FB: "października 25 2026" / "October 25, 2026" / "Oct 24" / "paź 24"
     const reMonthFirst = new RegExp(
-      `\\b(${MONTH_KEYS_PATTERN})\\s+(\\d{1,2})(?:\\s*[–-]\\s*\\d{1,2})?,?\\s+(\\d{4})\\b`,
+      `(?<![a-ząćęłńóśźż])(${MONTH_KEYS_PATTERN})\\s+(\\d{1,2})(?:\\s*[–-]\\s*\\d{1,2})?(?:,?\\s+(\\d{4}))?\\b`,
       'i'
     );
     const mMonthFirst = lower.match(reMonthFirst);
     if (mMonthFirst) {
       const monthIdx = MONTHS_MAP[mMonthFirst[1].toLowerCase()];
       const day = parseInt(mMonthFirst[2], 10);
-      const year = parseInt(mMonthFirst[3], 10);
+      let year = mMonthFirst[3] ? parseInt(mMonthFirst[3], 10) : currentYear;
       if (monthIdx !== undefined && day >= 1 && day <= 31) {
-        return new Date(year, monthIdx, day);
+        const candidate = new Date(year, monthIdx, day);
+        if (!mMonthFirst[3] && candidate < new Date(todayStart.getTime() - 60 * 86400000)) {
+          candidate.setFullYear(currentYear + 1);
+        }
+        return candidate;
       }
     }
 
     // 4. Format "24 października 2026", "24–25 października", "20 paź"
     const reDayFirst = new RegExp(
-      `\\b(\\d{1,2})(?:\\s*[–-]\\s*\\d{1,2})?\\s+(${MONTH_KEYS_PATTERN})(?:\\s+(\\d{4}))?\\b`,
+      `\\b(\\d{1,2})(?:\\s*[–-]\\s*\\d{1,2})?\\s+(${MONTH_KEYS_PATTERN})(?:\\s+(\\d{4}))?(?![a-ząćęłńóśźż])`,
       'i'
     );
     const mDayFirst = lower.match(reDayFirst);
@@ -184,6 +202,31 @@
       }
     }
 
+    // 6. Relatywne dni tygodnia z kart Facebooka ("W ten piątek o 20:00", "W tę sobotę o 21:00", "Niedziela o 15:00", "This Saturday at 8 PM")
+    const reWeekday = new RegExp(
+      `(?:(?<![a-ząćęłńóśźż])(w\\s+ten|w\\s+t[eę]|najbli[zż]sz[ayąe]|this|w\\s+przysz[lł][ayąe]|next)\\s+)?(?<![a-ząćęłńóśźż])(${WEEKDAY_KEYS_PATTERN})(?![a-ząćęłńóśźż])`,
+      'i'
+    );
+    const mWeekday = lower.match(reWeekday);
+    if (mWeekday) {
+      const prefix = (mWeekday[1] || '').toLowerCase();
+      const targetDow = WEEKDAYS_MAP[mWeekday[2].toLowerCase()];
+      const hasTimeOrRelativeHint =
+        Boolean(prefix) ||
+        /\bo\s+\d{1,2}[:.]\d{2}\b|\bat\s+\d{1,2}\b|\b\d{1,2}:\d{2}\b/i.test(lower) ||
+        lower === mWeekday[2].toLowerCase();
+      if (targetDow !== undefined && hasTimeOrRelativeHint) {
+        const todayDow = todayStart.getDay();
+        let diff = (targetDow - todayDow + 7) % 7;
+        if (/przysz[lł]|next/i.test(prefix)) {
+          diff = diff === 0 ? 7 : diff + 7;
+        }
+        const d = new Date(todayStart);
+        d.setDate(d.getDate() + diff);
+        return d;
+      }
+    }
+
     return null;
   }
 
@@ -202,7 +245,7 @@
 
   /**
    * Warstwa 2: Ekstrakcja wydarzeń bezpośrednio ze skryptów Relay / GraphQL Facebooka (<script type="application/json">).
-   * Odporna na zmiany klas CSS w DOM — czyta surowe węzły danych z "start_timestamp", "name" i "id".
+   * Odporna na zmiany klas CSS i zagnieżdżone obiekty w DOM — rekurencyjnie przechodzi drzewo JSON oraz skanuje okna wokół ID.
    */
   function extractEventsFromRelayJson(rawJsonText = '', now = new Date()) {
     const src =
@@ -216,10 +259,6 @@
     const results = [];
     const seenIds = new Set();
 
-    // Wzorzec węzłów wydarzeń w Relay JSON
-    const eventNodeRegex = /"id"\s*:\s*"(\d{10,20})"[^{}]{0,600}?"name"\s*:\s*"((?:[^"\\]|\\.)+)"[^{}]{0,1200}?"start_timestamp"\s*:\s*(\d{9,11})/g;
-    const reverseNodeRegex = /"start_timestamp"\s*:\s*(\d{9,11})[^{}]{0,1200}?"id"\s*:\s*"(\d{10,20})"[^{}]{0,600}?"name"\s*:\s*"((?:[^"\\]|\\.)+)"/g;
-
     const decodeJsonString = (s) => {
       try {
         return JSON.parse(`"${s}"`);
@@ -228,19 +267,16 @@
       }
     };
 
-    const addMatch = (id, rawName, tsSec, contextSlice) => {
+    const registerRelayEvent = (id, rawName, tsOrDateInput, locationHint = '') => {
       if (!id || seenIds.has(id)) return;
-      const title = decodeJsonString(rawName).trim();
+      const title = String(rawName || '').trim();
       if (!title || EXCLUDED_TITLES.some((ex) => title.toUpperCase().includes(ex))) return;
 
-      const d = parseFBDate(Number(tsSec), now);
+      const d =
+        typeof tsOrDateInput === 'number' || /^\d{9,11}$/.test(String(tsOrDateInput))
+          ? parseFBDate(Number(tsOrDateInput), now)
+          : parseFBDate(String(tsOrDateInput), now);
       if (!d) return;
-
-      let location = '';
-      const locMatch = contextSlice.match(/"contextual_name"\s*:\s*"((?:[^"\\]|\\.)+)"/);
-      if (locMatch) {
-        location = decodeJsonString(locMatch[1]);
-      }
 
       seenIds.add(id);
       results.push({
@@ -248,18 +284,59 @@
         isoDate: toLocalYMD(d),
         rawDate: formatRawDateDDMM(d, now.getFullYear()),
         title,
-        location,
-        description: `${title} ${location}`.trim(),
+        location: String(locationHint || '').trim(),
+        description: `${title} ${locationHint || ''}`.trim(),
       });
     };
 
-    for (const m of src.matchAll(eventNodeRegex)) {
-      const slice = src.slice(Math.max(0, m.index - 200), Math.min(src.length, m.index + 1600));
-      addMatch(m[1], m[2], m[3], slice);
+    // 2A. Rekurencyjny spacer po drzewie JSON (odporny na zagnieżdżone obiekty między "id", "name" i "start_timestamp")
+    try {
+      const parsedObj = rawJsonText && typeof rawJsonText === 'object' ? rawJsonText : JSON.parse(src);
+      const walkRelayTree = (node) => {
+        if (!node || typeof node !== 'object') return;
+        if (Array.isArray(node)) {
+          for (const item of node) walkRelayTree(item);
+          return;
+        }
+        const id = typeof node.id === 'string' && /^\d{10,20}$/.test(node.id) ? node.id : '';
+        const name = typeof node.name === 'string' ? node.name : (typeof node.event_title === 'string' ? node.event_title : '');
+        const ts = node.start_timestamp || node.start_time || node.day_time_sentence || '';
+        if (id && name && ts) {
+          const loc =
+            node.event_place?.contextual_name ||
+            node.event_place?.name ||
+            node.place?.name ||
+            node.location_name ||
+            '';
+          registerRelayEvent(id, name, ts, loc);
+        }
+        for (const val of Object.values(node)) {
+          if (val && typeof val === 'object') walkRelayTree(val);
+        }
+      };
+      walkRelayTree(parsedObj);
+    } catch {
+      // Fallback poniżej dla fragmentów HTML / niepełnego JSON-a
     }
-    for (const m of src.matchAll(reverseNodeRegex)) {
-      const slice = src.slice(Math.max(0, m.index - 200), Math.min(src.length, m.index + 1600));
-      addMatch(m[2], m[3], m[1], slice);
+
+    // 2B. Fallback okienkowy wokół każdego "id":"(\d{10,20})" (obsługuje zagnieżdżone nawiasy klamrowe {})
+    const idMatches = [...src.matchAll(/"id"\s*:\s*"(\d{10,20})"/g)];
+    for (const m of idMatches) {
+      const id = m[1];
+      if (seenIds.has(id)) continue;
+      const windowSlice = src.slice(Math.max(0, m.index - 400), Math.min(src.length, m.index + 1800));
+      const nameMatch = windowSlice.match(/"name"\s*:\s*"((?:[^"\\]|\\.)+)"/);
+      const tsMatch = windowSlice.match(/"start_timestamp"\s*:\s*(\d{9,11})/);
+      const sentenceMatch = windowSlice.match(/"day_time_sentence"\s*:\s*"((?:[^"\\]|\\.)+)"/);
+      if (nameMatch && (tsMatch || sentenceMatch)) {
+        const locMatch = windowSlice.match(/"contextual_name"\s*:\s*"((?:[^"\\]|\\.)+)"/);
+        registerRelayEvent(
+          id,
+          decodeJsonString(nameMatch[1]),
+          tsMatch ? Number(tsMatch[1]) : decodeJsonString(sentenceMatch[1]),
+          locMatch ? decodeJsonString(locMatch[1]) : ''
+        );
+      }
     }
 
     return results;
@@ -373,10 +450,46 @@
       }
     }
 
-    // 4. Semantyczny skan kart DOM (a[href*="/events/"] oraz karty Krajownik / LOFToDANCE)
+    // 4. Semantyczny skan kart DOM (a[href*="/events/"] oraz karty Krajownik / LOFToDANCE / OnlyDance / AirDancia)
     const anchors = doc.querySelectorAll
-      ? Array.from(doc.querySelectorAll('a[href*="/events/"], a[href*="/wydarzenia/"], a[href*="/wydarzenie/"]'))
+      ? Array.from(
+          doc.querySelectorAll(
+            'a[href*="/events/"], a[href*="/wydarzenia/"], a[href*="/wydarzenie/"], a[href*="/event/"]'
+          )
+        )
       : [];
+
+    const countUniqueEventUrlsInContainer = (container) => {
+      if (!container || typeof container.querySelectorAll !== 'function') return 1;
+      const innerLinks = container.querySelectorAll(
+        'a[href*="/events/"], a[href*="/wydarzenia/"], a[href*="/wydarzenie/"], a[href*="/event/"]'
+      );
+      const urls = new Set();
+      for (const a of innerLinks) {
+        const href = a.href || (a.getAttribute && a.getAttribute('href')) || '';
+        const canon = canonicalizeEventUrl(href);
+        if (canon) urls.add(canon);
+        if (urls.size > 1) return urls.size;
+      }
+      return urls.size;
+    };
+
+    const resolveCardRoot = (link) => {
+      const semanticClosest =
+        link.closest &&
+        link.closest('[role="article"], article, li, div[style*="border-radius"], .event-card, .aird-soc__card');
+      if (semanticClosest && countUniqueEventUrlsInContainer(semanticClosest) <= 1) {
+        return semanticClosest;
+      }
+      let curr = link;
+      for (let depth = 0; depth < 8; depth++) {
+        const parent = curr.parentElement;
+        if (!parent || parent.tagName === 'BODY' || parent.tagName === 'MAIN') break;
+        if (countUniqueEventUrlsInContainer(parent) > 1) break;
+        curr = parent;
+      }
+      return curr !== link ? curr : link.parentElement?.parentElement || link;
+    };
 
     for (const link of anchors) {
       const rawHref = link.href || link.getAttribute('href') || '';
@@ -385,11 +498,7 @@
         continue;
       }
 
-      const card =
-        (link.closest &&
-          link.closest('[role="article"], article, li, div[style*="border-radius"], .event-card')) ||
-        link.parentElement?.parentElement ||
-        link;
+      const card = resolveCardRoot(link);
 
       const textContent = (card.innerText || card.textContent || '').trim();
       const lines = textContent
@@ -399,13 +508,16 @@
 
       let parsedDate = null;
       let dateLineIdx = -1;
-      for (let i = 0; i < Math.min(lines.length, 6); i++) {
+      for (let i = 0; i < Math.min(lines.length, 10); i++) {
         const d = parseFBDate(lines[i], now);
         if (d) {
           parsedDate = d;
           dateLineIdx = i;
           break;
         }
+      }
+      if (!parsedDate && textContent) {
+        parsedDate = parseFBDate(textContent, now);
       }
 
       if (!parsedDate) continue;
@@ -424,7 +536,7 @@
 
       const locLine =
         lines.find((l) =>
-          /Katowice|Gliwice|Sosnowiec|Zabrze|Tychy|Chorzów|Bielsko|Kraków|Rybnik|Częstochowa|Wolni Ludzie|La Clave|Mil Pasos|Good Mood|Forum Tańca|Sabrosa|LOFToDANCE/i.test(
+          /Katowice|Gliwice|Sosnowiec|Zabrze|Tychy|Chorzów|Świętochłowice|Bytom|Bielsko|Kraków|Rybnik|Częstochowa|Tarnowskie Góry|Wolni Ludzie|La Clave|Mil Pasos|Good Mood|Forum Tańca|Sabrosa|LOFToDANCE|KIZLAB|Gravitacja|Piąty Dom|Teatro Cubano|Stylowa Willa/i.test(
             l
           )
         ) || '';
@@ -557,7 +669,7 @@
       for (const a of allEventLinks) {
         const href = a.href || a.getAttribute('href') || '';
         const canon = canonicalizeEventUrl(href);
-        if (/facebook\.com\/events\/\d+\/$/.test(canon) && !byUrl.has(canon) && byUrl.size < 30) {
+        if (/facebook\.com\/events\/\d+\/$/.test(canon) && !byUrl.has(canon) && byUrl.size < 60) {
           byUrl.set(canon, {
             url: canon,
             title: (a.innerText || a.textContent || '').trim(),
@@ -578,7 +690,7 @@
     );
 
     const BATCH_SIZE = 4;
-    for (let i = 0; i < Math.min(targets.length, 20); i += BATCH_SIZE) {
+    for (let i = 0; i < Math.min(targets.length, 48); i += BATCH_SIZE) {
       const batch = targets.slice(i, i + BATCH_SIZE);
       await Promise.allSettled(
         batch.map(async (ev) => {
@@ -615,7 +727,7 @@
       .sort((a, b) => a.isoDate.localeCompare(b.isoDate));
   }
 
-  async function autoScrollPage(steps = 3, delayMs = 350) {
+  async function autoScrollPage(steps = 6, delayMs = 350) {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
     if (/\/events\/\d+/.test(window.location.href)) return;
     for (let i = 0; i < steps; i++) {
@@ -648,8 +760,8 @@
 
   async function runBrowserScraper() {
     if (typeof window === 'undefined' || typeof document === 'undefined') return [];
-    console.log('🚀 [DancePuls Scraper v3.1] Rozpoczynam wielowarstwową ekstrakcję wydarzeń + Deep Fetch...');
-    await autoScrollPage(3, 300);
+    console.log('🚀 [DancePuls Scraper v3.2] Rozpoczynam wielowarstwową ekstrakcję wydarzeń + Deep Fetch...');
+    await autoScrollPage(6, 300);
     const now = new Date();
     const initialEvents = extractEventsFromDocument(document, window.location.href, now);
     const events = await deepEnrichFacebookEvents(initialEvents, document, null, now);

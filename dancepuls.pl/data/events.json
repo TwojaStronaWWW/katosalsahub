@@ -52,6 +52,29 @@
       {
         "checked": true,
         "promote": false,
+        "miasto": "Świętochłowice",
+        "miastoInne": "",
+        "miejsce": "Stylowa Willa",
+        "miejsceInne": "Stylowa Willa (Dworcowa 8)",
+        "adres": "Dworcowa 8",
+        "lat": 50.2925,
+        "lng": 18.9182,
+        "tytul": "Impreza mieszana oraz warsztaty (PLONS.pl by Asia & Przemo)",
+        "opis": "Impreza mieszana oraz warsztaty (PLONS.pl by Asia & Przemo) - 19:00; Stylowa Willa Świętochłowice; potwierdzono datę 23.10 w OnlyDance i AirDancia; nowe w bazie 20.10",
+        "opisPubliczny": "Impreza mieszana oraz warsztaty (PLONS.pl by Asia & Przemo)",
+        "dateLabel": "PIĄTEK (23.10.2026)",
+        "endDate": "2026-10-23",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/024ae44e1d4243c7a817",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
         "miejsce": "Teatro Cubano",
@@ -633,6 +656,32 @@
     ]
   },
   {
+    "date": "2026-11-06",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Panorama Forum",
+        "miejsceInne": "Panorama Forum (Konopnickiej 28)",
+        "adres": "Konopnickiej 28",
+        "lat": 50.0451,
+        "lng": 19.9361,
+        "tytul": "Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia",
+        "opis": "Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia - Mykhailo Burdeinyi; nowe w bazie 20.10",
+        "opisPubliczny": "Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia",
+        "dateLabel": "PIĄTEK (06.11.2026)",
+        "endDate": "2026-11-06",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/cEgGXQdo6UgY6u5z5CyB",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-11-07",
     "events": [
       {
@@ -659,6 +708,27 @@
       {
         "checked": true,
         "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Euforma (Fabryka FloU)",
+        "miejsceInne": "Euforma (Fabryka FloU) (Bocheńskiego 69)",
+        "adres": "Bocheńskiego 69",
+        "lat": 50.2682,
+        "lng": 18.9721,
+        "tytul": "Urodziny Pedro x Otwarcie Fabryki FloU",
+        "opis": "Urodziny Pedro x Otwarcie Fabryki FloU - 21:00; Fabryka FloU Katowice; nowe w bazie 20.10",
+        "opisPubliczny": "Urodziny Pedro x Otwarcie Fabryki FloU",
+        "dateLabel": "SOBOTA (07.11.2026)",
+        "endDate": "2026-11-07",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/9544a56c401b4cceb541",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
         "miejsce": "Forum Tańca",
@@ -675,6 +745,27 @@
         "link": "https://onlydanceapp.com/event/91178caf3b1c456e8cc8",
         "style": [
           "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Sabrosa Dance Studio",
+        "miejsceInne": "Sabrosa Dance Studio (rondo Mogilskie 1)",
+        "adres": "rondo Mogilskie 1",
+        "lat": 50.0658,
+        "lng": 19.9595,
+        "tytul": "Twilight Salsa Party",
+        "opis": "Twilight Salsa Party - Sabrosa Dance Studio; nowe w bazie 20.10",
+        "opisPubliczny": "Twilight Salsa Party",
+        "dateLabel": "SOBOTA (07.11.2026)",
+        "endDate": "2026-11-07",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/e0aa4af524964e668357",
+        "style": [
+          "Salsa"
         ]
       },
       {
@@ -910,6 +1001,28 @@
         "style": [
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Frenzy (ul. Borowickiej 1)",
+        "miejsceInne": "Frenzy (ul. Borowickiej 1) (Iwony Borowickiej 1)",
+        "adres": "Iwony Borowickiej 1",
+        "lat": 50.0681,
+        "lng": 19.9562,
+        "tytul": "FrenzyShot Urban Kiz Party",
+        "opis": "FrenzyShot Urban Kiz Party - 19:00; Frenzy Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "FrenzyShot Urban Kiz Party",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/pF0Xk4mNPfROoMs5LcL7",
+        "style": [
+          "Urban Kiz",
+          "Kizomba"
+        ]
       }
     ]
   },
@@ -1033,6 +1146,27 @@
         "link": "https://www.facebook.com/events/1617716113426642/",
         "style": [
           "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Sosnowiec",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.2863,
+        "lng": 19.1041,
+        "tytul": "Warsztaty z bachaty w parach",
+        "opis": "Warsztaty z bachaty w parach - 16:00; Sosnowiec; nowe w bazie 20.10",
+        "opisPubliczny": "Warsztaty z bachaty w parach",
+        "dateLabel": "NIEDZIELA (22.11.2026)",
+        "endDate": "2026-11-22",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/warsztaty-z-bachaty-w-parach-sosnowiec/",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -1159,6 +1293,28 @@
         "link": "https://www.facebook.com/events/1080166424340009/",
         "style": [
           "Cubana"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "KIZLAB",
+        "miejsceInne": "KIZLAB (ul. Sobieskiego 11)",
+        "adres": "ul. Sobieskiego 11",
+        "lat": 50.2619,
+        "lng": 19.0119,
+        "tytul": "Kiz Lab Bootcamp – Mikołajki",
+        "opis": "Kiz Lab Bootcamp – Mikołajki - Koda_inc / KIZLAB Katowice; nowe w bazie 20.10",
+        "opisPubliczny": "Kiz Lab Bootcamp – Mikołajki",
+        "dateLabel": "SOBOTA–NIEDZIELA (05–06.12.2026)",
+        "endDate": "2026-12-06",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/fa5EdCe9eacVuBpAlY8x",
+        "style": [
+          "Urban Kiz",
+          "Kizomba"
         ]
       },
       {
@@ -1296,6 +1452,29 @@
       {
         "checked": true,
         "promote": false,
+        "miasto": "Świętochłowice",
+        "miastoInne": "",
+        "miejsce": "Stylowa Willa",
+        "miejsceInne": "Stylowa Willa (Dworcowa 8)",
+        "adres": "Dworcowa 8",
+        "lat": 50.2925,
+        "lng": 18.9182,
+        "tytul": "Sylwester 2026/2027 w Willi Styl",
+        "opis": "Sylwester 2026/2027 w Willi Styl - 21:00; Stylowa Willa Świętochłowice; nowe w bazie 20.10",
+        "opisPubliczny": "Sylwester 2026/2027 w Willi Styl",
+        "dateLabel": "CZWARTEK (31.12.2026)",
+        "endDate": "2026-12-31",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/sylwester-2026-2027-w-willi-styl-swietochlowice/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
         "miejsce": "LOFToDANCE",
@@ -1393,6 +1572,113 @@
     ]
   },
   {
+    "date": "2027-02-20",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tarnowskie Góry",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.4442,
+        "lng": 18.8565,
+        "tytul": "Warsztaty Kizomby z Isabelle & Felicien",
+        "opis": "Warsztaty Kizomby z Isabelle & Felicien - 09:00; Tarnowskie Góry; nowe w bazie 20.10",
+        "opisPubliczny": "Warsztaty Kizomby z Isabelle & Felicien",
+        "dateLabel": "SOBOTA (20.02.2027)",
+        "endDate": "2027-02-20",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/warsztaty-kizomby-z-isabelle-felicien-nr-1-w-swiecie-kizomby-tarnowskie-gory/",
+        "style": [
+          "Kizomba",
+          "Bachata",
+          "Salsa"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-02-27",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Taneczna Kompania",
+        "miejsceInne": "Taneczna Kompania (ul. Kościuszki 227)",
+        "adres": "ul. Kościuszki 227",
+        "lat": 50.2248,
+        "lng": 18.9894,
+        "tytul": "Katowice Tarraxo Meetup Party vol. IV z Desmo_Punk i DJ Cubito",
+        "opis": "Katowice Tarraxo Meetup Party vol. IV z Desmo_Punk i DJ Cubito - Taneczna Kompania Katowice; nowe w bazie 20.10",
+        "opisPubliczny": "Katowice Tarraxo Meetup Party vol. IV z Desmo_Punk i DJ Cubito",
+        "dateLabel": "SOBOTA (27.02.2027)",
+        "endDate": "2027-02-27",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/91e9016d241e4dc58dc6",
+        "style": [
+          "Kizomba",
+          "Tarraxo"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-03-19",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Bachazouk Masters Bachata Bootcamp (Otko & Vika)",
+        "opis": "Bachazouk Masters Bachata Bootcamp (Otko & Vika) - Forum Tańca Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "Bachazouk Masters Bachata Bootcamp (Otko & Vika)",
+        "dateLabel": "PIĄTEK–NIEDZIELA (19–21.03.2027)",
+        "endDate": "2027-03-21",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/d1J8Y9ogLEjkoHEVPOkz",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-05-07",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Conexión Salsa Festival 2027 by Arte!",
+        "opis": "Conexión Salsa Festival 2027 by Arte! - Arte – Centrum Sztuki Tańca; nowe w bazie 20.10",
+        "opisPubliczny": "Conexión Salsa Festival 2027 by Arte!",
+        "dateLabel": "PIĄTEK–NIEDZIELA (07–09.05.2027)",
+        "endDate": "2027-05-09",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/350a60e5570f4f3d8ed8",
+        "style": [
+          "Salsa"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2027-06-04",
     "events": [
       {
@@ -1438,6 +1724,32 @@
         "endDate": "2027-06-18",
         "soldOut": false,
         "link": "https://onlydanceapp.com/event/0fbf2c282d2346a5b1c4",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-07-08",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Klub Studio",
+        "miejsceInne": "Klub Studio (Budryka 4)",
+        "adres": "Budryka 4",
+        "lat": 50.0687,
+        "lng": 19.9042,
+        "tytul": "BáilaMe Cracow Bachata Festival 2027 – Official Event",
+        "opis": "BáilaMe Cracow Bachata Festival 2027 – Official Event - Báilame Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "BáilaMe Cracow Bachata Festival 2027 – Official Event",
+        "dateLabel": "CZWARTEK–PONIEDZIAŁEK (08–12.07.2027)",
+        "endDate": "2027-07-12",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/6ad53bba3275493f8241",
         "style": [
           "Bachata"
         ]

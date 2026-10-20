@@ -87,10 +87,10 @@ export function parsujDateFB(text, options = {}) {
 
     const upper = raw.toUpperCase();
 
-    // 2. Daty relatywne
-    if (/\b(DZISIAJ|DZIŚ|TODAY)\b/i.test(upper)) return new Date(now);
-    if (/\b(JUTRO|TOMORROW)\b/i.test(upper)) return dodajDni(now, 1);
-    if (/\bPOJUTRZE\b/i.test(upper)) return dodajDni(now, 2);
+    // 2. Daty relatywne (uwaga: \b w JS nie działa dla polskich znaków diakrytycznych)
+    if (/(?<![A-ZĄĆĘŁŃÓŚŹŻ])(DZISIAJ|DZIŚ|DZIS|TODAY)(?![A-ZĄĆĘŁŃÓŚŹŻ])/i.test(upper)) return new Date(now);
+    if (/(?<![A-ZĄĆĘŁŃÓŚŹŻ])(JUTRO|TOMORROW)(?![A-ZĄĆĘŁŃÓŚŹŻ])/i.test(upper)) return dodajDni(now, 1);
+    if (/(?<![A-ZĄĆĘŁŃÓŚŹŻ])POJUTRZE(?![A-ZĄĆĘŁŃÓŚŹŻ])/i.test(upper)) return dodajDni(now, 2);
 
     const miesiacMap = {
         STYCZNIA: 0, STYCZEŃ: 0, STY: 0, JANUARY: 0, JAN: 0,
@@ -116,8 +116,8 @@ export function parsujDateFB(text, options = {}) {
         return monthIndex < currentMonthIndex - 2 ? currentYear + 1 : currentYear;
     };
 
-    // 3. Format OpenGraph FB (miesiąc przed dniem): "października 25 2026" lub "October 25, 2026"
-    const regexMonthFirst = /\b(STYCZNIA|LUTEGO|MARCA|KWIETNIA|MAJA|CZERWCA|LIPCA|SIERPNIA|WRZEŚNIA|WRZESNIA|PAŹDZIERNIKA|PAZDZIERNIKA|LISTOPADA|GRUDNIA|JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\s+(\d{1,2})(?:[,\s]+(20\d{2}))?\b/i;
+    // 3. Format OpenGraph FB (miesiąc przed dniem): "października 25 2026" lub "October 25, 2026" lub "Oct 24"
+    const regexMonthFirst = /(?<![A-ZĄĆĘŁŃÓŚŹŻ])(STYCZNIA|STY|LUTEGO|LUT|MARCA|MAR|KWIETNIA|KWI|MAJA|MAJ|CZERWCA|CZE|LIPCA|LIP|SIERPNIA|SIE|WRZEŚNIA|WRZESNIA|WRZ|PAŹDZIERNIKA|PAZDZIERNIKA|PAŹ|PAZ|LISTOPADA|LIS|GRUDNIA|GRU|JANUARY|JAN|FEBRUARY|FEB|MARCH|APRIL|APR|MAY|JUNE|JUN|JULY|JUL|AUGUST|AUG|SEPTEMBER|SEP|OCTOBER|OCT|NOVEMBER|NOV|DECEMBER|DEC)\s+(\d{1,2})(?:[,\s]+(20\d{2}))?\b/i;
     const matchMonthFirst = upper.match(regexMonthFirst);
     if (matchMonthFirst) {
         const monthIndex = miesiacMap[matchMonthFirst[1].toUpperCase()];
@@ -127,8 +127,8 @@ export function parsujDateFB(text, options = {}) {
         }
     }
 
-    // 4. Dzień (lub zakres dni) + nazwa miesiąca (+ opcjonalny rok): "24–25 października 2026", "6 LUTEGO", "6 LUT"
-    const regexDayMonth = /\b(\d{1,2})(?:\s*[–-]\s*\d{1,2})?[\s.\n\r]+(STYCZNIA|STYCZEŃ|STY|LUTEGO|LUTY|LUT|MARCA|MARZEC|MAR|KWIETNIA|KWIECIEŃ|KWI|MAJA|MAJ|CZERWCA|CZERWIEC|CZE|LIPCA|LIPIEC|LIP|SIERPNIA|SIERPIEŃ|SIE|WRZEŚNIA|WRZESNIA|WRZESIEŃ|WRZ|PAŹDZIERNIKA|PAZDZIERNIKA|PAŹDZIERNIK|PAŹ|PAZ|LISTOPADA|LISTOPAD|LIS|GRUDNIA|GRUDZIEŃ|GRU|JANUARY|JAN|FEBRUARY|FEB|MARCH|APRIL|APR|MAY|JUNE|JUN|JULY|JUL|AUGUST|AUG|SEPTEMBER|SEP|OCTOBER|OCT|NOVEMBER|NOV|DECEMBER|DEC)\b(?:[\s,]+(20\d{2}))?/i;
+    // 4. Dzień (lub zakres dni) + nazwa miesiąca (+ opcjonalny rok): "24–25 października 2026", "20 paź", "6 LUTEGO"
+    const regexDayMonth = /\b(\d{1,2})(?:\s*[–-]\s*\d{1,2})?[\s.\n\r]+(STYCZNIA|STYCZEŃ|STY|LUTEGO|LUTY|LUT|MARCA|MARZEC|MAR|KWIETNIA|KWIECIEŃ|KWI|MAJA|MAJ|CZERWCA|CZERWIEC|CZE|LIPCA|LIPIEC|LIP|SIERPNIA|SIERPIEŃ|SIE|WRZEŚNIA|WRZESNIA|WRZESIEŃ|WRZ|PAŹDZIERNIKA|PAZDZIERNIKA|PAŹDZIERNIK|PAŹ|PAZ|LISTOPADA|LISTOPAD|LIS|GRUDNIA|GRUDZIEŃ|GRU|JANUARY|JAN|FEBRUARY|FEB|MARCH|APRIL|APR|MAY|JUNE|JUN|JULY|JUL|AUGUST|AUG|SEPTEMBER|SEP|OCTOBER|OCT|NOVEMBER|NOV|DECEMBER|DEC)(?![A-ZĄĆĘŁŃÓŚŹŻ])(?:[\s,]+(20\d{2}))?/i;
     const matchMonth = upper.match(regexDayMonth);
     if (matchMonth) {
         const day = parseInt(matchMonth[1], 10);
@@ -158,18 +158,18 @@ export function parsujDateFB(text, options = {}) {
     }
 
     const dniMap = {
-        NIEDZIELA: 0, NIE: 0, ND: 0, NIEDZ: 0,
-        PONIEDZIAŁEK: 1, PONIEDZIALEK: 1, PON: 1, PN: 1,
-        WTOREK: 2, WTO: 2, WT: 2,
-        ŚRODA: 3, SRODA: 3, ŚRO: 3, SR: 3, ŚR: 3,
-        CZWARTEK: 4, CZW: 4, CZ: 4,
-        PIĄTEK: 5, PIATEK: 5, PIĄ: 5, PT: 5,
-        SOBOTA: 6, SOB: 6, SB: 6
+        NIEDZIELA: 0, NIEDZIELĘ: 0, NIEDZIELE: 0, NIE: 0, ND: 0, NIEDZ: 0, SUNDAY: 0, SUN: 0,
+        PONIEDZIAŁEK: 1, PONIEDZIALEK: 1, PON: 1, PN: 1, MONDAY: 1, MON: 1,
+        WTOREK: 2, WTO: 2, WT: 2, TUESDAY: 2, TUE: 2,
+        ŚRODA: 3, SRODA: 3, ŚRODĘ: 3, SRODE: 3, ŚRO: 3, SR: 3, ŚR: 3, WEDNESDAY: 3, WED: 3,
+        CZWARTEK: 4, CZW: 4, CZ: 4, THURSDAY: 4, THU: 4,
+        PIĄTEK: 5, PIATEK: 5, PIĄ: 5, PT: 5, FRIDAY: 5, FRI: 5,
+        SOBOTA: 6, SOBOTĘ: 6, SOBOTE: 6, SOB: 6, SB: 6, SATURDAY: 6, SAT: 6
     };
 
     // 6. Kombinacja Dzień Miesiąca + Dzień Tygodnia: "25 NIEDZIELA" lub "NIEDZIELA, 25"
-    const regexDayWeekday = /\b(\d{1,2})[\s,.\n\r]+\b(NIEDZIELA|NIEDZ|NIE|ND|PONIEDZIAŁEK|PONIEDZIALEK|PON|PN|WTOREK|WTO|WT|ŚRODA|SRODA|ŚRO|SR|ŚR|CZWARTEK|CZW|PIĄTEK|PIATEK|PIĄ|PT|SOBOTA|SOB|SB)\b/i;
-    const regexWeekdayDay = /\b(NIEDZIELA|NIEDZ|NIE|ND|PONIEDZIAŁEK|PONIEDZIALEK|PON|PN|WTOREK|WTO|WT|ŚRODA|SRODA|ŚRO|SR|ŚR|CZWARTEK|CZW|PIĄTEK|PIATEK|PIĄ|PT|SOBOTA|SOB|SB)[,\s.\n\r]+(\d{1,2})\b(?!\s*[:.])/i;
+    const regexDayWeekday = /\b(\d{1,2})[\s,.\n\r]+(?<![A-ZĄĆĘŁŃÓŚŹŻ])(NIEDZIELA|NIEDZIELĘ|NIEDZ|NIE|ND|PONIEDZIAŁEK|PONIEDZIALEK|PON|PN|WTOREK|WTO|WT|ŚRODA|SRODA|ŚRODĘ|ŚRO|SR|ŚR|CZWARTEK|CZW|PIĄTEK|PIATEK|PIĄ|PT|SOBOTA|SOBOTĘ|SOB|SB)(?![A-ZĄĆĘŁŃÓŚŹŻ])/i;
+    const regexWeekdayDay = /(?<![A-ZĄĆĘŁŃÓŚŹŻ])(NIEDZIELA|NIEDZIELĘ|NIEDZ|NIE|ND|PONIEDZIAŁEK|PONIEDZIALEK|PON|PN|WTOREK|WTO|WT|ŚRODA|SRODA|ŚRODĘ|ŚRO|SR|ŚR|CZWARTEK|CZW|PIĄTEK|PIATEK|PIĄ|PT|SOBOTA|SOBOTĘ|SOB|SB)[,\s.\n\r]+(\d{1,2})\b(?!\s*[:.])/i;
     const matchDW = upper.match(regexDayWeekday);
     const matchWD = !matchDW ? upper.match(regexWeekdayDay) : null;
 
@@ -189,14 +189,15 @@ export function parsujDateFB(text, options = {}) {
         }
     }
 
-    // 7. Sam dzień tygodnia ("SOBOTA") — dozwolony wyłącznie dla krótkich etykiet daty lub gdy jawnie włączono allowWeekdayOnly,
+    // 7. Sam dzień tygodnia ("SOBOTA", "W TĘ SOBOTĘ O 21:00") — dozwolony dla krótkich etykiet daty lub wyrażeń relatywnych "W TEN / W TĘ",
     // aby opis typu "zapisy do środy" nie nadpisywał właściwej daty wydarzenia.
+    const hasRelativeWeekdayPrefix = /(?<![A-ZĄĆĘŁŃÓŚŹŻ])(W\s+TEN|W\s+T[EĘ]|NAJBLI[ZŻ]SZ[AYĄE]|THIS|NEXT)(?![A-ZĄĆĘŁŃÓŚŹŻ])/i.test(upper);
     const allowWeekdayOnly = options.allowWeekdayOnly !== undefined
         ? Boolean(options.allowWeekdayOnly)
-        : raw.length <= 28;
+        : (raw.length <= 28 || hasRelativeWeekdayPrefix);
 
     if (allowWeekdayOnly) {
-        const regexWeekdayOnly = /\b(NIEDZIELA|NIEDZ|NIE|ND|PONIEDZIAŁEK|PONIEDZIALEK|PON|PN|WTOREK|WTO|WT|ŚRODA|SRODA|ŚRO|SR|ŚR|CZWARTEK|CZW|PIĄTEK|PIATEK|PIĄ|PT|SOBOTA|SOB|SB)\b/i;
+        const regexWeekdayOnly = /(?<![A-ZĄĆĘŁŃÓŚŹŻ])(NIEDZIELA|NIEDZIELĘ|NIEDZIELE|NIEDZ|NIE|ND|SUNDAY|SUN|PONIEDZIAŁEK|PONIEDZIALEK|PON|PN|MONDAY|MON|WTOREK|WTO|WT|TUESDAY|TUE|ŚRODA|SRODA|ŚRODĘ|SRODE|ŚRO|SR|ŚR|WEDNESDAY|WED|CZWARTEK|CZW|CZ|THURSDAY|THU|PIĄTEK|PIATEK|PIĄ|PT|FRIDAY|FRI|SOBOTA|SOBOTĘ|SOBOTE|SOB|SB|SATURDAY|SAT)(?![A-ZĄĆĘŁŃÓŚŹŻ])/i;
         const matchW = upper.match(regexWeekdayOnly);
         if (matchW) {
             const targetDay = dniMap[matchW[1].toUpperCase()];

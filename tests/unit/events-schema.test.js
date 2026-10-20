@@ -13,6 +13,8 @@ const {
   parseLoftodanceEventsHtml,
   parseKrajownikEventsHtml,
   parseSabakiEventsHtml,
+  parseOnlyDanceEventsHtml,
+  parseAirdanciaEventsHtml,
   parseFacebookEventHtml,
   extractFacebookEventUrlFromHtml
 } = require('../../dancepuls.pl/tools/sync_engine.js');
@@ -499,6 +501,7 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
     it('zrefaktoryzowany Universal Event Scraper v3.0 (fb_scraper.js) oraz parser schowka (utils.js & parser.js) powinny bezbłędnie rozpoznawać daty, JSON-LD, Relay i priorytety źródeł', async () => {
       const {
         parseFBDate,
+        toLocalYMD,
         canonicalizeEventUrl,
         extractEventsFromRelayJson,
         parseEventDetailHtml,
@@ -653,6 +656,73 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(singleMpEvents.length, 1);
       assert.strictEqual(singleMpEvents[0].rawDate, '10.11');
       assert.strictEqual(singleMpEvents[0].isoStartDate, '2026-11-10');
+
+      // 8. Testy relatywnych dni tygodnia na kartach FB ("W ten piątek o 20:00", "W tę sobotę o 21:00", "Oct 24")
+      // refNow = wtorek 20.10.2026 -> piątek = 23.10.2026, sobota = 24.10.2026, niedziela = 25.10.2026
+      assert.strictEqual(toLocalYMD(parseFBDate('W ten piątek o 20:00', refNow)), '2026-10-23');
+      assert.strictEqual(toLocalYMD(parseFBDate('W tę sobotę o 21:00', refNow)), '2026-10-24');
+      assert.strictEqual(toLocalYMD(parseFBDate('Niedziela o 15:00', refNow)), '2026-10-25');
+      assert.strictEqual(toLocalYMD(parseFBDate('Sat, Oct 24 at 8 PM', refNow)), '2026-10-24');
+
+      // 9. Test Relay JSON z zagnieżdżonymi obiektami {} między id, name i start_timestamp
+      const nestedRelay = JSON.stringify({
+        data: {
+          viewer: {
+            events: [
+              {
+                id: '28458661560422914',
+                profile_picture: { uri: 'https://scontent.xx.fbcdn.net/pic.jpg', width: 400 },
+                name: 'Early Vibes & Goodnights Dance Party – Pumpkin Edition',
+                event_place: { contextual_name: 'Mil Pasos, Katowice', address: { street: 'Kamienna 4' } },
+                start_timestamp: 1792864800,
+              },
+            ],
+          },
+        },
+      });
+      const nestedRelayEvents = extractEventsFromRelayJson(nestedRelay, refNow);
+      assert.strictEqual(nestedRelayEvents.length, 1);
+      assert.strictEqual(nestedRelayEvents[0].url, 'https://www.facebook.com/events/28458661560422914/');
+      assert.strictEqual(nestedRelayEvents[0].location, 'Mil Pasos, Katowice');
+
+      // 10. Test konektorów OnlyDance i AirDancia w sync_engine.js
+      const sampleOnlyDanceHtml = `
+        <a class="row" href="/event/024ae44e1d4243c7a817">
+          <span class="date"><span class="d">23</span><span class="m">Oct</span></span>
+          <span class="row-main">
+            <span class="t">Stylowa Willa 23 października- impreza mieszana oraz warsztaty</span>
+            <span class="s">Salsa Party · PLONS.pl by Asia &amp; Przemo</span>
+          </span>
+        </a>
+        <a class="row" href="/event/74616a91a9344a7b994e">
+          <span class="date"><span class="d">23</span><span class="m">Oct</span></span>
+          <span class="row-main">
+            <span class="t">JESIENIARA West Coast Swing PARTY</span>
+            <span class="s">West Coast Swing Party · U2Dance</span>
+          </span>
+        </a>
+      `;
+      const odEvents = parseOnlyDanceEventsHtml(sampleOnlyDanceHtml, 'Katowice');
+      assert.strictEqual(odEvents.length, 1, 'Wydarzenia West Coast Swing muszą być odfiltrowane z OnlyDance');
+      assert.strictEqual(odEvents[0].isoStartDate, '2026-10-23');
+      assert.strictEqual(odEvents[0].city, 'Świętochłowice');
+      assert.strictEqual(odEvents[0].venue, 'Stylowa Willa');
+
+      const sampleAirdanciaHtml = `
+        <article class="aird-soc__card" data-soc-card data-soc-start="1792774800" data-families="afro-latino bachata-dance kizomba-dance salsa-dance">
+          <a class="aird-soc__card-link" href="https://airdancia.com/event/stylowa-willa-23-pazdziernika-impreza-mieszana-oraz-warsztaty-swietochlowice/"></a>
+          <div class="aird-soc__card-body">
+            <h3 class="aird-soc__card-title">Stylowa Willa 23 października- impreza mieszana oraz warsztaty</h3>
+            <div class="aird-soc__card-city">Świętochłowice</div>
+            <div class="aird-soc__card-when">19:00</div>
+          </div>
+        </article>
+      `;
+      const adEvents = parseAirdanciaEventsHtml(sampleAirdanciaHtml, 'Katowice');
+      assert.strictEqual(adEvents.length, 1);
+      assert.strictEqual(adEvents[0].isoStartDate, '2026-10-23');
+      assert.strictEqual(adEvents[0].city, 'Świętochłowice');
+      assert.strictEqual(adEvents[0].venue, 'Stylowa Willa');
     });
   });
 });

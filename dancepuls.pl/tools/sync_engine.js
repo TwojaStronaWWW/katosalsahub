@@ -58,7 +58,7 @@ const KNOWN_VENUES_GEO = [
     { match: /cz[eę]stota[nń]cz|sp[oó][lł]dzielczo[sś]ci\s*4/i, city: 'Częstochowa', venue: 'Częstotańcz', address: 'ul. Spółdzielczości 4', lat: 50.7951, lng: 19.0420 },
     { match: /beleza/i, city: 'Siewierz', venue: 'Beleza', address: 'Rynek 11', lat: 50.4681, lng: 19.2358 },
     { match: /alldance|1\s+maja\s*20/i, city: 'Bielsko-Biała', venue: 'AllDance', address: 'ul. 1 Maja 20', lat: 49.8178, lng: 19.0457 },
-    { match: /orle\s+gniazdo/i, city: 'Hucisko', venue: 'Orle Gniazdo', address: 'Orle Gniazdo 20', lat: 50.5947, lng: 19.5297 },
+    { match: /orle\s+gniazdo|feeltheflow/i, city: 'Hucisko', venue: 'Orle Gniazdo', address: 'Orle Gniazdo 20', lat: 50.5947, lng: 19.5297 },
     { match: /paprocany|przysta[nń]\s+kajakowa/i, city: 'Tychy', venue: 'Paprocany, przystań kajakowa', address: 'ul. Sikorskiego', lat: 50.0978, lng: 18.9956 },
     { match: /dzie[nń]\s+i\s+noc|warszawska\s*5/i, city: 'Katowice', venue: 'Dzień i Noc', address: 'ul. Warszawska 5', lat: 50.2589, lng: 19.0239 },
     { match: /pi[aą]tym?\s+dom|matejki\s*2/i, city: 'Katowice', venue: 'Piąty Dom', address: 'ul. Matejki 2', lat: 50.2602, lng: 19.0168 },
@@ -85,7 +85,12 @@ const KNOWN_VENUES_GEO = [
     { match: /salsa\s+house|zamoyskiego\s*79/i, city: 'Kraków', venue: 'Salsa House', address: 'ul. Jana Zamoyskiego 79A/3', lat: 50.0389, lng: 19.9412 },
     { match: /party\s+house|szewska\s*21/i, city: 'Kraków', venue: 'Party House', address: 'ul. Szewska 21', lat: 50.0632, lng: 19.9360 },
     { match: /prominent|kamienna\s*17/i, city: 'Kraków', venue: 'PROMINENT', address: 'ul. Kamienna 17', lat: 50.0752, lng: 19.9398 },
-    { match: /loftodance|kamienna\s*2/i, city: 'Kraków', venue: 'LOFToDANCE', address: 'ul. Kamienna 2–4', lat: 50.0736, lng: 19.9412 }
+    { match: /loftodance|kamienna\s*2/i, city: 'Kraków', venue: 'LOFToDANCE', address: 'ul. Kamienna 2–4', lat: 50.0736, lng: 19.9412 },
+    { match: /stylowa\s+willa|willi\s+styl|dworcowa\s*8|plons\.pl/i, city: 'Świętochłowice', venue: 'Stylowa Willa', address: 'ul. Dworcowa 8', lat: 50.2925, lng: 18.9182 },
+    { match: /euforma|fabryka\s+flou/i, city: 'Katowice', venue: 'Euforma (Fabryka FloU)', address: 'ul. Bocheńskiego 69', lat: 50.2682, lng: 18.9721 },
+    { match: /borowickiej\s*1|frenzyshot/i, city: 'Kraków', venue: 'Frenzy (ul. Borowickiej 1)', address: 'ul. Iwony Borowickiej 1', lat: 50.0681, lng: 19.9562 },
+    { match: /klub\s+studio|budryka\s*4/i, city: 'Kraków', venue: 'Klub Studio', address: 'ul. Budryka 4', lat: 50.0687, lng: 19.9042 },
+    { match: /zaraz\s+wracam\s+tu|vivasalsa|miodowa\s*51/i, city: 'Kraków', venue: 'Zaraz Wracam Tu', address: 'ul. Miodowa 51', lat: 50.0528, lng: 19.9482 }
 ];
 
 const CITY_DEFAULT_COORDS = {
@@ -995,11 +1000,151 @@ function parseSabakiEventsHtml(html = '', defaultCity = 'Katowice') {
 }
 
 /**
- * Zunifikowany skaner zewnętrznych źródeł wydarzeń tanecznych (Mil Pasos, LOFToDANCE, Krajownik Regional + Wyszukiwarka + Sabaki.dance + ekstrakcja linków FB).
+ * Zunifikowany parser HTML z agregatora OnlyDance (https://onlydanceapp.com/events/katowice, /events/krakow).
+ * Odczytuje wiersze wydarzeń <a class="row" href="/event/ID">, odfiltrowuje WCS/Zouk oraz wydarzenia spoza regionu (Opole, Bartkowa).
+ */
+function parseOnlyDanceEventsHtml(html = '', defaultCity = 'Katowice') {
+    const src = String(html || '');
+    if (!src) return [];
+
+    const MONTHS_EN = {
+        jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+        jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12'
+    };
+
+    const excludeRegex = /\b(west\s+coast\s+swing|zouk\s+festival|krak[oó]w\s+zouk\s+fire|katowice\s+zouk\s+meetup|silesian\s+zouk|ka[zż]dy\s+poniedzia[lł]ek\s+i\s+wtorek|od\s+podstaw\s+z\s+kam[aą]|bartkowa|ro[zż]nowskim|fuego\s+latin\s+dance|opole|salsospontan)\b/i;
+
+    const results = [];
+    const seenUrls = new Set();
+
+    const rowMatches = [...src.matchAll(/<a[^>]+class=["'][^"']*\brow\b[^"']*["'][^>]+href=["'](\/event\/([A-Za-z0-9_-]+))["'][^>]*>([\s\S]*?)<\/a>/gi)];
+    for (const m of rowMatches) {
+        const eventId = m[2];
+        const url = `https://onlydanceapp.com/event/${eventId}`;
+        if (seenUrls.has(url)) continue;
+
+        const block = m[3];
+        const dayRaw = block.match(/<span[^>]+class=["']d["'][^>]*>\s*(\d{1,2})\s*<\/span>/i)?.[1];
+        const monthRaw = block.match(/<span[^>]+class=["']m["'][^>]*>\s*([A-Za-z]{3})\s*<\/span>/i)?.[1];
+        const titleRaw = block.match(/<span[^>]+class=["']t["'][^>]*>([\s\S]*?)<\/span>/i)?.[1];
+        const subRaw = block.match(/<span[^>]+class=["']s["'][^>]*>([\s\S]*?)<\/span>/i)?.[1];
+
+        if (!dayRaw || !monthRaw || !titleRaw) continue;
+        const month = MONTHS_EN[monthRaw.toLowerCase()];
+        if (!month) continue;
+
+        const rawTitle = decodeHtmlEntities(titleRaw.replace(/<[^>]+>/g, '').trim());
+        const subtitle = decodeHtmlEntities((subRaw || '').replace(/<[^>]+>/g, '').trim());
+        const combined = `${rawTitle} ${subtitle}`;
+        if (excludeRegex.test(combined)) continue;
+
+        seenUrls.add(url);
+        const day = String(dayRaw).padStart(2, '0');
+        const monthNum = parseInt(month, 10);
+        const year = /2027|'27\b/.test(combined) || monthNum <= 9 ? 2027 : 2026;
+
+        let rawDate = year === 2026 ? `${day}.${month}` : `${day}.${month}.${year}`;
+        const rangeInTitle = rawTitle.match(/\b(\d{1,2})\s*[\/–-]\s*(\d{1,2})\.(\d{2})(?:\.(\d{4}))?\b/);
+        if (rangeInTitle) {
+            const d1 = String(rangeInTitle[1]).padStart(2, '0');
+            const d2 = String(rangeInTitle[2]).padStart(2, '0');
+            const rm = rangeInTitle[3];
+            const ry = rangeInTitle[4] ? parseInt(rangeInTitle[4], 10) : year;
+            rawDate = ry === 2026 ? `${d1}–${d2}.${rm}` : `${d1}–${d2}.${rm}.${ry}`;
+        }
+
+        let resolvedCity = defaultCity;
+        if (/ś?wi[eę]toch[lł]owice|stylowa\s+willa|plons\.pl/i.test(combined)) resolvedCity = 'Świętochłowice';
+        else if (/feeltheflow/i.test(combined)) resolvedCity = 'Hucisko';
+        else if (/\btychy\b|mohito\s+tychy/i.test(combined)) resolvedCity = 'Tychy';
+        else if (/\bgliwice\b|gliwickie|mohito\s+gliwice/i.test(combined)) resolvedCity = 'Gliwice';
+        else if (/bielsko|alldance/i.test(combined)) resolvedCity = 'Bielsko-Biała';
+        else if (/krak[oó]w|cracow|cracovia|forum\s+ta[nń]ca|sabrosa|loftodance|vivasalsa|teatro\s+cubano|panorama|frenzyshot/i.test(combined)) resolvedCity = 'Kraków';
+
+        const orgPart = subtitle.split('·')[1]?.trim() || '';
+        const knownInTitle = KNOWN_VENUES_GEO.find(k => k.match.test(rawTitle));
+        const loc = normalizeLocation(`${resolvedCity},${knownInTitle ? knownInTitle.venue : (orgPart || rawTitle)}`);
+        const dateInfo = parseEventDateInfo(rawDate, year);
+        const styles = inferEventStyles(combined);
+
+        results.push({
+            rawDate,
+            isoStartDate: dateInfo.isoStartDate,
+            isoEndDate: dateInfo.isoEndDate,
+            venueCode: `${loc.city},${loc.venue}`,
+            city: loc.city,
+            venue: loc.venue,
+            title: rawTitle,
+            styles,
+            url,
+            notes: `${orgPart || loc.venue}; OnlyDance`
+        });
+    }
+
+    return results;
+}
+
+/**
+ * Zunifikowany parser HTML z regionalnego agregatora AirDancia (https://airdancia.com/sociales/pl22a/bachata/).
+ * Odczytuje karty <article class="aird-soc__card" data-soc-start="..."> dla województwa śląskiego.
+ */
+function parseAirdanciaEventsHtml(html = '', defaultCity = 'Katowice') {
+    const src = String(html || '');
+    if (!src) return [];
+
+    const results = [];
+    const seenUrls = new Set();
+
+    const cardMatches = [...src.matchAll(/<article[^>]+class=["'][^"']*aird-soc__card[^"']*["'][\s\S]*?<\/article>/gi)];
+    for (const m of cardMatches) {
+        const block = m[0];
+        const href = block.match(/href=["'](https?:\/\/airdancia\.com\/event\/[^"']+)["']/i)?.[1];
+        const startTs = block.match(/data-soc-start=["'](\d{9,11})["']/i)?.[1];
+        const titleRaw = block.match(/<h3[^>]+class=["'][^"']*aird-soc__card-title[^"']*["'][^>]*>([\s\S]*?)<\/h3>/i)?.[1];
+        const cityRaw = block.match(/<div[^>]+class=["'][^"']*aird-soc__card-city[^"']*["'][^>]*>([\s\S]*?)<\/div>/i)?.[1];
+        const whenRaw = block.match(/<div[^>]+class=["'][^"']*aird-soc__card-when[^"']*["'][^>]*>([\s\S]*?)<\/div>/i)?.[1];
+        const families = block.match(/data-families=["']([^"']+)["']/i)?.[1] || '';
+
+        if (!href || !startTs || !titleRaw || seenUrls.has(href)) continue;
+        seenUrls.add(href);
+
+        const d = new Date(Number(startTs) * 1000);
+        if (Number.isNaN(d.getTime())) continue;
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const rawDate = year === 2026 ? `${day}.${month}` : `${day}.${month}.${year}`;
+        const dateInfo = parseEventDateInfo(rawDate, year);
+
+        const rawTitle = decodeHtmlEntities(titleRaw.replace(/<[^>]+>/g, '').trim());
+        const resolvedCity = decodeHtmlEntities((cityRaw || defaultCity).replace(/<[^>]+>/g, '').trim()) || defaultCity;
+        const startTime = decodeHtmlEntities((whenRaw || '').replace(/<[^>]+>/g, '').trim());
+        const loc = normalizeLocation(`${resolvedCity},${rawTitle}`);
+        const styles = inferEventStyles(`${rawTitle} ${families.replace(/-dance/g, '')}`);
+
+        results.push({
+            rawDate,
+            isoStartDate: dateInfo.isoStartDate,
+            isoEndDate: dateInfo.isoEndDate,
+            venueCode: `${loc.city},${loc.venue}`,
+            city: loc.city,
+            venue: loc.venue,
+            title: rawTitle,
+            styles,
+            url: href,
+            notes: `${startTime ? startTime + '; ' : ''}${loc.venue}; AirDancia`
+        });
+    }
+
+    return results;
+}
+
+/**
+ * Zunifikowany skaner zewnętrznych źródeł wydarzeń tanecznych (Mil Pasos, LOFToDANCE, Krajownik Regional + Organizatorzy, Sabaki.dance, OnlyDance, AirDancia + ekstrakcja linków FB).
  * Współdzieli architekturę konektorów z scripts/sync-schedules.js.
  */
 async function checkRemoteEventSources(existingDatabaseText = '', todayIso = getTodayIsoDate()) {
-    console.log('🌐 [1b/5] Zunifikowany skan zewnętrznych źródeł wydarzeń (Mil Pasos, LOFToDANCE, Krajownik, Sabaki, Facebook)...');
+    console.log('🌐 [1b/5] Zunifikowany skan zewnętrznych źródeł wydarzeń (Mil Pasos, LOFToDANCE, Krajownik, Sabaki, OnlyDance, AirDancia, Facebook)...');
     const discovered = [];
 
     const tasks = [
@@ -1022,6 +1167,21 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
             name: 'Sabaki Dance Kraków',
             url: 'https://sabaki.dance/events/Krakow',
             parser: (html) => parseSabakiEventsHtml(html, 'Kraków')
+        },
+        {
+            name: 'OnlyDance Katowice & Śląsk',
+            url: 'https://onlydanceapp.com/events/katowice',
+            parser: (html) => parseOnlyDanceEventsHtml(html, 'Katowice')
+        },
+        {
+            name: 'OnlyDance Kraków',
+            url: 'https://onlydanceapp.com/events/krakow',
+            parser: (html) => parseOnlyDanceEventsHtml(html, 'Kraków')
+        },
+        {
+            name: 'AirDancia Śląsk',
+            url: 'https://airdancia.com/sociales/pl22a/bachata/',
+            parser: (html) => parseAirdanciaEventsHtml(html, 'Katowice')
         },
         {
             name: 'Krajownik Katowice (Dzisiaj)',
@@ -1204,6 +1364,8 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
             if (dbLower.includes(ev.url.toLowerCase())) return false;
             const fbIdMatch = ev.url.match(/facebook\.com\/events\/(\d{8,})/i);
             if (fbIdMatch && dbLower.includes(`f:${fbIdMatch[1]}`)) return false;
+            const odIdMatch = ev.url.match(/onlydanceapp\.com\/event\/([A-Za-z0-9_-]+)/i);
+            if (odIdMatch && dbLower.includes(`o:${odIdMatch[1].toLowerCase()}`)) return false;
         }
         const shortTitle = extractShortEventTitle(ev.title).toLowerCase();
         if (shortTitle && dbLower.includes(ev.rawDate.toLowerCase()) && dbLower.includes(shortTitle.slice(0, 14))) {
@@ -1824,8 +1986,9 @@ async function main() {
     const { newSubmissions } = await checkFormSubmissions(dbText);
     const sections = parseDatabase(dbText);
 
-    if (args.includes('--check-remote') || args.includes('--fb')) {
-        const { freshEvents } = args.includes('--check-remote')
+    const shouldScanRemote = !args.includes('--no-remote') && !process.env.CI;
+    if (shouldScanRemote || args.includes('--check-remote') || args.includes('--fb')) {
+        const { freshEvents } = (shouldScanRemote || args.includes('--check-remote'))
             ? await checkRemoteEventSources(dbText, todayIso)
             : { freshEvents: [] };
 
@@ -1877,10 +2040,13 @@ async function main() {
             const isAlreadyTracked = allKnown.some(k => {
                 if (k.isoStartDate !== dateInfo.isoStartDate) return false;
                 if (k.city.toLowerCase() !== loc.city.toLowerCase()) return false;
-                if (k.venue.toLowerCase() !== loc.venue.toLowerCase()) return false;
                 const kTokens = normalizeCompareTokens(k.title);
-                if (evTokens.length === 0 || kTokens.length === 0) return true;
-                return evTokens.some(t => kTokens.includes(t));
+                const sharedCount = evTokens.filter(t => kTokens.includes(t)).length;
+                if (k.venue.toLowerCase() === loc.venue.toLowerCase()) {
+                    if (evTokens.length === 0 || kTokens.length === 0) return true;
+                    return sharedCount >= 1;
+                }
+                return sharedCount >= 2;
             });
 
             if (isAlreadyTracked) continue;
@@ -1957,6 +2123,8 @@ module.exports = {
     parseLoftodanceEventsHtml,
     parseKrajownikEventsHtml,
     parseSabakiEventsHtml,
+    parseOnlyDanceEventsHtml,
+    parseAirdanciaEventsHtml,
     parseFacebookEventHtml,
     fetchFacebookEventDetails,
     extractFacebookEventUrlFromHtml,
