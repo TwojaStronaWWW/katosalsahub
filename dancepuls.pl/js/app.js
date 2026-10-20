@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// Generowanie pól formularza
-	dni.forEach(dzienObj => {
+	function buildDayBlock(dzienObj) {
 		const block = document.createElement('div')
 		block.className = 'day-block'
 		block.dataset.date = dzienObj.ymd
@@ -301,7 +301,39 @@ document.addEventListener('DOMContentLoaded', function () {
 			const container = createEventContainer(block, i)
 			block.appendChild(container)
 		}
-		form.appendChild(block)
+		return block
+	}
+
+	function ensureDayBlock(ymdStr) {
+		const existing = Array.from(form.querySelectorAll('.day-block')).find(b => b.dataset.date === ymdStr)
+		if (existing) return existing
+
+		const parts = String(ymdStr || '').split('-')
+		if (parts.length !== 3) return null
+		const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
+		if (Number.isNaN(d.getTime())) return null
+
+		const dzienTyg = dniTygodnia[d.getDay()]
+		const yearSuffix = d.getFullYear() !== new Date().getFullYear() ? `.${d.getFullYear()}` : ''
+		const newObj = {
+			date: d,
+			ymd: ymdStr,
+			label: `${dzienTyg} (${formatujDatePL(d)}${yearSuffix})`,
+			dzienTygIndex: d.getDay(),
+		}
+		const newBlock = buildDayBlock(newObj)
+		const allBlocks = Array.from(form.querySelectorAll('.day-block'))
+		const insertBeforeBlock = allBlocks.find(b => b.dataset.date > ymdStr)
+		if (insertBeforeBlock) {
+			form.insertBefore(newBlock, insertBeforeBlock)
+		} else {
+			form.appendChild(newBlock)
+		}
+		return newBlock
+	}
+
+	dni.forEach(dzienObj => {
+		form.appendChild(buildDayBlock(dzienObj))
 	})
 
 	// Wygeneruj początkowy post
@@ -513,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			const blocks = document.querySelectorAll('.day-block')
 
 			stan.forEach(dayData => {
-				const targetBlock = Array.from(blocks).find(b => b.dataset.date === dayData.date)
+				const targetBlock = ensureDayBlock(dayData.date)
 				if (!targetBlock) return
 
 				if (targetBlock._createEventContainer && dayData.events) {
@@ -794,12 +826,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				const parsedDate = ev.parsedDate
 				const evYMD = toYMD(parsedDate)
 				console.log(`[Import] Przetwarzanie: "${ev.title}" na dzień ${evYMD}`)
-				const dayBlock = Array.from(document.querySelectorAll('.day-block')).find(block => {
-					return block.dataset.date === evYMD
-				})
+				const dayBlock = ensureDayBlock(evYMD)
 
 				if (!dayBlock) {
-					skippedReasons.push(`"${ev.title}": Brak dnia ${evYMD} w kalendarzu (generator obsługuje ${LICZBA_DNI} dni)`)
+					skippedReasons.push(`"${ev.title}": Nieprawidłowa data ${evYMD}`)
 					return
 				}
 
@@ -823,9 +853,15 @@ document.addEventListener('DOMContentLoaded', function () {
 					return
 				}
 
-				const emptySlot = Array.from(dayBlock.querySelectorAll('.event-block')).find(eb => {
+				let emptySlot = Array.from(dayBlock.querySelectorAll('.event-block')).find(eb => {
 					return eb.style.display === 'none' && !eb.querySelector('.link').value
 				})
+				if (!emptySlot && dayBlock._createEventContainer) {
+					const newIdx = dayBlock.querySelectorAll('.event-container').length
+					const newContainer = dayBlock._createEventContainer(dayBlock, newIdx)
+					dayBlock.appendChild(newContainer)
+					emptySlot = newContainer.querySelector('.event-block')
+				}
 
 				if (emptySlot) {
 					const container = emptySlot.parentElement
@@ -853,6 +889,26 @@ document.addEventListener('DOMContentLoaded', function () {
 					const locationText = (ev.location || '').toLowerCase()
 					const fullText = primaryText + ' ' + locationText
 
+					const cityInflectionRegexMap = {
+						Katowice: /\bkatowic[a-ząćęłńóśźż]*\b/i,
+						Kraków: /\b(krak[oó]w[a-ząćęłńóśźż]*|cracow|cracovia)\b/i,
+						Gliwice: /\bgliwic[a-ząćęłńóśźż]*\b/i,
+						Tychy: /\btych(y|ach|ów|om)\b/i,
+						'Bielsko-Biała': /\bbielsk[a-ząćęłńóśźż-]*\b/i,
+						Częstochowa: /\bcz[eę]stochow[a-ząćęłńóśźż]*\b/i,
+						Chorzów: /\bchorz[oó]w[a-ząćęłńóśźż]*\b/i,
+						Bytom: /\bbytom[a-ząćęłńóśźż]*\b/i,
+						Świętochłowice: /\b[sś]wi[eę]toch[lł]owic[a-ząćęłńóśźż]*\b/i,
+						Rybnik: /\brybnik[a-ząćęłńóśźż]*\b/i,
+						Siewierz: /\bsiewierz[a-ząćęłńóśźż]*\b/i,
+						Hucisko: /\bhucisk[a-ząćęłńóśźż]*\b/i,
+						'Piekary Śląskie': /\bpiekar[a-ząćęłńóśźż]*\b/i,
+						'Tarnowskie Góry': /\btarnowski[a-ząćęłńóśźż\s]*g[oó]r[a-ząćęłńóśźż]*\b/i,
+						'Dąbrowa Górnicza': /\bd[aą]brow[a-ząćęłńóśźż\s]*g[oó]rnicz[a-ząćęłńóśźż]*\b/i,
+						Szczyrk: /\bszczyrk[a-ząćęłńóśźż]*\b/i,
+						Wisła: /\bwi[sś]l(a|e|ą)\b/i,
+					}
+
 					let matchedAddr = null
 					for (const [addr, place] of Object.entries(adresyMap || {})) {
 						// Sprawdzamy najpierw w tytule/opisie
@@ -876,7 +932,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 					if (!bestPlace) {
 						for (const city of Object.keys(miejscaWgMiasta || {})) {
-							if (fullText.includes(city.toLowerCase())) {
+							const cityRe = cityInflectionRegexMap[city]
+							const matchesCity = cityRe ? cityRe.test(fullText) : fullText.includes(city.toLowerCase())
+							if (matchesCity) {
 								bestCity = city
 								const places = miejscaWgMiasta[city]
 								for (const p of places) {

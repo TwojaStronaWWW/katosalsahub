@@ -290,31 +290,47 @@
     };
 
     // 2A. Rekurencyjny spacer po drzewie JSON (odporny na zagnieżdżone obiekty między "id", "name" i "start_timestamp")
+    const walkRelayTree = (node) => {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) {
+        for (const item of node) walkRelayTree(item);
+        return;
+      }
+      const id = typeof node.id === 'string' && /^\d{10,20}$/.test(node.id) ? node.id : '';
+      const name = typeof node.name === 'string' ? node.name : (typeof node.event_title === 'string' ? node.event_title : '');
+      const ts = node.start_timestamp || node.start_time || node.day_time_sentence || '';
+      if (id && name && ts) {
+        const loc =
+          node.event_place?.contextual_name ||
+          node.event_place?.name ||
+          node.place?.name ||
+          node.location_name ||
+          '';
+        registerRelayEvent(id, name, ts, loc);
+      }
+      for (const val of Object.values(node)) {
+        if (val && typeof val === 'object') walkRelayTree(val);
+      }
+    };
+
     try {
-      const parsedObj = rawJsonText && typeof rawJsonText === 'object' ? rawJsonText : JSON.parse(src);
-      const walkRelayTree = (node) => {
-        if (!node || typeof node !== 'object') return;
-        if (Array.isArray(node)) {
-          for (const item of node) walkRelayTree(item);
-          return;
+      if (rawJsonText && typeof rawJsonText === 'object') {
+        walkRelayTree(rawJsonText);
+      } else if (src.includes('<script')) {
+        const scriptBlocks = [...src.matchAll(/<script[^>]*type=["']application\/json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+        for (const sb of scriptBlocks) {
+          const body = sb[1].trim();
+          if (body.includes('start_timestamp') || body.includes('day_time_sentence')) {
+            try {
+              walkRelayTree(JSON.parse(body));
+            } catch {
+              // Ignoruj niepoprawne pojedyncze bloki
+            }
+          }
         }
-        const id = typeof node.id === 'string' && /^\d{10,20}$/.test(node.id) ? node.id : '';
-        const name = typeof node.name === 'string' ? node.name : (typeof node.event_title === 'string' ? node.event_title : '');
-        const ts = node.start_timestamp || node.start_time || node.day_time_sentence || '';
-        if (id && name && ts) {
-          const loc =
-            node.event_place?.contextual_name ||
-            node.event_place?.name ||
-            node.place?.name ||
-            node.location_name ||
-            '';
-          registerRelayEvent(id, name, ts, loc);
-        }
-        for (const val of Object.values(node)) {
-          if (val && typeof val === 'object') walkRelayTree(val);
-        }
-      };
-      walkRelayTree(parsedObj);
+      } else {
+        walkRelayTree(JSON.parse(src));
+      }
     } catch {
       // Fallback poniżej dla fragmentów HTML / niepełnego JSON-a
     }
@@ -727,6 +743,80 @@
       .sort((a, b) => a.isoDate.localeCompare(b.isoDate));
   }
 
+  const FB_REGIONAL_ORGANIZER_PAGES = [
+    { name: 'Kato Salsa Hub', url: 'https://www.facebook.com/katosalsahub/upcoming_hosted_events', locationHint: 'Katowice, Wolni Ludzie' },
+    { name: 'La Clave Katowice', url: 'https://www.facebook.com/LaClaveKatowice/upcoming_hosted_events', locationHint: 'Katowice, La Clave' },
+    { name: 'Mil Pasos Katowice', url: 'https://www.facebook.com/SzkolaTancaMilPasos/upcoming_hosted_events', locationHint: 'Katowice, Mil Pasos' },
+    { name: 'Good Mood Katowice', url: 'https://www.facebook.com/goodmoodkatowice/upcoming_hosted_events', locationHint: 'Katowice, Good Mood' },
+    { name: 'KIZLAB Katowice', url: 'https://www.facebook.com/kizlab.katowice/upcoming_hosted_events', locationHint: 'Katowice, KIZLAB' },
+    { name: 'Taneczna Kompania', url: 'https://www.facebook.com/tanecznakompaniapl/upcoming_hosted_events', locationHint: 'Katowice, Taneczna Kompania' },
+    { name: 'Mohito Gliwice', url: 'https://www.facebook.com/SzkolaTancaMohitoGliwice/upcoming_hosted_events', locationHint: 'Gliwice, Mohito' },
+    { name: 'Mohito Tychy', url: 'https://www.facebook.com/SzkolaTancaMohito/upcoming_hosted_events', locationHint: 'Tychy, Mohito' },
+    { name: 'AllDance Bielsko-Biała', url: 'https://www.facebook.com/alldancebielsko/upcoming_hosted_events', locationHint: 'Bielsko-Biała, AllDance' },
+    { name: 'DANCE#LOVEit Bielsko-Biała', url: 'https://www.facebook.com/danceloveit/upcoming_hosted_events', locationHint: 'Bielsko-Biała, DANCE#LOVEit & Corazon' },
+    { name: 'Sabrosa Kraków', url: 'https://www.facebook.com/SabrosaDanceStudio/upcoming_hosted_events', locationHint: 'Kraków, Sabrosa Dance Studio' },
+    { name: 'Forum Tańca Kraków', url: 'https://www.facebook.com/forumtanca/upcoming_hosted_events', locationHint: 'Kraków, Forum Tańca' },
+    { name: 'LOFToDANCE Kraków', url: 'https://www.facebook.com/loftodance/upcoming_hosted_events', locationHint: 'Kraków, LOFToDANCE' },
+    { name: 'Salsa House Kraków', url: 'https://www.facebook.com/salsahousekrakow/upcoming_hosted_events', locationHint: 'Kraków, Salsa House' },
+    { name: 'VivaSalsa Kraków', url: 'https://www.facebook.com/vivasalsakrakow/upcoming_hosted_events', locationHint: 'Kraków, Zaraz Wracam Tu' },
+    { name: 'Teatro Cubano Kraków', url: 'https://www.facebook.com/teatrocubanokrakow/upcoming_hosted_events', locationHint: 'Kraków, Teatro Cubano' },
+  ];
+
+  /**
+   * Warstwa 4c (Active Same-Origin Organizer Crawler):
+   * Będąc zalogowanym na dowolnej karcie Facebooka, odpytuje w tle strony /upcoming_hosted_events
+   * najważniejszych szkół i klubów ze Śląska i Krakowa, wyciągając wszystkie ich nadchodzące wydarzenia.
+   */
+  async function crawlFacebookOrganizerPages(fetchImpl = null, now = new Date(), pages = FB_REGIONAL_ORGANIZER_PAGES) {
+    const fetcher =
+      fetchImpl || (typeof window !== 'undefined' && typeof window.fetch === 'function' ? window.fetch.bind(window) : null);
+    if (!fetcher) return [];
+
+    const discoveredByUrl = new Map();
+    const BATCH_SIZE = 4;
+
+    for (let i = 0; i < pages.length; i += BATCH_SIZE) {
+      const batch = pages.slice(i, i + BATCH_SIZE);
+      await Promise.allSettled(
+        batch.map(async (page) => {
+          try {
+            const res = await fetcher(page.url, { credentials: 'same-origin' });
+            if (!res || !res.ok) return;
+            const html = await res.text();
+            const relayEvents = extractEventsFromRelayJson(html, now);
+            for (const rev of relayEvents) {
+              if (!rev.location && page.locationHint) {
+                rev.location = page.locationHint;
+                rev.description = `${rev.title} ${page.locationHint}`.trim();
+              }
+              discoveredByUrl.set(canonicalizeEventUrl(rev.url), rev);
+            }
+            // Wyciągnij również surowe identyfikatory /events/ID/ zaszyte w kodzie strony organizatora
+            const idMatches = [...html.matchAll(/\/events\/(\d{10,20})(?:\/|["'?])/g)];
+            for (const m of idMatches) {
+              const canon = `https://www.facebook.com/events/${m[1]}/`;
+              if (!discoveredByUrl.has(canon) && discoveredByUrl.size < 80) {
+                discoveredByUrl.set(canon, {
+                  url: canon,
+                  title: '',
+                  rawDate: '',
+                  isoDate: '',
+                  location: page.locationHint || '',
+                  description: page.locationHint || '',
+                  _needsDate: true,
+                });
+              }
+            }
+          } catch {
+            // Ignoruj niedostępne strony organizatorów
+          }
+        })
+      );
+    }
+
+    return Array.from(discoveredByUrl.values());
+  }
+
   async function autoScrollPage(steps = 6, delayMs = 350) {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
     if (/\/events\/\d+/.test(window.location.href)) return;
@@ -760,20 +850,25 @@
 
   async function runBrowserScraper() {
     if (typeof window === 'undefined' || typeof document === 'undefined') return [];
-    console.log('🚀 [DancePuls Scraper v3.2] Rozpoczynam wielowarstwową ekstrakcję wydarzeń + Deep Fetch...');
+    console.log('🚀 [DancePuls Scraper v3.3] Rozpoczynam wielowarstwową ekstrakcję wydarzeń + Active Organizer Crawl + Deep Fetch...');
     await autoScrollPage(6, 300);
     const now = new Date();
     const initialEvents = extractEventsFromDocument(document, window.location.href, now);
-    const events = await deepEnrichFacebookEvents(initialEvents, document, null, now);
+    let combinedCandidates = [...initialEvents];
+    if (/facebook\.com/i.test(window.location.hostname) && !/\/events\/\d+/.test(window.location.pathname)) {
+      const crawled = await crawlFacebookOrganizerPages(null, now);
+      combinedCandidates = [...combinedCandidates, ...crawled];
+    }
+    const events = await deepEnrichFacebookEvents(combinedCandidates, document, null, now);
 
     if (events.length > 0) {
       const json = JSON.stringify(events, null, 2);
       await copyToClipboardModern(json);
-      console.log(`✅ [DancePuls Scraper v3.1] Pobrano, wzbogacono i skopiowano ${events.length} wydarzeń!`);
+      console.log(`✅ [DancePuls Scraper v3.3] Pobrano, wzbogacono i skopiowano ${events.length} wydarzeń!`);
       console.table(events.map((e) => ({ data: e.rawDate, iso: e.isoDate, tytul: e.title, miejsce: e.location, url: e.url })));
-      alert(`✅ DancePuls Scraper v3.1: Skopiowano ${events.length} wzbogaconych wydarzeń do schowka!`);
+      alert(`✅ DancePuls Scraper v3.3: Skopiowano ${events.length} wzbogaconych wydarzeń do schowka!`);
     } else {
-      console.warn('⚠️ [DancePuls Scraper v3.1] Nie znaleziono nadchodzących wydarzeń na tej stronie.');
+      console.warn('⚠️ [DancePuls Scraper v3.3] Nie znaleziono nadchodzących wydarzeń na tej stronie.');
       alert('⚠️ Nie znaleziono nadchodzących wydarzeń (>= dzisiaj). Przewiń listę wydarzeń i spróbuj ponownie.');
     }
     return events;
@@ -793,6 +888,8 @@
     extractEventsFromDocument,
     parseEventDetailHtml,
     deepEnrichFacebookEvents,
+    crawlFacebookOrganizerPages,
+    FB_REGIONAL_ORGANIZER_PAGES,
     runBrowserScraper,
   };
 

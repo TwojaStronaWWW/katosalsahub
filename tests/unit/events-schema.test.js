@@ -506,9 +506,12 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         extractEventsFromRelayJson,
         parseEventDetailHtml,
         deepEnrichFacebookEvents,
+        crawlFacebookOrganizerPages,
+        FB_REGIONAL_ORGANIZER_PAGES,
       } = require('../../dancepuls.pl/tools/fb_scraper.js');
       const { parsujDateFB, toYMD } = await import('../../dancepuls.pl/js/utils.js');
       const { parseClipboardData } = await import('../../dancepuls.pl/js/parser.js');
+      const { styleKeywords, miejscaWgMiasta, adresyMap } = await import('../../dancepuls.pl/js/config.js');
 
       const refNow = new Date(2026, 9, 20); // 20.10.2026
 
@@ -723,6 +726,27 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(adEvents[0].isoStartDate, '2026-10-23');
       assert.strictEqual(adEvents[0].city, 'Świętochłowice');
       assert.strictEqual(adEvents[0].venue, 'Stylowa Willa');
+
+      // 11. Test aktywnego crawlera stron organizatorów FB (crawlFacebookOrganizerPages) oraz spójności słowników config.js
+      assert.ok(FB_REGIONAL_ORGANIZER_PAGES.length >= 15, 'Lista regionalnych organizatorów FB musi zawierać co najmniej 15 szkół i klubów');
+      const simulatedOrgHtml = `
+        <script type="application/json">{"data":{"page":{"upcoming_events":{"edges":[{"node":{"id":"999888777666555","name":"Halloween Bachata Night w La Clave","start_timestamp":1793480400,"event_place":{"contextual_name":"La Clave, Katowice"}}}]}}}}</script>
+        <a href="/events/112233445566778/">Kolejne wydarzenie</a>
+      `;
+      const crawledFromOrgs = await crawlFacebookOrganizerPages(
+        async () => ({ ok: true, text: async () => simulatedOrgHtml }),
+        refNow,
+        [{ name: 'La Clave Katowice', url: 'https://www.facebook.com/LaClaveKatowice/upcoming_hosted_events' }]
+      );
+      assert.strictEqual(crawledFromOrgs.length, 2);
+      assert.strictEqual(crawledFromOrgs[0].url, 'https://www.facebook.com/events/999888777666555/');
+      assert.strictEqual(crawledFromOrgs[0].location, 'La Clave, Katowice');
+      assert.strictEqual(crawledFromOrgs[1].url, 'https://www.facebook.com/events/112233445566778/');
+
+      assert.strictEqual(styleKeywords.reggaeton, 'Reggaeton', 'Klucz reggaeton w styleKeywords musi odpowiadać dokładnie wartości checkboxa Reggaeton');
+      assert.ok(miejscaWgMiasta['Katowice'].includes('KIZLAB'), 'Słownik Katowic w config.js musi zawierać KIZLAB');
+      assert.strictEqual(adresyMap['sobieskiego 11'], 'KIZLAB');
+      assert.strictEqual(adresyMap['jagiellońska 10'], 'Teatro Cubano');
     });
   });
 });

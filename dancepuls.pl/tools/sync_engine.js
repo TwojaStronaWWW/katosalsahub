@@ -1374,8 +1374,8 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
         return true;
     });
 
-    // Dla nowych pozycji z Krajownika wyciągnij równolegle bezpośredni link do wydarzenia na Facebooku
-    // oraz wzbogać metadane (style, organizator, lokal) przez OpenGraph FB (fetchFacebookEventDetails)
+    // Dla nowych pozycji z Krajownika i OnlyDance wyciągnij równolegle bezpośredni link FB lub JSON-LD z podstrony szczegółów
+    // oraz wzbogać metadane (dokładny adres, lokal, style, organizator)
     await Promise.allSettled(
         freshEvents.map(async (ev) => {
             if (ev.url && ev.url.includes('krajownik.pl/')) {
@@ -1402,12 +1402,40 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
                 } catch {
                     // Zachowaj link Krajownika jako fallback
                 }
+            } else if (ev.url && ev.url.includes('onlydanceapp.com/event/')) {
+                try {
+                    const detailHtml = await fetchUrl(ev.url, 6000);
+                    const ldMatch = detailHtml.match(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
+                    if (ldMatch) {
+                        const ld = JSON.parse(ldMatch[1]);
+                        const locName = decodeHtmlEntities(String(ld.location?.name || ''));
+                        const streetAddr = decodeHtmlEntities(String(ld.location?.address?.streetAddress || ''));
+                        const combinedAddr = `${locName} ${streetAddr}`.trim();
+                        if (/\b4[5-9]-\d{3}\b|\bOpole\b/i.test(combinedAddr)) {
+                            ev._excludeOutOfRegion = true;
+                            return;
+                        }
+                        if (combinedAddr) {
+                            const enrichedLoc = normalizeLocation(`${ev.city},${combinedAddr}`);
+                            if (enrichedLoc.venue && enrichedLoc.venue !== 'Inne') {
+                                ev.city = enrichedLoc.city;
+                                ev.venue = enrichedLoc.venue;
+                                ev.venueCode = `${enrichedLoc.city},${enrichedLoc.venue}`;
+                            }
+                        }
+                    }
+                    const fbUrl = extractFacebookEventUrlFromHtml(detailHtml);
+                    if (fbUrl) ev.url = fbUrl;
+                } catch {
+                    // Zachowaj metadane z listy OnlyDance jako fallback
+                }
             }
         })
     );
 
-    console.log(`   Zeskanowano źródła zewnętrzne równolegle: wykryto ${uniqueDiscovered.length} unikalnych aktywnych wydarzeń (nowych spoza bazy: ${freshEvents.length}).`);
-    return { discovered: uniqueDiscovered, freshEvents };
+    const verifiedFreshEvents = freshEvents.filter(ev => !ev._excludeOutOfRegion);
+    console.log(`   Zeskanowano źródła zewnętrzne równolegle: wykryto ${uniqueDiscovered.length} unikalnych aktywnych wydarzeń (nowych spoza bazy: ${verifiedFreshEvents.length}).`);
+    return { discovered: uniqueDiscovered, freshEvents: verifiedFreshEvents };
 }
 
 // 1. Fetch & Check Google Form Submissions
