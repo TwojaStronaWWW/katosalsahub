@@ -103,7 +103,7 @@ npm run sync
      INDEXNOW_ID="4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a"
      curl -s -X POST "https://api.indexnow.org/indexnow" \
        -H "Content-Type: application/json; charset=utf-8" \
-       -d "{\"host\":\"katosalsahub.pl\",\"key\":\"${INDEXNOW_ID}\",\"keyLocation\":\"https://katosalsahub.pl/${INDEXNOW_ID}.txt\",\"urlList\":[\"https://katosalsahub.pl/\",\"https://katosalsahub.pl/salsopedia.html\"]}"
+       -d "{\"host\":\"katosalsahub.pl\",\"key\":\"${INDEXNOW_ID}\",\"keyLocation\":\"https://katosalsahub.pl/${INDEXNOW_ID}.txt\",\"urlList\":[\"https://katosalsahub.pl/\",\"https://katosalsahub.pl/grafik.html\",\"https://katosalsahub.pl/salsopedia.html\"]}"
      ```
 
 ---
@@ -175,6 +175,11 @@ Panel zarządzania: **[https://business.google.com/locations](https://business.g
      - **Opis:** `Cotygodniowe niedzielne potańcówki i praktyki salsy kubańskiej w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice) oraz darmowe plenery taneczne w Dolinie Trzech Stawów i pod NOSPR-em. Tańczymy Salsę Cubana (Casino), Timbę, Rueda de Casino, Bachatę i Kizombę. Przyjdź solo lub w parze – na miejscu poznasz świetnych ludzi i sprawdzisz ponad 200 figur w naszej Salsopedii!`
      - **URL:** `https://katosalsahub.pl/`
   2. **Kafelek 2:**
+     - **Nazwa:** `Wspólny Grafik Szkół Tańca Katowice (128 kursów)`
+     - **Kategoria:** `Salsa Katowice`
+     - **Opis:** `Porównaj w jednym miejscu 128 kursów Salsy Cubana, Ruedy, Bachaty i Kizomby w katowickich szkołach tańca (La Clave, Good Mood, Mil Pasos), sprawdź kalkulator cen karnetów, nadchodzące imprezy DancePuls i mapę 8 lokalizacji.`
+     - **URL:** `https://katosalsahub.pl/grafik.html`
+  3. **Kafelek 3:**
      - **Nazwa:** `Salsopedia – Ponad 200 Figur Salsy Kubańskiej`
      - **Kategoria:** `Salsa Katowice`
      - **Opis:** `Pierwsza polska otwarta encyklopedia salsy kubańskiej (Casino i Rueda de Casino), komend ruedowych, instrumentów oraz katalog szkół tańca i instruktorów w Katowicach.`

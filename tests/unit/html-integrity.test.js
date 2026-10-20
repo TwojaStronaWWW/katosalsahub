@@ -33,6 +33,8 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(match[1], /Kato Salsa Hub/i);
       assert.match(html, /<link\s+rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/">/i, 'Brak linku canonical w index.html');
       assert.match(html, /<meta\s+property="og:title"\s+content="[^"]*Salsa Katowice[^"]*"/i, 'Brak tagu og:title z frazą Salsa Katowice');
+      assert.match(html, /<meta\s+property="og:image"\s+content="https:\/\/katosalsahub\.pl\/assets\/images\/hero\.png"/i, 'Tag og:image powinien wskazywać na fotografię hero.png (800x800) zamiast duplikatu faviconu logo.jpg');
+      assert.match(html, /data-i18n="faq\.q5"/i, 'Brak pytania FAQ #5 o kursy i szkoły salsy w Katowicach');
       assert.match(html, /itemtype="https:\/\/schema\.org\/DanceGroup"/i, 'Brak mikrodanych Schema.org/DanceGroup');
       assert.match(html, /"@type":\s*"GeoCoordinates"[\s\S]*?"latitude":\s*50\.2449289[\s\S]*?"longitude":\s*19\.046362/, 'Brak dokładnych współrzędnych GeoCoordinates dla Kamiennego Kręgu w Schema.org');
       assert.match(html, /"@type":\s*"SiteNavigationElement"/, 'Brak elementów SiteNavigationElement w Schema.org dla Sitelinks');
