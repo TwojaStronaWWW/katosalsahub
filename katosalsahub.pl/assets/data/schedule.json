@@ -75,7 +75,54 @@
       "sourceUpdatedAt": "2026-09-16",
       "multisport": true,
       "medicover": true,
-      "badgeClass": "school-badge--lc"
+      "badgeClass": "school-badge--lc",
+      "pricing": {
+        "unitMinutes": 45,
+        "unitNote": "45 min (pasmo 17:00 Happy Hour: 45 min + 15 min gratis)",
+        "validityLabel": "Bezterminowy (karnety 4x, 8x, 10x nie przepadają)",
+        "validityDays": null,
+        "isUnlimitedValidity": true,
+        "singleEntryPrice": 30,
+        "twoUnitsBlockPrice": 45,
+        "threeUnitsBlockPrice": 55,
+        "extraSecondUnitSurcharge": 15,
+        "extraThirdUnitSurcharge": 10,
+        "thirdUnitFreeWithTwoPunches": true,
+        "passes": [
+          {
+            "id": "lc_4",
+            "units": 4,
+            "name": "Karnet Start (4 wejścia)",
+            "price": 109,
+            "studentPrice": 109,
+            "validity": "Bezterminowy"
+          },
+          {
+            "id": "lc_8",
+            "units": 8,
+            "name": "Karnet Eko (8 wejść)",
+            "price": 189,
+            "studentPrice": 189,
+            "validity": "Bezterminowy"
+          },
+          {
+            "id": "lc_10",
+            "units": 10,
+            "name": "Karnet Pro (10 wejść)",
+            "price": 219,
+            "studentPrice": 219,
+            "validity": "Bezterminowy"
+          }
+        ],
+        "openPassPrice": 300,
+        "openPassStudentPrice": 300,
+        "openPassValidity": "4 tygodnie (28 dni)",
+        "studentDiscountLabel": "Stałe ceny bezterminowe + promocja blokowa (3. jednostka gratis przy 2 skreśleniach)",
+        "sportsCardsRules": "MultiSport Plus: odbicie co 45 min (0 zł za cały blok 2–3x45 min). Karty z 1 wejściem dziennie (MultiSport Classic/Light, FitProfit): 1. jednostka z karty (0 zł), 2. jednostka +15 zł, 3. jednostka +10 zł.",
+        "paymentMethods": "Gotówka lub BLIK w recepcji (formuła otwarta – bez wcześniejszych rezerwacji online)",
+        "pricingSourceUrl": "https://www.laclave.pl/?cennik",
+        "pricingUpdatedAt": "2026-10-20"
+      }
     },
     {
       "id": "GM",
@@ -92,7 +139,46 @@
       "sourceUpdatedAt": "2026-10-19",
       "multisport": true,
       "medicover": true,
-      "badgeClass": "school-badge--gm"
+      "badgeClass": "school-badge--gm",
+      "pricing": {
+        "unitMinutes": 60,
+        "unitNote": "55–60 min (pełna jednostka godzinowa)",
+        "validityLabel": "28 dni (4 tygodnie)",
+        "validityDays": 28,
+        "isUnlimitedValidity": false,
+        "singleEntryPrice": 35,
+        "twoUnitsBlockPrice": 55,
+        "threeUnitsBlockPrice": 80,
+        "extraSecondUnitSurcharge": 25,
+        "extraThirdUnitSurcharge": 25,
+        "thirdUnitFreeWithTwoPunches": false,
+        "passes": [
+          {
+            "id": "gm_4",
+            "units": 4,
+            "name": "Karnet 4h",
+            "price": 100,
+            "studentPrice": 90,
+            "validity": "28 dni"
+          },
+          {
+            "id": "gm_8",
+            "units": 8,
+            "name": "Karnet 8h",
+            "price": 170,
+            "studentPrice": 160,
+            "validity": "28 dni"
+          }
+        ],
+        "openPassPrice": 260,
+        "openPassStudentPrice": 260,
+        "openPassValidity": "28 dni (4 tygodnie)",
+        "studentDiscountLabel": "Dedykowane karnety studenckie: 4h za 90 zł (22,50 zł/h), 8h za 160 zł (20,00 zł/h)",
+        "sportsCardsRules": "MultiSport, Medicover Sport, FitProfit, PZU Sport, OK System. Przy karcie z 1 wejściem dziennie dopłata do kolejnej godziny wynosi 25 zł.",
+        "paymentMethods": "System rezerwacyjny Fitssey (online) lub w recepcji klubu",
+        "pricingSourceUrl": "https://goodmood.dance/",
+        "pricingUpdatedAt": "2026-10-20"
+      }
     },
     {
       "id": "MP",
@@ -109,7 +195,63 @@
       "sourceUpdatedAt": "2026-10-12",
       "multisport": true,
       "medicover": true,
-      "badgeClass": "school-badge--mp"
+      "badgeClass": "school-badge--mp",
+      "pricing": {
+        "unitMinutes": 55,
+        "unitNote": "55 min (pełna godzina w grafiku + 5 min przerwy technicznej)",
+        "validityLabel": "4 tygodnie (28 dni od aktywacji)",
+        "validityDays": 28,
+        "isUnlimitedValidity": false,
+        "singleEntryPrice": 35,
+        "twoUnitsBlockPrice": 55,
+        "threeUnitsBlockPrice": 90,
+        "dayPassPrice": 90,
+        "extraSecondUnitSurcharge": 20,
+        "extraThirdUnitSurcharge": 35,
+        "thirdUnitFreeWithTwoPunches": false,
+        "passes": [
+          {
+            "id": "mp_4",
+            "units": 4,
+            "name": "Karnet 4h",
+            "price": 119,
+            "studentPrice": 107,
+            "validity": "4 tygodnie"
+          },
+          {
+            "id": "mp_8",
+            "units": 8,
+            "name": "Karnet 8h",
+            "price": 199,
+            "studentPrice": 179,
+            "validity": "4 tygodnie"
+          },
+          {
+            "id": "mp_12",
+            "units": 12,
+            "name": "Karnet 12h",
+            "price": 249,
+            "studentPrice": 224,
+            "validity": "4 tygodnie"
+          },
+          {
+            "id": "mp_16",
+            "units": 16,
+            "name": "Karnet 16h",
+            "price": 299,
+            "studentPrice": 269,
+            "validity": "4 tygodnie"
+          }
+        ],
+        "openPassPrice": 399,
+        "openPassStudentPrice": 359,
+        "openPassValidity": "4 tygodnie (28 dni)",
+        "studentDiscountLabel": "-10% zniżki studenckiej na karnety (np. 8h ~179 zł, 16h ~269 zł)",
+        "sportsCardsRules": "MultiSport, Medicover Sport, FitProfit, FitSport, PZU Sport (wymagane odbicie karty za każdą godzinę zajęć).",
+        "paymentMethods": "Recepcja szkoły (ul. Kamienna 4) / zapisy online i Messenger",
+        "pricingSourceUrl": "https://www.milpasoskatowice.pl/?page=grafik",
+        "pricingUpdatedAt": "2026-10-20"
+      }
     },
     {
       "id": "EV",
@@ -2960,11 +3102,13 @@
         "url": "https://www.laclave.pl/files/1000/7.png",
         "sha256": "29bad8add32e6691",
         "lastModified": "Wed, 16 Sep 2026 09:52:44 GMT"
-      }
+      },
+      "pricingSha256": "2e6a0f80807b2d7d"
     },
     "mp": {
       "imageCount": 8,
-      "urlsFingerprint": "8d1307ea025226e3"
+      "urlsFingerprint": "8d1307ea025226e3",
+      "pricingSha256": "8d1307ea025226e3"
     }
   }
 }

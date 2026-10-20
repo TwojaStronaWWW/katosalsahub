@@ -131,6 +131,33 @@ const SCHOOLS = [
     multisport: true,
     medicover: true,
     badgeClass: 'school-badge--lc',
+    pricing: {
+      unitMinutes: 45,
+      unitNote: '45 min (pasmo 17:00 Happy Hour: 45 min + 15 min gratis)',
+      validityLabel: 'Bezterminowy (karnety 4x, 8x, 10x nie przepadają)',
+      validityDays: null,
+      isUnlimitedValidity: true,
+      singleEntryPrice: 30,
+      twoUnitsBlockPrice: 45,
+      threeUnitsBlockPrice: 55,
+      extraSecondUnitSurcharge: 15,
+      extraThirdUnitSurcharge: 10,
+      thirdUnitFreeWithTwoPunches: true,
+      passes: [
+        { id: 'lc_4', units: 4, name: 'Karnet Start (4 wejścia)', price: 109, studentPrice: 109, validity: 'Bezterminowy' },
+        { id: 'lc_8', units: 8, name: 'Karnet Eko (8 wejść)', price: 189, studentPrice: 189, validity: 'Bezterminowy' },
+        { id: 'lc_10', units: 10, name: 'Karnet Pro (10 wejść)', price: 219, studentPrice: 219, validity: 'Bezterminowy' },
+      ],
+      openPassPrice: 300,
+      openPassStudentPrice: 300,
+      openPassValidity: '4 tygodnie (28 dni)',
+      studentDiscountLabel: 'Stałe ceny bezterminowe + promocja blokowa (3. jednostka gratis przy 2 skreśleniach)',
+      sportsCardsRules:
+        'MultiSport Plus: odbicie co 45 min (0 zł za cały blok 2–3x45 min). Karty z 1 wejściem dziennie (MultiSport Classic/Light, FitProfit): 1. jednostka z karty (0 zł), 2. jednostka +15 zł, 3. jednostka +10 zł.',
+      paymentMethods: 'Gotówka lub BLIK w recepcji (formuła otwarta – bez wcześniejszych rezerwacji online)',
+      pricingSourceUrl: 'https://www.laclave.pl/?cennik',
+      pricingUpdatedAt: '2026-10-20',
+    },
   },
   {
     id: 'GM',
@@ -148,6 +175,32 @@ const SCHOOLS = [
     multisport: true,
     medicover: true,
     badgeClass: 'school-badge--gm',
+    pricing: {
+      unitMinutes: 60,
+      unitNote: '55–60 min (pełna jednostka godzinowa)',
+      validityLabel: '28 dni (4 tygodnie)',
+      validityDays: 28,
+      isUnlimitedValidity: false,
+      singleEntryPrice: 35,
+      twoUnitsBlockPrice: 55,
+      threeUnitsBlockPrice: 80,
+      extraSecondUnitSurcharge: 25,
+      extraThirdUnitSurcharge: 25,
+      thirdUnitFreeWithTwoPunches: false,
+      passes: [
+        { id: 'gm_4', units: 4, name: 'Karnet 4h', price: 100, studentPrice: 90, validity: '28 dni' },
+        { id: 'gm_8', units: 8, name: 'Karnet 8h', price: 170, studentPrice: 160, validity: '28 dni' },
+      ],
+      openPassPrice: 260,
+      openPassStudentPrice: 260,
+      openPassValidity: '28 dni (4 tygodnie)',
+      studentDiscountLabel: 'Dedykowane karnety studenckie: 4h za 90 zł (22,50 zł/h), 8h za 160 zł (20,00 zł/h)',
+      sportsCardsRules:
+        'MultiSport, Medicover Sport, FitProfit, PZU Sport, OK System. Przy karcie z 1 wejściem dziennie dopłata do kolejnej godziny wynosi 25 zł.',
+      paymentMethods: 'System rezerwacyjny Fitssey (online) lub w recepcji klubu',
+      pricingSourceUrl: 'https://goodmood.dance/',
+      pricingUpdatedAt: '2026-10-20',
+    },
   },
   {
     id: 'MP',
@@ -165,6 +218,35 @@ const SCHOOLS = [
     multisport: true,
     medicover: true,
     badgeClass: 'school-badge--mp',
+    pricing: {
+      unitMinutes: 55,
+      unitNote: '55 min (pełna godzina w grafiku + 5 min przerwy technicznej)',
+      validityLabel: '4 tygodnie (28 dni od aktywacji)',
+      validityDays: 28,
+      isUnlimitedValidity: false,
+      singleEntryPrice: 35,
+      twoUnitsBlockPrice: 55,
+      threeUnitsBlockPrice: 90,
+      dayPassPrice: 90,
+      extraSecondUnitSurcharge: 20,
+      extraThirdUnitSurcharge: 35,
+      thirdUnitFreeWithTwoPunches: false,
+      passes: [
+        { id: 'mp_4', units: 4, name: 'Karnet 4h', price: 119, studentPrice: 107, validity: '4 tygodnie' },
+        { id: 'mp_8', units: 8, name: 'Karnet 8h', price: 199, studentPrice: 179, validity: '4 tygodnie' },
+        { id: 'mp_12', units: 12, name: 'Karnet 12h', price: 249, studentPrice: 224, validity: '4 tygodnie' },
+        { id: 'mp_16', units: 16, name: 'Karnet 16h', price: 299, studentPrice: 269, validity: '4 tygodnie' },
+      ],
+      openPassPrice: 399,
+      openPassStudentPrice: 359,
+      openPassValidity: '4 tygodnie (28 dni)',
+      studentDiscountLabel: '-10% zniżki studenckiej na karnety (np. 8h ~179 zł, 16h ~269 zł)',
+      sportsCardsRules:
+        'MultiSport, Medicover Sport, FitProfit, FitSport, PZU Sport (wymagane odbicie karty za każdą godzinę zajęć).',
+      paymentMethods: 'Recepcja szkoły (ul. Kamienna 4) / zapisy online i Messenger',
+      pricingSourceUrl: 'https://www.milpasoskatowice.pl/?page=grafik',
+      pricingUpdatedAt: '2026-10-20',
+    },
   },
   {
     id: 'EV',
@@ -2673,8 +2755,42 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 12000) {
 }
 
 /**
+ * Czysty parser HTML wyciągający stawki karnetów z tabeli <table id="cennik"> na stronie La Clave (?cennik).
+ * Posiada wbudowany Sanity Guard: odrzuca odczyt, jeśli którakolwiek kwota nie mieści się w bezpiecznych widełkach [15..1000 zł].
+ */
+function parseLaClavePricingHtml(html = '') {
+  const src = String(html || '');
+  if (!src.includes('id="cennik"') && !/Start/i.test(src)) return null;
+
+  const extractPriceAfter = (labelRegex) => {
+    const match = src.match(new RegExp(`${labelRegex.source}[\\s\\S]{0,180}?(\\d{2,3})\\s*z[łl]`, 'i'));
+    if (!match) return null;
+    const val = Number(match[1]);
+    return Number.isFinite(val) && val >= 15 && val <= 1000 ? val : null;
+  };
+
+  const pass4 = extractPriceAfter(/<th>\s*Start\s*<\/th>/);
+  const pass8 = extractPriceAfter(/<th>\s*Eko\s*<\/th>/);
+  const pass10 = extractPriceAfter(/<th>\s*Pro\s*<\/th>/);
+  const singleEntry = extractPriceAfter(/<th>\s*Jednorazowe\s*<\/th>/);
+  const openPass = extractPriceAfter(/<th>\s*karnet\s+OPEN\s*<\/th>/);
+
+  if (!pass4 || !pass8 || !pass10 || !singleEntry || !openPass) {
+    return null;
+  }
+
+  return {
+    singleEntryPrice: singleEntry,
+    pass4Price: pass4,
+    pass8Price: pass8,
+    pass10Price: pass10,
+    openPassPrice: openPass,
+  };
+}
+
+/**
  * Walidator ciągłości danych (Circuit Breaker / Sanity Guard) — blokuje nadpisanie schedule.json,
- * gdyby wskutek awarii sieci lub błędu OCR ubyło kursów poniżej bezpiecznego progu.
+ * gdyby wskutek awarii sieci lub błędu OCR ubyło kursów poniżej bezpiecznego progu lub uszkodziły się cenniki szkół.
  */
 function validateScheduleSanity(payload) {
   if (!payload || !Array.isArray(payload.classes) || payload.classes.length < 100) {
@@ -2693,6 +2809,34 @@ function validateScheduleSanity(payload) {
       `Circuit Breaker: Anomalia liczby kursów w szkole (LC=${counts.LC}, GM=${counts.GM}, MP=${counts.MP}) — odrzucono aktualizację.`
     );
   }
+
+  // Walidacja spójności cenników (Circuit Breaker dla cenników 3 głównych szkół: LC, GM, MP)
+  if (Array.isArray(payload.schools)) {
+    for (const reqId of ['LC', 'GM', 'MP']) {
+      const sch = payload.schools.find((s) => s.id === reqId);
+      if (!sch || !sch.pricing) {
+        throw new Error(`Circuit Breaker: Brak obiektu pricing dla szkoły ${reqId}`);
+      }
+      const p = sch.pricing;
+      if (
+        typeof p.unitMinutes !== 'number' ||
+        p.unitMinutes < 30 ||
+        p.unitMinutes > 90 ||
+        typeof p.singleEntryPrice !== 'number' ||
+        p.singleEntryPrice < 15 ||
+        p.singleEntryPrice > 150 ||
+        typeof p.openPassPrice !== 'number' ||
+        p.openPassPrice < 150 ||
+        p.openPassPrice > 1000 ||
+        !Array.isArray(p.passes) ||
+        p.passes.length < 2 ||
+        p.passes.some((pass) => typeof pass.price !== 'number' || pass.price < 50 || pass.price > 1000)
+      ) {
+        throw new Error(`Circuit Breaker: Uszkodzone stawki cennika w szkole ${reqId}`);
+      }
+    }
+  }
+
   return true;
 }
 
@@ -2927,17 +3071,52 @@ async function checkRemoteFreshness() {
         }
       }
     }
-    if (Object.keys(freshLcMeta).length > 0) lcMeta = freshLcMeta;
+    if (Object.keys(freshLcMeta).length > 0) lcMeta = { ...lcMeta, ...freshLcMeta };
     console.log(
-      `   ✅ La Clave: zweryfikowano ${Object.keys(lcMeta).length}/${lcBoards.length} plansz PNG (0 zmian SHA-256 -> 0 zużytych tokenów AI).`
+      `   ✅ La Clave: zweryfikowano ${Object.keys(freshLcMeta).length}/${lcBoards.length} plansz PNG (0 zmian SHA-256 -> 0 zużytych tokenów AI).`
     );
+
+    // Izolowana weryfikacja żywego cennika La Clave (?cennik) z Sanity Guardem
+    try {
+      const lcPriceRes = await fetchWithTimeout('https://www.laclave.pl/?cennik', { headers: { 'User-Agent': ua } });
+      if (lcPriceRes.ok) {
+        const lcPriceHtml = await lcPriceRes.text();
+        const parsedLcPrices = parseLaClavePricingHtml(lcPriceHtml);
+        if (parsedLcPrices) {
+          const priceSig = JSON.stringify(parsedLcPrices);
+          const priceHash = crypto.createHash('sha256').update(priceSig).digest('hex').slice(0, 16);
+          const prevPriceHash = existingMeta?.lc?.pricingSha256;
+          const lcSchool = SCHOOLS.find((s) => s.id === 'LC');
+          if (lcSchool && lcSchool.pricing) {
+            lcSchool.pricing.singleEntryPrice = parsedLcPrices.singleEntryPrice;
+            lcSchool.pricing.openPassPrice = parsedLcPrices.openPassPrice;
+            lcSchool.pricing.openPassStudentPrice = parsedLcPrices.openPassPrice;
+            const p4 = lcSchool.pricing.passes.find((p) => p.units === 4);
+            const p8 = lcSchool.pricing.passes.find((p) => p.units === 8);
+            const p10 = lcSchool.pricing.passes.find((p) => p.units === 10);
+            if (p4) { p4.price = parsedLcPrices.pass4Price; p4.studentPrice = parsedLcPrices.pass4Price; }
+            if (p8) { p8.price = parsedLcPrices.pass8Price; p8.studentPrice = parsedLcPrices.pass8Price; }
+            if (p10) { p10.price = parsedLcPrices.pass10Price; p10.studentPrice = parsedLcPrices.pass10Price; }
+            if (prevPriceHash && prevPriceHash !== priceHash) {
+              lcSchool.pricing.pricingUpdatedAt = new Date().toISOString().slice(0, 10);
+            }
+          }
+          lcMeta.pricingSha256 = priceHash;
+          console.log(`   💰 La Clave Live Cennik (?cennik): zweryfikowano stawki (Start=${parsedLcPrices.pass4Price} zł, Eko=${parsedLcPrices.pass8Price} zł, Pro=${parsedLcPrices.pass10Price} zł, sha256=${priceHash}).`);
+        } else {
+          console.warn('   ⚠️ [Fallback Cennik] Tabela na ?cennik La Clave nie przeszła walidacji Sanity Guard — zachowano ostatni zweryfikowany cennik.');
+        }
+      }
+    } catch (priceErr) {
+      console.warn(`   ⚠️ [Fallback Cennik] Nie udało się odczytać ?cennik La Clave (${priceErr.message}) — zachowano ostatni zweryfikowany cennik.`);
+    }
   } catch (err) {
     console.warn(`   ⚠️ [Fallback] Serwer La Clave nie odpowiedział (${err.message}) — zachowano ostatni zweryfikowany stan.`);
   }
 
   let mpMeta = existingMeta.mp || {};
   try {
-    console.log('🔍 [3/3] Sprawdzanie plansz grafików Mil Pasos (?page=grafik)...');
+    console.log('🔍 [3/3] Sprawdzanie plansz grafików i cennika Mil Pasos (?page=grafik)...');
     const mpRes = await fetchWithTimeout('https://www.milpasoskatowice.pl/?page=grafik', { headers: { 'User-Agent': ua } });
     const mpHtml = await mpRes.text();
     const mpImgUrls = [...mpHtml.matchAll(/<img[^>]+src=["']([^"']+fbcdn\.net[^"']+)["']/gi)].map((m) =>
@@ -2969,7 +3148,7 @@ async function checkRemoteFreshness() {
           }
         }
       }
-      mpMeta = { imageCount: mpImgUrls.length, urlsFingerprint: mpHash };
+      mpMeta = { imageCount: mpImgUrls.length, urlsFingerprint: mpHash, pricingSha256: mpHash };
       console.log(`   ✅ Mil Pasos (?page=grafik): HTTP ${mpRes.status}, wykryto ${mpImgUrls.length} plansz CDN (fingerprint=${mpHash}).`);
     } else {
       console.warn('   ⚠️ [Fallback] Strona Mil Pasos nie zwróciła plansz — zachowano ostatni zweryfikowany stan.');
@@ -2997,9 +3176,15 @@ function buildSchedulePayload(sourcesMeta = null) {
 
       const prevClassesJson = JSON.stringify(prev.classes || []);
       const nextClassesJson = JSON.stringify(CLASSES);
+      const prevSchoolsJson = JSON.stringify(prev.schools || []);
+      const nextSchoolsJson = JSON.stringify(SCHOOLS);
       const prevMetaJson = JSON.stringify(prev.sourcesMeta || {});
       const nextMetaJson = JSON.stringify(effectiveMeta || {});
-      if (prevClassesJson !== nextClassesJson || (sourcesMeta && prevMetaJson !== nextMetaJson)) {
+      if (
+        prevClassesJson !== nextClassesJson ||
+        prevSchoolsJson !== nextSchoolsJson ||
+        (sourcesMeta && prevMetaJson !== nextMetaJson)
+      ) {
         updatedAt = new Date().toISOString().slice(0, 10);
       }
     } catch {
@@ -3058,6 +3243,7 @@ module.exports = {
   parseCsvGrid,
   parseGoodMoodSheetCells,
   mergeGoodMoodAdjacentBlocks,
+  parseLaClavePricingHtml,
   validateScheduleSanity,
   buildSchedulePayload,
 };

@@ -190,7 +190,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
   });
 
   describe('Wspólny Grafik Szkół & Wydarzenia DancePuls (katosalsahub.pl/grafik.html)', () => {
-    it('plik grafik.html powinien posiadać czysty widok SPA na wzór Salsopedii (bez sekcji strony głównej pod spodem), 3 zakładki trybów, filtry szkół (La Clave, Good Mood, Mil Pasos) oraz integrację z mapą i AI', () => {
+    it('plik grafik.html powinien posiadać czysty widok SPA na wzór Salsopedii (bez sekcji strony głównej pod spodem), 4 zakładki trybów (w tym Cenniki Szkół i Kalkulator), filtry szkół (La Clave, Good Mood, Mil Pasos), brak pigułek Multisport na kafelkach zajęć oraz integrację z mapą i AI', () => {
       assert.ok(fs.existsSync(GRAFIK_HTML), 'Brak pliku katosalsahub.pl/grafik.html');
       const html = fs.readFileSync(GRAFIK_HTML, 'utf-8');
       assert.match(html, /<!DOCTYPE html>/i);
@@ -200,8 +200,12 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="scheduleSearchInput"/);
       assert.match(html, /class="schedule-mode-tabs"/);
       assert.match(html, /data-tab="classes"/);
+      assert.match(html, /data-tab="pricing"/);
       assert.match(html, /data-tab="events"/);
       assert.match(html, /data-tab="map"/);
+      assert.match(html, /id="schedulePricingView"/);
+      assert.match(html, /id="pricingCalculatorResults"/);
+      assert.doesNotMatch(html, /class="multisport-pill"/, 'Kafelki zajęć nie powinny zawierać pigułki Multisport');
       assert.match(html, /La Clave/i);
       assert.match(html, /Good Mood/i);
       assert.match(html, /Mil Pasos/i);

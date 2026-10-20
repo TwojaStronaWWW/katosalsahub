@@ -244,7 +244,7 @@ const KSH_CORE_CONTEXT = [
   '- Kim jesteśmy (WAŻNE — TYLKO SALSA): Jesteśmy niezależną społecznością i Fundacją Kato Salsa Hub (https://katosalsahub.pl/) łączącą miłośników Salsy (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino, Sonu Kubańskiego, Rumby oraz Salsy Liniowej) w Katowicach i na całym Śląsku ponad podziałami szkolnymi. Nasza społeczność i fundacja skupia się wyłącznie na Salsie i kulturze kubańskiej (nie zajmujemy się bachatą ani kizombą).',
   '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy Salsę w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
   '- PLENERY TANECZNE W KATOWICACH (WIOSNA–LATO I CIEPŁE DNI): 1) Kamienny Krąg w Dolinie Trzech Stawów (ul. Trzech Stawów 22, obok przystani i La Cantina) — w razie deszczu tańczymy pod zadaszoną wiatą przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10); na mapie zaznaczyliśmy 3 toalety (w tym przy AMO Pizza) oraz 13-minutową trasę pieszą z darmowego Parkingu Rekomendowanego (Południe / Rolkostrada). 2) Amfiteatr pod NOSPR-em w Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony NOSPR przy fontannach) z darmowym w weekendy parkingiem od ul. Olimpijskiej.',
-  '- WSPÓLNY GRAFIK SZKÓŁ TAŃCA W KATOWICACH (https://katosalsahub.pl/grafik.html): Tworzymy i prowadzimy ujednolicony, wspólny grafik katowickich szkół tańca (130 kursów tygodniowo: La Clave, Good Mood, Mil Pasos, Evolution) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH (P0 Od zera, P1 Podstawowy, P2 Podstawowy+, S1 Średniozaawansowany/Zaawansowany, OPEN), połączony z kalendarzem wydarzeń i mapą szkół.',
+  '- WSPÓLNY GRAFIK I PORÓWNYWARKA CENNIKÓW SZKÓŁ TAŃCA W KATOWICACH (https://katosalsahub.pl/grafik.html): Tworzymy i prowadzimy ujednolicony, wspólny grafik katowickich szkół tańca (130 kursów tygodniowo: La Clave, Good Mood, Mil Pasos, Evolution) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH (P0 Od zera, P1 Podstawowy, P2 Podstawowy+, S1 Średniozaawansowany/Zaawansowany, OPEN), kalkulatorem opłacalności cenników (La Clave: 45 min, karnety BEZTERMINOWE 4x 109 zł / 8x 189 zł / 10x 219 zł / Open 300 zł, dopłaty w blokach +15 zł i +10 zł lub 3. jednostka gratis przy 2 skreśleniach; Good Mood: 60 min, ważność 28 dni, 4h 100 zł [student 90 zł] / 8h 170 zł [student 160 zł] / Open 260 zł; Mil Pasos: 55 min, ważność 4 tyg., 4h 119 zł / 8h 199 zł / 12h 249 zł / 16h 299 zł / Open 399 zł, -10% dla studentów), kalendarzem wydarzeń i mapą szkół.',
   '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Tworzymy otwartą, społecznościową encyklopedię ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem Salsopedia Studio.',
   '- RADIO TIMBA NATION 24/7 (ODTWARZACZ NA STRONIE): Timba Nation Radio to niezależna internetowa stacja radiowa z Zurychu (Szwajcaria), założona i prowadzona przez DJ Maikiu na platformie Zeno.FM (https://zeno.fm/radio/timba-nation-radio/). To NIE jest radio tworzone ani finansowane przez Kato Salsa Hub — nasza społeczność udostępnia na stronie głównej dedykowany odtwarzacz tego strumienia (z podglądem granego utworu na żywo, obsługą ekranu blokady telefonu MediaSession oraz wyłącznikiem czasowym Sleep Timer: 15, 30, 60 min). Stacja gra 24/7 współczesną kubańską Timbę i Salsę Cubana (w tym autorskie sety DJ Maikiu - Cuban Salsa Mix) bez komercyjnych bloków reklamowych, ponieważ jest autorskim, pasjonackim projektem muzycznym DJ Maikiu promującym kubańską muzykę.',
   '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Tworzymy cotygodniowy radar i agregator imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
@@ -427,6 +427,27 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       );
     }
 
+    // 1c-bis. Pytania o cenniki, karnety i opłacalność szkół tańca w Katowicach (La Clave, Good Mood, Mil Pasos)
+    if (
+      !qNorm.includes('od podstaw') &&
+      !qNorm.includes('p0') &&
+      (qNorm.includes('cennik') ||
+        qNorm.includes('karnet') ||
+        qNorm.includes('ile kosztuj') ||
+        qNorm.includes('cena') ||
+        qNorm.includes('ceny') ||
+        qNorm.includes('oplaca'))
+    ) {
+      return (
+        `💰 **Porównanie cenników 3 szkół tańca w Katowicach (kalkulator na grafik.html):**\n` +
+        `- **🔴 La Clave (ul. Chorzowska 11):** jednostka **45 min**, karnety ilościowe są **BEZTERMINOWE** (Start 4x: **109 zł**, Eko 8x: **189 zł**, Pro 10x: **219 zł**, Open 4 tyg.: **300 zł**, jednorazowe: **30 zł**). W blokach 2–3x45 min: dopłata do 2. jednostki **+15 zł**, do 3. **+10 zł** (lub przy 2 skreśleniach z karnetu 3. jednostka **gratis**!).\n` +
+        `- **🟡 Good Mood (ul. Paderewskiego 35 / Gliwicka 44):** jednostka **55–60 min**, ważność **28 dni** (4h: **100 zł** [student **90 zł**], 8h: **170 zł** [student **160 zł**], najtańszy **Open: 260 zł**, jednorazowe 1h: **35 zł**, 2h: **55 zł**).\n` +
+        `- **🔵 Mil Pasos (ul. Kamienna 4):** jednostka **55 min**, ważność **4 tygodnie**, **-10% dla studentów** (4h: **119 zł**, 8h: **199 zł**, 12h: **249 zł**, 16h: **299 zł** [~18,69 zł/jedn.], Open: **399 zł**, Day Pass: **90 zł**).\n` +
+        `- **💳 Karty sportowe:** Wszystkie 3 szkoły honorują karty **Multisport**, **Medicover Sport**, **FitProfit** oraz **PZU Sport**.\n` +
+        `Pełny interaktywny kalkulator przeliczający koszt **60 minut tańca** znajdziesz w zakładce **Cenniki Szkół** na stronie grafik.html!`
+      );
+    }
+
     // 1d. Pytania o Wspólny Grafik Szkół, DancePuls, imprezy, sociale, warsztaty i kalendarz wydarzeń
     if (
       qNorm.includes('grafik') ||
@@ -494,7 +515,7 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       return (
         `💃 **Jak zacząć tańczyć w Katowicach (Kursy P0 i informacje praktyczne):**\n` +
         `- **Poziom P0 (od zupełnych podstaw):** Nie potrzebujesz pary ani doświadczenia — na zajęciach i na naszych niedzielnych praktykach w **Wolnych Ludziach (ul. Mariacka 2, 15:00–18:00)** rotujemy w parach w luźnej, wspierającej atmosferze.\n` +
-        `- **Karty sportowe i karnety:** Większość katowickich szkół partnerskich honoruje karty **Multisport**, **Medicover Sport** i **FitProfit** (pojedyncze wejście to zwykle ok. **40 PLN**, karnet 4 wejść ok. **130 PLN**).\n` +
+        `- **Karty sportowe i karnety:** Katowickie szkoły (La Clave, Good Mood, Mil Pasos) honorują karty **Multisport**, **Medicover Sport**, **FitProfit** oraz **PZU Sport** (pojedyncze wejście to **30–35 PLN**, karnet 4 wejść **90–119 PLN**, w La Clave karnety ilościowe są **bezterminowe**, a pełny kalkulator cen znajdziesz w zakładce **Cenniki Szkół** na grafik.html).\n` +
         `- **Jak się ubrać:** Wygodny strój i zmienne obuwie na gładkiej, czystej podeszwie (np. sneakersy).`
       );
     }

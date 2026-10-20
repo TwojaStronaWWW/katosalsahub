@@ -268,8 +268,14 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         assert.ok(Array.isArray(cls.instructors) && cls.instructors.length > 0, `Zajęcia ${cls.id} muszą mieć przypisanego instruktora`);
       }
 
-      // Weryfikacja funkcji normalizeLevel oraz żywego parsera CSV Good Mood z scripts/sync-schedules.js
-      const { normalizeLevel, parseCsvGrid, parseGoodMoodSheetCells, validateScheduleSanity } = require('../../scripts/sync-schedules.js');
+      // Weryfikacja funkcji normalizeLevel, parsera CSV Good Mood, parsera cennika La Clave oraz Circuit Breakera
+      const {
+        normalizeLevel,
+        parseCsvGrid,
+        parseGoodMoodSheetCells,
+        parseLaClavePricingHtml,
+        validateScheduleSanity,
+      } = require('../../scripts/sync-schedules.js');
       assert.strictEqual(normalizeLevel('GR. OD PODSTAW START: 26.10.2026'), 'P0');
       assert.strictEqual(normalizeLevel('BACHATA OD ZERA'), 'P0');
       assert.strictEqual(normalizeLevel('P0 - CZ.1'), 'P0');
@@ -291,12 +297,40 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(gmBlocks[0].startDate, '26.10.2026');
       assert.strictEqual(gmBlocks[0].levelCode, 'P0');
 
+      const sampleLcPricingHtml = `
+        <table id="cennik">
+          <tr><th>Start</th><td>4</td><td>109zł</td><td>bezterminowy*</td></tr>
+          <tr><th>Eko</th><td>8</td><td>189zł</td><td>bezterminowy*</td></tr>
+          <tr><th>Pro</th><td>10</td><td>219zł</td><td>bezterminowy*</td></tr>
+        </table>
+        <table id="cennik">
+          <tr><th>Jednorazowe</th><td>1</td><td>30zł</td></tr>
+          <tr><th>karnet OPEN</th><td>full</td><td>300zł</td></tr>
+        </table>
+      `;
+      const parsedPrices = parseLaClavePricingHtml(sampleLcPricingHtml);
+      assert.ok(parsedPrices, 'parseLaClavePricingHtml powinien poprawnie sparsować tabelę cennika La Clave');
+      assert.strictEqual(parsedPrices.pass4Price, 109);
+      assert.strictEqual(parsedPrices.pass8Price, 189);
+      assert.strictEqual(parsedPrices.pass10Price, 219);
+      assert.strictEqual(parsedPrices.singleEntryPrice, 30);
+      assert.strictEqual(parsedPrices.openPassPrice, 300);
+      assert.strictEqual(parseLaClavePricingHtml('<html>Błąd 500</html>'), null);
+
       assert.strictEqual(validateScheduleSanity(sched), true);
       assert.throws(() => validateScheduleSanity({ classes: [] }), /Circuit Breaker/i);
+      assert.throws(
+        () => validateScheduleSanity({ ...sched, schools: [{ id: 'LC', pricing: { unitMinutes: 45, singleEntryPrice: 0, openPassPrice: 300, passes: [] } }] }),
+        /Circuit Breaker/i
+      );
     });
 
-    it('funkcje filterScheduleClasses oraz filterDancepulsEvents w schedule.js powinny poprawnie filtrować kursy i imprezy', () => {
-      const { filterScheduleClasses, filterDancepulsEvents } = require('../../katosalsahub.pl/assets/js/schedule.js');
+    it('funkcje filterScheduleClasses, filterDancepulsEvents oraz calculateSchoolPricingComparison w schedule.js powinny poprawnie filtrować kursy, imprezy i wyliczać opłacalność cenników', () => {
+      const {
+        filterScheduleClasses,
+        filterDancepulsEvents,
+        calculateSchoolPricingComparison,
+      } = require('../../katosalsahub.pl/assets/js/schedule.js');
       const sched = JSON.parse(fs.readFileSync(SCHEDULE_JSON, 'utf-8'));
       const evDays = JSON.parse(fs.readFileSync(KSH_EVENTS_JSON, 'utf-8'));
 
@@ -314,6 +348,24 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       for (const day of katoEvents) {
         assert.ok(day.events.every((e) => e.miasto.toLowerCase() === 'katowice'));
       }
+
+      // Weryfikacja kalkulatora opłacalności cenników (Unit Economics)
+      const std8 = calculateSchoolPricingComparison(sched.schools, { units: 8, profile: 'standard' });
+      assert.strictEqual(std8.length, 3, 'Kalkulator powinien zwrócić porównanie dla 3 szkół (LC, GM, MP)');
+      const gm8 = std8.find((r) => r.schoolId === 'GM');
+      const lc8 = std8.find((r) => r.schoolId === 'LC');
+      const mp8 = std8.find((r) => r.schoolId === 'MP');
+      assert.strictEqual(gm8.monthlyCost, 170);
+      assert.strictEqual(gm8.costPer60Min, 21.25);
+      assert.strictEqual(gm8.isBestValue60Min, true);
+      assert.strictEqual(lc8.monthlyCost, 189);
+      assert.strictEqual(lc8.isUnlimitedValidity, true);
+      assert.strictEqual(mp8.monthlyCost, 199);
+
+      const singleCard8 = calculateSchoolPricingComparison(sched.schools, { units: 8, profile: 'card_single' });
+      const lcCard = singleCard8.find((r) => r.schoolId === 'LC');
+      assert.strictEqual(lcCard.monthlyCost, 60, 'W La Clave przy 4 blokach 2x45 min i karcie 1x/dzień dopłata powinna wynosić 4 * 15 zł = 60 zł');
+      assert.strictEqual(lcCard.isBestValue60Min, true);
     });
   });
 });

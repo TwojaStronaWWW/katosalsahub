@@ -24,13 +24,15 @@ const WEEKDAY_FROM_JS_DAY = {
 };
 
 const scheduleState = {
-  activeTab: 'classes', // 'classes' | 'events' | 'map'
+  activeTab: 'classes', // 'classes' | 'pricing' | 'events' | 'map'
   searchQuery: '',
   dayFilter: 'all', // 'all' | 'today' | '1'..'7'
   schoolFilter: 'all', // 'all' | 'LC' | 'GM' | 'MP' | 'EV'
   styleFilter: 'all', // 'all' | 'salsa_cubana' | 'rueda' | 'salsa_liniowa' | 'bachata' | 'kizomba' | 'solo'
   levelFilter: 'all', // 'all' | 'P0' | 'P1' | 'S1' | 'OPEN'
   eventCityFilter: 'all', // 'all' | 'Katowice' | 'Slask' | 'Krakow'
+  pricingUnits: 8, // 4 | 8 | 12 | 16
+  pricingProfile: 'standard', // 'standard' | 'student' | 'card_single' | 'card_multi'
   schools: [],
   classes: [],
   eventsDays: [],
@@ -232,10 +234,6 @@ function buildClassCardHtml(item, schoolsMap) {
     })
     .join('');
 
-  const multisportHtml = item.multisport
-    ? '<span class="multisport-pill" title="Zajęcia honorują karty sportowe Multisport / Medicover / FitProfit"><i class="fas fa-id-card"></i> Multisport</span>'
-    : '<span class="multisport-pill">🎉 Wstęp wolny / Społeczność</span>';
-
   return `
     <article class="schedule-card schedule-card--${escapeHtml(schoolLower)}" data-class-id="${escapeHtml(item.id)}" data-school-id="${escapeHtml(item.schoolId)}">
       <div>
@@ -255,7 +253,6 @@ function buildClassCardHtml(item, schoolsMap) {
       <div class="schedule-card-meta">
         <div class="schedule-meta-row">
           <div class="schedule-instructors">${instructorsHtml}</div>
-          ${multisportHtml}
         </div>
         <div class="schedule-card-actions">
           <button type="button" class="schedule-action-btn js-focus-school-map" data-school-id="${escapeHtml(item.schoolId)}">
@@ -268,6 +265,163 @@ function buildClassCardHtml(item, schoolsMap) {
       </div>
     </article>
   `;
+}
+
+/**
+ * Czysta funkcja kalkulatora opłacalności cenników (Unit Economics: koszt pakietu, koszt 1 jednostki, realny koszt 60 min).
+ * Testowalna w node:test bez zależności od DOM.
+ */
+function calculateSchoolPricingComparison(schools = [], options = {}) {
+  const units = Number(options.units || 8);
+  const profile = String(options.profile || 'standard');
+  const results = [];
+
+  for (const school of schools) {
+    if (!school || !school.pricing) continue;
+    const p = school.pricing;
+    const unitMin = Number(p.unitMinutes || 60);
+    const passes = Array.isArray(p.passes) ? p.passes : [];
+
+    let monthlyCost = 0;
+    let planName = '';
+    let planNote = '';
+
+    if (profile === 'card_multi') {
+      monthlyCost = 0;
+      planName = 'Karta wielowejściowa (0 zł dopłat)';
+      planNote =
+        school.id === 'LC'
+          ? 'Odbicie karty co 45 min pokrywa pełne bloki 2–3x45 min za 0 zł.'
+          : 'Odbicie karty na każdą godzinę zajęć pokrywa wejście bez dopłat.';
+    } else if (profile === 'card_single') {
+      const blocksOfTwo = Math.max(1, Math.floor(units / 2));
+      const surcharge = Number(p.extraSecondUnitSurcharge || 20);
+      monthlyCost = blocksOfTwo * surcharge;
+      planName = `Karta 1x/dzień + dopłaty (${blocksOfTwo}x ${surcharge} zł)`;
+      planNote =
+        school.id === 'LC'
+          ? `1. jednostka z karty (0 zł), 2. jednostka +${surcharge} zł (3. jednostka +${p.extraThirdUnitSurcharge || 10} zł).`
+          : `1. godzina z karty (0 zł), dopłata do 2. godziny w bloku: +${surcharge} zł.`;
+    } else {
+      const isStudent = profile === 'student';
+      const openPrice = Number(isStudent && p.openPassStudentPrice ? p.openPassStudentPrice : p.openPassPrice || 300);
+
+      // Szukaj dokładnego karnetu na zadaną liczbę jednostek
+      const exactPass = passes.find((ps) => Number(ps.units) === units);
+      if (exactPass) {
+        const passPrice = Number(isStudent && exactPass.studentPrice ? exactPass.studentPrice : exactPass.price);
+        if (passPrice <= openPrice) {
+          monthlyCost = passPrice;
+          planName = isStudent && exactPass.studentPrice < exactPass.price ? `${exactPass.name} (Student)` : exactPass.name;
+          planNote = p.isUnlimitedValidity ? 'Karnet bezterminowy — niewykorzystane wejścia nie przepadają.' : `Ważność: ${p.validityLabel}`;
+        } else {
+          monthlyCost = openPrice;
+          planName = isStudent && openPrice < p.openPassPrice ? 'Karnet OPEN (Student)' : 'Karnet OPEN (Bez limitu)';
+          planNote = `Ważność: ${p.openPassValidity || p.validityLabel}`;
+        }
+      } else if (school.id === 'LC' && units === 12) {
+        const pass10 = passes.find((ps) => Number(ps.units) === 10);
+        const pass8 = passes.find((ps) => Number(ps.units) === 8);
+        const p10Cost = pass10 ? Number(pass10.price) + 2 * Number(p.extraSecondUnitSurcharge || 15) : openPrice;
+        if (p10Cost < openPrice) {
+          monthlyCost = p10Cost;
+          planName = 'Karnet Pro (10x) + 2x dopłata 15 zł';
+          planNote = pass8
+            ? `W blokach 3x45 min (promocja 3. gratis): wystarczy Karnet Eko 8x za ${pass8.price} zł!`
+            : 'Bezterminowy karnet Pro + dopłaty blokowe.';
+        } else {
+          monthlyCost = openPrice;
+          planName = 'Karnet OPEN (Full)';
+          planNote = `Ważność: ${p.openPassValidity || '4 tygodnie'}`;
+        }
+      } else {
+        monthlyCost = openPrice;
+        planName = isStudent && openPrice < p.openPassPrice ? 'Karnet OPEN (Student)' : 'Karnet OPEN (Bez limitu)';
+        planNote = `Najbardziej opłacalny przy ${units}+ wejściach w miesiącu (${p.openPassValidity || '28 dni'}).`;
+      }
+    }
+
+    const costPerUnit = Number((monthlyCost / units).toFixed(2));
+    const costPer60Min = Number(((costPerUnit / unitMin) * 60).toFixed(2));
+
+    results.push({
+      schoolId: school.id,
+      schoolName: school.name,
+      badgeClass: school.badgeClass || `school-badge--${school.id.toLowerCase()}`,
+      unitMinutes: unitMin,
+      isUnlimitedValidity: Boolean(p.isUnlimitedValidity),
+      validityLabel: p.validityLabel || '28 dni',
+      units,
+      profile,
+      planName,
+      planNote,
+      monthlyCost,
+      costPerUnit,
+      costPer60Min,
+      isBestValue60Min: false,
+    });
+  }
+
+  if (results.length > 0) {
+    const min60 = Math.min(...results.map((r) => r.costPer60Min));
+    results.forEach((r) => {
+      if (Math.abs(r.costPer60Min - min60) < 0.05) {
+        r.isBestValue60Min = true;
+      }
+    });
+  }
+
+  return results;
+}
+
+function formatPln(val) {
+  const num = Number(val || 0);
+  if (Number.isInteger(num)) return `${num} zł`;
+  return `${num.toFixed(2).replace('.', ',')} zł`;
+}
+
+function renderSchedulePricingView(doc = document) {
+  const calcContainer = doc.getElementById('pricingCalculatorResults');
+  if (!calcContainer) return;
+
+  const schoolsWithPricing = scheduleState.schools.filter((s) => s && s.pricing);
+  if (schoolsWithPricing.length === 0) return;
+
+  const comparison = calculateSchoolPricingComparison(schoolsWithPricing, {
+    units: scheduleState.pricingUnits,
+    profile: scheduleState.pricingProfile,
+  });
+
+  calcContainer.innerHTML = comparison
+    .map((item) => {
+      const schoolLower = item.schoolId.toLowerCase();
+      const topBadges = [];
+      if (item.isBestValue60Min) {
+        topBadges.push('<span class="pricing-best-badge">⭐ Najniższy koszt 60 min</span>');
+      }
+      if (item.isUnlimitedValidity) {
+        topBadges.push('<span class="pricing-unlimited-badge">♾️ Bezterminowy</span>');
+      }
+
+      return `
+        <article class="pricing-result-card pricing-result-card--${escapeHtml(schoolLower)}${item.isBestValue60Min ? ' is-best-choice' : ''}">
+          <div>
+            <div class="pricing-result-top">
+              <span class="school-badge ${escapeHtml(item.badgeClass)}">${escapeHtml(item.schoolName)}</span>
+              <div class="pricing-badges-wrap">${topBadges.join('')}</div>
+            </div>
+            <h3>${escapeHtml(item.planName)}</h3>
+            <div class="pricing-price-main">${escapeHtml(formatPln(item.monthlyCost))} <small>/ ${item.units} jedn.</small></div>
+            <ul class="pricing-metrics-list">
+              <li><span>Koszt 1 jednostki (${item.unitMinutes} min):</span> <strong>${escapeHtml(formatPln(item.costPerUnit))}</strong></li>
+              <li><span>Realny koszt 60 min tańca:</span> <strong class="pricing-highlight-60m">${escapeHtml(formatPln(item.costPer60Min))} / 60 min</strong></li>
+              <li><span>Ważność / zasady:</span> <strong>${escapeHtml(item.planNote)}</strong></li>
+            </ul>
+          </div>
+        </article>
+      `;
+    })
+    .join('');
 }
 
 function renderScheduleClassesView(doc = document) {
@@ -468,6 +622,9 @@ function updateSidebarCountsAndActivePills(doc = document) {
   if (resultsCountEl) {
     if (scheduleState.activeTab === 'classes') {
       resultsCountEl.textContent = `Wspólny grafik Katowice: ${classesCount} kursów (${scheduleState.schools.length} szkoły)`;
+    } else if (scheduleState.activeTab === 'pricing') {
+      resultsCountEl.textContent =
+        'Porównanie cenników 3 szkół w Katowicach (La Clave, Good Mood, Mil Pasos) • Aktualizacja co 24h';
     } else if (scheduleState.activeTab === 'events') {
       resultsCountEl.textContent = `Kalendarz DancePuls: ${eventsCount} potwierdzonych imprez i warsztatów`;
     } else {
@@ -526,10 +683,12 @@ function switchScheduleTab(targetTab, doc = document) {
   });
 
   const classesView = doc.getElementById('scheduleClassesView');
+  const pricingView = doc.getElementById('schedulePricingView');
   const eventsView = doc.getElementById('scheduleEventsView');
   const mapView = doc.getElementById('scheduleMapView');
 
   if (classesView) classesView.classList.toggle('is-hidden', targetTab !== 'classes');
+  if (pricingView) pricingView.classList.toggle('is-hidden', targetTab !== 'pricing');
   if (eventsView) eventsView.classList.toggle('is-hidden', targetTab !== 'events');
   if (mapView) mapView.classList.toggle('is-hidden', targetTab !== 'map');
 
@@ -538,6 +697,7 @@ function switchScheduleTab(targetTab, doc = document) {
 
 function renderAllScheduleViews(doc = document) {
   renderScheduleClassesView(doc);
+  renderSchedulePricingView(doc);
   renderDancepulsEventsView(doc);
   updateSidebarCountsAndActivePills(doc);
 }
@@ -583,13 +743,13 @@ function bindScheduleEvents(doc = document) {
 
   // Oznacz dzisiejszy dzień na pasku dni
   const todayNum = String(getCurrentIsoWeekday());
-  doc.querySelectorAll('.day-pill-btn').forEach((btn) => {
+  doc.querySelectorAll('.schedule-day-bar .day-pill-btn').forEach((btn) => {
     if (btn.getAttribute('data-day') === todayNum) {
       btn.classList.add('is-today');
     }
   });
 
-  // 1. Przełączniki zakładek głównych (Kursy / Imprezy DancePuls / Mapa)
+  // 1. Przełączniki zakładek głównych (Kursy / Cenniki / Imprezy DancePuls / Mapa)
   doc.querySelectorAll('.schedule-mode-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const tab = btn.getAttribute('data-tab') || 'classes';
@@ -619,15 +779,34 @@ function bindScheduleEvents(doc = document) {
   }
 
   // 3. Pasek dni tygodnia
-  doc.querySelectorAll('.day-pill-btn').forEach((btn) => {
+  doc.querySelectorAll('.schedule-day-bar .day-pill-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       scheduleState.dayFilter = btn.getAttribute('data-day') || 'all';
-      doc.querySelectorAll('.day-pill-btn').forEach((b) => b.classList.remove('is-active'));
+      doc.querySelectorAll('.schedule-day-bar .day-pill-btn').forEach((b) => b.classList.remove('is-active'));
       btn.classList.add('is-active');
       if (scheduleState.activeTab !== 'classes') {
         switchScheduleTab('classes', doc);
       }
       renderAllScheduleViews(doc);
+    });
+  });
+
+  // 3b. Kalkulator cenników szkół (częstotliwość i profil tancerza)
+  doc.querySelectorAll('.pricing-freq-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      scheduleState.pricingUnits = Number(btn.getAttribute('data-units') || 8);
+      doc.querySelectorAll('.pricing-freq-btn').forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      renderSchedulePricingView(doc);
+    });
+  });
+
+  doc.querySelectorAll('.pricing-profile-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      scheduleState.pricingProfile = btn.getAttribute('data-profile') || 'standard';
+      doc.querySelectorAll('.pricing-profile-btn').forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      renderSchedulePricingView(doc);
     });
   });
 
@@ -695,7 +874,7 @@ function bindScheduleEvents(doc = document) {
       if (searchInput) searchInput.value = '';
       if (clearBtn) clearBtn.classList.add('is-hidden');
 
-      doc.querySelectorAll('.day-pill-btn').forEach((b) => {
+      doc.querySelectorAll('.schedule-day-bar .day-pill-btn').forEach((b) => {
         b.classList.toggle('is-active', b.getAttribute('data-day') === 'all');
       });
       doc.querySelectorAll('.event-city-filter-btn').forEach((b) => {
@@ -752,6 +931,7 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     filterScheduleClasses,
     filterDancepulsEvents,
+    calculateSchoolPricingComparison,
     getCurrentIsoWeekday,
     formatPlDateHeader,
     initSchedulePage,

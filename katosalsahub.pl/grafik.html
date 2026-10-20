@@ -123,12 +123,17 @@
             <span id="scheduleResultsCount">Wspólny grafik Katowice: 130 kursów (4 szkoły) + Kalendarz DancePuls</span>
           </div>
 
-          <!-- 3 główne zakładki widoku (Stała Geometria CLS = 0) -->
+          <!-- 4 główne zakładki widoku (Stała Geometria CLS = 0) -->
           <div class="schedule-mode-tabs" role="tablist" aria-label="Wybierz tryb widoku">
             <button type="button" class="schedule-mode-btn is-active" role="tab" aria-selected="true" data-tab="classes">
               <i class="far fa-calendar-alt"></i>
               <span>Grafik Szkół</span>
               <span id="modeCountClasses" class="schedule-mode-count">130</span>
+            </button>
+            <button type="button" class="schedule-mode-btn" role="tab" aria-selected="false" data-tab="pricing">
+              <i class="fas fa-coins"></i>
+              <span>Cenniki Szkół</span>
+              <span class="schedule-mode-count">3</span>
             </button>
             <button type="button" class="schedule-mode-btn" role="tab" aria-selected="false" data-tab="events">
               <i class="fas fa-glass-cheers"></i>
@@ -354,7 +359,6 @@
                         <div class="schedule-instructors">
                           <a href="salsopedia.html?term=term_inst_24" class="instructor-link-pill"><i class="fas fa-user-graduate"></i> Claudio &amp; Ola</a>
                         </div>
-                        <span class="multisport-pill"><i class="fas fa-id-card"></i> Multisport</span>
                       </div>
                     </div>
                   </article>
@@ -376,7 +380,6 @@
                         <div class="schedule-instructors">
                           <a href="salsopedia.html?term=term_inst_16" class="instructor-link-pill"><i class="fas fa-user-graduate"></i> Daniel „Kokosz” Machalica</a>
                         </div>
-                        <span class="multisport-pill"><i class="fas fa-id-card"></i> Multisport</span>
                       </div>
                     </div>
                   </article>
@@ -398,11 +401,167 @@
                         <div class="schedule-instructors">
                           <a href="salsopedia.html?term=term_inst_11" class="instructor-link-pill"><i class="fas fa-user-graduate"></i> Iza</a>
                         </div>
-                        <span class="multisport-pill"><i class="fas fa-id-card"></i> Multisport</span>
                       </div>
                     </div>
                   </article>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WIDOK 2: PORÓWNYWARKA CENNIKÓW I KALKULATOR OPŁACALNOŚCI (LA CLAVE vs GOOD MOOD vs MIL PASOS) -->
+          <div id="schedulePricingView" class="is-hidden">
+            <div class="pricing-calc-box">
+              <div class="pricing-calc-header">
+                <div>
+                  <h2><i class="fas fa-calculator"></i> Kalkulator Opłacalności Karnetów i Kart Sportowych</h2>
+                  <p>Porównaj realny koszt miesiąca, cenę pojedynczego wejścia oraz koszt <strong>60 minut nauki</strong> z uwzględnieniem różnic w czasie lekcji (45 min w La Clave vs 55–60 min w Mil Pasos i Good Mood), dopłat blokowych i ważności karnetu.</p>
+                </div>
+              </div>
+
+              <div class="pricing-calc-controls">
+                <div class="pricing-control-group">
+                  <span class="pricing-control-label">1. Ile jednostek zajęciowych w miesiącu planujesz?</span>
+                  <div class="pricing-pills-row" id="pricingFreqGroup" role="group" aria-label="Wybierz liczbę zajęć w miesiącu">
+                    <button type="button" class="day-pill-btn pricing-freq-btn" data-units="4">1x w tyg. (4 jedn.)</button>
+                    <button type="button" class="day-pill-btn pricing-freq-btn is-active" data-units="8">2x w tyg. (8 jedn.)</button>
+                    <button type="button" class="day-pill-btn pricing-freq-btn" data-units="12">Bloki 2–3h (12 jedn.)</button>
+                    <button type="button" class="day-pill-btn pricing-freq-btn" data-units="16">Intensywnie (16+ / Open)</button>
+                  </div>
+                </div>
+
+                <div class="pricing-control-group">
+                  <span class="pricing-control-label">2. Twój profil rozliczenia / karta sportowa:</span>
+                  <div class="pricing-pills-row" id="pricingProfileGroup" role="group" aria-label="Wybierz profil tancerza lub kartę sportową">
+                    <button type="button" class="day-pill-btn pricing-profile-btn is-active" data-profile="standard">💵 Standard (Gotówka / BLIK)</button>
+                    <button type="button" class="day-pill-btn pricing-profile-btn" data-profile="student">🎓 Student (Zniżka)</button>
+                    <button type="button" class="day-pill-btn pricing-profile-btn" data-profile="card_single">🪪 Karta: 1 wejście/dzień (Bloki 2h)</button>
+                    <button type="button" class="day-pill-btn pricing-profile-btn" data-profile="card_multi">🪪 MultiSport Plus / Wielowejściowa</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="pricingCalculatorResults" class="pricing-results-grid">
+                <article class="pricing-result-card pricing-result-card--gm">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--gm">Good Mood</span>
+                    <span class="pricing-best-badge">⭐ Najniższy koszt 60 min</span>
+                  </div>
+                  <h3>Karnet 8h (28 dni)</h3>
+                  <div class="pricing-price-main">170 zł <small>/ mies.</small></div>
+                  <ul class="pricing-metrics-list">
+                    <li><span>Koszt 1 jednostki (60 min):</span> <strong>21,25 zł</strong></li>
+                    <li><span>Realny koszt 60 min tańca:</span> <strong>21,25 zł / 60 min</strong></li>
+                    <li><span>Ważność pakietu:</span> <strong>28 dni (4 tygodnie)</strong></li>
+                  </ul>
+                </article>
+                <article class="pricing-result-card pricing-result-card--lc">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--lc">La Clave</span>
+                    <span class="pricing-unlimited-badge">♾️ Bezterminowy</span>
+                  </div>
+                  <h3>Karnet Eko (8 wejść)</h3>
+                  <div class="pricing-price-main">189 zł <small>/ pakiet</small></div>
+                  <ul class="pricing-metrics-list">
+                    <li><span>Koszt 1 jednostki (45 min):</span> <strong>23,63 zł</strong></li>
+                    <li><span>W bloku 2x45 min (1 okienko + 15 zł):</span> <strong>19,38 zł / jedn.</strong></li>
+                    <li><span>Ważność pakietu:</span> <strong>Bezterminowy (nie przepada)</strong></li>
+                  </ul>
+                </article>
+                <article class="pricing-result-card pricing-result-card--mp">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--mp">Mil Pasos</span>
+                  </div>
+                  <h3>Karnet 8h (4 tygodnie)</h3>
+                  <div class="pricing-price-main">199 zł <small>/ mies.</small></div>
+                  <ul class="pricing-metrics-list">
+                    <li><span>Koszt 1 jednostki (55 min):</span> <strong>24,88 zł</strong></li>
+                    <li><span>Realny koszt 60 min tańca:</span> <strong>27,14 zł / 60 min</strong></li>
+                    <li><span>Ważność pakietu:</span> <strong>4 tygodnie (28 dni)</strong></li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+
+            <!-- Pełna Tabela i Karty Porównawcze 3 Szkół -->
+            <div id="pricingFullCardsContainer" class="pricing-full-section">
+              <div class="schedule-day-heading">
+                <h2><i class="fas fa-balance-scale"></i> Pełne Zestawienie Cenników i Zasad (Katowice)</h2>
+                <span class="schedule-day-badge">Aktualizacja co 24h</span>
+              </div>
+              <div class="pricing-table-wrapper">
+                <table class="pricing-comparison-table">
+                  <thead>
+                    <tr>
+                      <th>Parametr / Pakiet</th>
+                      <th>🔴 La Clave (ul. Chorzowska 11)</th>
+                      <th>🟡 Good Mood (ul. Paderewskiego 35)</th>
+                      <th>🔵 Mil Pasos (ul. Kamienna 4)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Czas 1 jednostki</strong></td>
+                      <td><strong>45 min</strong> (17:00 Happy Hour: 60 min)</td>
+                      <td><strong>55–60 min</strong> (1h)</td>
+                      <td><strong>55 min</strong> (1h w grafiku)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Ważność karnetów</strong></td>
+                      <td><strong>BEZTERMINOWE</strong> (4x, 8x, 10x)</td>
+                      <td><strong>28 dni</strong> (4 tygodnie)</td>
+                      <td><strong>4 tygodnie</strong> (28 dni)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Wejście 1 jedn.</strong></td>
+                      <td><strong>30 zł</strong></td>
+                      <td><strong>35 zł</strong></td>
+                      <td><strong>35 zł</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Blok 2 jednostek (2h)</strong></td>
+                      <td><strong>45 zł</strong> (30 zł + 15 zł dopłaty)</td>
+                      <td><strong>55 zł</strong></td>
+                      <td><strong>55 zł</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Blok 3 jedn. / Day Pass</strong></td>
+                      <td><strong>55 zł</strong> (lub 2 okienka z karnetu = 3. gratis!)</td>
+                      <td><strong>80 zł</strong> (55 zł + 25 zł dopłaty)</td>
+                      <td><strong>90 zł</strong> (Day Pass całodniowy)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet 4 wejścia</strong></td>
+                      <td><strong>109 zł</strong> (27,25 zł / wejście)</td>
+                      <td><strong>100 zł</strong> (Student: <strong>90 zł</strong>)</td>
+                      <td><strong>119 zł</strong> (Student -10%: <strong>~107 zł</strong>)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet 8 wejść</strong></td>
+                      <td><strong>189 zł</strong> (23,63 zł / wejście)</td>
+                      <td><strong>170 zł</strong> (Student: <strong>160 zł</strong>)</td>
+                      <td><strong>199 zł</strong> (Student -10%: <strong>~179 zł</strong>)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet 10 / 12 / 16 wejść</strong></td>
+                      <td><strong>10 wejść (Pro): 219 zł</strong> (21,90 zł/wej.)</td>
+                      <td>Przejście bezpośrednio na pakiet OPEN</td>
+                      <td><strong>12h: 249 zł</strong> (20,75 zł/h)<br><strong>16h: 299 zł</strong> (18,69 zł/h)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet OPEN (4 tyg.)</strong></td>
+                      <td><strong>300 zł</strong></td>
+                      <td><strong>260 zł</strong> (Najtańszy Open)</td>
+                      <td><strong>399 zł</strong> (Student: ~359 zł)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Zasady kart sportowych w blokach 2–3h</strong></td>
+                      <td>MultiSport Plus: odbicie co 45 min (0 zł). Karty 1x/dzień: 2. jedn. <strong>+15 zł</strong>, 3. jedn. <strong>+10 zł</strong>.</td>
+                      <td>Karty 1x/dzień: dopłata do kolejnej godziny wynosi <strong>25 zł</strong>.</td>
+                      <td>Odbicie karty za każdą godzinę zajęć (zgodnie z pakietem karty).</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
