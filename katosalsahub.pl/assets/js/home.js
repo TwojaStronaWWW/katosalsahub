@@ -35,11 +35,21 @@ function activateMapZone(triggerBtn, doc = document) {
         }
     });
 
+    const isScheduleMap = Boolean(doc.getElementById('scheduleMapView'));
     spotCards.forEach((card) => {
-        if (targetZone && targetZone !== 'all' && card.getAttribute('data-zone') === targetZone) {
+        const isMatch = Boolean(targetZone && targetZone !== 'all' && card.getAttribute('data-zone') === targetZone);
+        const insideScheduleMap =
+            isScheduleMap || (typeof card.closest === 'function' && Boolean(card.closest('#scheduleMapView')));
+        if (isMatch) {
             card.classList.add('is-active');
+            if (insideScheduleMap) {
+                card.classList.remove('is-hidden');
+            }
         } else {
             card.classList.remove('is-active');
+            if (insideScheduleMap) {
+                card.classList.add('is-hidden');
+            }
         }
     });
 

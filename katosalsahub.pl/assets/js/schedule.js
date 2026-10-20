@@ -860,7 +860,13 @@ function updateSidebarCountsAndActivePills(doc = document) {
   }
 
   if (activeBadge) {
-    activeBadge.textContent = activeParts.length > 0 ? activeParts.join(' • ') : 'Wszystkie pozycje';
+    if (scheduleState.activeTab === 'map' && activeParts.length === 0) {
+      const activeMapBtn = doc.querySelector('#scheduleMapView .map-tab-btn.is-active');
+      const mapLabel = activeMapBtn ? String(activeMapBtn.textContent || '').trim() : '';
+      activeBadge.textContent = mapLabel ? `Lokalizacja: ${mapLabel}` : 'Wszystkie pozycje';
+    } else {
+      activeBadge.textContent = activeParts.length > 0 ? activeParts.join(' • ') : 'Wszystkie pozycje';
+    }
   }
   if (resetBtn) {
     if (activeParts.length > 0) {
@@ -868,6 +874,18 @@ function updateSidebarCountsAndActivePills(doc = document) {
     } else {
       resetBtn.classList.add('is-hidden');
     }
+  }
+}
+
+function syncMapZoneForSchoolFilter(schoolId, doc = document) {
+  if (!schoolId || schoolId === 'all') return;
+  const zoneKey = `school-${String(schoolId).toLowerCase()}`;
+  const targetZoneBtn = doc.querySelector(`#scheduleMapView .map-tab-btn[data-zone="${zoneKey}"]`);
+  if (!targetZoneBtn) return;
+  if (typeof window !== 'undefined' && window.kshHome && typeof window.kshHome.activateMapZone === 'function') {
+    window.kshHome.activateMapZone(targetZoneBtn, doc);
+  } else if (typeof targetZoneBtn.click === 'function') {
+    targetZoneBtn.click();
   }
 }
 
@@ -890,6 +908,10 @@ function switchScheduleTab(targetTab, doc = document) {
   if (pricingView) pricingView.classList.toggle('is-hidden', targetTab !== 'pricing');
   if (eventsView) eventsView.classList.toggle('is-hidden', targetTab !== 'events');
   if (mapView) mapView.classList.toggle('is-hidden', targetTab !== 'map');
+
+  if (targetTab === 'map' && scheduleState.schoolFilter !== 'all') {
+    syncMapZoneForSchoolFilter(scheduleState.schoolFilter, doc);
+  }
 
   updateSidebarCountsAndActivePills(doc);
 }
@@ -1024,6 +1046,9 @@ function bindScheduleEvents(doc = document) {
       scheduleState.schoolFilter = li.getAttribute('data-school') || 'all';
       schoolList.querySelectorAll('li').forEach((el) => el.classList.remove('active'));
       li.classList.add('active');
+      if (scheduleState.schoolFilter !== 'all') {
+        syncMapZoneForSchoolFilter(scheduleState.schoolFilter, doc);
+      }
       renderAllScheduleViews(doc);
     });
   }
@@ -1096,18 +1121,60 @@ function bindScheduleEvents(doc = document) {
     });
   }
 
-  // 7. Delegacja kliknięcia „Pokaż na mapie (Szkoła)” na kartach zajęć
+  // 7. Delegacja kliknięć w widoku Grafiku i Mapy Szkół
   rootEl.addEventListener('click', (e) => {
+    if (!e || !e.target || typeof e.target.closest !== 'function') return;
+
+    // 7a. Kliknięcie zakładki szkoły/lokalizacji na mapie -> aktualizacja paska Aktualny widok
+    const mapTabBtn = e.target.closest('#scheduleMapView .map-tab-btn');
+    if (mapTabBtn) {
+      if (typeof window !== 'undefined' && window.kshHome && typeof window.kshHome.activateMapZone === 'function') {
+        window.kshHome.activateMapZone(mapTabBtn, doc);
+      }
+      updateSidebarCountsAndActivePills(doc);
+      return;
+    }
+
+    // 7b. Kliknięcie „Grafik [Szkoła]” na karcie wybranej szkoły obok mapy
+    const toScheduleBtn = e.target.closest('.js-map-to-schedule');
+    if (toScheduleBtn) {
+      const targetSchool = toScheduleBtn.getAttribute('data-school-filter') || 'all';
+      scheduleState.schoolFilter = targetSchool;
+      if (schoolList) {
+        schoolList.querySelectorAll('li').forEach((li) => {
+          li.classList.toggle('active', li.getAttribute('data-school') === targetSchool);
+        });
+      }
+      switchScheduleTab('classes', doc);
+      renderAllScheduleViews(doc);
+      return;
+    }
+
+    // 7c. Kliknięcie „Imprezy w Katowicach” na karcie miejscówki KSH obok mapy
+    const toEventsBtn = e.target.closest('.js-map-to-events');
+    if (toEventsBtn) {
+      const targetCity = toEventsBtn.getAttribute('data-city-filter') || 'Katowice';
+      scheduleState.eventCityFilter = targetCity;
+      doc.querySelectorAll('.event-city-filter-btn').forEach((b) => {
+        b.classList.toggle('is-active', b.getAttribute('data-city') === targetCity);
+      });
+      switchScheduleTab('events', doc);
+      renderAllScheduleViews(doc);
+      return;
+    }
+
+    // 7d. Kliknięcie „Pokaż na mapie (Szkoła)” na kartach zajęć w grafiku
     const mapFocusBtn = e.target.closest('.js-focus-school-map');
-    if (!mapFocusBtn) return;
-    const schoolId = String(mapFocusBtn.getAttribute('data-school-id') || '').toLowerCase();
-    switchScheduleTab('map', doc);
-    const targetZoneBtn = doc.querySelector(`.map-tab-btn[data-zone="school-${schoolId}"]`);
-    if (targetZoneBtn) {
-      targetZoneBtn.click();
-      const mapEl = doc.getElementById('ksh-map-container');
-      if (mapEl && typeof mapEl.scrollIntoView === 'function') {
-        mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (mapFocusBtn) {
+      const schoolId = String(mapFocusBtn.getAttribute('data-school-id') || '').toLowerCase();
+      switchScheduleTab('map', doc);
+      const targetZoneBtn = doc.querySelector(`.map-tab-btn[data-zone="school-${schoolId}"]`);
+      if (targetZoneBtn) {
+        targetZoneBtn.click();
+        const mapEl = doc.getElementById('ksh-map-container');
+        if (mapEl && typeof mapEl.scrollIntoView === 'function') {
+          mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
     }
   });

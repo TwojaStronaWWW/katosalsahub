@@ -683,11 +683,22 @@
 /* --- Widok 3: Mapa Szkół i Parkietów --- */
 .schedule-map-tabs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
-@media (max-width: 768px) {
+.schedule-map-tabs .map-tab-btn {
+  height: auto;
+  min-height: 44px;
+  padding: 8px 10px;
+  font-size: 0.81rem;
+  line-height: 1.25;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+@media (max-width: 1180px) {
   .schedule-map-tabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -697,6 +708,24 @@
   .schedule-map-tabs {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+#scheduleMapView .map-spot-card:not(.is-active) {
+  display: none !important;
+}
+
+#scheduleMapView .map-spot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#scheduleMapView .map-spot-actions > * {
+  flex: 1 1 135px;
+  height: auto;
+  min-height: 40px;
+  padding: 8px 12px;
+  white-space: normal;
 }
 
 .schools-comparison-grid {

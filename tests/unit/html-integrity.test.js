@@ -243,6 +243,91 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w grafik.html');
       assert.match(html, /src="assets\/js\/schedule\.js(\?[^"]*)?"/i);
       assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
+
+      // Weryfikacja Mapy Szkół (#scheduleMapView): 8 zakładek i wyświetlanie wyłącznie 1 aktywnej karty obok mapy
+      const expectedZones = ['school-lc', 'school-gm', 'school-mp', 'school-tk', 'school-gr', 'wolni', 'stawy', 'nospr'];
+      for (const zone of expectedZones) {
+        assert.match(
+          html,
+          new RegExp(`class="map-tab-btn[^"]*"[\\s\\S]*?data-zone="${zone}"`),
+          `Brak przycisku wyboru lokalizacji data-zone="${zone}" w #scheduleMapView`
+        );
+        assert.match(
+          html,
+          new RegExp(`<article\\s+class="card\\s+map-spot-card[^"]*"\\s+data-zone="${zone}">`),
+          `Brak dedykowanej karty informacyjnej .map-spot-card[data-zone="${zone}"] w #scheduleMapView`
+        );
+      }
+
+      const scheduleCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'schedule.css'), 'utf-8');
+      assert.match(
+        scheduleCss,
+        /#scheduleMapView\s+\.map-spot-card:not\(\.is-active\)\s*\{\s*display:\s*none\s*!important;\s*\}/,
+        'Brak reguły CSS ukrywającej nieaktywne karty szkół obok mapy w #scheduleMapView'
+      );
+
+      // Test jednostkowy logiki activateMapZone w home.js (wyświetlanie tylko wybranej szkoły w #scheduleMapView)
+      const { activateMapZone } = require('../../katosalsahub.pl/assets/js/home.js');
+      const makeClassList = (initial = []) => {
+        const set = new Set(initial);
+        return {
+          add: (c) => set.add(c),
+          remove: (c) => set.delete(c),
+          contains: (c) => set.has(c),
+        };
+      };
+      const mockCards = expectedZones.map((z, idx) => ({
+        classList: makeClassList(idx === 0 ? ['is-active'] : ['is-hidden']),
+        getAttribute: (attr) => (attr === 'data-zone' ? z : null),
+        closest: (sel) => (sel === '#scheduleMapView' ? {} : null),
+      }));
+      const mockTabs = expectedZones.map((z, idx) => {
+        const attrs = {
+          'data-zone': z,
+          'data-map-src': `https://maps.example/${z}`,
+          'data-label': `Label ${z}`,
+          'aria-pressed': idx === 0 ? 'true' : 'false',
+        };
+        return {
+          classList: makeClassList(idx === 0 ? ['is-active'] : []),
+          getAttribute: (a) => attrs[a] || null,
+          setAttribute: (a, v) => {
+            attrs[a] = v;
+          },
+        };
+      });
+      const mockIframe = {
+        src: 'https://maps.example/school-lc',
+        getAttribute: function (a) {
+          return a === 'src' ? this.src : null;
+        },
+        setAttribute: function (a, v) {
+          if (a === 'src') this.src = v;
+        },
+      };
+      const mockLabel = { textContent: '' };
+      const mockDoc = {
+        getElementById: (id) => {
+          if (id === 'ksh-map-iframe') return mockIframe;
+          if (id === 'scheduleMapView') return {};
+          if (id === 'map-active-label') return mockLabel;
+          return null;
+        },
+        querySelectorAll: (sel) => {
+          if (sel === '.map-tab-btn') return mockTabs;
+          if (sel === '.map-spot-card') return mockCards;
+          return [];
+        },
+      };
+
+      // Symulacja kliknięcia na Szkołę Tańca Good Mood (index 1 = school-gm)
+      activateMapZone(mockTabs[1], mockDoc);
+      assert.strictEqual(mockCards[1].classList.contains('is-active'), true, 'Karta Good Mood powinna otrzymać klasę is-active');
+      assert.strictEqual(mockCards[1].classList.contains('is-hidden'), false, 'Karta Good Mood powinna być widoczna (brak is-hidden)');
+      assert.strictEqual(mockCards[0].classList.contains('is-active'), false, 'Karta La Clave powinna stracić klasę is-active');
+      assert.strictEqual(mockCards[0].classList.contains('is-hidden'), true, 'Karta La Clave powinna zostać ukryta (is-hidden)');
+      const visibleCards = mockCards.filter((c) => !c.classList.contains('is-hidden'));
+      assert.strictEqual(visibleCards.length, 1, 'W widoku #scheduleMapView może wyświetlać się jednocześnie tylko 1 karta wybranej szkoły');
     });
   });
 
