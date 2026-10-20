@@ -108,8 +108,8 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(aiWidgetJs, /setAttribute\s*\(\s*['"]data-nosnippet['"]/, 'Brak atrybutu data-nosnippet na kontenerze widgetu AI');
     });
 
-    it('powinien zawierać zaktualizowaną mapę Google My Maps (mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI), widget .map-hub w układzie 4 kafelków 2x2 z nawigacją zawsze na Parking Rekomendowany oraz poprawny plik KML', () => {
-      assert.match(html, /mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI/);
+    it('powinien zawierać zaktualizowaną mapę Google My Maps (mid=1cj-CYV4HEEMEKW4Fq65Yyk5gFqp4ecU), widget .map-hub w układzie 4 kafelków 2x2 z nawigacją zawsze na Parking Rekomendowany oraz poprawny plik KML', () => {
+      assert.match(html, /mid=1cj-CYV4HEEMEKW4Fq65Yyk5gFqp4ecU/);
       assert.match(html, /href="assets\/css\/sections\.css\?v=[0-9.]+"/i, 'Brak parametru cache-busting ?v= dla sections.css');
       assert.match(html, /class="map-hub"/);
       assert.match(html, /id="ksh-map-iframe"/);
