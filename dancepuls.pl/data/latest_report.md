@@ -36,38 +36,38 @@ W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub – Salsa Hab
 ---
 
 ## 3. ANKIETA
-PIĄTEK (23.10): Kraków - Teatro Cubano (Cubana)
-SOBOTA (24.10): Kraków - Sabrosa Dance Studio (Mambo/Salsa On2)
-SOBOTA (24.10): Katowice - Mil Pasos (Bachata/Kizomba)
-SOBOTA (24.10): Kraków - Forum Tańca (Salsa/Bachata)
-SOBOTA (24.10): Kraków - Teatro Cubano (Cubana)
-NIEDZIELA (25.10): Katowice - Wolni Ludzie (Cubana)
-NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
+PIĄTEK (23.10): Kraków - Teatro Cubano (Cubana)  
+SOBOTA (24.10): Kraków - Sabrosa Dance Studio (Mambo/Salsa On2)  
+SOBOTA (24.10): Katowice - Mil Pasos (Bachata/Kizomba)  
+SOBOTA (24.10): Kraków - Forum Tańca (Salsa/Bachata)  
+SOBOTA (24.10): Kraków - Teatro Cubano (Cubana)  
+NIEDZIELA (25.10): Katowice - Wolni Ludzie (Cubana)  
+NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)  
 
 ---
 
 ## 4. KOMENTARZ 1 — WEEKEND
 🎉 Zestawienie imprezowe
 
-🗓️ PIĄTEK (23.10):
-➡️ Kraków: Teatro Cubano (Cubana)
-🔗 https://www.facebook.com/events/1568368601399250/
+🗓️ PIĄTEK (23.10):  
+➡️ Kraków: Teatro Cubano (Cubana)  
+🔗 https://www.facebook.com/events/1568368601399250/  
 
-🗓️ SOBOTA (24.10):
-➡️ Kraków: Sabrosa Dance Studio (Mambo/Salsa On2)
-🔗 https://www.facebook.com/groups/1202777840091298/posts/2864429500592782/
-➡️ Katowice: Mil Pasos (Bachata/Kizomba)
-🔗 https://www.facebook.com/events/1040992492288985/
-➡️ Kraków: Forum Tańca (Salsa/Bachata)
-🔗 https://www.facebook.com/events/1061231330083326/
-➡️ Kraków: Teatro Cubano (Cubana)
-🔗 https://www.facebook.com/events/1294624072278735/
+🗓️ SOBOTA (24.10):  
+➡️ Kraków: Sabrosa Dance Studio (Mambo/Salsa On2)  
+🔗 https://www.facebook.com/groups/1202777840091298/posts/2864429500592782/  
+➡️ Katowice: Mil Pasos (Bachata/Kizomba)  
+🔗 https://www.facebook.com/events/1040992492288985/  
+➡️ Kraków: Forum Tańca (Salsa/Bachata)  
+🔗 https://www.facebook.com/events/1061231330083326/  
+➡️ Kraków: Teatro Cubano (Cubana)  
+🔗 https://www.facebook.com/events/1294624072278735/  
 
-🗓️ NIEDZIELA (25.10):
-⭐ Katowice: Wolni Ludzie (Cubana)
-🔗 https://www.facebook.com/events/891329324066083/
-➡️ Kraków: Teatro Cubano (Bachata)
-🔗 https://onlydanceapp.com/event/bUBcJYprLm1Iak6fHe3B
+🗓️ NIEDZIELA (25.10):  
+⭐ Katowice: Wolni Ludzie (Cubana)  
+🔗 https://www.facebook.com/events/891329324066083/  
+➡️ Kraków: Teatro Cubano (Bachata)  
+🔗 https://onlydanceapp.com/event/bUBcJYprLm1Iak6fHe3B  
 
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
@@ -84,126 +84,126 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 ## 5. KOMENTARZ 2 — PRZYSZŁOŚĆ
 🎉 Zaplanowane wydarzenia — kolejne tygodnie
 
-🗓️ ŚRODA (28.10.2026)
-➡️ Katowice: Mil Pasos, Upiorna nagrywka z Izabelą,zajęcia specjalne (Bachata)
-🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
-🗓️ PIĄTEK (30.10.2026)
-➡️ Tychy: Mohito, Wielka Biba Halloween+Urodziny Zuzi (Salsa/Bachata/Kizomba)
-🔗 https://onlydanceapp.com/event/439ca0f1bb6c4322b797
-🗓️ PIĄTEK (30.10.2026)
-➡️ Bielsko-Biała: DANCE#LOVEit & Corazon, Koszmarrrrrna Domówka (Salsa/Bachata)
-🔗 https://www.facebook.com/events/1451317200146085/
-🗓️ PIĄTEK (30.10.2026)
-➡️ Kraków: Sabrosa Dance Studio, Halloween (Salsa/Bachata)
-🔗 https://onlydanceapp.com/event/b245a2c97eb94614a103
-🗓️ SOBOTA (31.10.2026)
-➡️ Katowice: Gravitacja, Halloween Bachata Party–Día de los Muertos (Bachata)
-🔗 https://onlydanceapp.com/event/ca531940745043df9786
-🗓️ SOBOTA (31.10.2026)
-➡️ Bielsko-Biała: AllDance, Halloween Dance Party,Praktis Bachata/Salsa/Kizomba (Salsa/Bachata/Kizomba)
-🔗 https://www.facebook.com/events/1602739471550950/
-🗓️ SOBOTA (31.10.2026)
-➡️ Kraków: LOFToDANCE, warsztaty Unlock Your Freestyle–Level2 (Bachata solo/Impro)
-🔗 https://sklep.loftodance.pl/wydarzenie/unlock-your-freestyle-level-2,1281
-🗓️ SOBOTA (31.10.2026)
-➡️ Kraków: LOFToDANCE, Party w Trupa2026 (Bachata)
-🔗 https://onlydanceapp.com/event/cac634dc87f642b1b3ef
-🗓️ WTOREK (03.11.2026)
-➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)
-🔗 https://www.facebook.com/events/1083906274387790/
-🗓️ SOBOTA (07.11.2026)
-➡️ Katowice: Mil Pasos, B Experience,zajęcia specjalne i praktis (Bachata)
-🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
-🗓️ SOBOTA (07.11.2026)
-➡️ Kraków: Forum Tańca, Overpower Dancers Edition vol.19 (Bachata)
-🔗 https://onlydanceapp.com/event/91178caf3b1c456e8cc8
-🗓️ SOBOTA (07.11.2026)
-➡️ Kraków: LOFToDANCE, warsztaty Salsa On1 (od zera oraz dla tańczących) (Salsa On1)
-🔗 https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287
-🗓️ SOBOTA (07.11.2026)
-➡️ Kraków: LOFToDANCE, warsztaty Men Styling – Bachata Solo dla facetów (Bachata)
-🔗 https://sklep.loftodance.pl/wydarzenie/men-styling-bachata-solo-dla-facetow,1290
-🗓️ SOBOTA (07.11.2026)
-➡️ Kraków: LOFToDANCE, ¡A bailar salsa!,impreza i wcześniejsze warsztaty (Salsa On1/Salsa On2)
-🔗 https://onlydanceapp.com/event/2b905e5e085c44a3924e
-🗓️ SOBOTA (07.11.2026)
-➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)
-🔗 https://www.facebook.com/events/1328664779481954/
-🗓️ NIEDZIELA (08.11.2026)
-➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)
-🔗 https://www.facebook.com/events/1617716113426642/
-🗓️ PIĄTEK (13.11.2026)
-➡️ Katowice: Mil Pasos, LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty (Bachata)
-🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
-🗓️ PIĄTEK–NIEDZIELA (13–15.11.2026)
-➡️ Kraków: LOFToDANCE, Sensual Impro Festival (Bachata/Sensual Impro)
-🔗 https://www.facebook.com/events/1288385083316354/
-🗓️ SOBOTA (14.11.2026)
-➡️ Katowice: Mil Pasos, LVL UP z Mają Modliszewską,warsztaty (Bachata)
-🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
-🗓️ WTOREK (17.11.2026)
-➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)
-🔗 https://www.facebook.com/events/2970730173282777/
-🗓️ SOBOTA (21.11.2026)
-➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)
-🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
-🗓️ SOBOTA (21.11.2026)
-➡️ Kraków: Sabrosa Dance Studio, warsztaty Musicality & Dance with Anichi Perez (5h) (Salsa/Mambo/Cubana)
-🔗 https://www.facebook.com/events/1636457378133646/
-🗓️ SOBOTA (21.11.2026)
-➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)
-🔗 https://www.facebook.com/events/1368901197951496/
-🗓️ NIEDZIELA (22.11.2026)
-➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)
-🔗 https://www.facebook.com/events/1617716113426642/
-🗓️ SOBOTA (28.11.2026)
-➡️ Katowice: Mil Pasos, Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis (Kizomba/Tarraxo)
-🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
-🗓️ SOBOTA (28.11.2026)
-➡️ Kraków: LOFToDANCE, DobraNocka Party (Bachata)
-🔗 https://sklep.loftodance.pl/wydarzenie/dobranocka-party,1291
-🗓️ WTOREK (01.12.2026)
-➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)
-🔗 https://www.facebook.com/events/1249676614905478/
-🗓️ CZWARTEK–NIEDZIELA (03–06.12.2026)
-➡️ Hucisko: Orle Gniazdo, FeelTheFlow (Bachata)
-🔗 https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/
-🗓️ SOBOTA (05.12.2026)
-➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)
-🔗 https://www.facebook.com/events/1718027052710083/
-🗓️ NIEDZIELA (06.12.2026)
-➡️ Katowice: KIZLAB, KIZLAB SUNDAYS–Mikołajki (Kizomba)
-🔗 https://www.facebook.com/events/1617716113426642/
-🗓️ WTOREK (15.12.2026)
-➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)
-🔗 https://www.facebook.com/events/1105058955723288/
-🗓️ NIEDZIELA (20.12.2026)
-➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)
-🔗 https://www.facebook.com/events/1617716113426642/
-🗓️ NIEDZIELA (27.12.2026)
-➡️ Bielsko-Biała: AllDance, Zakończenie roku (Salsa/Bachata/Kizomba)
-🔗 https://onlydanceapp.com/event/icJdCgoBSSeEDjiUbFNd
-🗓️ CZWARTEK (31.12.2026)
-➡️ Kraków: LOFToDANCE, Sylwester (Bachata/Sensual Impro)
-🔗 https://onlydanceapp.com/event/bd432805b60646cbb405
-🗓️ CZWARTEK (31.12.2026)
-➡️ Kraków: Forum Tańca, Sylwester (Salsa/Bachata)
-🔗 https://onlydanceapp.com/event/d657e4d472494187a483
-🗓️ SOBOTA (09.01.2027)
-➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)
-🔗 https://www.facebook.com/events/1632915284664193/
-🗓️ PIĄTEK–NIEDZIELA (29–31.01.2027)
-➡️ Kraków: Forum Tańca, Cracovia Rueda Festival (Cubana/Rueda)
-🔗 https://www.facebook.com/events/1430429125397912/
-🗓️ PIĄTEK–NIEDZIELA (04–06.06.2027)
-➡️ Kraków: Hotel Premier, VIBRAS (Bachata)
-🔗 https://onlydanceapp.com/event/468664172081446b840e
-🗓️ PIĄTEK (OD 18.06.2027)
-➡️ Kraków: LOFToDANCE, LOVEtoFEST27 (Bachata)
-🔗 https://onlydanceapp.com/event/0fbf2c282d2346a5b1c4
-🗓️ CZWARTEK (OD 16.09.2027)
-➡️ Kraków: Hotel Galaxy, Kizz Ryders 10-lecie (Kizomba)
-🔗 https://onlydanceapp.com/event/bDNi3yyIAnYKvujNV0fq
+🗓️ ŚRODA (28.10.2026)  
+➡️ Katowice: Mil Pasos, Upiorna nagrywka z Izabelą,zajęcia specjalne (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
+🗓️ PIĄTEK (30.10.2026)  
+➡️ Tychy: Mohito, Wielka Biba Halloween+Urodziny Zuzi (Salsa/Bachata/Kizomba)  
+🔗 https://onlydanceapp.com/event/439ca0f1bb6c4322b797  
+🗓️ PIĄTEK (30.10.2026)  
+➡️ Bielsko-Biała: DANCE#LOVEit & Corazon, Koszmarrrrrna Domówka (Salsa/Bachata)  
+🔗 https://www.facebook.com/events/1451317200146085/  
+🗓️ PIĄTEK (30.10.2026)  
+➡️ Kraków: Sabrosa Dance Studio, Halloween (Salsa/Bachata)  
+🔗 https://onlydanceapp.com/event/b245a2c97eb94614a103  
+🗓️ SOBOTA (31.10.2026)  
+➡️ Katowice: Gravitacja, Halloween Bachata Party–Día de los Muertos (Bachata)  
+🔗 https://onlydanceapp.com/event/ca531940745043df9786  
+🗓️ SOBOTA (31.10.2026)  
+➡️ Bielsko-Biała: AllDance, Halloween Dance Party,Praktis Bachata/Salsa/Kizomba (Salsa/Bachata/Kizomba)  
+🔗 https://www.facebook.com/events/1602739471550950/  
+🗓️ SOBOTA (31.10.2026)  
+➡️ Kraków: LOFToDANCE, warsztaty Unlock Your Freestyle–Level2 (Bachata solo/Impro)  
+🔗 https://sklep.loftodance.pl/wydarzenie/unlock-your-freestyle-level-2,1281  
+🗓️ SOBOTA (31.10.2026)  
+➡️ Kraków: LOFToDANCE, Party w Trupa2026 (Bachata)  
+🔗 https://onlydanceapp.com/event/cac634dc87f642b1b3ef  
+🗓️ WTOREK (03.11.2026)  
+➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
+🔗 https://www.facebook.com/events/1083906274387790/  
+🗓️ SOBOTA (07.11.2026)  
+➡️ Katowice: Mil Pasos, B Experience,zajęcia specjalne i praktis (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
+🗓️ SOBOTA (07.11.2026)  
+➡️ Kraków: Forum Tańca, Overpower Dancers Edition vol.19 (Bachata)  
+🔗 https://onlydanceapp.com/event/91178caf3b1c456e8cc8  
+🗓️ SOBOTA (07.11.2026)  
+➡️ Kraków: LOFToDANCE, warsztaty Salsa On1 (od zera oraz dla tańczących) (Salsa On1)  
+🔗 https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287  
+🗓️ SOBOTA (07.11.2026)  
+➡️ Kraków: LOFToDANCE, warsztaty Men Styling – Bachata Solo dla facetów (Bachata)  
+🔗 https://sklep.loftodance.pl/wydarzenie/men-styling-bachata-solo-dla-facetow,1290  
+🗓️ SOBOTA (07.11.2026)  
+➡️ Kraków: LOFToDANCE, ¡A bailar salsa!,impreza i wcześniejsze warsztaty (Salsa On1/Salsa On2)  
+🔗 https://onlydanceapp.com/event/2b905e5e085c44a3924e  
+🗓️ SOBOTA (07.11.2026)  
+➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)  
+🔗 https://www.facebook.com/events/1328664779481954/  
+🗓️ NIEDZIELA (08.11.2026)  
+➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
+🔗 https://www.facebook.com/events/1617716113426642/  
+🗓️ PIĄTEK (13.11.2026)  
+➡️ Katowice: Mil Pasos, LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
+🗓️ PIĄTEK–NIEDZIELA (13–15.11.2026)  
+➡️ Kraków: LOFToDANCE, Sensual Impro Festival (Bachata/Sensual Impro)  
+🔗 https://www.facebook.com/events/1288385083316354/  
+🗓️ SOBOTA (14.11.2026)  
+➡️ Katowice: Mil Pasos, LVL UP z Mają Modliszewską,warsztaty (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
+🗓️ WTOREK (17.11.2026)  
+➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
+🔗 https://www.facebook.com/events/2970730173282777/  
+🗓️ SOBOTA (21.11.2026)  
+➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
+🗓️ SOBOTA (21.11.2026)  
+➡️ Kraków: Sabrosa Dance Studio, warsztaty Musicality & Dance with Anichi Perez (5h) (Salsa/Mambo/Cubana)  
+🔗 https://www.facebook.com/events/1636457378133646/  
+🗓️ SOBOTA (21.11.2026)  
+➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)  
+🔗 https://www.facebook.com/events/1368901197951496/  
+🗓️ NIEDZIELA (22.11.2026)  
+➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
+🔗 https://www.facebook.com/events/1617716113426642/  
+🗓️ SOBOTA (28.11.2026)  
+➡️ Katowice: Mil Pasos, Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis (Kizomba/Tarraxo)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
+🗓️ SOBOTA (28.11.2026)  
+➡️ Kraków: LOFToDANCE, DobraNocka Party (Bachata)  
+🔗 https://sklep.loftodance.pl/wydarzenie/dobranocka-party,1291  
+🗓️ WTOREK (01.12.2026)  
+➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
+🔗 https://www.facebook.com/events/1249676614905478/  
+🗓️ CZWARTEK–NIEDZIELA (03–06.12.2026)  
+➡️ Hucisko: Orle Gniazdo, FeelTheFlow (Bachata)  
+🔗 https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/  
+🗓️ SOBOTA (05.12.2026)  
+➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)  
+🔗 https://www.facebook.com/events/1718027052710083/  
+🗓️ NIEDZIELA (06.12.2026)  
+➡️ Katowice: KIZLAB, KIZLAB SUNDAYS–Mikołajki (Kizomba)  
+🔗 https://www.facebook.com/events/1617716113426642/  
+🗓️ WTOREK (15.12.2026)  
+➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
+🔗 https://www.facebook.com/events/1105058955723288/  
+🗓️ NIEDZIELA (20.12.2026)  
+➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
+🔗 https://www.facebook.com/events/1617716113426642/  
+🗓️ NIEDZIELA (27.12.2026)  
+➡️ Bielsko-Biała: AllDance, Zakończenie roku (Salsa/Bachata/Kizomba)  
+🔗 https://onlydanceapp.com/event/icJdCgoBSSeEDjiUbFNd  
+🗓️ CZWARTEK (31.12.2026)  
+➡️ Kraków: LOFToDANCE, Sylwester (Bachata/Sensual Impro)  
+🔗 https://onlydanceapp.com/event/bd432805b60646cbb405  
+🗓️ CZWARTEK (31.12.2026)  
+➡️ Kraków: Forum Tańca, Sylwester (Salsa/Bachata)  
+🔗 https://onlydanceapp.com/event/d657e4d472494187a483  
+🗓️ SOBOTA (09.01.2027)  
+➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)  
+🔗 https://www.facebook.com/events/1632915284664193/  
+🗓️ PIĄTEK–NIEDZIELA (29–31.01.2027)  
+➡️ Kraków: Forum Tańca, Cracovia Rueda Festival (Cubana/Rueda)  
+🔗 https://www.facebook.com/events/1430429125397912/  
+🗓️ PIĄTEK–NIEDZIELA (04–06.06.2027)  
+➡️ Kraków: Hotel Premier, VIBRAS (Bachata)  
+🔗 https://onlydanceapp.com/event/468664172081446b840e  
+🗓️ PIĄTEK (OD 18.06.2027)  
+➡️ Kraków: LOFToDANCE, LOVEtoFEST27 (Bachata)  
+🔗 https://onlydanceapp.com/event/0fbf2c282d2346a5b1c4  
+🗓️ CZWARTEK (OD 16.09.2027)  
+➡️ Kraków: Hotel Galaxy, Kizz Ryders 10-lecie (Kizomba)  
+🔗 https://onlydanceapp.com/event/bDNi3yyIAnYKvujNV0fq  
 
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 

@@ -1568,45 +1568,45 @@ ${sbText}
 🗓️ NIEDZIELA
 ${ndText}`;
 
-    // SEKCJA 3: ANKIETA
+    // SEKCJA 3: ANKIETA (z twardym łamaniem linii Markdown "  \n", aby w podglądach Markdown każda opcja była zawsze w osobnym wierszu od dnia tygodnia)
     const sec3Lines = [];
     fridayEvents.forEach(e => {
-        sec3Lines.push(`PIĄTEK (${e.startDayMonth || ptDateLabel}): ${e.city} - ${buildVenueAndStyleLabel(e, getPtVenueCount(e))}`);
+        sec3Lines.push(`PIĄTEK (${e.startDayMonth || ptDateLabel}): ${e.city} - ${buildVenueAndStyleLabel(e, getPtVenueCount(e))}  `);
     });
     saturdayEvents.forEach(e => {
-        sec3Lines.push(`SOBOTA (${e.startDayMonth || sbDateLabel}): ${e.city} - ${buildVenueAndStyleLabel(e, getSbVenueCount(e))}`);
+        sec3Lines.push(`SOBOTA (${e.startDayMonth || sbDateLabel}): ${e.city} - ${buildVenueAndStyleLabel(e, getSbVenueCount(e))}  `);
     });
     sundayEvents.forEach(e => {
-        sec3Lines.push(`NIEDZIELA (${e.startDayMonth || ndDateLabel}): ${e.city} - ${buildVenueAndStyleLabel(e, getNdVenueCount(e))}`);
+        sec3Lines.push(`NIEDZIELA (${e.startDayMonth || ndDateLabel}): ${e.city} - ${buildVenueAndStyleLabel(e, getNdVenueCount(e))}  `);
     });
     const sec3 = sec3Lines.join('\n');
 
     // SEKCJA 4: KOMENTARZ 1 — WEEKEND
     const sec4Lines = ['🎉 Zestawienie imprezowe\n'];
     if (fridayEvents.length > 0) {
-        sec4Lines.push(`🗓️ PIĄTEK (${fridayEvents[0].startDayMonth || ptDateLabel}):`);
+        sec4Lines.push(`🗓️ PIĄTEK (${fridayEvents[0].startDayMonth || ptDateLabel}):  `);
         fridayEvents.forEach(e => {
             const mark = e.isKSH ? '⭐' : '➡️';
-            sec4Lines.push(`${mark} ${e.city}: ${buildVenueAndStyleLabel(e, getPtVenueCount(e))}`);
-            sec4Lines.push(`🔗 ${e.url}`);
+            sec4Lines.push(`${mark} ${e.city}: ${buildVenueAndStyleLabel(e, getPtVenueCount(e))}  `);
+            sec4Lines.push(`🔗 ${e.url}  `);
         });
         sec4Lines.push('');
     }
     if (saturdayEvents.length > 0) {
-        sec4Lines.push(`🗓️ SOBOTA (${saturdayEvents[0].startDayMonth || sbDateLabel}):`);
+        sec4Lines.push(`🗓️ SOBOTA (${saturdayEvents[0].startDayMonth || sbDateLabel}):  `);
         saturdayEvents.forEach(e => {
             const mark = e.isKSH ? '⭐' : '➡️';
-            sec4Lines.push(`${mark} ${e.city}: ${buildVenueAndStyleLabel(e, getSbVenueCount(e))}`);
-            sec4Lines.push(`🔗 ${e.url}`);
+            sec4Lines.push(`${mark} ${e.city}: ${buildVenueAndStyleLabel(e, getSbVenueCount(e))}  `);
+            sec4Lines.push(`🔗 ${e.url}  `);
         });
         sec4Lines.push('');
     }
     if (sundayEvents.length > 0) {
-        sec4Lines.push(`🗓️ NIEDZIELA (${sundayEvents[0].startDayMonth || ndDateLabel}):`);
+        sec4Lines.push(`🗓️ NIEDZIELA (${sundayEvents[0].startDayMonth || ndDateLabel}):  `);
         sundayEvents.forEach(e => {
             const mark = e.isKSH ? '⭐' : '➡️';
-            sec4Lines.push(`${mark} ${e.city}: ${buildVenueAndStyleLabel(e, getNdVenueCount(e))}`);
-            sec4Lines.push(`🔗 ${e.url}`);
+            sec4Lines.push(`${mark} ${e.city}: ${buildVenueAndStyleLabel(e, getNdVenueCount(e))}  `);
+            sec4Lines.push(`🔗 ${e.url}  `);
         });
         sec4Lines.push('');
     }
@@ -1618,9 +1618,9 @@ ${ndText}`;
     (sections.future || []).forEach(e => {
         const mark = e.isKSH ? '⭐' : '➡️';
         const headerLabel = e.futureHeaderLabel || parseEventDateInfo(e.rawDate).futureHeaderLabel;
-        sec5Lines.push(`🗓️ ${headerLabel}`);
-        sec5Lines.push(`${mark} ${e.city}: ${e.venue}, ${e.title} (${e.styles})`);
-        sec5Lines.push(`🔗 ${e.url}`);
+        sec5Lines.push(`🗓️ ${headerLabel}  `);
+        sec5Lines.push(`${mark} ${e.city}: ${e.venue}, ${e.title} (${e.styles})  `);
+        sec5Lines.push(`🔗 ${e.url}  `);
     });
     sec5Lines.push('');
     sec5Lines.push(FOOTER);

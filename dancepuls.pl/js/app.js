@@ -635,7 +635,11 @@ document.addEventListener('DOMContentLoaded', function () {
 				const found = parts.find(p => p.trim().startsWith(prefix))
 				if (!found) return ''
 				const lines = found.trim().split('\n')
-				return lines.slice(1).join('\n').trim()
+				return lines
+					.slice(1)
+					.map(l => l.replace(/ +$/, ''))
+					.join('\n')
+					.trim()
 			}
 
 			const sec1 = findSection('## 1.')
@@ -667,6 +671,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 			if (sec3) {
 				window.latestPollText = sec3
+				const ankietaEl = document.getElementById('wynik-ankieta')
+				if (ankietaEl) ankietaEl.value = sec3
 				renderPollButtons(sec3)
 			}
 
@@ -1529,6 +1535,8 @@ ${opisNd}`
 	}
 
 	window.latestPollText = wynikAnkieta.trim()
+	const ankietaEl = document.getElementById('wynik-ankieta')
+	if (ankietaEl) ankietaEl.value = window.latestPollText
 	renderPollButtons(wynikAnkieta)
 }
 
