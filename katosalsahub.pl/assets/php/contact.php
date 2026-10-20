@@ -27,11 +27,11 @@ function get_env_secret(string $key, string $default = ''): string {
         return (string)$_ENV[$key];
     }
     $envPaths = [
-        __DIR__ . '/../../../.env',
         __DIR__ . '/../../.env',
+        __DIR__ . '/../.env',
     ];
     foreach ($envPaths as $envPath) {
-        if (is_readable($envPath)) {
+        if (@is_readable($envPath)) {
             $lines = @file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             if (is_array($lines)) {
                 foreach ($lines as $line) {
@@ -156,8 +156,12 @@ if (preg_match_all('/https?:\/\//i', $message) > 2) {
 
 // 5. Utworzenie zgłoszenia w osTicket przez klucz ze zmiennej środowiskowej (Issue #2)
 $osTicketApiKey = get_env_secret('OSTICKET_API_KEY');
-$osTicketApiUrl = get_env_secret('OSTICKET_API_URL', 'http://hd.twojastronawww.pl:8080/ticket_hook.php');
+$configuredApiUrl = get_env_secret('OSTICKET_API_URL', 'http://hd.twojastronawww.pl:8080/ticket_hook.php');
+if (strpos($configuredApiUrl, 'crm.katosalsahub.pl') !== false) {
+    $configuredApiUrl = 'http://hd.twojastronawww.pl:8080/ticket_hook.php';
+}
 $ticketCreated = false;
+$ticketNum = 'BRAK';
 
 if (!empty($osTicketApiKey) && function_exists('curl_init')) {
     $ticketData = [
@@ -168,44 +172,96 @@ if (!empty($osTicketApiKey) && function_exists('curl_init')) {
         'topicId' => 12,
         'ip' => $maskedIp,
         'source' => 'Web',
+        'autorespond' => false,
+        'send_email' => false,
     ];
 
-    $ch = curl_init($osTicketApiUrl);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'X-API-Key: ' . $osTicketApiKey,
-        'Content-Type: application/json',
-        'Expect:'
-    ]);
-    curl_setopt($ch, CURLOPT_RESOLVE, ['hd.twojastronawww.pl:8080:127.0.0.1']);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.0');
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData, JSON_UNESCAPED_UNICODE));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+    $endpoints = [
+        ['url' => $configuredApiUrl, 'resolve' => ['hd.twojastronawww.pl:8080:127.0.0.1']],
+        ['url' => 'https://hd.twojastronawww.pl/ticket_hook.php', 'resolve' => []],
+    ];
 
-    $apiResponse = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    foreach ($endpoints as $ep) {
+        $ch = curl_init($ep['url']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'X-API-Key: ' . $osTicketApiKey,
+            'Content-Type: application/json',
+            'Expect:'
+        ]);
+        if (!empty($ep['resolve']) && strpos($ep['url'], ':8080') !== false) {
+            curl_setopt($ch, CURLOPT_RESOLVE, $ep['resolve']);
+        }
+        curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.0');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
 
-    $resArr = json_decode((string)$apiResponse, true);
-    $ticketCreated = ($httpCode === 201 && !empty($resArr['success']));
-    $ticketNum = $resArr['number'] ?? 'unknown';
+        $apiResponse = @curl_exec($ch);
+        $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
-    if ($ticketCreated) {
-        debug_log("TICKET CREATED: #$ticketNum (masked IP: $maskedIp)");
-    } else {
-        debug_log("osTicket API FAILED (Code $httpCode)");
+        $resArr = json_decode((string)$apiResponse, true);
+        if ($httpCode === 201 && !empty($resArr['success'])) {
+            $ticketCreated = true;
+            $ticketNum = (string)($resArr['number'] ?? 'unknown');
+            debug_log("TICKET CREATED: #$ticketNum (masked IP: $maskedIp)");
+            break;
+        }
+        debug_log("osTicket API attempt failed on {$ep['url']} (Code $httpCode)");
     }
 }
 
-if (!$ticketCreated) {
-    // Awaryjny fallback e-mail
-    $to = get_env_secret('CONTACT_EMAIL', 'kontakt@twojastronawww.pl');
-    $subject = "Nowa wiadomość od: $name [Kato Salsa Hub]";
-    $email_content = "Imię lub pseudonim: $name\nEmail: $email\nZanonimizowane IP: $maskedIp\n\nWiadomość:\n$message";
-    $from_email = "noreply@katosalsahub.pl";
-    $headers = "From: Kato Salsa Hub <$from_email>\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8\r\n";
-    @mail($to, $subject, $email_content, $headers, "-f$from_email");
+// 6. Scentralizowana wysyłka powiadomienia e-mail na poczatek.krzysztof@gmail.com (zawsze, niezależnie od osTicket)
+$to = get_env_secret('CENTRAL_LEAD_EMAIL', get_env_secret('CONTACT_EMAIL', 'poczatek.krzysztof@gmail.com'));
+$subject = "[Kato Salsa Hub] Nowa wiadomość od: $name" . ($ticketCreated ? " [Ticket #$ticketNum]" : "");
+$email_content = "Nowe zgłoszenie z formularza kontaktowego (Kato Salsa Hub):\n"
+               . "=========================================\n"
+               . "Imię lub pseudonim: $name\n"
+               . "E-mail:             $email\n"
+               . "Ticket osTicket:    " . ($ticketCreated ? "#$ticketNum (https://hd.twojastronawww.pl/scp/)" : "Brak") . "\n"
+               . "Zanonimizowane IP:  $maskedIp\n"
+               . "Data:               " . date('Y-m-d H:i:s') . "\n"
+               . "-----------------------------------------\n"
+               . "Treść wiadomości:\n$message\n";
+$from_email = "noreply@katosalsahub.pl";
+$headers = "From: Kato Salsa Hub <$from_email>\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8\r\n";
+@mail($to, $subject, $email_content, $headers, "-f$from_email");
+
+// 7. Powiadomienie Push na Ntfy.sh (z przyciskami akcji 1-Klik)
+$ntfyTopic = get_env_secret('NTFY_TOPIC');
+if ($ntfyTopic !== '' && function_exists('curl_init')) {
+    $ntfyLines = [
+        "👤 IMIĘ: {$name}",
+        "✉️ E-MAIL: {$email}",
+        "🎫 TICKET: " . ($ticketCreated ? "#{$ticketNum}" : "brak"),
+        "🌐 ŹRÓDŁO: Formularz katosalsahub.pl",
+        "────────────────────────",
+        "💬 Wiadomość:",
+        $message
+    ];
+    $ntfyHeaders = [
+        "Title: Formularz (katosalsahub) - {$name} | EMAIL: {$email}",
+        'Priority: high',
+        'Tags: incoming_envelope,dancer',
+        "Actions: view, Napisz e-mail ({$email}), mailto:{$email}; view, Otworz Helpdesk, https://hd.twojastronawww.pl/scp/"
+    ];
+    $chNtfy = curl_init("https://ntfy.sh/{$ntfyTopic}");
+    curl_setopt_array($chNtfy, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => implode("\n", $ntfyLines),
+        CURLOPT_HTTPHEADER     => $ntfyHeaders,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 3,
+        CURLOPT_CONNECTTIMEOUT => 2
+    ]);
+    @curl_exec($chNtfy);
+    curl_close($chNtfy);
 }
 
-echo json_encode(['success' => true, 'message' => 'Dziękujemy! Twoja wiadomość została wysłana.']);
+echo json_encode([
+    'success' => true,
+    'ticket'  => $ticketCreated ? $ticketNum : null,
+    'message' => 'Dziękujemy! Twoja wiadomość została wysłana.'
+]);

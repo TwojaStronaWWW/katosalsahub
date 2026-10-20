@@ -4,27 +4,32 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v17';
+const CACHE_NAME = 'ksh-pwa-v24';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
+  '/grafik.html',
   '/salsopedia.html',
   '/privacy.html',
   '/manifest.json',
   '/assets/css/style.css?v=4.3',
   '/assets/css/components.css?v=4.3',
-  '/assets/css/sections.css?v=4.3',
+  '/assets/css/sections.css?v=4.4',
   '/assets/css/radio.css?v=4.3',
-  '/assets/css/wiki.css?v=4.3',
-  '/assets/js/i18n.js?v=4.3',
+  '/assets/css/wiki.css?v=4.4',
+  '/assets/css/schedule.css?v=4.5',
+  '/assets/js/i18n.js?v=4.4',
   '/assets/js/router.js?v=3.9',
   '/assets/js/home.js?v=3.9',
   '/assets/js/radio.js?v=3.9',
   '/assets/js/wiki.js?v=3.9',
+  '/assets/js/schedule.js?v=4.0',
   '/assets/js/contact.js?v=3.9',
   '/assets/js/cookies.js?v=3.9',
-  '/assets/js/ai-widget.js?v=4.0',
+  '/assets/js/ai-widget.js?v=4.4',
   '/assets/data/salsopedia.json',
+  '/assets/data/schedule.json',
+  '/assets/data/events.json',
   '/assets/data/kato-salsa-hub-mapa.kml',
   '/assets/images/logo.jpg',
   '/assets/images/logo.webp',
@@ -85,7 +90,9 @@ self.addEventListener('fetch', (event) => {
     isHtmlNav ||
     url.pathname.endsWith('.css') ||
     url.pathname.endsWith('.js') ||
-    url.pathname.endsWith('/salsopedia.json')
+    url.pathname.endsWith('/salsopedia.json') ||
+    url.pathname.endsWith('/schedule.json') ||
+    url.pathname.endsWith('/events.json')
   ) {
     event.respondWith(
       fetch(request, { cache: 'no-cache' })

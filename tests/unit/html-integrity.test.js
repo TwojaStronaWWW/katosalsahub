@@ -7,6 +7,7 @@ const ROOT_DIR = path.resolve(__dirname, '..', '..');
 const KSH_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'index.html');
 const PRIVACY_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'privacy.html');
 const SALSOPEDIA_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'salsopedia.html');
+const GRAFIK_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'grafik.html');
 const DANCEPULS_HTML = path.join(ROOT_DIR, 'dancepuls.pl', 'index.html');
 
 describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
@@ -34,6 +35,9 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /<meta\s+property="og:title"\s+content="[^"]*Salsa Katowice[^"]*"/i, 'Brak tagu og:title z frazą Salsa Katowice');
       assert.match(html, /itemtype="https:\/\/schema\.org\/DanceGroup"/i, 'Brak mikrodanych Schema.org/DanceGroup');
       assert.match(html, /"@type":\s*"GeoCoordinates"[\s\S]*?"latitude":\s*50\.2449289[\s\S]*?"longitude":\s*19\.046362/, 'Brak dokładnych współrzędnych GeoCoordinates dla Kamiennego Kręgu w Schema.org');
+      assert.match(html, /"@type":\s*"SiteNavigationElement"/, 'Brak elementów SiteNavigationElement w Schema.org dla Sitelinks');
+      assert.match(html, /"performer":\s*\{[\s\S]*?"@type":\s*"DanceGroup"/, 'Brak pola performer w DanceEvent wymaganych przez Google Rich Results');
+      assert.match(html, /"offers":\s*\{[\s\S]*?"@type":\s*"Offer"/, 'Brak pola offers w DanceEvent wymaganych przez Google Rich Results');
       assert.match(html, /itemtype="https:\/\/schema\.org\/FAQPage"/i, 'Brak sekcji FAQ z mikrodanymi Schema.org/FAQPage');
       assert.match(html, /https:\/\/www\.facebook\.com\/KatoSalsaHub/, 'Brak linku do oficjalnego fanpage Facebook KatoSalsaHub');
       assert.match(html, /https:\/\/www\.instagram\.com\/katosalsahub\//, 'Brak linku do oficjalnego profilu Instagram katosalsahub');
@@ -185,6 +189,36 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
     });
   });
 
+  describe('Wspólny Grafik Szkół & Wydarzenia DancePuls (katosalsahub.pl/grafik.html)', () => {
+    it('plik grafik.html powinien posiadać czysty widok SPA na wzór Salsopedii (bez sekcji strony głównej pod spodem), 4 zakładki trybów (w tym Cenniki Szkół i Kalkulator), filtry szkół (La Clave, Good Mood, Mil Pasos), brak pigułek Multisport na kafelkach zajęć oraz integrację z mapą i AI', () => {
+      assert.ok(fs.existsSync(GRAFIK_HTML), 'Brak pliku katosalsahub.pl/grafik.html');
+      const html = fs.readFileSync(GRAFIK_HTML, 'utf-8');
+      assert.match(html, /<!DOCTYPE html>/i);
+      assert.match(html, /<html\s+lang="pl">/i);
+      assert.match(html, /rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/grafik\.html"/i);
+      assert.match(html, /id="scheduleAppRoot"/);
+      assert.match(html, /id="scheduleSearchInput"/);
+      assert.match(html, /class="schedule-mode-tabs"/);
+      assert.match(html, /data-tab="classes"/);
+      assert.match(html, /data-tab="pricing"/);
+      assert.match(html, /data-tab="events"/);
+      assert.match(html, /data-tab="map"/);
+      assert.match(html, /id="schedulePricingView"/);
+      assert.match(html, /id="pricingCalculatorResults"/);
+      assert.doesNotMatch(html, /class="multisport-pill"/, 'Kafelki zajęć nie powinny zawierać pigułki Multisport');
+      assert.match(html, /La Clave/i);
+      assert.match(html, /Good Mood/i);
+      assert.match(html, /Mil Pasos/i);
+      assert.doesNotMatch(html, /id="faq"/i, 'Widok grafik.html nie powinien zawierać sekcji #faq pod spodem');
+      assert.doesNotMatch(html, /id="kontakt"/i, 'Widok grafik.html nie powinien zawierać sekcji #kontakt pod spodem');
+      assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w grafik.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w grafik.html naruszający SoC');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w grafik.html');
+      assert.match(html, /src="assets\/js\/schedule\.js(\?[^"]*)?"/i);
+      assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
+    });
+  });
+
   describe('DancePuls (dancepuls.pl/index.html)', () => {
     it('plik index.html powinien istnieć, mieć poprawny szkielet, meta description, canonical i zawierać panel 6-sekcyjnego raportu KSH', () => {
       assert.ok(fs.existsSync(DANCEPULS_HTML));
@@ -201,6 +235,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
 
       const htaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.htaccess'), 'utf-8');
       assert.match(htaccess, /RewriteCond\s+%\{HTTP_HOST\}\s+\^www\\\.katosalsahub\\\.pl\$/, 'Brak przekierowania 301 z www.katosalsahub.pl w .htaccess');
+      assert.match(htaccess, /microphone=\(self\)/, 'Nagłówek Permissions-Policy w .htaccess musi zezwalać na microphone=(self) dla dyktowania głosowego w Asystencie AI');
     });
 
     it('plik dancepuls.pl/index.html nie powinien zawierać stylów inline, inline event handlerów ani inline <script> (SoC)', () => {
@@ -213,7 +248,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
 
   describe('Wielojęzyczność i18n (PL / Hiszpański Kubański es-CU / Angielski Brytyjski en-GB)', () => {
     it('wszystkie widoki Kato Salsa Hub powinny posiadać przełącznik .lang-switcher w nawigacji i stopce oraz ładować i18n.js', () => {
-      for (const filePath of [KSH_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
+      for (const filePath of [KSH_HTML, GRAFIK_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
         const html = fs.readFileSync(filePath, 'utf-8');
         assert.match(html, /class="lang-switcher"/, `Brak przełącznika .lang-switcher w ${path.basename(filePath)}`);
         assert.match(html, /class="lang-switcher lang-switcher--footer"/, `Brak przełącznika .lang-switcher--footer w ${path.basename(filePath)}`);
@@ -241,7 +276,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       }
 
       // Sprawdź, czy każdy atrybut data-i18n* w plikach HTML ma pokrycie w słowniku
-      for (const filePath of [KSH_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
+      for (const filePath of [KSH_HTML, GRAFIK_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
         const html = fs.readFileSync(filePath, 'utf-8');
         const matches = html.matchAll(/data-i18n(?:-[a-z-]+)?="([^"]+)"/g);
         for (const match of matches) {

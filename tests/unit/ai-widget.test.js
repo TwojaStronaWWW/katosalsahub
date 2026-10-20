@@ -77,10 +77,20 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     const wolni = getLocalFallbackAnswer('Co dzieje się w Wolnych Ludziach w każdą niedzielę?', 'katosalsahub', REAL_SALSOPEDIA);
     assert.match(wolni, /15:00–18:00/);
     assert.match(wolni, /Mariacka 2/i);
+    assert.match(wolni, /Wspólny Grafik Szkół Tańca/i);
+    assert.doesNotMatch(wolni, /Bachat|Kizomb/i);
 
-    const kshCtx = buildDynamicContext('Kiedy są imprezy w Wolnych Ludziach?', REAL_SALSOPEDIA);
+    const kshActivity = getLocalFallbackAnswer('Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?', 'katosalsahub', REAL_SALSOPEDIA);
+    assert.match(kshActivity, /Salsy/i);
+    assert.match(kshActivity, /Wspólny Grafik Szkół Tańca/i);
+    assert.match(kshActivity, /grafik\.html/i);
+    assert.doesNotMatch(kshActivity, /Bachat|Kizomb/i);
+
+    const kshCtx = buildDynamicContext('Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?', REAL_SALSOPEDIA);
     assert.match(kshCtx, /15:00–18:00/);
     assert.match(kshCtx, /Wolni Ludzie/i);
+    assert.match(kshCtx, /WSPÓLNY GRAFIK SZKÓŁ TAŃCA/i);
+    assert.match(kshCtx, /nie zajmujemy się bachatą ani kizombą/i);
   });
 
   it('initAiWidget tworzy strukturę DOM, obsługuje otwieranie/zamykanie (w tym Escape) i chroni przed duplikacją', () => {
@@ -213,5 +223,65 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     const cachedAfterUpdate = api.getCachedAnswer('Co to jest Enchufla?');
     assert.ok(cachedAfterUpdate);
     assert.match(cachedAfterUpdate, /Nowa zweryfikowana definicja Enchufla/);
+  });
+
+  it('Dyktowanie głosowe (Web Speech API — Tryb Bezpieczny): rozpoznaje mowę po polsku na żywo do pola tekstowego bez automatycznego wysyłania', () => {
+    const { document, window } = setupMockDom();
+
+    let lastInstance = null;
+    window.webkitSpeechRecognition = class MockSpeechRecognition {
+      constructor() {
+        this.lang = '';
+        this.continuous = true;
+        this.interimResults = false;
+        this.maxAlternatives = 1;
+        this.started = false;
+        lastInstance = this;
+      }
+      start() {
+        this.started = true;
+        if (typeof this.onstart === 'function') this.onstart();
+      }
+      stop() {
+        this.started = false;
+        if (typeof this.onend === 'function') this.onend();
+      }
+    };
+
+    const api = initAiWidget(document, window, {
+      siteId: 'katosalsahub',
+      initialKnowledge: REAL_SALSOPEDIA
+    });
+
+    assert.ok(api.voiceBtn, 'Przycisk mikrofonu #tswAiVoiceBtn musi istnieć w formularzu czatu');
+    assert.equal(api.voiceBtn.getAttribute('aria-pressed'), 'false');
+    assert.equal(api.isVoiceListening(), false);
+
+    // 1. Kliknięcie mikrofonu uruchamia nasłuchiwanie pl-PL z interimResults=true
+    api.voiceBtn.click();
+    assert.ok(lastInstance, 'Instancja SpeechRecognition powinna zostać utworzona');
+    assert.equal(lastInstance.lang, 'pl-PL');
+    assert.equal(lastInstance.interimResults, true);
+    assert.equal(lastInstance.continuous, false);
+    assert.equal(api.isVoiceListening(), true);
+    assert.equal(api.voiceBtn.getAttribute('aria-pressed'), 'true');
+    assert.equal(api.voiceBtn.classList.contains('tsw-listening'), true);
+
+    // 2. Transkrypcja na żywo (interim) wpisuje tekst do pola #tswAiInput
+    lastInstance.onresult({
+      results: [
+        Object.assign([{ transcript: 'Co to jest ' }], { isFinal: true }),
+        Object.assign([{ transcript: 'Dile Que No' }], { isFinal: false })
+      ]
+    });
+    assert.equal(api.chatInput.value, 'Co to jest Dile Que No');
+
+    // 3. Zakończenie wypowiedzi wyłącza mikrofon, ale zostawia tekst w polu do weryfikacji przed wysłaniem (Tryb 1 Bezpieczny)
+    lastInstance.stop();
+    assert.equal(api.isVoiceListening(), false);
+    assert.equal(api.voiceBtn.getAttribute('aria-pressed'), 'false');
+    assert.equal(api.voiceBtn.classList.contains('tsw-listening'), false);
+    assert.equal(api.chatInput.value, 'Co to jest Dile Que No');
+    assert.equal(api.getHistory().length, 0, 'Tryb bezpieczny nie może wysłać wiadomości automatycznie bez kliknięcia Wyślij');
   });
 });

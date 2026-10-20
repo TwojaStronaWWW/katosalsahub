@@ -239,5 +239,147 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.ok(bongoResults.length >= 1 && /Bongó/i.test(bongoResults[0].term), 'Zapytanie "bongo" bez akcentu powinno znaleźć "Bongó (Bongosy)" na 1. miejscu');
     });
   });
+
+  describe('Kato Salsa Hub - Wspólny Grafik Szkół (schedule.json & schedule.js)', () => {
+    const SCHEDULE_JSON = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'schedule.json');
+    const KSH_EVENTS_JSON = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'events.json');
+
+    it('plik schedule.json oraz zsynchronizowany katosalsahub.pl/assets/data/events.json powinny istnieć i posiadać poprawny schemat oraz ustandaryzowane poziomy KSH', () => {
+      assert.ok(fs.existsSync(SCHEDULE_JSON), 'Brak pliku katosalsahub.pl/assets/data/schedule.json');
+      assert.ok(fs.existsSync(KSH_EVENTS_JSON), 'Brak zsynchronizowanego pliku katosalsahub.pl/assets/data/events.json');
+
+      const sched = JSON.parse(fs.readFileSync(SCHEDULE_JSON, 'utf-8'));
+      assert.ok(Array.isArray(sched.schools) && sched.schools.length >= 3, 'schedule.json musi zawierać co najmniej 3 katowickie szkoły tańca (La Clave, Good Mood, Mil Pasos)');
+      assert.ok(Array.isArray(sched.levelStandard) && sched.levelStandard.length === 5, 'schedule.json musi definiować 5-stopniowy standard poziomów KSH (P0, P1, P2, S1, OPEN)');
+      assert.ok(Array.isArray(sched.classes) && sched.classes.length >= 100, `Oczekiwano min. 100 realnych kursów z 3 szkół, znaleziono: ${sched.classes.length}`);
+
+      const schoolIds = new Set(sched.schools.map((s) => s.id));
+      assert.ok(schoolIds.has('LC'), 'Brak szkoły La Clave (LC) w schedule.json');
+      assert.ok(schoolIds.has('GM'), 'Brak szkoły Good Mood (GM) w schedule.json');
+      assert.ok(schoolIds.has('MP'), 'Brak szkoły Mil Pasos (MP) w schedule.json');
+
+      const allowedLevels = new Set(['P0', 'P1', 'P2', 'S1', 'OPEN']);
+      for (const cls of sched.classes) {
+        assert.ok(cls.id, 'Każde zajęcia muszą mieć pole id');
+        assert.ok(schoolIds.has(cls.schoolId), `Zajęcia ${cls.id} odwołują się do nieznanej szkoły ${cls.schoolId}`);
+        assert.ok(cls.dayOfWeek >= 1 && cls.dayOfWeek <= 7, `Zajęcia ${cls.id} mają niepoprawny dzień tygodnia`);
+        assert.match(cls.startTime, /^\d{2}:\d{2}$/, `Zajęcia ${cls.id} mają niepoprawny format startTime`);
+        assert.ok(allowedLevels.has(cls.levelCode), `Zajęcia ${cls.id} mają nieustandaryzowany kod poziomu: ${cls.levelCode}`);
+        assert.ok(Array.isArray(cls.instructors) && cls.instructors.length > 0, `Zajęcia ${cls.id} muszą mieć przypisanego instruktora`);
+      }
+
+      // Weryfikacja funkcji normalizeLevel, parsera CSV Good Mood, parsera cennika La Clave oraz Circuit Breakera
+      const {
+        normalizeLevel,
+        parseCsvGrid,
+        parseGoodMoodSheetCells,
+        parseLaClavePricingHtml,
+        validateScheduleSanity,
+      } = require('../../scripts/sync-schedules.js');
+      assert.strictEqual(normalizeLevel('GR. OD PODSTAW START: 26.10.2026'), 'P0');
+      assert.strictEqual(normalizeLevel('BACHATA OD ZERA'), 'P0');
+      assert.strictEqual(normalizeLevel('P0 - CZ.1'), 'P0');
+      assert.strictEqual(normalizeLevel('GR. PODSTAWOWA TAŃCZĄCA'), 'P1');
+      assert.strictEqual(normalizeLevel('SALSA BASIC 4'), 'P1');
+      assert.strictEqual(normalizeLevel('BACHATA P2 - CZ.1'), 'P2');
+      assert.strictEqual(normalizeLevel('BACHATA TAŃCZĄCY 6+ MIES.'), 'P2');
+      assert.strictEqual(normalizeLevel('GR. ŚR-ZAAWANSOWANA dla tańczących min. 6 miesięcy'), 'S1');
+      assert.strictEqual(normalizeLevel('SALSA KUBAŃSKA P4 GRUPA ZAMKNIĘTA'), 'S1');
+      assert.strictEqual(normalizeLevel('BACHATA PRAKTIS Z INSTRUKTOREM'), 'OPEN');
+
+      const sampleCsv = 'Poniedziałek,"SALA \nSWAYZE","SALSA CUBANA\n\nGR. OD PODSTAW\nSTART: 26.10.2026\n\n18:10 - 18:55\n\nDaniel"';
+      const rows = parseCsvGrid(sampleCsv);
+      assert.strictEqual(rows.length, 1);
+      const gmBlocks = parseGoodMoodSheetCells(sampleCsv, 'Paderewskiego 35');
+      assert.strictEqual(gmBlocks.length, 1);
+      assert.strictEqual(gmBlocks[0].dayOfWeek, 1);
+      assert.strictEqual(gmBlocks[0].startTime, '18:10');
+      assert.strictEqual(gmBlocks[0].startDate, '26.10.2026');
+      assert.strictEqual(gmBlocks[0].levelCode, 'P0');
+
+      const sampleLcPricingHtml = `
+        <table id="cennik">
+          <tr><th>Start</th><td>4</td><td>109zł</td><td>bezterminowy*</td></tr>
+          <tr><th>Eko</th><td>8</td><td>189zł</td><td>bezterminowy*</td></tr>
+          <tr><th>Pro</th><td>10</td><td>219zł</td><td>bezterminowy*</td></tr>
+        </table>
+        <table id="cennik">
+          <tr><th>Jednorazowe</th><td>1</td><td>30zł</td></tr>
+          <tr><th>karnet OPEN</th><td>full</td><td>300zł</td></tr>
+        </table>
+      `;
+      const parsedPrices = parseLaClavePricingHtml(sampleLcPricingHtml);
+      assert.ok(parsedPrices, 'parseLaClavePricingHtml powinien poprawnie sparsować tabelę cennika La Clave');
+      assert.strictEqual(parsedPrices.pass4Price, 109);
+      assert.strictEqual(parsedPrices.pass8Price, 189);
+      assert.strictEqual(parsedPrices.pass10Price, 219);
+      assert.strictEqual(parsedPrices.singleEntryPrice, 30);
+      assert.strictEqual(parsedPrices.openPassPrice, 300);
+      assert.strictEqual(parseLaClavePricingHtml('<html>Błąd 500</html>'), null);
+
+      assert.strictEqual(validateScheduleSanity(sched), true);
+      assert.throws(() => validateScheduleSanity({ classes: [] }), /Circuit Breaker/i);
+      assert.throws(
+        () => validateScheduleSanity({ ...sched, schools: [{ id: 'LC', pricing: { unitMinutes: 45, singleEntryPrice: 0, openPassPrice: 300, passes: [] } }] }),
+        /Circuit Breaker/i
+      );
+    });
+
+    it('funkcje filterScheduleClasses, filterDancepulsEvents oraz calculateSchoolPricingComparison w schedule.js powinny poprawnie filtrować kursy, imprezy i wyliczać opłacalność cenników', () => {
+      const {
+        filterScheduleClasses,
+        filterDancepulsEvents,
+        calculateSchoolPricingComparison,
+      } = require('../../katosalsahub.pl/assets/js/schedule.js');
+      const sched = JSON.parse(fs.readFileSync(SCHEDULE_JSON, 'utf-8'));
+      const evDays = JSON.parse(fs.readFileSync(KSH_EVENTS_JSON, 'utf-8'));
+
+      const lcClasses = filterScheduleClasses(sched.classes, { schoolFilter: 'LC' });
+      assert.ok(lcClasses.length > 0 && lcClasses.every((c) => c.schoolId === 'LC'));
+
+      const p0Classes = filterScheduleClasses(sched.classes, { levelFilter: 'P0' });
+      assert.ok(p0Classes.length > 0 && p0Classes.every((c) => c.levelCode === 'P0'));
+
+      const galasClasses = filterScheduleClasses(sched.classes, { searchQuery: 'Daniel Galas' });
+      assert.ok(galasClasses.length >= 1 && galasClasses.every((c) => c.schoolId === 'MP'));
+
+      const katoEvents = filterDancepulsEvents(evDays, { eventCityFilter: 'Katowice' });
+      assert.ok(katoEvents.length > 0);
+      for (const day of katoEvents) {
+        assert.ok(day.events.every((e) => e.miasto.toLowerCase() === 'katowice'));
+      }
+
+      // Weryfikacja kalkulatora opłacalności cenników (Unit Economics)
+      const std8 = calculateSchoolPricingComparison(sched.schools, { units: 8, profile: 'standard' });
+      assert.strictEqual(std8.length, 3, 'Kalkulator powinien zwrócić porównanie dla 3 szkół (LC, GM, MP)');
+      const gm8 = std8.find((r) => r.schoolId === 'GM');
+      const lc8 = std8.find((r) => r.schoolId === 'LC');
+      const mp8 = std8.find((r) => r.schoolId === 'MP');
+      assert.strictEqual(gm8.monthlyCost, 170);
+      assert.strictEqual(gm8.costPer60Min, 21.25);
+      assert.strictEqual(gm8.isBestValue60Min, true);
+      assert.strictEqual(lc8.monthlyCost, 189);
+      assert.strictEqual(lc8.isUnlimitedValidity, true);
+      assert.strictEqual(mp8.monthlyCost, 199);
+
+      const singleCard8 = calculateSchoolPricingComparison(sched.schools, { units: 8, profile: 'card_single' });
+      const lcCard = singleCard8.find((r) => r.schoolId === 'LC');
+      assert.strictEqual(lcCard.monthlyCost, 60, 'W La Clave przy 4 blokach 2x45 min i karcie 1x/dzień dopłata powinna wynosić 4 * 15 zł = 60 zł');
+      assert.strictEqual(lcCard.isBestValue60Min, true);
+
+      // Weryfikacja odporności kalkulatora na pustą/zbuforowaną tablicę schools (Fallback) oraz dokładności wyliczeń dla 4 i 16 jedn.
+      const fallback4 = calculateSchoolPricingComparison([], { units: 4, profile: 'standard' });
+      assert.strictEqual(fallback4.length, 3, 'Kalkulator musi działać nawet przy pustej tablicy schools dzięki DEFAULT_SCHOOLS_WITH_PRICING');
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'GM').costPer60Min, 25);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'MP').costPerUnit, 29.75);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'MP').costPer60Min, 32.45);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'LC').costPerUnit, 27.25);
+      assert.strictEqual(fallback4.find((r) => r.schoolId === 'LC').costPer60Min, 36.33);
+
+      const student16 = calculateSchoolPricingComparison([], { units: 16, profile: 'student' });
+      assert.strictEqual(student16.find((r) => r.schoolId === 'GM').costPer60Min, 16.25);
+      assert.strictEqual(student16.find((r) => r.schoolId === 'MP').costPerUnit, 16.82);
+    });
+  });
 });
 

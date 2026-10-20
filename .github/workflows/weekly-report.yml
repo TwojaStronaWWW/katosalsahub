@@ -2,12 +2,13 @@ name: DancePuls Weekly Report Cron
 
 on:
   schedule:
-    # Każdy czwartek o 08:00 UTC (#15)
-    - cron: '0 8 * * 4'
+    # Codziennie o 06:00 UTC (07:00/08:00 PL): lekki skan SHA-256/CSV grafików szkół + DancePuls (#15)
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: weekly-report-${{ github.ref }}
@@ -15,8 +16,9 @@ concurrency:
 
 jobs:
   generate-report:
-    name: 📅 Generowanie cotygodniowego raportu DancePuls
+    name: 📅 Generowanie cotygodniowego raportu DancePuls & Sync Grafików
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - name: Pobranie kodu repozytorium
         uses: actions/checkout@v7
@@ -26,20 +28,57 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Uruchomienie silnika synchronizacji i raportowania (sync_engine.js)
+      - name: Uruchomienie silnika synchronizacji i raportowania (sync_engine.js & sync-schedules.js)
         env:
           SKIP_REMOTE_SYNC: '1'
-        run: node dancepuls.pl/tools/sync_engine.js
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          node dancepuls.pl/tools/sync_engine.js
+          node scripts/sync-schedules.js --check-remote || node scripts/sync-schedules.js
 
-      - name: Automatyczny commit i push zaktualizowanego raportu oraz events.json
+      - name: Walidacja integralności wygenerowanych plików JSON przed commitem (Circuit Breaker)
+        run: npm test
+
+      - name: Automatyczny commit, push i wdrożenie SFTP na LH.pl po wykryciu zmian
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CF_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dancepuls.pl/data/events.json dancepuls.pl/data/latest_report.md
+          git add dancepuls.pl/data/events.json dancepuls.pl/data/latest_report.md katosalsahub.pl/assets/data/events.json katosalsahub.pl/assets/data/schedule.json
           if git diff --cached --quiet; then
-            echo "Brak zmian w danych wydarzeń i raporcie."
+            echo "Brak zmian w danych wydarzeń, grafiku szkół i raporcie."
           else
-            git commit -m "chore(dancepuls): automatyczna aktualizacja raportu tygodniowego i events.json"
+            git commit -m "chore(dancepuls): automatyczna aktualizacja raportu tygodniowego, events.json i schedule.json"
             git pull --rebase origin ${{ github.ref_name }}
             git push
+
+            echo "🚀 Wdrażanie zaktualizowanego grafiku i wydarzeń bezpośrednio na serwer LH.pl (SFTP)..."
+            sudo apt-get install -y -qq lftp > /dev/null 2>&1
+            lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
+              -p 40022 \
+              sftp://${{ secrets.FTP_SERVER }} \
+              -e "
+                set net:timeout 20;
+                set net:max-retries 3;
+                set net:reconnect-interval-base 3;
+                set sftp:auto-confirm yes;
+                put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/schedule.json;
+                put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/events.json;
+                put -O /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/ ./dancepuls.pl/data/events.json;
+                put -O /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/ ./dancepuls.pl/data/latest_report.md;
+                quit
+              "
+
+            if [ -n "$CF_ZONE" ] && [ -n "$CF_TOKEN" ]; then
+              echo "⚡ Czyszczenie pamięci podręcznej Cloudflare CDN..."
+              curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE/purge_cache" \
+                -H "Authorization: Bearer $CF_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data '{"purge_everything":true}' || true
+            fi
+
+            gh workflow run deploy.yml --ref "${{ github.ref_name }}" || true
           fi

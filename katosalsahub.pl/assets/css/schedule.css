@@ -1,0 +1,986 @@
+/* =====================================================
+   SCHEDULE.CSS - WSPÓLNY GRAFIK SZKÓŁ, IMPRES DANCEPULS & MAPA
+   Wzorzec architektoniczny Salsopedii (Midnight Lounge & CLS = 0)
+   ===================================================== */
+
+/* --- Główne Przełączniki Trybu (Stała Geometria CLS = 0) --- */
+.schedule-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 920px;
+  margin: 22px auto 0;
+  padding: 6px;
+  background: rgba(15, 18, 32, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+.schedule-mode-btn {
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #cbd5e1;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.schedule-mode-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+
+.schedule-mode-btn.is-active {
+  background: linear-gradient(135deg, var(--yellow, #fbbf24), var(--orange, #f97316));
+  color: #090b10;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
+}
+
+.schedule-mode-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.22);
+  color: inherit;
+}
+
+@media (max-width: 820px) {
+  .schedule-mode-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-mode-btn {
+    padding: 0 8px;
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 959px) {
+  #scheduleAppRoot .wiki-content {
+    order: 1;
+  }
+
+  #scheduleAppRoot .wiki-sidebar {
+    order: 2;
+  }
+}
+
+/* --- Pasek Szybkiego Wyboru Dni Tygodnia (CLS = 0) --- */
+.schedule-day-bar {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 6px;
+  background: rgba(20, 23, 37, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+}
+
+.day-pill-btn {
+  height: 40px;
+  padding: 0 6px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+  color: #cbd5e1;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.day-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+.day-pill-btn.is-today {
+  border-color: rgba(251, 191, 36, 0.45);
+  color: #fbbf24;
+}
+
+.day-pill-btn.is-active {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #ffffff;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+@media (max-width: 980px) {
+  .schedule-day-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* --- Słownik / Standaryzacja Poziomów KSH --- */
+.level-standard-details {
+  margin-bottom: 22px;
+  background: rgba(18, 21, 35, 0.92);
+  border: 1px solid rgba(251, 191, 36, 0.22);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.level-standard-summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #fde68a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  list-style: none;
+  user-select: none;
+}
+
+.level-standard-summary::-webkit-details-marker {
+  display: none;
+}
+
+.level-standard-summary:hover {
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.level-standard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 0 16px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+}
+
+.level-standard-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.level-standard-card h4 {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  color: #f8fafc;
+}
+
+.level-standard-map {
+  margin: 6px 0 0;
+  padding-left: 14px;
+  color: #94a3b8;
+}
+
+/* --- Kropki Szkół w Sidebarze --- */
+.school-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.school-dot--lc {
+  background: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+.school-dot--gm {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+.school-dot--mp {
+  background: #3b82f6;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+}
+
+.school-dot--ev {
+  background: #a855f7;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+}
+
+.sidebar-item-label {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Nagłówki Dni w Siatce Grafiku --- */
+.schedule-day-section {
+  margin-bottom: 32px;
+}
+
+.schedule-day-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 18px;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, rgba(251, 191, 36, 0.14), rgba(249, 115, 22, 0.04));
+  border-left: 4px solid #fbbf24;
+  border-radius: 0 12px 12px 0;
+}
+
+.schedule-day-heading h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 1.5px;
+  color: #f8fafc;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.schedule-day-badge {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.schedule-day-badge--today {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #34d399;
+}
+
+/* --- Karty Zajęć w Grafiku Szkół --- */
+.schedule-cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 420px) {
+  .schedule-cards-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.schedule-card {
+  background: rgba(22, 25, 42, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-left: 5px solid #fbbf24;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.schedule-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(251, 191, 36, 0.35);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.48);
+}
+
+.schedule-card--lc {
+  border-left-color: #ef4444;
+}
+
+.schedule-card--gm {
+  border-left-color: #f59e0b;
+}
+
+.schedule-card--mp {
+  border-left-color: #3b82f6;
+}
+
+.schedule-card--ev {
+  border-left-color: #a855f7;
+}
+
+.schedule-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.schedule-time-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 5px 11px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: #fbbf24;
+}
+
+.schedule-badges-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.school-badge {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #ffffff;
+}
+
+.school-badge--lc {
+  background: rgba(239, 68, 68, 0.22);
+  border: 1px solid rgba(239, 68, 68, 0.55);
+  color: #fca5a5;
+}
+
+.school-badge--gm {
+  background: rgba(245, 158, 11, 0.22);
+  border: 1px solid rgba(245, 158, 11, 0.55);
+  color: #fde68a;
+}
+
+.school-badge--mp {
+  background: rgba(59, 130, 246, 0.22);
+  border: 1px solid rgba(59, 130, 246, 0.55);
+  color: #93c5fd;
+}
+
+.school-badge--ev {
+  background: rgba(168, 85, 247, 0.22);
+  border: 1px solid rgba(168, 85, 247, 0.55);
+  color: #d8b4fe;
+}
+
+.level-badge {
+  font-size: 0.73rem;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+.level-badge--p0 {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #6ee7b7;
+}
+
+.level-badge--p1 {
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #7dd3fc;
+}
+
+.level-badge--p2 {
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  color: #a5b4fc;
+}
+
+.level-badge--s1 {
+  background: rgba(192, 132, 252, 0.18);
+  border: 1px solid rgba(192, 132, 252, 0.45);
+  color: #e9d5ff;
+}
+
+.level-badge--open {
+  background: rgba(251, 191, 36, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #fde68a;
+}
+
+.schedule-card-title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin: 0 0 4px;
+  line-height: 1.35;
+}
+
+.schedule-card-style {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fbbf24;
+  margin-bottom: 6px;
+}
+
+.schedule-card-notes {
+  font-size: 0.86rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.schedule-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.schedule-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.schedule-instructors {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.instructor-link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.instructor-link-pill:hover {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.multisport-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+}
+
+.schedule-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.schedule-action-btn {
+  flex: 1;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.schedule-action-btn:hover {
+  background: rgba(251, 191, 36, 0.16);
+  border-color: rgba(251, 191, 36, 0.45);
+  color: #fbbf24;
+}
+
+/* --- Widok 2: Kalendarz Imprez i Warsztatów (DancePuls) --- */
+.events-filter-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 6px;
+  background: rgba(20, 23, 37, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+}
+
+@media (max-width: 680px) {
+  .events-filter-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.event-card-ksh {
+  background: rgba(22, 25, 42, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.event-card-ksh:hover {
+  transform: translateY(-2px);
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.event-card-ksh--promoted {
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  background: linear-gradient(145deg, rgba(35, 28, 18, 0.95), rgba(22, 25, 42, 0.95));
+  box-shadow: 0 8px 26px rgba(251, 191, 36, 0.15);
+}
+
+.event-city-pill {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #fde68a;
+}
+
+.event-city-pill--other {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #bae6fd;
+}
+
+.event-ksh-star {
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  color: #090b10;
+}
+
+.event-styles-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.event-style-tag {
+  font-size: 0.73rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e2e8f0;
+}
+
+/* --- Widok 3: Mapa Szkół i Parkietów --- */
+.schedule-map-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .schedule-map-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-map-tabs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.schools-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.school-info-card {
+  background: rgba(20, 23, 37, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.school-info-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #f8fafc;
+}
+
+.school-source-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+}
+
+/* --- Widok Cenników i Kalkulatora Opłacalności (CLS = 0) --- */
+.pricing-calc-box {
+  background: rgba(18, 21, 35, 0.94);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.pricing-calc-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.85rem;
+  letter-spacing: 1.2px;
+  color: #f8fafc;
+  margin: 0 0 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pricing-calc-header p {
+  margin: 0 0 18px;
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.pricing-calc-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.pricing-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pricing-control-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fde68a;
+}
+
+.pricing-pills-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 820px) {
+  .pricing-pills-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-pills-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pricing-results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 920px) {
+  .pricing-results-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pricing-result-card {
+  background: rgba(24, 28, 46, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 4px solid #fbbf24;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.pricing-result-card--lc {
+  border-top-color: #ef4444;
+}
+
+.pricing-result-card--gm {
+  border-top-color: #f59e0b;
+}
+
+.pricing-result-card--mp {
+  border-top-color: #3b82f6;
+}
+
+.pricing-result-card.is-best-choice {
+  border-color: rgba(251, 191, 36, 0.55);
+  box-shadow: 0 8px 26px rgba(251, 191, 36, 0.16);
+}
+
+.pricing-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.pricing-badges-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pricing-best-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  color: #090b10;
+}
+
+.pricing-unlimited-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #6ee7b7;
+}
+
+.pricing-result-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.pricing-price-main {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #fbbf24;
+  margin-bottom: 10px;
+}
+
+.pricing-price-main small {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.pricing-metrics-list {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.pricing-metrics-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pricing-highlight-60m {
+  color: #fde68a;
+}
+
+.pricing-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: rgba(18, 21, 35, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+}
+
+.pricing-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  color: #e2e8f0;
+  min-width: 680px;
+}
+
+.pricing-comparison-table th,
+.pricing-comparison-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.pricing-comparison-table thead th {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fde68a;
+  font-weight: 800;
+  font-size: 0.86rem;
+}
+
+.pricing-comparison-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pricing-table-wrapper {
+  margin-bottom: 24px;
+}
+
+.pricing-analysis-grid {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.pricing-analysis-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pricing-analysis-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 960px) {
+  .pricing-analysis-grid--two,
+  .pricing-analysis-grid--three {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-analysis-card {
+  background: rgba(18, 21, 35, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pricing-analysis-card--lc {
+  border-top: 4px solid #ef4444;
+}
+
+.pricing-analysis-card--gm {
+  border-top: 4px solid #f59e0b;
+}
+
+.pricing-analysis-card--mp {
+  border-top: 4px solid #3b82f6;
+}
+
+.pricing-analysis-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fde68a;
+  line-height: 1.4;
+}
+
+.pricing-analysis-card h4 {
+  margin: 6px 0 2px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.pricing-analysis-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+
+.pricing-analysis-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.pricing-analysis-list--warn {
+  color: #fcd34d;
+}

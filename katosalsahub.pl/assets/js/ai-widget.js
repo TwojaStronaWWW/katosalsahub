@@ -69,7 +69,7 @@ function formatMarkdown(text) {
     '$1<a href="$2" class="tsw-ai-link">$2</a>'
   );
   safe = safe.replace(
-    /(^|[\s(])(salsopedia\.html(?:#[a-zA-Z0-9_-]+)?)/g,
+    /(^|[\s(])((?:salsopedia|grafik)\.html(?:#[a-zA-Z0-9_-]+)?)/g,
     '$1<a href="$2" class="tsw-ai-link">$2</a>'
   );
 
@@ -241,12 +241,13 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
 
 const KSH_CORE_CONTEXT = [
   'PODSTAWOWE INFORMACJE O DZIAŁALNOŚCI KATO SALSA HUB (SALSA KATOWICE):',
-  '- Kim jesteśmy: Niezależna społeczność i Fundacja Kato Salsa Hub (https://katosalsahub.pl/) łącząca tancerzy Salsy Kubańskiej (Casino, Timba, Rueda de Casino), Sonu, Bachaty i Kizomby w Katowicach i na całym Śląsku ponad podziałami szkolnymi.',
-  '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
+  '- Kim jesteśmy (WAŻNE — TYLKO SALSA): Jesteśmy niezależną społecznością i Fundacją Kato Salsa Hub (https://katosalsahub.pl/) łączącą miłośników Salsy (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino, Sonu Kubańskiego, Rumby oraz Salsy Liniowej) w Katowicach i na całym Śląsku ponad podziałami szkolnymi. Nasza społeczność i fundacja skupia się wyłącznie na Salsie i kulturze kubańskiej (nie zajmujemy się bachatą ani kizombą).',
+  '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy Salsę w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
   '- PLENERY TANECZNE W KATOWICACH (WIOSNA–LATO I CIEPŁE DNI): 1) Kamienny Krąg w Dolinie Trzech Stawów (ul. Trzech Stawów 22, obok przystani i La Cantina) — w razie deszczu tańczymy pod zadaszoną wiatą przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10); na mapie zaznaczyliśmy 3 toalety (w tym przy AMO Pizza) oraz 13-minutową trasę pieszą z darmowego Parkingu Rekomendowanego (Południe / Rolkostrada). 2) Amfiteatr pod NOSPR-em w Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony NOSPR przy fontannach) z darmowym w weekendy parkingiem od ul. Olimpijskiej.',
-  '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Otwarta encyklopedia ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem społecznościowym Salsopedia Studio.',
+  '- WSPÓLNY GRAFIK I PORÓWNYWARKA CENNIKÓW SZKÓŁ TAŃCA W KATOWICACH (https://katosalsahub.pl/grafik.html): Tworzymy i prowadzimy ujednolicony, wspólny grafik katowickich szkół tańca (130 kursów tygodniowo: La Clave, Good Mood, Mil Pasos, Evolution) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH (P0 Od zera, P1 Podstawowy, P2 Podstawowy+, S1 Średniozaawansowany/Zaawansowany, OPEN), kalkulatorem opłacalności cenników (La Clave: 45 min, karnety BEZTERMINOWE 4x 109 zł / 8x 189 zł / 10x 219 zł / Open 300 zł, dopłaty w blokach +15 zł i +10 zł lub 3. jednostka gratis przy 2 skreśleniach; Good Mood: 60 min, ważność 28 dni, 4h 100 zł [student 90 zł] / 8h 170 zł [student 160 zł] / Open 260 zł; Mil Pasos: 55 min, ważność 4 tyg., 4h 119 zł / 8h 199 zł / 12h 249 zł / 16h 299 zł / Open 399 zł, -10% dla studentów), kalendarzem wydarzeń i mapą szkół.',
+  '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Tworzymy otwartą, społecznościową encyklopedię ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem Salsopedia Studio.',
   '- RADIO TIMBA NATION 24/7 (ODTWARZACZ NA STRONIE): Timba Nation Radio to niezależna internetowa stacja radiowa z Zurychu (Szwajcaria), założona i prowadzona przez DJ Maikiu na platformie Zeno.FM (https://zeno.fm/radio/timba-nation-radio/). To NIE jest radio tworzone ani finansowane przez Kato Salsa Hub — nasza społeczność udostępnia na stronie głównej dedykowany odtwarzacz tego strumienia (z podglądem granego utworu na żywo, obsługą ekranu blokady telefonu MediaSession oraz wyłącznikiem czasowym Sleep Timer: 15, 30, 60 min). Stacja gra 24/7 współczesną kubańską Timbę i Salsę Cubana (w tym autorskie sety DJ Maikiu - Cuban Salsa Mix) bez komercyjnych bloków reklamowych, ponieważ jest autorskim, pasjonackim projektem muzycznym DJ Maikiu promującym kubańską muzykę.',
-  '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Nasz cotygodniowy radar i agregator wszystkich imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
+  '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Tworzymy cotygodniowy radar i agregator imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
   '- INTEGRACJE, SPOTKANIA COMIESIĘCZNE I WYJAZDY: Organizujemy comiesięczne spotkania grupowe społeczności z systemem opasek (Leaders/Followers), grupy zniżkowe KSH na festiwale oraz wielki wiosenny Wyjazd Integracyjny Kato Salsa Hub (9–11 kwietnia, do 100 osób).'
 ].join('\n');
 
@@ -306,6 +307,9 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       qNorm.includes('18 00') ||
       qNorm.includes('dzialalnosc') ||
       qNorm.includes('czym sie zajmuj') ||
+      qNorm.includes('czym zajmuj') ||
+      qNorm.includes('fundacj') ||
+      qNorm.includes('spolecznosc') ||
       qNorm.includes('co robicie') ||
       qNorm.includes('kim jestescie') ||
       qNorm.includes('o was') ||
@@ -314,10 +318,11 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
 
     if (isActivityOrEventScheduleQuestion) {
       return (
-        `🌴 **Co dzieje się w Kato Salsa Hub i kiedy tańczymy w Wolnych Ludziach?**\n` +
-        `- **🍹 W każdą niedzielę (15:00–18:00) — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze cotygodniowe, otwarte potańcówki i praktyki pod dachem w samym sercu Katowic (róg ul. Mielęckiego). Tańczymy **Salsę Kubańską (Casino), Timbę, Ruedę de Casino, Son, Bachatę i Kizombę** — nie musisz mieć własnej pary! W niedziele ulice wokół są darmowe, a jako główny **Parking Rekomendowany** polecamy ogromny, bezpłatny w niedzielę **Parking pod NOSPR-em** (12 min spacerem przez kładkę).\n` +
-        `- **💃 Plenery taneczne (Kamienny Krąg na Dolinie 3 Stawów & Amfiteatr NOSPR):** W ciepłe dni tańczymy pod gołym niebem na **Kamiennym Kręgu (ul. Trzech Stawów 22)** — w razie deszczu pod zadaszoną wiatą **UKS 4 / SUP Tomi (ul. Trzech Stawów 10)** — oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
-        `- **🔥 Pełna działalność naszej Fundacji i Społeczności:** Tworzymy otwartą encyklopedię **Salsopedia** (ponad 200 figur, szkół i instruktorów w salsopedia.html), udostępniamy odtwarzacz całodobowego **Radia Timba Nation 24/7** (niezależnej stacji kubańskiej **DJ Maikiu** z Zurychu na Zeno.FM — z naszym wyłącznikiem czasowym i obsługą ekranu blokady!), prowadzimy cotygodniowy radar imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), comiesięczne spotkania integracyjne z opaskami, grupy zniżkowe na festiwale oraz wiosenny **Wyjazd Integracyjny KSH (9–11 kwietnia, do 100 osób)**!`
+        `🌴 **Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?**\n` +
+        `Jesteśmy niezależną społecznością i fundacją łączącą miłośników **Salsy** (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino oraz Sonu) w Katowicach i na całym Śląsku ponad podziałami szkolnymi:\n` +
+        `- **🍹 Niedzielne potańcówki w Wolnych Ludziach (ul. Mariacka 2, Katowice):** W **każdą niedzielę w godz. 15:00–18:00** spotykamy się na otwartych potańcówkach i praktykach pod dachem (**Salsa Kubańska / Casino, Timba, Rueda de Casino, Son** — nie musisz mieć własnej pary!). W niedziele ulice wokół są darmowe, a jako główny **Parking Rekomendowany** polecamy bezpłatny w niedzielę **Parking pod NOSPR-em** (12 min spacerem przez kładkę).\n` +
+        `- **💃 Darmowe plenery taneczne:** W sezonie wiosenno-letnim tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** — w razie deszczu pod wiatą **UKS 4 / SUP Tomi (ul. Trzech Stawów 10)** — oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
+        `- **🗓️ Wspólny Grafik Szkół Tańca (grafik.html), 📖 Salsopedia (salsopedia.html) i 📊 DancePuls:** Tworzymy ujednolicony **Wspólny Grafik Szkół Tańca w Katowicach** (130 kursów z ustandaryzowanymi poziomami P0–OPEN), społecznościową encyklopedię **Salsopedię** (ponad 200 haseł), agregator imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), udostępniamy odtwarzacz **Radia Timba Nation 24/7** (stacji DJ Maikiu z Zurychu na Zeno.FM) oraz organizujemy wyjazdy i spotkania integracyjne!`
       );
     }
 
@@ -422,8 +427,31 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       );
     }
 
-    // 1d. Pytania o DancePuls, imprezy, sociale, warsztaty i kalendarz wydarzeń
+    // 1c-bis. Pytania o cenniki, karnety i opłacalność szkół tańca w Katowicach (La Clave, Good Mood, Mil Pasos)
     if (
+      !qNorm.includes('od podstaw') &&
+      !qNorm.includes('p0') &&
+      (qNorm.includes('cennik') ||
+        qNorm.includes('karnet') ||
+        qNorm.includes('ile kosztuj') ||
+        qNorm.includes('cena') ||
+        qNorm.includes('ceny') ||
+        qNorm.includes('oplaca'))
+    ) {
+      return (
+        `💰 **Porównanie cenników 3 szkół tańca w Katowicach (kalkulator na grafik.html):**\n` +
+        `- **🔴 La Clave (ul. Chorzowska 11):** jednostka **45 min**, karnety ilościowe są **BEZTERMINOWE** (Start 4x: **109 zł**, Eko 8x: **189 zł**, Pro 10x: **219 zł**, Open 4 tyg.: **300 zł**, jednorazowe: **30 zł**). W blokach 2–3x45 min: dopłata do 2. jednostki **+15 zł**, do 3. **+10 zł** (lub przy 2 skreśleniach z karnetu 3. jednostka **gratis**!).\n` +
+        `- **🟡 Good Mood (ul. Paderewskiego 35 / Gliwicka 44):** jednostka **55–60 min**, ważność **28 dni** (4h: **100 zł** [student **90 zł**], 8h: **170 zł** [student **160 zł**], najtańszy **Open: 260 zł**, jednorazowe 1h: **35 zł**, 2h: **55 zł**).\n` +
+        `- **🔵 Mil Pasos (ul. Kamienna 4):** jednostka **55 min**, ważność **4 tygodnie**, **-10% dla studentów** (4h: **119 zł**, 8h: **199 zł**, 12h: **249 zł**, 16h: **299 zł** [~18,69 zł/jedn.], Open: **399 zł**, Day Pass: **90 zł**).\n` +
+        `- **💳 Karty sportowe:** Wszystkie 3 szkoły honorują karty **Multisport**, **Medicover Sport**, **FitProfit** oraz **PZU Sport**.\n` +
+        `Pełny interaktywny kalkulator przeliczający koszt **60 minut tańca** znajdziesz w zakładce **Cenniki Szkół** na stronie grafik.html!`
+      );
+    }
+
+    // 1d. Pytania o Wspólny Grafik Szkół, DancePuls, imprezy, sociale, warsztaty i kalendarz wydarzeń
+    if (
+      qNorm.includes('grafik') ||
+      qNorm.includes('rozklad') ||
       qNorm.includes('dancepuls') ||
       qNorm.includes('imprez') ||
       qNorm.includes('potancow') ||
@@ -434,10 +462,10 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       qNorm.includes('festiwal')
     ) {
       return (
-        `🔥 **Gdzie i kiedy bawimy się na imprezach Kato Salsa Hub?**\n` +
-        `- **🍹 W każdą niedzielę od 15:00 do 18:00 — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze regularne potańcówki i praktyki pod dachem (Salsa Cubana, Timba, Rueda de Casino, Bachata, Kizomba).\n` +
-        `- **💃 Plenery w Katowicach:** W ciepłe dni tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** (w razie deszczu pod wiatą UKS 4, ul. Trzech Stawów 10) oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
-        `- **📊 Zestawienie wszystkich imprez na Śląsku (DancePuls):** Pełny rozkład weekendowych imprez, warsztatów i festiwali znajdziesz na **https://dancepuls.katosalsahub.pl/** oraz na naszej grupie FB: **https://www.facebook.com/groups/519446499987373**.`
+        `🔥 **Wspólny Grafik Szkół Tańca i imprezy Kato Salsa Hub:**\n` +
+        `- **🗓️ Wspólny Grafik Szkół w Katowicach (grafik.html):** Zintegrowany rozkład 130 kursów tygodniowo (La Clave, Good Mood, Mil Pasos, Evolution) z ujednoliconą skalą poziomów (**P0, P1, P2, S1, OPEN**) oraz mapą szkół.\n` +
+        `- **🍹 W każdą niedzielę od 15:00 do 18:00 — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze regularne potańcówki i praktyki salsy pod dachem (Salsa Cubana / Casino, Timba, Rueda de Casino, Son).\n` +
+        `- **💃 Plenery w Katowicach & 📊 DancePuls:** W ciepłe dni tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**, a pełne zestawienie imprez na Śląsku znajdziesz na **https://dancepuls.katosalsahub.pl/**.`
       );
     }
 
@@ -487,16 +515,14 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       return (
         `💃 **Jak zacząć tańczyć w Katowicach (Kursy P0 i informacje praktyczne):**\n` +
         `- **Poziom P0 (od zupełnych podstaw):** Nie potrzebujesz pary ani doświadczenia — na zajęciach i na naszych niedzielnych praktykach w **Wolnych Ludziach (ul. Mariacka 2, 15:00–18:00)** rotujemy w parach w luźnej, wspierającej atmosferze.\n` +
-        `- **Karty sportowe i karnety:** Większość katowickich szkół partnerskich honoruje karty **Multisport**, **Medicover Sport** i **FitProfit** (pojedyncze wejście to zwykle ok. **40 PLN**, karnet 4 wejść ok. **130 PLN**).\n` +
+        `- **Karty sportowe i karnety:** Katowickie szkoły (La Clave, Good Mood, Mil Pasos) honorują karty **Multisport**, **Medicover Sport**, **FitProfit** oraz **PZU Sport** (pojedyncze wejście to **30–35 PLN**, karnet 4 wejść **90–119 PLN**, w La Clave karnety ilościowe są **bezterminowe**, a pełny kalkulator cen znajdziesz w zakładce **Cenniki Szkół** na grafik.html).\n` +
         `- **Jak się ubrać:** Wygodny strój i zmienne obuwie na gładkiej, czystej podeszwie (np. sneakersy).`
       );
     }
 
-    // 1g. Pytania o style tańca (Salsa Cubana / Casino, Rueda, Timba, Son, Bachata, Kizomba, Rumba)
+    // 1g. Pytania o style tańca (Salsa Cubana / Casino, Rueda, Timba, Son, Rumba, Afro)
     if (
       qNorm.includes('styl') ||
-      qNorm.includes('bachat') ||
-      qNorm.includes('kizomb') ||
       qNorm.includes('rued') ||
       qNorm.includes('casino') ||
       qNorm.includes('timb') ||
@@ -507,16 +533,16 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
         `🎶 **Style tańca w społeczności Kato Salsa Hub:**\n` +
         `- **Salsa Kubańska (Casino) & Timba:** Energetyczny taniec po kole i improwizacja do współczesnej muzyki kubańskiej.\n` +
         `- **Rueda de Casino:** Spektakularny taniec wielu par w kole na komendę lidera (*Cantante* — figury takie jak *Dile Que No*, *Enchufla*, *Dame*, *Setenta*).\n` +
-        `- **Son Cubano, Rumba (Guaguancó, Yambú, Columbia), Bachata i Kizomba:** Od tradycyjnych korzeni kubańskich po zmysłowe tańce karaibskie i angolskie. Zapytaj mnie o dowolną figurę z **Salsopedii**!`
+        `- **Son Cubano, Rumba (Guaguancó, Yambú, Columbia), Afro Cubano i Salsa Liniowa:** Od tradycyjnych korzeni kubańskich po taniec liniowy. Zapytaj mnie o dowolną figurę z **Salsopedii** lub sprawdź kursy we **Wspólnym Grafiku Szkół** (grafik.html)!`
       );
     }
 
     // 1h. Domyślna odpowiedź Kato Salsa Hub
     return (
-      `Cześć! 💃🕺 Jestem Asystentem **Kato Salsa Hub**. Chętnie odpowiem na każde pytanie o naszą działalność i taniec w Katowicach:\n` +
+      `Cześć! 💃🕺 Jestem Asystentem **Kato Salsa Hub**. Chętnie odpowiem na każde pytanie o naszą działalność i salsę w Katowicach:\n` +
       `- **🍹 Niedzielne potańcówki w Wolnych Ludziach (ul. Mariacka 2):** w **każdą niedzielę od 15:00 do 18:00** + darmowe parkingi,\n` +
       `- **💃 Plenery taneczne:** Kamienny Krąg w **Dolinie Trzech Stawów** (z wiatą w razie deszczu) oraz **Amfiteatr NOSPR**,\n` +
-      `- **📖 Salsopedia (ponad 200 haseł), 📻 Radio Timba Nation 24/7, 📊 DancePuls** oraz nasze wyjazdy i spotkania integracyjne.\n` +
+      `- **🗓️ Wspólny Grafik Szkół Tańca (grafik.html), 📖 Salsopedia (ponad 200 haseł), 📻 Radio Timba Nation 24/7, 📊 DancePuls** oraz nasze wyjazdy i spotkania integracyjne.\n` +
       `O co chcesz zapytać?`
     );
   }
@@ -666,7 +692,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     (siteId === 'katosalsahub' ? 'assets/php/wiki.php?action=list' : '');
 
   const storageKey = 'tsw_ai_history_' + siteId;
-  const cacheStorageKey = 'tsw_ai_cache_' + siteId;
+  const cacheStorageKey = 'tsw_ai_cache_v42_' + siteId;
   const cacheTtlMs = Number(options.cacheTtlMs) || 24 * 60 * 60 * 1000;
   const quickPrompts = QUICK_PROMPTS_MAP[siteId] || QUICK_PROMPTS_MAP.katosalsahub;
 
@@ -991,6 +1017,50 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     .tsw-ai-input:focus {
       border-color: var(--yellow, #ffbe0b);
     }
+    .tsw-ai-input.tsw-input-listening {
+      border-color: var(--red, #d90429);
+      box-shadow: 0 0 0 2px rgba(217, 4, 41, 0.25);
+    }
+    .tsw-ai-voice-btn {
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #cbd5e1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .tsw-ai-voice-btn:hover,
+    .tsw-ai-voice-btn:focus-visible {
+      background: rgba(255, 190, 11, 0.14);
+      border-color: var(--yellow, #ffbe0b);
+      color: var(--yellow, #ffbe0b);
+      outline: none;
+    }
+    .tsw-ai-voice-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      pointer-events: none;
+    }
+    .tsw-ai-voice-btn.tsw-listening {
+      background: linear-gradient(135deg, var(--red, #d90429) 0%, var(--orange, #fb5607) 100%);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: #ffffff;
+      animation: tswVoicePulse 1.3s infinite ease-in-out;
+    }
+    @keyframes tswVoicePulse {
+      0% { box-shadow: 0 0 0 0 rgba(217, 4, 41, 0.65); }
+      70% { box-shadow: 0 0 0 8px rgba(217, 4, 41, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(217, 4, 41, 0); }
+    }
     .tsw-ai-send {
       background: linear-gradient(135deg, var(--red, #d90429) 0%, var(--orange, #fb5607) 100%);
       color: #ffffff;
@@ -1033,6 +1103,9 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
       <div class="tsw-ai-chips" id="tswAiChips"></div>
       <form class="tsw-ai-form" id="tswAiForm">
         <input type="text" class="tsw-ai-input" id="tswAiInput" placeholder="Zadaj pytanie (np. o Salsopedię)..." maxlength="500" autocomplete="off" required />
+        <button type="button" class="tsw-ai-voice-btn" id="tswAiVoiceBtn" title="Zadaj pytanie głosem (mikrofon)" aria-label="Zadaj pytanie głosem" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
+        </button>
         <button type="submit" class="tsw-ai-send" id="tswAiSend">Wyślij</button>
       </form>
     </div>
@@ -1045,9 +1118,134 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   const chatWindow = doc.getElementById('tswAiWindow');
   const chatForm = doc.getElementById('tswAiForm');
   const chatInput = doc.getElementById('tswAiInput');
+  const voiceBtn = doc.getElementById('tswAiVoiceBtn');
   const messagesContainer = doc.getElementById('tswAiMessages');
   const chipsContainer = doc.getElementById('tswAiChips');
   const sendBtn = doc.getElementById('tswAiSend');
+
+  // Obsługa dyktowania głosowego (Web Speech API — Tryb Bezpieczny: tekst trafia na żywo do pola tekstowego)
+  const defaultPlaceholder = chatInput?.getAttribute('placeholder') || 'Zadaj pytanie (np. o Salsopedię)...';
+  const SpeechRecognitionCtor = win?.SpeechRecognition || win?.webkitSpeechRecognition || null;
+  let recognition = null;
+  let isListening = false;
+  let voiceBaseText = '';
+  let lastVoiceErrorPlaceholder = '';
+
+  function setVoiceListeningState(active, customPlaceholder = '') {
+    isListening = Boolean(active);
+    if (voiceBtn) {
+      voiceBtn.classList.toggle('tsw-listening', isListening);
+      voiceBtn.setAttribute('aria-pressed', String(isListening));
+      voiceBtn.setAttribute(
+        'title',
+        isListening ? 'Zatrzymaj dyktowanie (Słucham...)' : 'Zadaj pytanie głosem (mikrofon)'
+      );
+      voiceBtn.setAttribute(
+        'aria-label',
+        isListening ? 'Zatrzymaj dyktowanie głosowe' : 'Zadaj pytanie głosem'
+      );
+    }
+    if (chatInput) {
+      chatInput.classList.toggle('tsw-input-listening', isListening);
+      chatInput.setAttribute(
+        'placeholder',
+        customPlaceholder || (isListening ? '🎙️ Słucham... mów teraz po polsku' : defaultPlaceholder)
+      );
+    }
+  }
+
+  function stopVoiceRecognition() {
+    lastVoiceErrorPlaceholder = '';
+    if (recognition && isListening) {
+      try {
+        recognition.stop();
+      } catch (_) {}
+    }
+    setVoiceListeningState(false);
+  }
+
+  function toggleVoiceRecognition() {
+    if (isListening) {
+      stopVoiceRecognition();
+      chatInput?.focus?.();
+      return false;
+    }
+
+    const Ctor = win?.SpeechRecognition || win?.webkitSpeechRecognition || SpeechRecognitionCtor;
+    if (typeof Ctor !== 'function') {
+      setVoiceListeningState(false, 'Dyktowanie głosowe wymaga Chrome, Edge lub Safari');
+      chatInput?.focus?.();
+      return false;
+    }
+
+    try {
+      if (!recognition) {
+        recognition = new Ctor();
+        recognition.lang = 'pl-PL';
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = () => {
+          lastVoiceErrorPlaceholder = '';
+          setVoiceListeningState(true);
+        };
+
+        recognition.onresult = (event) => {
+          if (!chatInput || !event || !event.results) return;
+          lastVoiceErrorPlaceholder = '';
+          let finalChunk = '';
+          let interimChunk = '';
+          for (let i = 0; i < event.results.length; i++) {
+            const res = event.results[i];
+            const transcript = res && res[0] && res[0].transcript ? String(res[0].transcript) : '';
+            if (res.isFinal) {
+              finalChunk += transcript;
+            } else {
+              interimChunk += transcript;
+            }
+          }
+          const spoken = (finalChunk + interimChunk).replace(/\s+/g, ' ').trim();
+          const combined = [voiceBaseText, spoken].filter(Boolean).join(' ').slice(0, 500);
+          chatInput.value = combined;
+        };
+
+        recognition.onerror = (event) => {
+          const code = event?.error || '';
+          if (code === 'not-allowed' || code === 'service-not-allowed') {
+            lastVoiceErrorPlaceholder = '⚠️ Zezwól na mikrofon (ikona obok adresu URL)';
+          } else if (code === 'audio-capture') {
+            lastVoiceErrorPlaceholder = '⚠️ Nie wykryto mikrofonu w urządzeniu';
+          } else if (code === 'no-speech') {
+            lastVoiceErrorPlaceholder = '🎙️ Nie usłyszałem głosu — kliknij mikrofon ponownie';
+          } else if (code === 'network') {
+            lastVoiceErrorPlaceholder = '⚠️ Przeglądarka blokuje usługę mowy (np. tarcza Brave)';
+          } else {
+            lastVoiceErrorPlaceholder = defaultPlaceholder;
+          }
+          setVoiceListeningState(false, lastVoiceErrorPlaceholder);
+        };
+
+        recognition.onend = () => {
+          setVoiceListeningState(false, lastVoiceErrorPlaceholder || defaultPlaceholder);
+          if (chatInput?.value) {
+            chatInput?.focus?.();
+          }
+        };
+      }
+
+      lastVoiceErrorPlaceholder = '';
+      voiceBaseText = String(chatInput?.value || '').trim();
+      setVoiceListeningState(true);
+      recognition.start();
+      return true;
+    } catch (_) {
+      setVoiceListeningState(false);
+      return false;
+    }
+  }
+
+  voiceBtn?.addEventListener('click', toggleVoiceRecognition);
 
   // Pamięć rozmowy (Multi-Turn History w sessionStorage)
   let conversationHistory = [];
@@ -1190,7 +1388,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     messagesContainer.innerHTML = '';
     const welcomeText =
       siteId === 'katosalsahub'
-        ? `Cześć! 💃🕺 Jestem wirtualnym asystentem **${title}**. Moim głównym centrum wiedzy jest **Salsopedia**, ale odpowiem też na wszystkie pytania o nasze potańcówki w Katowicach, style tańca, **Radio Timba Nation** i **DancePuls**. O co chcesz zapytać?`
+        ? `Cześć! 💃🕺 Jestem wirtualnym asystentem **${title}**. Moim głównym centrum wiedzy jest **Salsopedia**, ale odpowiem też na wszystkie pytania o nasze potańcówki salsy w Katowicach, **Wspólny Grafik Szkół Tańca (grafik.html)**, **Radio Timba Nation** i **DancePuls**. O co chcesz zapytać?`
         : `Cześć! 👋 Jestem wirtualnym doradcą **${title}**. W czym mogę Ci pomóc? Zapytaj o ofertę, wycenę lub współpracę!`;
 
     appendMessageElement('model', welcomeText);
@@ -1209,11 +1407,14 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
       if (kbUrl || kbApiUrl) {
         refreshKnowledge();
       }
+    } else {
+      stopVoiceRecognition();
     }
   }
 
   function closeChat() {
     if (!chatWindow || !toggleBtn) return;
+    stopVoiceRecognition();
     chatWindow.classList.remove('tsw-open');
     toggleBtn.setAttribute('aria-expanded', 'false');
     toggleBtn.focus?.();
@@ -1222,6 +1423,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   toggleBtn?.addEventListener('click', toggleChat);
   closeBtn?.addEventListener('click', closeChat);
   clearBtn?.addEventListener('click', () => {
+    stopVoiceRecognition();
     conversationHistory = [];
     saveHistory();
     renderInitialView();
@@ -1253,6 +1455,8 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   async function sendQuestion(text) {
     const trimmed = String(text || '').trim();
     if (!trimmed || sendBtn?.disabled) return;
+
+    stopVoiceRecognition();
 
     // Synchronizuj stan wiedzy z globalnym __SALSOPEDIA_TERMS__ / AppState.terms (jeśli użytkownik/moderator właśnie edytował Salsopedię)
     const liveGlobalTerms = win?.__SALSOPEDIA_TERMS__ || win?.AppState?.terms;
@@ -1363,12 +1567,16 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     chatWindow,
     chatForm,
     chatInput,
+    voiceBtn,
     messagesContainer,
     chipsContainer,
     sendBtn,
     toggleChat,
     closeChat,
     sendQuestion,
+    toggleVoiceRecognition,
+    stopVoiceRecognition,
+    isVoiceListening: () => isListening,
     getHistory: () => conversationHistory,
     getKnowledgeVersion: () => kbVersion,
     getKnowledgeEntries: () => knowledgeEntries,

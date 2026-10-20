@@ -11,6 +11,7 @@ const CSS_FILES = [
   'katosalsahub.pl/assets/css/sections.css',
   'katosalsahub.pl/assets/css/radio.css',
   'katosalsahub.pl/assets/css/wiki.css',
+  'katosalsahub.pl/assets/css/schedule.css',
   'dancepuls.pl/css/style.css',
 ];
 
@@ -46,5 +47,11 @@ describe('Integralność i składnia arkuszy stylów CSS (Kato Salsa Hub & Dance
 
     assert.match(kshStyle, /:root\s*\{/i);
     assert.match(dpStyle, /:root\s*\{/i);
+  });
+
+  it('licznik kategorii .cat-count w wiki.css powinien posiadać flex-shrink: 0 i white-space: nowrap (ochrona przed łamaniem dwucyfrowych liczb w pionie)', () => {
+    const wikiCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/wiki.css'), 'utf-8');
+    assert.match(wikiCss, /\.cat-count\s*\{[^}]*flex-shrink:\s*0/s, 'Brak flex-shrink: 0 w .cat-count');
+    assert.match(wikiCss, /\.cat-count\s*\{[^}]*white-space:\s*nowrap/s, 'Brak white-space: nowrap w .cat-count');
   });
 });

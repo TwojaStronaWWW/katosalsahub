@@ -26,9 +26,17 @@
 
   // Rejestracja Service Workera dla PWA (#21) z wymuszeniem pobrania świeżej wersji
   if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    let swRefreshing = false;
+    const hadController = Boolean(navigator.serviceWorker.controller);
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadController || swRefreshing) return;
+      swRefreshing = true;
+      window.location.reload();
+    });
+
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('sw.js?v=5', { updateViaCache: 'none' })
+        .register('sw.js?v=24', { updateViaCache: 'none' })
         .then((reg) => {
           if (reg && typeof reg.update === 'function') {
             reg.update().catch(() => {});

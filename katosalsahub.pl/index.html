@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Salsa Katowice – dołącz do społeczności Kato Salsa Hub! Plenery taneczne (Dolina Trzech Stawów, NOSPR), potańcówki w lokalu Wolni Ludzie (ul. Mariacka 2), Salsa Cubana, Timba, Rueda de Casino, Bachata, Kizomba, Radio 24/7 oraz Salsopedia.">
-  <meta name="keywords" content="salsa katowice, salsa kubańska katowice, gdzie tańczyć salsę w katowicach, kato salsa hub, potańcówki katowice, plenery taneczne katowice, dolina trzech stawów salsa, wolni ludzie mariacka salsa, rueda de casino katowice, timba, bachata katowice">
+  <meta name="description" content="Kato Salsa Hub (Salsa Katowice) – oficjalny portal społeczności salsy w Katowicach! Niedzielne potańcówki w Wolnych Ludziach (ul. Mariacka 2), darmowe plenery (Dolina Trzech Stawów, NOSPR), Wspólny Grafik Szkół Tańca, Salsopedia (200+ figur) i Radio 24/7.">
+  <meta name="keywords" content="salsa katowice, salsa kubańska katowice, gdzie tańczyć salsę w katowicach, kato salsa hub, potańcówki katowice, plenery taneczne katowice, dolina trzech stawów salsa, wolni ludzie mariacka salsa, rueda de casino katowice, timba, grafik szkół tańca katowice">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="geo.region" content="PL-24">
   <meta name="geo.placename" content="Katowice">
@@ -18,7 +18,7 @@
   <meta property="og:locale" content="pl_PL">
   <meta property="og:site_name" content="Kato Salsa Hub – Salsa Katowice">
   <meta property="og:title" content="Salsa Katowice – Potańcówki, Plenery i Społeczność | Kato Salsa Hub ⚡">
-  <meta property="og:description" content="Oficjalny portal społecznościowy tancerzy Salsy Cubana, Bachaty i Kizomby w Katowicach i na Śląsku. Potańcówki w Wolnych Ludziach (ul. Mariacka 2), plenery na 3 Stawach i pod NOSPR-em, Radio 24/7 oraz Salsopedia.">
+  <meta property="og:description" content="Oficjalny portal społecznościowy tancerzy Salsy Cubana, Timby i Ruedy de Casino w Katowicach i na Śląsku. Potańcówki w Wolnych Ludziach (ul. Mariacka 2), plenery na 3 Stawach i pod NOSPR-em, Wspólny Grafik Szkół, Radio 24/7 oraz Salsopedia.">
   <meta property="og:url" content="https://katosalsahub.pl/">
   <meta property="og:image" content="https://katosalsahub.pl/assets/images/logo.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -30,7 +30,8 @@
   <link rel="stylesheet" href="assets/css/components.css?v=4.3">
   <link rel="stylesheet" href="assets/css/sections.css?v=4.3">
   <link rel="stylesheet" href="assets/css/radio.css?v=4.3">
-  <link rel="stylesheet" href="assets/css/wiki.css?v=4.3">
+  <link rel="stylesheet" href="assets/css/wiki.css?v=4.4">
+  <link rel="stylesheet" href="assets/css/schedule.css?v=4.4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://stream.zeno.fm" crossorigin>
@@ -47,14 +48,17 @@
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["Organization", "DanceGroup"],
+        "@type": ["Organization", "DanceGroup", "EntertainmentBusiness"],
         "@id": "https://katosalsahub.pl/#organization",
         "name": "Kato Salsa Hub – Salsa Katowice",
-        "alternateName": "Salsa Katowice",
+        "alternateName": ["Kato Salsa Hub", "Salsa Katowice"],
         "url": "https://katosalsahub.pl/",
         "logo": "https://katosalsahub.pl/assets/images/logo.jpg",
-        "description": "Społeczność tancerzy Salsy Kubańskiej (Casino, Rueda de Casino, Timba), Bachaty i Kizomby w Katowicach i na Śląsku. Potańcówki w lokalu Wolni Ludzie (ul. Mariacka 2) oraz plenery w Dolinie Trzech Stawów i pod NOSPR-em.",
+        "image": "https://katosalsahub.pl/assets/images/logo.jpg",
+        "description": "Społeczność i Fundacja łącząca miłośników Salsy (Salsa Kubańska / Casino, Rueda de Casino, Timba, Son) w Katowicach i na Śląsku. Potańcówki w lokalu Wolni Ludzie (ul. Mariacka 2), plenery w Dolinie Trzech Stawów i pod NOSPR-em, Wspólny Grafik Szkół Tańca, Salsopedia oraz DancePuls.",
         "areaServed": "Katowice, Śląsk, Polska",
+        "priceRange": "0 PLN (Free)",
+        "openingHours": "Mo-Su 00:00-23:59",
         "location": [
           {
             "@type": "Place",
@@ -109,14 +113,16 @@
         "sameAs": [
           "https://www.facebook.com/KatoSalsaHub",
           "https://www.facebook.com/groups/519446499987373",
-          "https://www.instagram.com/katosalsahub/"
+          "https://www.instagram.com/katosalsahub/",
+          "https://dancepuls.katosalsahub.pl/"
         ]
       },
       {
         "@type": "WebSite",
         "@id": "https://katosalsahub.pl/#website",
         "url": "https://katosalsahub.pl/",
-        "name": "Kato Salsa Hub – Salsa Katowice",
+        "name": "Kato Salsa Hub",
+        "alternateName": ["Salsa Katowice", "Kato Salsa Hub – Salsa Katowice"],
         "inLanguage": "pl-PL",
         "publisher": { "@id": "https://katosalsahub.pl/#organization" },
         "potentialAction": {
@@ -124,6 +130,41 @@
           "target": "https://katosalsahub.pl/salsopedia.html?term={search_term_string}",
           "query-input": "required name=search_term_string"
         }
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://katosalsahub.pl/#navigation",
+        "name": "Główne sekcje portalu Kato Salsa Hub – Salsa Katowice",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "Wspólny Grafik Szkół Tańca (130 kursów)",
+            "description": "Aktualny rozkład zajęć Salsy, Bachaty i Kizomby w katowickich szkołach (La Clave, Good Mood, Mil Pasos) oraz kalendarz imprez.",
+            "url": "https://katosalsahub.pl/grafik.html"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "Salsopedia – Encyklopedia 200+ Figur Salsy",
+            "description": "Pierwsza w Polsce otwarta encyklopedia figur salsy kubańskiej (Casino), komend Rueda de Casino, szkół tańca i instruktorów w Katowicach.",
+            "url": "https://katosalsahub.pl/salsopedia.html"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "Kalendarz Imprez Tanecznych DancePuls",
+            "description": "Cotygodniowy rozkład wszystkich potańcówek, salsotek, praktyk i warsztatów tanecznych w Katowicach i na Śląsku.",
+            "url": "https://dancepuls.katosalsahub.pl/"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "Gdzie Tańczymy – Mapa Parkietów i Parkingów",
+            "description": "Interaktywna mapa miejscówek Kato Salsa Hub (Wolni Ludzie ul. Mariacka 2, Kamienny Krąg 3 Stawy, Amfiteatr NOSPR) i darmowych parkingów.",
+            "url": "https://katosalsahub.pl/#mapa"
+          }
+        ]
       },
       {
         "@type": "FAQPage",
@@ -150,7 +191,7 @@
             "name": "Jakie style tańca królują na potańcówkach Kato Salsa Hub?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Sercem naszych spotkań w Katowicach jest Salsa Cubana (Casino), energetyczna Timba, taniec w kole Rueda de Casino oraz tradycyjny Son Cubano, Rumba i Afro. Na śląskich parkietach i w naszym zestawieniu wydarzeń DancePuls znajdziesz również imprezy łączące salsę z bachatą i kizombą."
+              "text": "Sercem naszych spotkań w Katowicach jest Salsa: Salsa Cubana (Casino), energetyczna Timba, taniec w kole Rueda de Casino oraz tradycyjny Son Cubano, Rumba i Afro."
             }
           },
           {
@@ -158,7 +199,7 @@
             "name": "Skąd czerpać wiedzę o figurach salsy i aktualnych imprezach na Śląsku?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Na naszej stronie znajdziesz Salsopedię – otwartą encyklopedię ponad 200 figur salsy kubańskiej, szkół tańca w Katowicach i instruktorów, całodobowe radio kubańskie Timba Nation oraz cotygodniowy rozkład imprez tanecznych na Śląsku."
+              "text": "Na naszej stronie znajdziesz Wspólny Grafik Szkół Tańca w Katowicach (grafik.html), Salsopedię – otwartą encyklopedię ponad 200 figur salsy kubańskiej, szkół tańca i instruktorów, całodobowe radio kubańskie Timba Nation oraz cotygodniowy rozkład imprez tanecznych DancePuls."
             }
           }
         ]
@@ -188,6 +229,19 @@
         },
         "organizer": {
           "@id": "https://katosalsahub.pl/#organization"
+        },
+        "performer": {
+          "@type": "DanceGroup",
+          "@id": "https://katosalsahub.pl/#organization",
+          "name": "Kato Salsa Hub – Salsa Katowice"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://www.facebook.com/events/891329324066083",
+          "price": "0",
+          "priceCurrency": "PLN",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2026-10-19T00:00:00+02:00"
         }
       },
       {
@@ -232,6 +286,7 @@
       <a href="#hero" data-i18n="nav.start">Start</a>
       <a href="#onas" data-i18n="nav.about">O nas</a>
       <a href="#style" data-i18n="nav.styles">Style</a>
+      <a href="grafik.html" data-page="schedule" data-i18n="nav.schedule">Grafik</a>
       <a href="salsopedia.html" data-page="wiki" data-i18n="nav.wiki">Salsopedia</a>
       <a href="#radio" data-i18n="nav.radio">Radio</a>
       <a href="#mapa" data-i18n="nav.map">Lokacja</a>
@@ -270,7 +325,7 @@
           <span class="title-line glow" data-i18n="hero.line2">z nami salsę</span>
           <span class="title-line" data-i18n="hero.line3">w Katowicach</span>
         </h1>
-        <p class="hero-subtitle" itemprop="description" data-i18n="hero.subtitle">Otwarta społeczność salsy kubańskiej, timby, bachaty i kizomby w Katowicach. Tańczymy razem, na luzie – po prostu wpadaj! 💃🕺</p>
+        <p class="hero-subtitle" itemprop="description" data-i18n="hero.subtitle">Otwarta społeczność salsy kubańskiej, timby i rueda de casino w Katowicach. Tańczymy razem, na luzie – po prostu wpadaj! 💃🕺</p>
         <div class="hero-buttons">
           <a href="https://www.facebook.com/groups/519446499987373" target="_blank" rel="noopener noreferrer" class="btn btn-primary" itemprop="sameAs">
             <span data-i18n="hero.btnPrimary">Bądź na bieżąco z wydarzeniami</span>
@@ -279,6 +334,7 @@
                 stroke-linejoin="round" />
             </svg>
           </a>
+          <a href="grafik.html" data-page="schedule" class="btn btn-secondary" data-i18n="hero.btnSchedule">📅 Wspólny Grafik Szkół</a>
           <a href="#mapa" class="btn btn-secondary" data-i18n="hero.btnSecondary">Gdzie i kiedy tańczymy</a>
         </div>
       </div>
@@ -488,7 +544,7 @@
                 <span class="map-spot-badge map-spot-badge--gold" data-i18n="map.wolni.badge">Niedziele 15:00–18:00</span>
               </div>
               <ul class="map-spot-points">
-                <li data-i18n-html="map.wolni.p1"><strong>💃 Kiedy tańczymy:</strong> w <strong>każdą niedzielę od 15:00 do 18:00</strong> — otwarte potańcówki i praktyki (Salsa Cubana, Timba, Rueda, Bachata, Kizomba).</li>
+                <li data-i18n-html="map.wolni.p1"><strong>💃 Kiedy tańczymy:</strong> w <strong>każdą niedzielę od 15:00 do 18:00</strong> — otwarte potańcówki i praktyki (Salsa Cubana, Timba, Rueda de Casino, Son).</li>
                 <li data-i18n-html="map.wolni.p2"><strong>📸 Fotorelacja z 18.10 (65 zdjęć):</strong> zobacz klimat naszych niedziel w obiektywie Jacka Cupiała — <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer">Otwórz galerię zdjęć</a>!</li>
                 <li data-i18n-html="map.wolni.p3"><strong>⭐ Parking Rekomendowany (12 min):</strong> ogromny, darmowy w niedzielę parking pod NOSPR-em z wyznaczoną trasą pieszą przez kładkę!</li>
                 <li data-i18n-html="map.wolni.p4"><strong>🅿️ Darmowe ulice wokół (niedziele i po 17:00):</strong> Warszawska / Św. Stanisława (1 min), Tylna Mariacka / Dworcowa (2 min), Wojewódzka (3 min), pl. Szramka (4 min).</li>
@@ -608,13 +664,13 @@
           <details class="card faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
             <summary class="faq-question" itemprop="name" data-i18n="faq.q3">Jakie style tańca królują na potańcówkach Kato Salsa Hub?</summary>
             <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" data-i18n-html="faq.a3">Sercem naszych spotkań w Katowicach jest <strong>Salsa Cubana (Casino)</strong>, energetyczna <strong>Timba</strong>, taniec w kole <strong>Rueda de Casino</strong> oraz tradycyjny <strong>Son Cubano, Rumba i Afro</strong>. Na śląskich parkietach i w naszym zestawieniu wydarzeń DancePuls znajdziesz również imprezy łączące salsę z bachatą i kizombą.</p>
+              <p itemprop="text" data-i18n-html="faq.a3">Sercem naszych spotkań w Katowicach jest <strong>Salsa Cubana (Casino)</strong>, energetyczna <strong>Timba</strong>, taniec w kole <strong>Rueda de Casino</strong> oraz tradycyjny <strong>Son Cubano, Rumba i Afro</strong>.</p>
             </div>
           </details>
           <details class="card faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
             <summary class="faq-question" itemprop="name" data-i18n="faq.q4">Skąd czerpać wiedzę o figurach salsy i aktualnych imprezach na Śląsku?</summary>
             <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" data-i18n-html="faq.a4">Na naszej stronie znajdziesz <a href="salsopedia.html" data-page="wiki"><strong>Salsopedię</strong></a> – otwartą encyklopedię ponad 200 figur salsy kubańskiej, szkół tańca w Katowicach i instruktorów, całodobowe radio kubańskie <strong>Timba Nation</strong> oraz cotygodniowy rozkład imprez tanecznych na Śląsku.</p>
+              <p itemprop="text" data-i18n-html="faq.a4">Na naszej stronie znajdziesz <a href="grafik.html" data-page="schedule"><strong>Wspólny Grafik Szkół Tańca</strong></a> w Katowicach, <a href="salsopedia.html" data-page="wiki"><strong>Salsopedię</strong></a> – otwartą encyklopedię ponad 200 figur salsy kubańskiej, szkół tańca i instruktorów, całodobowe radio kubańskie <strong>Timba Nation</strong> oraz cotygodniowy rozkład imprez tanecznych <strong>DancePuls</strong>.</p>
             </div>
           </details>
         </div>
@@ -709,6 +765,7 @@
         <a href="#hero" data-i18n="nav.start">Start</a>
         <a href="#onas" data-i18n="nav.about">O nas</a>
         <a href="#style" data-i18n="nav.styles">Style</a>
+        <a href="grafik.html" data-i18n="nav.schedule">Grafik</a>
         <a href="salsopedia.html">Salsopedia</a>
         <a href="#mapa" data-i18n="footer.where">Gdzie tańczymy</a>
         <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
@@ -744,8 +801,9 @@
   <script data-cfasync="false" src="assets/js/wiki.js?v=3.9"></script>
   <script data-cfasync="false" src="assets/js/radio.js?v=3.9"></script>
   <script data-cfasync="false" src="assets/js/home.js?v=3.9"></script>
+  <script data-cfasync="false" src="assets/js/schedule.js?v=4.0"></script>
   <script data-cfasync="false" src="assets/js/router.js?v=3.9"></script>
-  <script data-cfasync="false" src="assets/js/ai-widget.js?v=4.1" data-site-id="katosalsahub" data-title="Asystent Kato Salsa Hub" data-kb-url="assets/data/salsopedia.json"></script>
+  <script data-cfasync="false" src="assets/js/ai-widget.js?v=4.4" data-site-id="katosalsahub" data-title="Asystent Kato Salsa Hub" data-kb-url="assets/data/salsopedia.json"></script>
 </body>
 
 </html>

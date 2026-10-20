@@ -273,6 +273,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   border: 1px solid transparent;
   transition: all 0.2s ease;
 }
@@ -299,8 +300,13 @@
   border-radius: 999px;
   color: #94a3b8;
   font-weight: 600;
-  min-width: 26px;
+  min-width: 28px;
   text-align: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-list li.active .cat-count {

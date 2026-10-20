@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Wspólny Grafik Szkół Tańca w Katowicach (La Clave, Good Mood, Mil Pasos, Evolution &amp; KIZLAB), kalendarz imprez i warsztatów DancePuls oraz mapa szkół i parkietów Kato Salsa Hub.">
+  <meta name="theme-color" content="#fbbf24">
+  <title>Wspólny Grafik Szkół Tańca Katowice &amp; Imprezy DancePuls | Salsa Katowice • Kato Salsa Hub</title>
+  <link rel="canonical" href="https://katosalsahub.pl/grafik.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="Kato Salsa Hub – Salsa Katowice">
+  <meta property="og:title" content="Wspólny Grafik Szkół Tańca Katowice &amp; Imprezy DancePuls | Kato Salsa Hub">
+  <meta property="og:description" content="Sprawdź aktualny grafik kursów Salsy Cubana, Ruedy, Bachaty i Kizomby w katowickich szkołach (La Clave, Good Mood, Mil Pasos), nadchodzące imprezy DancePuls oraz mapę szkół.">
+  <meta property="og:url" content="https://katosalsahub.pl/grafik.html">
+  <meta property="og:image" content="https://katosalsahub.pl/assets/images/logo.jpg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="assets/css/style.css?v=4.3">
+  <link rel="stylesheet" href="assets/css/components.css?v=4.3">
+  <link rel="stylesheet" href="assets/css/sections.css?v=4.3">
+  <link rel="stylesheet" href="assets/css/radio.css?v=4.3">
+  <link rel="stylesheet" href="assets/css/wiki.css?v=4.4">
+  <link rel="stylesheet" href="assets/css/schedule.css?v=4.4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://stream.zeno.fm" crossorigin>
+  <link rel="preconnect" href="https://api.zeno.fm" crossorigin>
+  <link rel="preconnect" href="https://ai.twojastronawww.pl" crossorigin>
+  <link rel="dns-prefetch" href="https://stream.zeno.fm">
+  <link rel="dns-prefetch" href="https://api.zeno.fm">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;800&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": "https://katosalsahub.pl/grafik.html#schedule",
+    "name": "Wspólny Grafik Szkół Tańca w Katowicach – Salsa, Bachata, Kizomba",
+    "description": "Zintegrowany rozkład zajęć tanecznych w Katowicach (La Clave ul. Chorzowska 11, Good Mood ul. Paderewskiego 35, Mil Pasos ul. Kamienna 4, Evolution & KIZLAB) oraz kalendarz imprez DancePuls.",
+    "url": "https://katosalsahub.pl/grafik.html",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "La Clave Katowice (ul. Chorzowska 11) – Salsa Cubana, Rueda de Casino, Son, Bachata, Kizomba",
+        "url": "https://katosalsahub.pl/salsopedia.html?term=term_school_1"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Szkoła Tańca Good Mood Katowice (ul. Paderewskiego 35) – Salsa LA On1/On2, Salsa Cubana, Bachata, Kizomba, Zouk",
+        "url": "https://katosalsahub.pl/salsopedia.html?term=term_school_13"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Mil Pasos Katowice (ul. Kamienna 4) – Salsa Cubana, Timba, Rumba, Bachata Sensual, Kizomba",
+        "url": "https://katosalsahub.pl/salsopedia.html?term=term_school_2"
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Sticky Navigation -->
+  <nav class="nav-bar">
+    <div class="nav-brand-group">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-text">KATO SALSA HUB</span>
+        <span class="logo-emoji">🔥</span>
+      </a>
+      <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio" data-i18n-aria-label="nav.radioAria">
+        <i class="fas fa-play"></i>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="index.html#hero" data-i18n="nav.start">Start</a>
+      <a href="index.html#onas" data-i18n="nav.about">O nas</a>
+      <a href="index.html#style" data-i18n="nav.styles">Style</a>
+      <a href="grafik.html" data-page="schedule" class="active" data-i18n="nav.schedule">Grafik</a>
+      <a href="salsopedia.html" data-page="wiki" data-i18n="nav.wiki">Salsopedia</a>
+      <a href="index.html#radio" data-i18n="nav.radio">Radio</a>
+      <a href="index.html#mapa" data-i18n="nav.map">Lokacja</a>
+      <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+      <a href="index.html#faq" data-i18n="nav.faq">FAQ</a>
+      <a href="index.html#kontakt" class="cta-link" data-i18n="nav.contact">Kontakt</a>
+    </div>
+    <div class="nav-right-group">
+      <div class="lang-switcher" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+        <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+      </div>
+      <div class="burger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area (Target for SPA Router - Zero ekstra sekcji pod spodem, jak w Salsopedii) -->
+  <main id="app-content">
+    <div id="scheduleAppRoot">
+
+      <!-- Header w estetyce Salsopedii -->
+      <header class="wiki-header">
+        <div class="wiki-header-content">
+          <h1 data-i18n="schedule.title">Wspólny Grafik &amp; Wydarzenia</h1>
+          <p data-i18n="schedule.subtitle">Porównaj kursy katowickich szkół tańca (La Clave, Good Mood, Mil Pasos), sprawdź imprezy z DancePuls i znajdź swój parkiet na mapie.</p>
+
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="scheduleSearchInput" class="search-input"
+              placeholder="Szukaj szkoły, instruktora, stylu lub poziomu (np. P0, La Clave, Galas, Rueda, Bachata)..."
+              data-i18n-placeholder="schedule.searchPh">
+            <button id="scheduleClearSearchBtn" type="button" class="search-clear-btn is-hidden" title="Wyczyść szukanie" data-i18n-title="wiki.clearSearch">&times;</button>
+          </div>
+
+          <div class="search-meta">
+            <span id="scheduleResultsCount">Wspólny grafik Katowice: 130 kursów (4 szkoły) + Kalendarz DancePuls</span>
+          </div>
+
+          <!-- 4 główne zakładki widoku (Stała Geometria CLS = 0) -->
+          <div class="schedule-mode-tabs" role="tablist" aria-label="Wybierz tryb widoku">
+            <button type="button" class="schedule-mode-btn is-active" role="tab" aria-selected="true" data-tab="classes">
+              <i class="far fa-calendar-alt"></i>
+              <span data-i18n="schedule.tab.classes">Grafik Szkół</span>
+              <span id="modeCountClasses" class="schedule-mode-count">130</span>
+            </button>
+            <button type="button" class="schedule-mode-btn" role="tab" aria-selected="false" data-tab="pricing">
+              <i class="fas fa-coins"></i>
+              <span data-i18n="schedule.tab.pricing">Cenniki Szkół</span>
+              <span class="schedule-mode-count">3</span>
+            </button>
+            <button type="button" class="schedule-mode-btn" role="tab" aria-selected="false" data-tab="events">
+              <i class="fas fa-glass-cheers"></i>
+              <span data-i18n="schedule.tab.events">Imprezy DancePuls</span>
+              <span id="modeCountEvents" class="schedule-mode-count">54</span>
+            </button>
+            <button type="button" class="schedule-mode-btn" role="tab" aria-selected="false" data-tab="map">
+              <i class="fas fa-map-marked-alt"></i>
+              <span data-i18n="schedule.tab.map">Mapa Szkół</span>
+              <span class="schedule-mode-count">7</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Główny Kontener Dwukolumnowy (Wzorzec Salsopedii) -->
+      <div class="wiki-main-container">
+
+        <!-- Lewy Panel Filtrów (Sticky Sidebar) -->
+        <aside class="wiki-sidebar">
+          <div class="sidebar-block">
+            <h3 data-i18n="schedule.schoolsTitle">Szkoły Tańca (Katowice)</h3>
+            <ul class="category-list" id="scheduleSchoolList">
+              <li data-school="all" class="active">
+                <span data-i18n="schedule.schoolsAll">Wszystkie szkoły</span>
+                <span class="cat-count" id="count-school-all">130</span>
+              </li>
+              <li data-school="LC">
+                <span class="sidebar-item-label"><span class="school-dot school-dot--lc"></span>La Clave (Chorzowska 11)</span>
+                <span class="cat-count" id="count-school-lc">47</span>
+              </li>
+              <li data-school="GM">
+                <span class="sidebar-item-label"><span class="school-dot school-dot--gm"></span>Good Mood (Paderewskiego/Gliwicka)</span>
+                <span class="cat-count" id="count-school-gm">41</span>
+              </li>
+              <li data-school="MP">
+                <span class="sidebar-item-label"><span class="school-dot school-dot--mp"></span>Mil Pasos (Kamienna 4)</span>
+                <span class="cat-count" id="count-school-mp">40</span>
+              </li>
+              <li data-school="EV">
+                <span class="sidebar-item-label"><span class="school-dot school-dot--ev"></span>Evolution / KIZLAB / KSH</span>
+                <span class="cat-count" id="count-school-ev">2</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-block">
+            <h3 data-i18n="schedule.levelsTitle">Poziom (Standard KSH)</h3>
+            <ul class="category-list" id="scheduleLevelList">
+              <li data-level="all" class="active">
+                <span data-i18n="schedule.levelsAll">Wszystkie poziomy</span>
+                <span class="cat-count">130</span>
+              </li>
+              <li data-level="P0">
+                <span data-i18n="schedule.level.p0">🟢 P0 • Od zera / Start (0–2 mies.)</span>
+                <span class="cat-count">30</span>
+              </li>
+              <li data-level="P1">
+                <span data-i18n="schedule.level.p1">🔵 P1 • Podstawowy (2–5 mies.)</span>
+                <span class="cat-count">20</span>
+              </li>
+              <li data-level="P2">
+                <span data-i18n="schedule.level.p2">🔷 P2 / P3 • Podstawowy+ (6–9 mies.)</span>
+                <span class="cat-count">16</span>
+              </li>
+              <li data-level="S1">
+                <span data-i18n="schedule.level.s1">🟣 S1+ / P4+ • Śr.-Zaaw. i Zaaw.</span>
+                <span class="cat-count">23</span>
+              </li>
+              <li data-level="OPEN">
+                <span data-i18n="schedule.level.open">🟡 Open / Solo / Praktis</span>
+                <span class="cat-count">41</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-block">
+            <h3 data-i18n="schedule.stylesTitle">Style Tańca</h3>
+            <ul class="category-list" id="scheduleStyleList">
+              <li data-style="all" class="active">
+                <span data-i18n="schedule.stylesAll">Wszystkie style</span>
+                <span class="cat-count">130</span>
+              </li>
+              <li data-style="salsa_cubana">
+                <span>Salsa Cubana / Timba / Son</span>
+                <span class="cat-count">24</span>
+              </li>
+              <li data-style="rueda">
+                <span>Rueda de Casino, Rumba &amp; Suelta</span>
+                <span class="cat-count">4</span>
+              </li>
+              <li data-style="salsa_liniowa">
+                <span data-i18n="schedule.style.linear">Salsa Liniowa (New York On2 / LA)</span>
+                <span class="cat-count">2</span>
+              </li>
+              <li data-style="bachata">
+                <span>Bachata Sensual, Fusion &amp; Dom.</span>
+                <span class="cat-count">32</span>
+              </li>
+              <li data-style="kizomba">
+                <span>Kizomba, Urban Kiz &amp; Zouk</span>
+                <span class="cat-count">25</span>
+              </li>
+              <li data-style="solo">
+                <span data-i18n="schedule.style.solo">Solo, Lady Style, WCS &amp; Inne</span>
+                <span class="cat-count">43</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-actions">
+            <a href="salsopedia.html" data-page="wiki" class="btn btn-secondary btn-full" data-i18n-html="schedule.instructorsBtn">
+              <i class="fas fa-book-open"></i> Sylwetki Instruktorów w Salsopedii
+            </a>
+            <a href="https://tiny.pl/2bc8z7649" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-full" data-i18n-html="schedule.submitEventBtn">
+              <i class="fas fa-calendar-plus"></i> Zgłoś wydarzenie do DancePuls
+            </a>
+          </div>
+        </aside>
+
+        <!-- Prawa Sekcja Główna -->
+        <section class="wiki-content">
+          <!-- Pasek Aktywnego Filtra -->
+          <div class="active-filter-bar">
+            <span class="filter-label" data-i18n="wiki.filterLabel">Aktualny widok:</span>
+            <span id="scheduleActiveFilterBadge" class="filter-pill" data-i18n="schedule.filterAll">Wszystkie pozycje</span>
+            <button id="scheduleResetFilterBtn" type="button" class="btn-reset-filter is-hidden" data-i18n="schedule.resetFilter">Wyczyść filtry</button>
+          </div>
+
+          <!-- WIDOK 1: WSPÓLNY GRAFIK SZKÓŁ (DOMYŚLNY) -->
+          <div id="scheduleClassesView">
+            <!-- Szybki pasek dni tygodnia (CLS = 0) -->
+            <div class="schedule-day-bar" role="group" aria-label="Filtruj po dniu tygodnia">
+              <button type="button" class="day-pill-btn is-active" data-day="all" data-i18n="schedule.day.all">Cały tydzień</button>
+              <button type="button" class="day-pill-btn" data-day="today" data-i18n="schedule.day.today">⚡ Dzisiaj</button>
+              <button type="button" class="day-pill-btn" data-day="1" data-i18n="schedule.day.1">Poniedziałek</button>
+              <button type="button" class="day-pill-btn" data-day="2" data-i18n="schedule.day.2">Wtorek</button>
+              <button type="button" class="day-pill-btn" data-day="3" data-i18n="schedule.day.3">Środa</button>
+              <button type="button" class="day-pill-btn" data-day="4" data-i18n="schedule.day.4">Czwartek</button>
+              <button type="button" class="day-pill-btn" data-day="5" data-i18n="schedule.day.5">Piątek</button>
+              <button type="button" class="day-pill-btn" data-day="6" data-i18n="schedule.day.6">Sobota</button>
+              <button type="button" class="day-pill-btn" data-day="7" data-i18n="schedule.day.7">Niedziela</button>
+            </div>
+
+            <!-- Słownik i Standaryzacja Poziomów KSH -->
+            <details class="level-standard-details">
+              <summary class="level-standard-summary">
+                <span><i class="fas fa-layer-group"></i> Standaryzacja poziomów KSH (La Clave • Good Mood • Mil Pasos) – jak porównać oznaczenia P0, P1, P2, S1 i Open?</span>
+                <i class="fas fa-chevron-down"></i>
+              </summary>
+              <div class="level-standard-grid">
+                <div class="level-standard-card">
+                  <h4>🟢 P0 • Od Zera / Start (0–2 mies.)</h4>
+                  <p>Dla osób stawiających pierwsze kroki na parkiecie (0–20h nauki).</p>
+                  <ul class="level-standard-map">
+                    <li><strong>La Clave:</strong> Od Zera / Podstawy</li>
+                    <li><strong>Good Mood:</strong> Gr. Od Podstaw (np. Start 19.10, 26.10)</li>
+                    <li><strong>Mil Pasos:</strong> P0 (0–20h) / Podstawowy (solo)</li>
+                  </ul>
+                </div>
+                <div class="level-standard-card">
+                  <h4>🔵 P1 • Podstawowy (2–5 mies.)</h4>
+                  <p>Znasz krok podstawowy, ramę i obroty bazowe – budujesz płynność w parze.</p>
+                  <ul class="level-standard-map">
+                    <li><strong>La Clave:</strong> Gr. Początkująca / Basic 4 / Dla Tańczących</li>
+                    <li><strong>Good Mood:</strong> Początkujący P1 / Gr. Podstawowa Tańcząca</li>
+                    <li><strong>Mil Pasos:</strong> P1 (od 3 mies.) / Gr. Wyrównawcza</li>
+                  </ul>
+                </div>
+                <div class="level-standard-card">
+                  <h4>🔷 P2 • Podstawowy+ (6–9 mies.)</h4>
+                  <p>Utrwalona wiedza bazowa, swobodne łączenie figur i praca nad musicality.</p>
+                  <ul class="level-standard-map">
+                    <li><strong>La Clave:</strong> Tańczący 6+ mies. / Gr. Tańcząca / Rueda</li>
+                    <li><strong>Good Mood:</strong> Grupa P2 / Grupa P3 / Social Skills</li>
+                    <li><strong>Mil Pasos:</strong> P2 (od 6 mies.) oraz P3 (od 9 mies.)</li>
+                  </ul>
+                </div>
+                <div class="level-standard-card">
+                  <h4>🟣 S1 • Średniozaaw. / Zaawansowany (9–12+ mies.)</h4>
+                  <p>Zaawansowany partnerwork, izolacje, polirytmia i grupy zamknięte.</p>
+                  <ul class="level-standard-map">
+                    <li><strong>La Clave:</strong> Średniozaawansowana / Zaawansowana / Formacja</li>
+                    <li><strong>Good Mood:</strong> Gr. Śr.-Zaaw. (min. 6/9 mies.) / S3 / P4–P5 / Advance Lab</li>
+                    <li><strong>Mil Pasos:</strong> P4 (1 rok+) / Śr. Zaaw. / Zaawansowany / Challenge</li>
+                  </ul>
+                </div>
+                <div class="level-standard-card">
+                  <h4>🟡 OPEN • Open / Solo / Praktis</h4>
+                  <p>Zajęcia solo (dla każdego), grupy Open w parach (min. podstawy) i praktisy.</p>
+                  <ul class="level-standard-map">
+                    <li><strong>La Clave:</strong> Solo / Footwork / Suelta / Praktis</li>
+                    <li><strong>Good Mood:</strong> Gr. Open / Zajęcia Praktyczne / Social</li>
+                    <li><strong>Mil Pasos:</strong> Open Solo &amp; Pary / Praktis z instruktorem</li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+
+            <!-- Kontener Kart Zajęć (Statyczny wsad SEO + Dynamiczny Render) -->
+            <div id="scheduleClassesContainer">
+              <div class="schedule-day-section" data-day="1">
+                <div class="schedule-day-heading">
+                  <h2><i class="far fa-calendar-check"></i> Poniedziałek</h2>
+                  <span class="schedule-day-badge">25 zajęć</span>
+                </div>
+                <div class="schedule-cards-list">
+                  <article class="schedule-card schedule-card--lc" data-class-id="lc_mon_1" data-school-id="LC">
+                    <div>
+                      <div class="schedule-card-top">
+                        <span class="schedule-time-box"><i class="far fa-clock"></i> 17:15 – 19:30</span>
+                        <div class="schedule-badges-row">
+                          <span class="school-badge school-badge--lc">La Clave</span>
+                          <span class="level-badge level-badge--p0">P0 • Od zera (Start 15.06)</span>
+                        </div>
+                      </div>
+                      <div class="schedule-card-style">Bachata • Sala Duża (Chorzowska 11)</div>
+                      <h3 class="schedule-card-title">Bachata Od Zera (3x45 min)</h3>
+                      <p class="schedule-card-notes">Pełny blok fundamentów Bachaty od podstaw w Sali Dużej.</p>
+                    </div>
+                    <div class="schedule-card-meta">
+                      <div class="schedule-meta-row">
+                        <div class="schedule-instructors">
+                          <a href="salsopedia.html?term=term_inst_24" class="instructor-link-pill"><i class="fas fa-user-graduate"></i> Claudio &amp; Ola</a>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                  <article class="schedule-card schedule-card--gm" data-class-id="gm_mon_2" data-school-id="GM">
+                    <div>
+                      <div class="schedule-card-top">
+                        <span class="schedule-time-box"><i class="far fa-clock"></i> 18:10 – 19:45</span>
+                        <div class="schedule-badges-row">
+                          <span class="school-badge school-badge--gm">Good Mood</span>
+                          <span class="level-badge level-badge--p0">P0 • Od podstaw (Start 26.10)</span>
+                        </div>
+                      </div>
+                      <div class="schedule-card-style">Salsa Cubana • Gravitacja (ul. Gliwicka 44)</div>
+                      <h3 class="schedule-card-title">Salsa Cubana – Gr. Od Podstaw (START 26.10.2026!)</h3>
+                      <p class="schedule-card-notes">Nowy nabór od zera (Start: 26.10.2026) w lokalizacji Gravitacja ul. Gliwicka 44 (2x45 min).</p>
+                    </div>
+                    <div class="schedule-card-meta">
+                      <div class="schedule-meta-row">
+                        <div class="schedule-instructors">
+                          <a href="salsopedia.html?term=term_inst_16" class="instructor-link-pill"><i class="fas fa-user-graduate"></i> Daniel „Kokosz” Machalica</a>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                  <article class="schedule-card schedule-card--mp" data-class-id="mp_mon_1" data-school-id="MP">
+                    <div>
+                      <div class="schedule-card-top">
+                        <span class="schedule-time-box"><i class="far fa-clock"></i> 18:00 – 19:55</span>
+                        <div class="schedule-badges-row">
+                          <span class="school-badge school-badge--mp">Mil Pasos</span>
+                          <span class="level-badge level-badge--p2">P2 • Podstawowy+ (6+ mies.)</span>
+                        </div>
+                      </div>
+                      <div class="schedule-card-style">Bachata • Sala 1 (Kamienna 4)</div>
+                      <h3 class="schedule-card-title">Bachata P2 (Cz. 1 + Cz. 2)</h3>
+                      <p class="schedule-card-notes">Dla osób po poziomie P1 lub tańczących od ok. 6 miesięcy (2x55 min, Start: 26.01.26).</p>
+                    </div>
+                    <div class="schedule-card-meta">
+                      <div class="schedule-meta-row">
+                        <div class="schedule-instructors">
+                          <a href="salsopedia.html?term=term_inst_11" class="instructor-link-pill"><i class="fas fa-user-graduate"></i> Iza</a>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WIDOK 2: PORÓWNYWARKA CENNIKÓW I KALKULATOR OPŁACALNOŚCI (LA CLAVE vs GOOD MOOD vs MIL PASOS) -->
+          <div id="schedulePricingView" class="is-hidden">
+            <div class="pricing-calc-box">
+              <div class="pricing-calc-header">
+                <div>
+                  <h2><i class="fas fa-calculator"></i> Kalkulator Opłacalności Karnetów i Kart Sportowych</h2>
+                  <p>Porównaj realny koszt miesiąca, cenę pojedynczego wejścia oraz koszt <strong>60 minut nauki</strong> z uwzględnieniem różnic w czasie lekcji (45 min w La Clave vs 55–60 min w Mil Pasos i Good Mood), dopłat blokowych i ważności karnetu.</p>
+                </div>
+              </div>
+
+              <div class="pricing-calc-controls">
+                <div class="pricing-control-group">
+                  <span class="pricing-control-label">1. Ile jednostek zajęciowych w miesiącu planujesz?</span>
+                  <div class="pricing-pills-row" id="pricingFreqGroup" role="group" aria-label="Wybierz liczbę zajęć w miesiącu">
+                    <button type="button" class="day-pill-btn pricing-freq-btn" data-units="4">1x w tyg. (4 jedn.)</button>
+                    <button type="button" class="day-pill-btn pricing-freq-btn is-active" data-units="8">2x w tyg. (8 jedn.)</button>
+                    <button type="button" class="day-pill-btn pricing-freq-btn" data-units="12">Bloki 2–3h (12 jedn.)</button>
+                    <button type="button" class="day-pill-btn pricing-freq-btn" data-units="16">Intensywnie (16+ / Open)</button>
+                  </div>
+                </div>
+
+                <div class="pricing-control-group">
+                  <span class="pricing-control-label">2. Twój profil rozliczenia / karta sportowa:</span>
+                  <div class="pricing-pills-row" id="pricingProfileGroup" role="group" aria-label="Wybierz profil tancerza lub kartę sportową">
+                    <button type="button" class="day-pill-btn pricing-profile-btn is-active" data-profile="standard">💵 Standard (Gotówka / BLIK)</button>
+                    <button type="button" class="day-pill-btn pricing-profile-btn" data-profile="student">🎓 Student (Zniżka)</button>
+                    <button type="button" class="day-pill-btn pricing-profile-btn" data-profile="card_single">🪪 Karta: 1 wejście/dzień (Bloki 2h)</button>
+                    <button type="button" class="day-pill-btn pricing-profile-btn" data-profile="card_multi">🪪 MultiSport Plus / Wielowejściowa</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="pricingCalculatorResults" class="pricing-results-grid">
+                <article class="pricing-result-card pricing-result-card--gm">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--gm">Good Mood</span>
+                    <span class="pricing-best-badge">⭐ Najniższy koszt 60 min</span>
+                  </div>
+                  <h3>Karnet 8h (28 dni)</h3>
+                  <div class="pricing-price-main">170 zł <small>/ mies.</small></div>
+                  <ul class="pricing-metrics-list">
+                    <li><span>Koszt 1 jednostki (60 min):</span> <strong>21,25 zł</strong></li>
+                    <li><span>Realny koszt 60 min tańca:</span> <strong>21,25 zł / 60 min</strong></li>
+                    <li><span>Ważność pakietu:</span> <strong>28 dni (4 tygodnie)</strong></li>
+                  </ul>
+                </article>
+                <article class="pricing-result-card pricing-result-card--lc">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--lc">La Clave</span>
+                    <span class="pricing-unlimited-badge">♾️ Bezterminowy</span>
+                  </div>
+                  <h3>Karnet Eko (8 wejść)</h3>
+                  <div class="pricing-price-main">189 zł <small>/ pakiet</small></div>
+                  <ul class="pricing-metrics-list">
+                    <li><span>Koszt 1 jednostki (45 min):</span> <strong>23,63 zł</strong></li>
+                    <li><span>W bloku 2x45 min (1 okienko + 15 zł):</span> <strong>19,38 zł / jedn.</strong></li>
+                    <li><span>Ważność pakietu:</span> <strong>Bezterminowy (nie przepada)</strong></li>
+                  </ul>
+                </article>
+                <article class="pricing-result-card pricing-result-card--mp">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--mp">Mil Pasos</span>
+                  </div>
+                  <h3>Karnet 8h (4 tygodnie)</h3>
+                  <div class="pricing-price-main">199 zł <small>/ mies.</small></div>
+                  <ul class="pricing-metrics-list">
+                    <li><span>Koszt 1 jednostki (55 min):</span> <strong>24,88 zł</strong></li>
+                    <li><span>Realny koszt 60 min tańca:</span> <strong>27,14 zł / 60 min</strong></li>
+                    <li><span>Ważność pakietu:</span> <strong>4 tygodnie (28 dni)</strong></li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+
+            <!-- Pełna Tabela i Karty Porównawcze 3 Szkół -->
+            <div id="pricingFullCardsContainer" class="pricing-full-section">
+              <div class="schedule-day-heading">
+                <h2><i class="fas fa-balance-scale"></i> Pełne Zestawienie Cenników i Zasad (Katowice)</h2>
+                <span class="schedule-day-badge">Aktualizacja co 24h</span>
+              </div>
+              <div class="pricing-table-wrapper">
+                <table class="pricing-comparison-table">
+                  <thead>
+                    <tr>
+                      <th>Parametr / Pakiet</th>
+                      <th>🔴 La Clave (ul. Chorzowska 11)</th>
+                      <th>🟡 Good Mood (ul. Paderewskiego 35)</th>
+                      <th>🔵 Mil Pasos (ul. Kamienna 4)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Czas 1 jednostki</strong></td>
+                      <td><strong>45 min</strong> (17:00 Happy Hour: 60 min)</td>
+                      <td><strong>55–60 min</strong> (1h)</td>
+                      <td><strong>55 min</strong> (1h w grafiku)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Ważność karnetów</strong></td>
+                      <td><strong>BEZTERMINOWE</strong> (4x, 8x, 10x)</td>
+                      <td><strong>28 dni</strong> (4 tygodnie)</td>
+                      <td><strong>4 tygodnie</strong> (28 dni)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Wejście 1 jedn.</strong></td>
+                      <td><strong>30 zł</strong></td>
+                      <td><strong>35 zł</strong></td>
+                      <td><strong>35 zł</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Blok 2 jednostek (2h)</strong></td>
+                      <td><strong>45 zł</strong> (30 zł + 15 zł dopłaty)</td>
+                      <td><strong>55 zł</strong></td>
+                      <td><strong>55 zł</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Blok 3 jedn. / Day Pass</strong></td>
+                      <td><strong>55 zł</strong> (lub 2 okienka z karnetu = 3. gratis!)</td>
+                      <td><strong>80 zł</strong> (55 zł + 25 zł dopłaty)</td>
+                      <td><strong>90 zł</strong> (Day Pass całodniowy)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet 4 wejścia</strong></td>
+                      <td><strong>109 zł</strong> (27,25 zł / wejście)</td>
+                      <td><strong>100 zł</strong> (Student: <strong>90 zł</strong>)</td>
+                      <td><strong>119 zł</strong> (Student -10%: <strong>~107 zł</strong>)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet 8 wejść</strong></td>
+                      <td><strong>189 zł</strong> (23,63 zł / wejście)</td>
+                      <td><strong>170 zł</strong> (Student: <strong>160 zł</strong>)</td>
+                      <td><strong>199 zł</strong> (Student -10%: <strong>~179 zł</strong>)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet 10 / 12 / 16 wejść</strong></td>
+                      <td><strong>10 wejść (Pro): 219 zł</strong> (21,90 zł/wej.)</td>
+                      <td>Przejście bezpośrednio na pakiet OPEN</td>
+                      <td><strong>12h: 249 zł</strong> (20,75 zł/h)<br><strong>16h: 299 zł</strong> (18,69 zł/h)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Karnet OPEN (4 tyg.)</strong></td>
+                      <td><strong>300 zł</strong></td>
+                      <td><strong>260 zł</strong> (Najtańszy Open)</td>
+                      <td><strong>399 zł</strong> (Student: ~359 zł)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Zasady kart sportowych w blokach 2–3h</strong></td>
+                      <td>MultiSport Plus: odbicie co 45 min (0 zł). Karty 1x/dzień: 2. jedn. <strong>+15 zł</strong>, 3. jedn. <strong>+10 zł</strong>.</td>
+                      <td>Karty 1x/dzień: dopłata do kolejnej godziny wynosi <strong>25 zł</strong>.</td>
+                      <td>Odbicie karty za każdą godzinę zajęć (zgodnie z pakietem karty).</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Sekcja 3: Przeliczenie na realny koszt 60 minut tańca (PLN / 60 min) -->
+              <div class="schedule-day-heading">
+                <h2><i class="fas fa-stopwatch"></i> Przeliczenie na realny koszt 60 minut tańca (PLN / 60 min)</h2>
+                <span class="schedule-day-badge">Normalizacja 45 / 55 / 60 min</span>
+              </div>
+              <div class="pricing-analysis-grid pricing-analysis-grid--two">
+                <article class="pricing-analysis-card">
+                  <h3>🕐 Przy karnecie na 4 wejścia (1 raz w tygodniu)</h3>
+                  <ul class="pricing-analysis-list">
+                    <li><strong>🟡 Good Mood:</strong> 100 zł / 4h = <strong>25,00 zł / 60 min</strong> (studenci: 90 zł / 4h = <strong>22,50 zł / 60 min</strong>).</li>
+                    <li><strong>🔵 Mil Pasos:</strong> 119 zł / 4 jedn. = <strong>29,75 zł / 55 min</strong> (<strong>≈ 32,45 zł za 60 min</strong>; studenci -10%: <strong>26,78 zł / 55 min</strong>, czyli <strong>29,21 zł / 60 min</strong>).</li>
+                    <li><strong>🔴 La Clave (pojedyncze zajęcia 45 min):</strong> 109 zł / 4 = <strong>27,25 zł za 45 min</strong>, co daje <strong>36,33 zł / 60 min</strong>.</li>
+                    <li><strong>🔴 La Clave (w bloku 2×45 min lub 3×45 min):</strong> dzięki dopłatom (<strong>+15 zł / +10 zł</strong>) lub promocji <em>„3. jednostka gratis przy 2 skreśleniach z karnetu”</em>, koszt 60 minut w La Clave spada do <strong>19,47 zł – 23,63 zł / 60 min</strong>!</li>
+                  </ul>
+                </article>
+                <article class="pricing-analysis-card">
+                  <h3>🔥 Przy dużej intensywności (3–4h tygodniowo — 12 do 16 jednostek/mies.)</h3>
+                  <ul class="pricing-analysis-list">
+                    <li><strong>🟡 Good Mood (Karnet Open za 260 zł):</strong> Przy 12h w miesiącu wychodzi <strong>21,67 zł/h</strong>, a przy 16h tylko <strong>16,25 zł/h</strong> — bezkonkurencyjna cena pakietu Open.</li>
+                    <li><strong>🔵 Mil Pasos (Karnety 12h i 16h):</strong> Zamiast drogiego Open (399 zł), Mil Pasos promuje pośrednie pakiety godzinowe: 12h za 249 zł (<strong>20,75 zł/jedn.</strong> = 22,64 zł/60 min) oraz 16h za 299 zł (<strong>18,69 zł/jedn.</strong> = 20,39 zł/60 min, a dla studenta ze zniżką 10% zaledwie <strong>16,82 zł/jedn.</strong> = 18,35 zł/60 min).</li>
+                    <li><strong>🔴 La Clave (Karnet Pro 10x za 219 zł + dopłaty blokowe lub Open za 300 zł):</strong> Karnet 10x daje <strong>21,90 zł za okienko</strong> bez ryzyka przepadnięcia (a w bloku 3×45 min z promocją „3. gratis” aż <strong>19,47 zł / 60 min</strong>).</li>
+                  </ul>
+                </article>
+              </div>
+
+              <!-- Sekcja 4: Specyfika poszczególnych szkół – haczyki i przewagi -->
+              <div class="schedule-day-heading">
+                <h2><i class="fas fa-search-dollar"></i> Specyfika poszczególnych szkół – przewagi i na co uważać</h2>
+                <span class="schedule-day-badge">Analiza A / B / C</span>
+              </div>
+              <div class="pricing-analysis-grid pricing-analysis-grid--three">
+                <article class="pricing-analysis-card pricing-analysis-card--gm">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--gm">A. Good Mood Dance Studio</span>
+                    <span class="school-source-tag">ul. Paderewskiego 35</span>
+                  </div>
+                  <h4>✅ Największe atuty:</h4>
+                  <ul class="pricing-analysis-list">
+                    <li><strong>Najniższy próg wejścia</strong> dla dorosłych i studentów przy małych i średnich karnetach (4h za <strong>100 zł / 90 zł student</strong>; 8h za <strong>170 zł / 160 zł student</strong>).</li>
+                    <li><strong>Najtańszy Karnet OPEN w Katowicach (260 zł na 28 dni)</strong> — zwraca się już przy ok. 10–11 godzinach zajęć w miesiącu (czyli 2,5–3h tygodniowo).</li>
+                    <li>Wygodne zarządzanie rezerwacjami przez aplikację <strong>Fitssey</strong>.</li>
+                  </ul>
+                  <h4>⚠️ Na co uważać:</h4>
+                  <ul class="pricing-analysis-list pricing-analysis-list--warn">
+                    <li>Ścisły limit ważności karnetu (<strong>28 dni</strong> — niewykorzystane wejścia przepadają).</li>
+                  </ul>
+                </article>
+
+                <article class="pricing-analysis-card pricing-analysis-card--lc">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--lc">B. La Clave Katowice</span>
+                    <span class="school-source-tag">ul. Chorzowska 11</span>
+                  </div>
+                  <h4>✅ Największe atuty:</h4>
+                  <ul class="pricing-analysis-list">
+                    <li><strong>Bezterminowe karnety (4x, 8x, 10x):</strong> Jedyna z trzech szkół, w której niewykorzystane wejścia z karnetu nigdy nie przepadają (idealne przy pracy zmianowej lub wyjazdach).</li>
+                    <li><strong>Unikalny system blokowy (2×45 min i 3×45 min):</strong> Z kartą 1×/dzień (MultiSport Classic/Light, FitProfit) lub 1 okienkiem z karnetu za drugą jednostkę (45 min) dopłacasz tylko <strong>15 zł</strong>, a za trzecią <strong>10 zł</strong>.</li>
+                    <li><strong>Promocja „3. jednostka gratis”:</strong> Na bloku 3×45 min (2h 15 min tańca) skreślasz tylko <strong>2 okienka z karnetu</strong>, a trzecie 45 minut masz <strong>GRATIS</strong>!</li>
+                    <li>Z <strong>MultiSport Plus</strong> (wielowejściowym) odbijasz kartę co 45 min i wchodzisz na cały blok za <strong>0 zł</strong>.</li>
+                  </ul>
+                  <h4>⚠️ Na co uważać:</h4>
+                  <ul class="pricing-analysis-list pricing-analysis-list--warn">
+                    <li>Płatność na miejscu wyłącznie <strong>gotówką lub BLIK-iem</strong> (brak terminala kart płatniczych).</li>
+                    <li>Przy wyjściu tylko na pojedyncze 45 minut (bez bloku) cena za minutę jest wyższa niż w blokach 2×45 / 3×45 min.</li>
+                  </ul>
+                </article>
+
+                <article class="pricing-analysis-card pricing-analysis-card--mp">
+                  <div class="pricing-result-top">
+                    <span class="school-badge school-badge--mp">C. Mil Pasos Katowice</span>
+                    <span class="school-source-tag">ul. Kamienna 4</span>
+                  </div>
+                  <h4>✅ Największe atuty:</h4>
+                  <ul class="pricing-analysis-list">
+                    <li><strong>Rozbudowana drabinka dla intensywnie trenujących (12h za 249 zł, 16h za 299 zł):</strong> Większość tancerzy parowych chodzi na bloki 2×55 min 1–2 razy w tygodniu (8h lub 16h/mies.). Pakiet 16h (studenci <strong>~269 zł</strong>) zbija cenę jednostki do <strong>~18,69 zł</strong> (student <strong>16,82 zł</strong>) bez kupowania drogiego Opena.</li>
+                    <li>Przejrzysta struktura poziomów (<strong>P0 → P1 → P2 → P3 → P4 → Open</strong>), gdzie każdy poziom trwa ok. 3 miesiące (~20h).</li>
+                    <li><strong>Day Pass (90 zł)</strong> na weekendowe maratony zajęciowe bez karnetu.</li>
+                  </ul>
+                  <h4>⚠️ Na co uważać:</h4>
+                  <ul class="pricing-analysis-list pricing-analysis-list--warn">
+                    <li>Najdroższy na rynku <strong>Karnet Open (399 zł)</strong> — opłaca się dopiero powyżej 17–18h w miesiącu (ponad 4–5h tygodniowo); dla większości kursantów znacznie korzystniejszy jest karnet <strong>12h (249 zł)</strong> lub <strong>16h (299 zł)</strong>.</li>
+                  </ul>
+                </article>
+              </div>
+
+              <!-- Sekcja 5: Podsumowanie – która szkoła wypada najlepiej finansowo zależnie od profilu tancerza? -->
+              <div class="schedule-day-heading">
+                <h2><i class="fas fa-award"></i> Podsumowanie – która szkoła wypada najlepiej dla Twojego profilu?</h2>
+                <span class="schedule-day-badge">4 profile tancerza</span>
+              </div>
+              <div class="pricing-analysis-grid pricing-analysis-grid--two">
+                <article class="pricing-analysis-card">
+                  <h3>🪪 1. Posiadacz karty MultiSport Plus / Medicover (pakiet nielimitowany)</h3>
+                  <p>We <strong>wszystkich 3 szkołach</strong> wejdziesz całkowicie <strong>bez dopłat (0 zł)</strong> — w <strong>La Clave</strong> odbijasz kartę co 45 minut, natomiast w <strong>Mil Pasos</strong> i <strong>Good Mood</strong> co 1 godzinę.</p>
+                </article>
+                <article class="pricing-analysis-card">
+                  <h3>🪪 2. Posiadacz karty z limitem 1 wejścia dziennie (MultiSport Classic/Light, FitProfit) na długie bloki</h3>
+                  <p>Najtaniej wychodzi <strong>🔴 La Clave</strong> — odbijasz kartę na pierwsze 45 min, a za kolejne 45 min dopłacasz tylko <strong>15 zł</strong> (i ew. <strong>10 zł</strong> za trzecie 45 min, co daje <strong>10,00–11,11 zł / 60 min</strong>). W <strong>🟡 Good Mood</strong> dopłata do kolejnej godziny to <strong>25 zł</strong> (12,50 zł / 60 min).</p>
+                </article>
+                <article class="pricing-analysis-card">
+                  <h3>🌱 3. Osoba początkująca / z nieregularnym grafikiem (1 raz w tygodniu, ryzyko nieobecności)</h3>
+                  <p><strong>🔴 La Clave</strong> (karnet <strong>109 zł / 189 zł bezterminowy</strong> — zero stresu, że wejścia przepadną po 28 dniach) lub <strong>🟡 Good Mood</strong> (najtańszy karnet 4h za <strong>100 zł / 90 zł student</strong>, jeśli masz pewność stuprocentowej frekwencji).</p>
+                </article>
+                <article class="pricing-analysis-card">
+                  <h3>🔥 4. Tancerz „Hardcore” (3–5 godzin tygodniowo za gotówkę, bez karty sportowej)</h3>
+                  <p><strong>🟡 Good Mood</strong> z karnetem <strong>OPEN za 260 zł</strong> (przy 16h wychodzi <strong>16,25 zł/h</strong>) lub <strong>🔵 Mil Pasos</strong> z karnetem <strong>16h za 299 zł</strong> (<strong>269,10 zł</strong> dla studenta, czyli <strong>16,82 zł/jedn.</strong>).</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <!-- WIDOK 2: KALENDARZ IMPREZ I WARSZTATÓW DANCEPULS -->
+          <div id="scheduleEventsView" class="is-hidden">
+            <div class="events-filter-strip" role="group" aria-label="Filtruj imprezy po mieście">
+              <button type="button" class="day-pill-btn event-city-filter-btn is-active" data-city="all">🌍 Wszystkie miasta</button>
+              <button type="button" class="day-pill-btn event-city-filter-btn" data-city="Katowice">🔥 Tylko Katowice</button>
+              <button type="button" class="day-pill-btn event-city-filter-btn" data-city="Slask">💃 Cały Śląsk i Region</button>
+              <button type="button" class="day-pill-btn event-city-filter-btn" data-city="Krakow">🏛️ Kraków</button>
+            </div>
+            <div id="scheduleEventsContainer"></div>
+          </div>
+
+          <!-- WIDOK 3: ZINTEGROWANA MAPA SZKÓŁ TAŃCA I PARKIETÓW KSH -->
+          <div id="scheduleMapView" class="is-hidden">
+            <div class="map-hub">
+              <div class="map-hub-header">
+                <div class="map-tabs schedule-map-tabs" role="group" aria-label="Wybierz szkołę lub miejscówkę na mapie">
+                  <button
+                    type="button"
+                    class="map-tab-btn is-active"
+                    aria-pressed="true"
+                    data-zone="school-lc"
+                    data-label="La Clave Katowice: ul. Chorzowska 11 (Salsa Cubana, Rueda, Timba, Bachata, Kizomba)"
+                    data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2608,19.0205&amp;travelmode=driving"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2608%2C19.0205&amp;z=16">
+                    🔴 La Clave (Chorzowska 11)
+                  </button>
+                  <button
+                    type="button"
+                    class="map-tab-btn"
+                    aria-pressed="false"
+                    data-zone="school-gm"
+                    data-label="Szkoła Tańca Good Mood: ul. Paderewskiego 35 (Salsa On1/Cubana, Bachata, Kizomba, Zouk)"
+                    data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2518,19.0354&amp;travelmode=driving"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2518%2C19.0354&amp;z=16">
+                    🟡 Good Mood (Paderewskiego 35)
+                  </button>
+                  <button
+                    type="button"
+                    class="map-tab-btn"
+                    aria-pressed="false"
+                    data-zone="school-mp"
+                    data-label="Mil Pasos Katowice: ul. Kamienna 4 (Salsa Cubana, Bachata Sensual, Kizomba)"
+                    data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2562,19.0315&amp;travelmode=driving"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2562%2C19.0315&amp;z=16">
+                    🔵 Mil Pasos (Kamienna 4)
+                  </button>
+                  <button
+                    type="button"
+                    class="map-tab-btn"
+                    aria-pressed="false"
+                    data-zone="school-ev"
+                    data-label="Evolution &amp; KIZLAB: al. Korfantego 4 / ul. Sobieskiego 11, Katowice"
+                    data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2599,19.0218&amp;travelmode=driving"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2599%2C19.0218&amp;z=16">
+                    🟣 Evolution &amp; KIZLAB
+                  </button>
+                  <button
+                    type="button"
+                    class="map-tab-btn"
+                    aria-pressed="false"
+                    data-zone="wolni"
+                    data-label="Wolni Ludzie (ul. Mariacka 2) – Niedzielne Potańcówki KSH pod dachem"
+                    data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2577281%2C19.0248325&amp;z=16">
+                    🍹 Wolni Ludzie (KSH)
+                  </button>
+                  <button
+                    type="button"
+                    class="map-tab-btn"
+                    aria-pressed="false"
+                    data-zone="stawy"
+                    data-label="Dolina 3 Stawów: Kamienny Krąg – Plenery KSH"
+                    data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2370851,19.0470498&amp;travelmode=driving"
+                    data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2449289%2C19.046362&amp;z=16">
+                    💃 Kamienny Krąg (3 Stawy)
+                  </button>
+                </div>
+
+                <div class="map-hub-status" aria-live="polite">
+                  <span class="map-live-dot"></span>
+                  <span id="map-active-label" class="map-active-label">La Clave Katowice: ul. Chorzowska 11 (Salsa Cubana, Rueda, Timba, Bachata, Kizomba)</span>
+                </div>
+              </div>
+
+              <div class="map-hub-grid">
+                <div class="map-container" id="ksh-map-container">
+                  <iframe
+                    id="ksh-map-iframe"
+                    title="Mapa katowickich szkół tańca (La Clave, Good Mood, Mil Pasos) oraz parkietów Kato Salsa Hub"
+                    src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2608%2C19.0205&amp;z=15"
+                    allowfullscreen="" loading="lazy"></iframe>
+                </div>
+
+                <article class="card map-spot-card is-active" data-zone="school-lc">
+                  <div class="map-spot-top">
+                    <div class="map-spot-title-group">
+                      <span class="map-spot-emoji">🔴</span>
+                      <div>
+                        <h3>La Clave Katowice</h3>
+                        <span class="map-spot-address">ul. Chorzowska 11, Katowice (koło Spodka)</span>
+                      </div>
+                    </div>
+                    <span class="school-source-tag">Źródło: 6 plansz PNG (16.09.2026)</span>
+                  </div>
+                  <ul class="map-spot-points">
+                    <li><strong>💃 Style:</strong> Salsa Cubana (Casino), Rueda de Casino, Timba, Son Cubano, Rumba, Salsa NY On2, Bachata, Kizomba, Taniec Brzucha.</li>
+                    <li><strong>🪪 Karty sportowe:</strong> Multisport Plus, Medicover Sport, FitProfit, PZU Sport.</li>
+                  </ul>
+                  <div class="map-spot-actions">
+                    <button
+                      type="button"
+                      class="map-focus-btn"
+                      data-zone="school-lc"
+                      data-label="La Clave Katowice: ul. Chorzowska 11"
+                      data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2608,19.0205&amp;travelmode=driving"
+                      data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2608%2C19.0205&amp;z=16">
+                      <i class="fas fa-crosshairs"></i> Pokaż na mapie
+                    </button>
+                    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.2608,19.0205&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                      <i class="fas fa-route"></i> Nawiguj do La Clave
+                    </a>
+                  </div>
+                </article>
+
+                <article class="card map-spot-card" data-zone="school-gm">
+                  <div class="map-spot-top">
+                    <div class="map-spot-title-group">
+                      <span class="map-spot-emoji">🟡</span>
+                      <div>
+                        <h3>Szkoła Tańca Good Mood</h3>
+                        <span class="map-spot-address">ul. Paderewskiego 35 (oraz Gravitacja ul. Gliwicka 44)</span>
+                      </div>
+                    </div>
+                    <span class="school-source-tag">Źródło: Google Sheets Live (Paź 2026)</span>
+                  </div>
+                  <ul class="map-spot-points">
+                    <li><strong>💃 Style:</strong> Salsa Cubana (Gliwicka 44), Bachata, Kizomba, Zouk Brazylijski, West Coast Swing, Latino Solo, Tango, Shuffle.</li>
+                    <li><strong>🅿️ Parking i Karty:</strong> Własny parking pod budynkiem; honoruje Multisport, Medicover Sport i FitProfit.</li>
+                  </ul>
+                  <div class="map-spot-actions">
+                    <button
+                      type="button"
+                      class="map-focus-btn"
+                      data-zone="school-gm"
+                      data-label="Szkoła Tańca Good Mood: ul. Paderewskiego 35"
+                      data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2518,19.0354&amp;travelmode=driving"
+                      data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2518%2C19.0354&amp;z=16">
+                      <i class="fas fa-crosshairs"></i> Pokaż na mapie
+                    </button>
+                    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.2518,19.0354&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                      <i class="fas fa-route"></i> Nawiguj do Good Mood
+                    </a>
+                  </div>
+                </article>
+
+                <article class="card map-spot-card" data-zone="school-mp">
+                  <div class="map-spot-top">
+                    <div class="map-spot-title-group">
+                      <span class="map-spot-emoji">🔵</span>
+                      <div>
+                        <h3>Mil Pasos Katowice</h3>
+                        <span class="map-spot-address">ul. Kamienna 4, Katowice (Śródmieście)</span>
+                      </div>
+                    </div>
+                    <span class="school-source-tag">Źródło: 8 plansz JPG (12.10.2026)</span>
+                  </div>
+                  <ul class="map-spot-points">
+                    <li><strong>💃 Style:</strong> Salsa Cubana, Cuban Fuego, Bachata Sensual, Kizomba Fusion, Urban Kiz, Zouk Brazylijski, Bachazouk, High Heels, House, Hip-Hop.</li>
+                    <li><strong>🪪 Karty sportowe:</strong> Multisport Plus, Medicover Sport, FitProfit.</li>
+                  </ul>
+                  <div class="map-spot-actions">
+                    <button
+                      type="button"
+                      class="map-focus-btn"
+                      data-zone="school-mp"
+                      data-label="Mil Pasos Katowice: ul. Kamienna 4"
+                      data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2562,19.0315&amp;travelmode=driving"
+                      data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2562%2C19.0315&amp;z=16">
+                      <i class="fas fa-crosshairs"></i> Pokaż na mapie
+                    </button>
+                    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.2562,19.0315&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                      <i class="fas fa-route"></i> Nawiguj do Mil Pasos
+                    </a>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="logo-text">KATO SALSA HUB</span>
+        <p data-i18n="footer.tagline">Twoje centrum salsy na Śląsku. Muzyka, taniec, pasja i niepowtarzalny klimat.</p>
+        <div class="lang-switcher lang-switcher--footer" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+          <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#hero" data-i18n="nav.start">Start</a>
+        <a href="index.html#onas" data-i18n="nav.about">O nas</a>
+        <a href="index.html#style" data-i18n="nav.styles">Style</a>
+        <a href="grafik.html" data-i18n="nav.schedule">Grafik</a>
+        <a href="salsopedia.html" data-i18n="nav.wiki">Salsopedia</a>
+        <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+        <a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a>
+        <a href="https://www.facebook.com/KatoSalsaHub" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="https://www.instagram.com/katosalsahub/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="privacy.html" data-i18n="footer.privacy">Polityka Prywatności</a>
+        <a href="https://dancepuls.katosalsahub.pl/" target="_blank" rel="noopener noreferrer">DancePuls Generator</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="rok"></span> Kato Salsa Hub. <span data-i18n="footer.createdBy">Stworzone przez</span> <a href="https://twojastronawww.pl"
+          target="_blank" rel="noopener noreferrer">TwojaStronaWWW</a></p>
+    </div>
+  </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner" data-nosnippet>
+    <div class="cookie-content">
+      <h4 data-i18n="cookie.title">🍪 Ciasteczka i Prywatność</h4>
+      <p data-i18n-html="cookie.text">Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
+          href="privacy.html">Politykę Prywatności</a>.</p>
+    </div>
+    <div class="cookie-actions">
+      <button id="accept-cookies" class="btn btn-primary" data-i18n="cookie.accept">Akceptuję</button>
+    </div>
+  </div>
+
+  <script data-cfasync="false" src="assets/js/i18n.js?v=4.4"></script>
+  <script data-cfasync="false" src="assets/js/cookies.js?v=3.9"></script>
+  <script data-cfasync="false" src="assets/js/wiki.js?v=3.9"></script>
+  <script data-cfasync="false" src="assets/js/radio.js?v=3.9"></script>
+  <script data-cfasync="false" src="assets/js/home.js?v=3.9"></script>
+  <script data-cfasync="false" src="assets/js/schedule.js?v=4.0"></script>
+  <script data-cfasync="false" src="assets/js/router.js?v=3.9"></script>
+  <script data-cfasync="false" src="assets/js/ai-widget.js?v=4.4" data-site-id="katosalsahub" data-title="Asystent Kato Salsa Hub" data-kb-url="assets/data/salsopedia.json"></script>
+</body>
+
+</html>

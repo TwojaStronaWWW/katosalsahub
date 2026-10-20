@@ -183,3 +183,37 @@ Panel zarządzania: **[https://business.google.com/locations](https://business.g
   - W panelu wizytówki kliknij **`Ask for reviews`** (`Poproś o opinie`).
   - Właściciel/administrator konta Google zarządzającego wizytówką **nie wystawia opinii samemu sobie**, natomiast **odpowiada na każdą opinię uczestników**, używając w odpowiedzi słów kluczowych (np. *„Dziękujemy za wspólny taniec! Cieszymy się, że salsa w Katowicach i nasze potańcówki w Wolnych Ludziach oraz plenery na 3 Stawach dają tyle kubańskiej energii!”*).
 
+---
+
+### 5.5 Szablon 4: Post powitalny dla nowych członków grupy FB (Onboarding + Ruch na stronę i SEO)
+> **💡 INSTRUKCJA EDYCJI POSTA POWITALNEGO NA FACEBOOKU:**
+> 1. **Nie kasuj podświetlonych na niebiesko imion i nazwisk** wygenerowanych przez Facebooka – to aktywne wzmianki (`@`), dzięki którym nowe osoby dostają powiadomienie.
+> 2. Kliknij kursorem **na samym końcu po ostatnim nazwisku**, naciśnij **2x Enter** i wklej poniższy blok.
+> 3. **Opcjonalny trik na większy ruch (CTR):** Jeśli po wklejeniu tekstu klikniesz `X` na domyślnym fioletowym obrazku powitalnym Facebooka, post automatycznie zaciągnie duży, klikalny kafel podglądu strony `https://katosalsahub.pl/` z naszym logo.
+
+```text
+🔥 ¡Hola! Witamy na pokładzie Kato Salsa Hub – największej społeczności Salsy Kubańskiej (Casino, Timba, Rueda de Casino), Bachaty i Kizomby w Katowicach i na Śląsku! 💃🕺
+
+Żebyście od razu czuli się u nas jak w domu, łapcie nasz Pakiet Startowy Tancerza (zapiszcie sobie te linki!):
+
+🌐 1. OFICJALNA STRONA & MAPA MIEJSCÓWEK (+ PARKINGI I RADIO 24/7):
+Sprawdźcie, gdzie dokładnie tańczymy w Katowicach (lokal Wolni Ludzie na ul. Mariackiej 2, Kamienny Krąg w Dolinie Trzech Stawów, Amfiteatr NOSPR), gdzie zaparkować za darmo i posłuchajcie naszego kubańskiego radia Timba Nation 24/7 bez reklam:
+👉 https://katosalsahub.pl/
+
+📚 2. SALSOPEDIA – PONAD 200 FIGUR I KOMEND RUEDA DE CASINO:
+Uczycie się salsy lub chodzicie na kursy? Na naszej stronie macie pierwszą w Polsce otwartą encyklopedię ponad 200 figur salsy kubańskiej, słownik komend ruedowych oraz bazę szkół i instruktorów w Katowicach:
+👉 https://katosalsahub.pl/salsopedia.html
+
+📅 3. KALENDARZ WSZYSTKICH IMPREZ NA ŚLĄSKU (DANCEPULS):
+Aktualny rozkład salsotek, praktyk, warsztatów i plenerów w całym regionie:
+👉 https://dancepuls.katosalsahub.pl/
+
+🎉 4. NAJBLIŻSZA POTAŃCÓWKA W KATOWICACH (NIEDZIELA 15:00–18:00):
+Widzimy się w niedzielę w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice) – wpadajcie solo lub ze znajomymi, na miejscu rotujemy w parach i tańczymy w kole!
+
+💬 Dajcie znać w komentarzu: od jak dawna tańczycie (albo czy dopiero zaczynacie przygodę z salsą) i kiedy widzimy się na parkiecie! 👇🔥
+
+#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie #Salsopedia
+```
+
+

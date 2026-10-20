@@ -18,6 +18,7 @@ const { execSync } = require('child_process');
 const BASE_DIR = path.resolve(__dirname, '..');
 const DB_PATH = path.join(BASE_DIR, 'data', 'events_database.md');
 const JSON_PATH = path.join(BASE_DIR, 'data', 'events.json');
+const KSH_EVENTS_JSON_PATH = path.resolve(BASE_DIR, '..', 'katosalsahub.pl', 'assets', 'data', 'events.json');
 const REPORT_PATH = path.join(BASE_DIR, 'data', 'latest_report.md');
 
 const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sI3oU5dNLhWsK0vcct069MENk-o-XuUh9UQ7k-O7Um8/export?format=csv&gid=1833510316';
@@ -626,6 +627,8 @@ function generateEventsJson(sections) {
         }
 
         const stylesArray = ev.styles.split(/[\/,]/).map(s => s.trim()).filter(s => s);
+        const cleanPublicDesc = String(ev.title || '').replace(/\s*,\s*/g, ', ').trim();
+        const isSoldOut = Boolean(ev.notes && /wyprzedane/i.test(ev.notes));
 
         resultByDate[isoDate].push({
             checked: true,
@@ -639,6 +642,9 @@ function generateEventsJson(sections) {
             lng: ev.lng,
             tytul: extractShortEventTitle(ev.title),
             opis: ev.title + (ev.notes ? ` - ${ev.notes}` : ''),
+            opisPubliczny: cleanPublicDesc,
+            dateLabel: ev.futureHeaderLabel || '',
+            soldOut: isSoldOut,
             link: ev.url,
             style: stylesArray
         });
@@ -655,6 +661,16 @@ function generateEventsJson(sections) {
 
     writeFileAtomically(JSON_PATH, JSON.stringify(finalJson, null, 2));
     console.log(`   Zapisano ${finalJson.length} dni z wydarzeniami do: ${JSON_PATH}`);
+
+    try {
+        if (fs.existsSync(path.dirname(KSH_EVENTS_JSON_PATH))) {
+            writeFileAtomically(KSH_EVENTS_JSON_PATH, JSON.stringify(finalJson, null, 2));
+            console.log(`   Zsynchronizowano publiczną bazę wydarzeń KSH: ${KSH_EVENTS_JSON_PATH}`);
+        }
+    } catch (err) {
+        console.warn('   ⚠️ Nie udało się zapisać kopii events.json do katosalsahub.pl:', err.message);
+    }
+
     return finalJson;
 }
 
