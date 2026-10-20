@@ -288,6 +288,12 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         assert.match(cls.startTime, /^\d{2}:\d{2}$/, `Zajęcia ${cls.id} mają niepoprawny format startTime`);
         assert.ok(allowedLevels.has(cls.levelCode), `Zajęcia ${cls.id} mają nieustandaryzowany kod poziomu: ${cls.levelCode}`);
         assert.ok(Array.isArray(cls.instructors) && cls.instructors.length > 0, `Zajęcia ${cls.id} muszą mieć przypisanego instruktora`);
+        if (cls.styleCategory === 'bachata') {
+          assert.ok(
+            !cls.instructors.some((i) => /Seruga/i.test(i.name || '')),
+            `Zajęcia bachatowe ${cls.id} nie mogą przypisywać salsowej instruktorki Ani Serugi zamiast duetu Ania & Kuba`
+          );
+        }
       }
 
       // Weryfikacja funkcji normalizeLevel, parsera CSV Good Mood, parsera cennika La Clave oraz Circuit Breakera

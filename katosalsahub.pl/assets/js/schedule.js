@@ -357,8 +357,8 @@ function buildClassCardHtml(item, schoolsMap) {
           <div class="schedule-instructors">${instructorsHtml}</div>
         </div>
         <div class="schedule-card-actions">
-          <button type="button" class="schedule-action-btn js-focus-school-map" data-school-id="${escapeHtml(item.schoolId)}">
-            <i class="fas fa-map-marker-alt"></i> Pokaż na mapie (${escapeHtml(school.name)})
+          <button type="button" class="schedule-action-btn js-focus-school-map" data-school-id="${escapeHtml(item.schoolId)}" title="Pokaż szkołę ${escapeHtml(school.name)} na mapie">
+            <i class="fas fa-map-marker-alt"></i> Pokaż na mapie
           </button>
           <a href="${escapeHtml(school.website || '#')}" target="_blank" rel="noopener noreferrer" class="schedule-action-btn">
             <i class="fas fa-external-link-alt"></i> Strona szkoły
