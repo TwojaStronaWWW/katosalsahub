@@ -465,10 +465,54 @@ function handleLocalWikiApi(req, res) {
   });
 }
 
+function handleLocalRadioApi(req, res) {
+  const https = require('node:https');
+  const zenoUrl = `https://stream.zeno.fm/g0zpm0pypuhvv?_t=${Date.now()}`;
+  const sendJson = (payload) => {
+    if (res.headersSent) return;
+    res.writeHead(200, {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+      ...SECURITY_HEADERS,
+    });
+    res.end(JSON.stringify(payload));
+  };
+
+  const zenoReq = https.get(
+    zenoUrl,
+    {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130.0.0.0 Safari/537.36',
+        Accept: '*/*',
+      },
+      timeout: 3000,
+    },
+    (zenoRes) => {
+      const loc = zenoRes.headers && zenoRes.headers.location ? String(zenoRes.headers.location).trim() : '';
+      zenoRes.destroy();
+      if (loc.startsWith('https://')) {
+        sendJson({ ok: true, streamUrl: loc, fallback: zenoUrl });
+      } else {
+        sendJson({ ok: true, streamUrl: zenoUrl, fallback: 'https://stream.zeno.fm/g0zpm0pypuhvv' });
+      }
+    }
+  );
+  zenoReq.on('error', () => {
+    sendJson({ ok: true, streamUrl: zenoUrl, fallback: 'https://stream.zeno.fm/g0zpm0pypuhvv' });
+  });
+  zenoReq.on('timeout', () => {
+    zenoReq.destroy();
+    sendJson({ ok: true, streamUrl: zenoUrl, fallback: 'https://stream.zeno.fm/g0zpm0pypuhvv' });
+  });
+}
+
 const server = http.createServer((req, res) => {
   const cleanUrlPath = String(req.url || '/').split('?')[0];
   if (cleanUrlPath === '/assets/php/wiki.php' && (req.method === 'POST' || String(req.url).includes('action='))) {
     return handleLocalWikiApi(req, res);
+  }
+  if (cleanUrlPath === '/assets/php/radio.php' && String(req.url).includes('action=')) {
+    return handleLocalRadioApi(req, res);
   }
 
   const { filePath, isAllowed, isMalformed } = resolveSafeFilePath(req.url);

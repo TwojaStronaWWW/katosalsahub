@@ -55,14 +55,18 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       const radioJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'radio.js'), 'utf-8');
       assert.match(radioJs, /function\s+warmUpStream\b/, 'Brak funkcji pre-warmingu warmUpStream w radio.js');
       assert.match(radioJs, /ensureAudioElementMounted/, 'Brak montowania elementu #ksh-radio-audio do DOM w radio.js');
+      assert.match(radioJs, /armPlaybackWatchdog/, 'Brak strażnika startu strumienia armPlaybackWatchdog w radio.js');
+      assert.match(radioJs, /resolveDirectStreamUrl/, 'Brak resolvera bezpośredniego węzła strumienia resolveDirectStreamUrl w radio.js');
       assert.doesNotMatch(radioJs, /addEventListener\(\s*['"]stalled['"]/, 'Nasłuchiwanie stalled nie powinno przerywać i resetować buforowanego strumienia Zeno.fm');
       assert.doesNotMatch(radioJs, /crossOrigin\s*=\s*['"]anonymous['"]/, 'Zbędny crossOrigin="anonymous" spowalniający przekierowanie 302 strumienia');
+      assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'radio.php')), 'Brak pliku katosalsahub.pl/assets/php/radio.php');
 
       const swJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sw.js'), 'utf-8');
       const cookiesJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'cookies.js'), 'utf-8');
       const swCacheMatch = swJs.match(/CACHE_NAME\s*=\s*['"]ksh-pwa-v(\d+)['"]/);
       assert.ok(swCacheMatch, 'Brak CACHE_NAME = ksh-pwa-vXX w sw.js');
       assert.match(cookiesJs, new RegExp(`sw\\.js\\?v=${swCacheMatch[1]}`), 'Wersja sw.js?v=XX w cookies.js musi odpowiadać wersji ksh-pwa-vXX w sw.js');
+      assert.match(cookiesJs, /radioActive/, 'Brak ochrony aktywnego odtwarzania radia przed przeładowaniem strony w cookies.js');
 
       const sectionsCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'sections.css'), 'utf-8');
       assert.match(sectionsCss, /grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*1\.5fr\)/, 'Brak minmax(0, ...) w .radio-wrapper zapobiegającego przesuwaniu widgetu przy zmianie piosenki');

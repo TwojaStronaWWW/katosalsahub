@@ -24,33 +24,62 @@
     });
   }
 
-  // Rejestracja Service Workera dla PWA (#21) z wymuszeniem pobrania świeżej wersji
+  // Rejestracja Service Workera dla PWA (#21) z ochroną aktywnego odtwarzania radia
+  // oraz automatycznym czyszczeniem cache na lokalnym Live Serverze
   if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-    let swRefreshing = false;
-    const hadController = Boolean(navigator.serviceWorker.controller);
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (!hadController || swRefreshing) return;
-      swRefreshing = true;
-      window.location.reload();
-    });
+    const isLocalLiveServer =
+      window.location.port === '5500' ||
+      window.location.port === '5501' ||
+      window.location.pathname.includes('/katosalsahub.pl/');
 
-    const registerFreshServiceWorker = () => {
+    if (isLocalLiveServer) {
       navigator.serviceWorker
-        .register('sw.js?v=27', { updateViaCache: 'none' })
-        .then((reg) => {
-          if (reg && typeof reg.update === 'function') {
-            reg.update().catch(() => {});
-          }
-        })
-        .catch(() => {
-          // Ciche pominięcie w środowisku deweloperskim bez HTTPS
-        });
-    };
-
-    if (document.readyState === 'complete') {
-      registerFreshServiceWorker();
+        .getRegistrations()
+        .then((regs) => Promise.all(regs.map((r) => r.unregister())))
+        .catch(() => {});
+      if (typeof caches !== 'undefined' && typeof caches.keys === 'function') {
+        caches
+          .keys()
+          .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+          .catch(() => {});
+      }
     } else {
-      window.addEventListener('load', registerFreshServiceWorker);
+      let swRefreshing = false;
+      const hadController = Boolean(navigator.serviceWorker.controller);
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!hadController || swRefreshing) return;
+        const radioActive =
+          (document.body && document.body.classList.contains('radio-playing')) ||
+          Boolean(
+            window.kshRadio &&
+              typeof window.kshRadio.getState === 'function' &&
+              (window.kshRadio.getState().isPlaying ||
+                window.kshRadio.getState().isLoading ||
+                window.kshRadio.getState().userRequestedPlay)
+          );
+        if (radioActive) return;
+        swRefreshing = true;
+        window.location.reload();
+      });
+
+      const registerFreshServiceWorker = () => {
+        navigator.serviceWorker
+          .register('sw.js?v=28', { updateViaCache: 'none' })
+          .then((reg) => {
+            if (reg && typeof reg.update === 'function') {
+              reg.update().catch(() => {});
+            }
+          })
+          .catch(() => {
+            // Ciche pominięcie w środowisku deweloperskim bez HTTPS
+          });
+      };
+
+      if (document.readyState === 'complete') {
+        registerFreshServiceWorker();
+      } else {
+        window.addEventListener('load', registerFreshServiceWorker);
+      }
     }
   }
 
@@ -175,7 +204,7 @@
         sendAnalyticsBeacon({ type: 'event', event: 'cta_email_click' });
       }
     }
-    const radioBtn = target.closest('#radio-toggle, .radio-toggle, [data-radio-toggle], #radioPlayBtn');
+    const radioBtn = target.closest('#header-radio-play, #radio-play, #radio-toggle, .radio-toggle, [data-radio-toggle], #radioPlayBtn');
     if (radioBtn) {
       sendAnalyticsBeacon({ type: 'event', event: 'radio_play' });
     }

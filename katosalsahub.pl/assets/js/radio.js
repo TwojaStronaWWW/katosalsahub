@@ -71,7 +71,6 @@
         !radioAudio.parentElement
       ) {
         radioAudio.id = 'ksh-radio-audio';
-        radioAudio.className = 'is-hidden';
         document.body.appendChild(radioAudio);
       }
     } catch {
@@ -88,6 +87,7 @@
     lastWarmUpTime: 0,
     warmUpExpireTimer: null,
     reconnectTimer: null,
+    playbackWatchdogTimer: null,
     reconnectAttempts: 0,
     sleepTimerTimeout: null,
     sleepTimerCountdownInterval: null,
@@ -127,9 +127,56 @@
     }
   }
 
+  function clearPlaybackWatchdog() {
+    if (RadioState.playbackWatchdogTimer) {
+      clearTimeout(RadioState.playbackWatchdogTimer);
+      RadioState.playbackWatchdogTimer = null;
+    }
+  }
+
+  function armPlaybackWatchdog(timeoutMs = 3500) {
+    clearPlaybackWatchdog();
+    RadioState.playbackWatchdogTimer = setTimeout(() => {
+      RadioState.playbackWatchdogTimer = null;
+      if (!RadioState.userRequestedPlay) return;
+      const currentTime = Number(radioAudio.currentTime || 0);
+      const readyState = typeof radioAudio.readyState === 'number' ? radioAudio.readyState : 4;
+      if (currentTime === 0 && readyState < 3) {
+        scheduleStreamReconnect();
+      }
+    }, timeoutMs);
+  }
+
   function buildFreshStreamUrl() {
     const sep = RADIO_CONFIG.streamUrl.includes('?') ? '&' : '?';
     return `${RADIO_CONFIG.streamUrl}${sep}_t=${Date.now()}`;
+  }
+
+  async function resolveDirectStreamUrl() {
+    if (typeof fetch !== 'function' || typeof AbortController === 'undefined') {
+      return buildFreshStreamUrl();
+    }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    try {
+      const response = await fetch(`assets/php/radio.php?action=resolve&_t=${Date.now()}`, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+        signal: controller.signal
+      });
+      if (response && response.ok && typeof response.json === 'function') {
+        const data = await response.json();
+        if (data && data.ok && typeof data.streamUrl === 'string' && data.streamUrl.startsWith('https://')) {
+          return data.streamUrl;
+        }
+      }
+    } catch {
+      // Fallback na bezpośredni adres Zeno.fm z cache-busterem
+    } finally {
+      clearTimeout(timeoutId);
+    }
+    return buildFreshStreamUrl();
   }
 
   /**
@@ -173,6 +220,7 @@
   function stopRadio() {
     clearWarmUpExpireTimer();
     clearReconnectTimer();
+    clearPlaybackWatchdog();
     RadioState.userRequestedPlay = false;
     RadioState.isLoading = false;
     RadioState.isPlaying = false;
@@ -198,10 +246,11 @@
 
   function scheduleStreamReconnect() {
     clearReconnectTimer();
+    clearPlaybackWatchdog();
     if (!RadioState.userRequestedPlay) {
       return;
     }
-    if (RadioState.reconnectAttempts >= 2) {
+    if (RadioState.reconnectAttempts >= 3) {
       RadioState.userRequestedPlay = false;
       RadioState.isPlaying = false;
       RadioState.isLoading = false;
@@ -217,30 +266,39 @@
     RadioState.reconnectAttempts += 1;
     RadioState.isLoading = true;
     updateGlobalUI();
-    RadioState.reconnectTimer = setTimeout(() => {
+    RadioState.reconnectTimer = setTimeout(async () => {
       RadioState.reconnectTimer = null;
       if (!RadioState.userRequestedPlay) return;
       try {
+        const nextUrl = RadioState.reconnectAttempts === 1
+          ? await resolveDirectStreamUrl()
+          : buildFreshStreamUrl();
+        if (!RadioState.userRequestedPlay) return;
         radioAudio.muted = false;
         radioAudio.volume = 1.0;
-        radioAudio.src = buildFreshStreamUrl();
+        radioAudio.src = nextUrl;
+        armPlaybackWatchdog(4000);
         const p = radioAudio.play();
         if (p && typeof p.catch === 'function') {
           p.catch(() => {
-            if (RadioState.reconnectAttempts >= 2) {
+            if (!RadioState.userRequestedPlay) return;
+            if (RadioState.reconnectAttempts >= 3) {
+              clearPlaybackWatchdog();
               RadioState.userRequestedPlay = false;
               RadioState.isPlaying = false;
               RadioState.isLoading = false;
               stopMetadataPolling();
+              updateGlobalUI();
+            } else {
+              scheduleStreamReconnect();
             }
-            updateGlobalUI();
           });
         }
       } catch {
         RadioState.isLoading = false;
         updateGlobalUI();
       }
-    }, 1500);
+    }, 600);
   }
 
   function toggleRadio() {
@@ -252,6 +310,7 @@
 
     clearWarmUpExpireTimer();
     clearReconnectTimer();
+    clearPlaybackWatchdog();
     ensureAudioElementMounted();
 
     RadioState.userRequestedPlay = true;
@@ -268,10 +327,12 @@
       radioAudio.defaultMuted = false;
       radioAudio.volume = 1.0;
       radioAudio.preload = 'auto';
-      radioAudio.src = RADIO_CONFIG.streamUrl;
+      radioAudio.src = buildFreshStreamUrl();
     } catch {
       // Ignoruj
     }
+
+    armPlaybackWatchdog(3500);
 
     try {
       const playPromise = radioAudio.play();
@@ -279,15 +340,23 @@
         playPromise
           .then(() => {
             if (RadioState.userRequestedPlay) {
-              RadioState.isLoading = false;
               RadioState.isPlaying = true;
-              RadioState.reconnectAttempts = 0;
+              if (
+                typeof radioAudio.readyState !== 'number' ||
+                radioAudio.readyState >= 2 ||
+                Number(radioAudio.currentTime || 0) > 0
+              ) {
+                RadioState.isLoading = false;
+                RadioState.reconnectAttempts = 0;
+                clearPlaybackWatchdog();
+              }
               updateGlobalUI();
             }
           })
           .catch((err) => {
             if (!RadioState.userRequestedPlay) return;
             if (err && err.name === 'NotAllowedError') {
+              clearPlaybackWatchdog();
               RadioState.userRequestedPlay = false;
               RadioState.isPlaying = false;
               RadioState.isLoading = false;
@@ -298,9 +367,11 @@
             scheduleStreamReconnect();
           });
       } else {
+        clearPlaybackWatchdog();
         RadioState.isLoading = false;
       }
     } catch {
+      clearPlaybackWatchdog();
       RadioState.isLoading = false;
     }
 
@@ -681,6 +752,7 @@
   }
 
   radioAudio.addEventListener('playing', () => {
+    clearPlaybackWatchdog();
     RadioState.isLoading = false;
     if (RadioState.userRequestedPlay) {
       RadioState.isPlaying = true;
@@ -690,6 +762,7 @@
   });
 
   radioAudio.addEventListener('canplay', () => {
+    clearPlaybackWatchdog();
     if (RadioState.isLoading) {
       RadioState.isLoading = false;
       updateGlobalUI();
@@ -697,9 +770,12 @@
   });
 
   radioAudio.addEventListener('timeupdate', () => {
-    if (RadioState.isLoading && radioAudio.currentTime > 0) {
-      RadioState.isLoading = false;
-      updateGlobalUI();
+    if (radioAudio.currentTime > 0) {
+      clearPlaybackWatchdog();
+      if (RadioState.isLoading) {
+        RadioState.isLoading = false;
+        updateGlobalUI();
+      }
     }
   });
 
@@ -749,7 +825,7 @@
     document.addEventListener('click', (e) => {
       if (!e || !e.target || typeof e.target.closest !== 'function') return;
 
-      const playBtn = e.target.closest('#header-radio-play, #radio-play');
+      const playBtn = e.target.closest('#header-radio-play, #radio-play, .vinyl-disc');
       if (playBtn) {
         e.preventDefault();
         toggleRadio();
