@@ -54,4 +54,17 @@ describe('Integralność i składnia arkuszy stylów CSS (Kato Salsa Hub & Dance
     assert.match(wikiCss, /\.cat-count\s*\{[^}]*flex-shrink:\s*0/s, 'Brak flex-shrink: 0 w .cat-count');
     assert.match(wikiCss, /\.cat-count\s*\{[^}]*white-space:\s*nowrap/s, 'Brak white-space: nowrap w .cat-count');
   });
+
+  it('components.css powinien zawierać wyodrębnione style widżetu AI (.tsw-ai-btn, .tsw-ai-window), a radio.css siatkę CSS Grid dla .sleep-timer-buttons (CLS = 0 & SoC)', () => {
+    const compCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/components.css'), 'utf-8');
+    const radioCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/radio.css'), 'utf-8');
+
+    assert.match(compCss, /\.tsw-ai-btn\s*\{/, 'Brak stylów .tsw-ai-btn w components.css');
+    assert.match(compCss, /\.tsw-ai-window\s*\{/, 'Brak stylów .tsw-ai-window w components.css');
+    assert.match(
+      radioCss,
+      /\.sleep-timer-buttons\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*auto\)\)/s,
+      'Brak stałej siatki CSS Grid 4-kolumnowej w .sleep-timer-buttons w radio.css (CLS = 0)'
+    );
+  });
 });

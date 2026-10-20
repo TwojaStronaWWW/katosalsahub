@@ -4,6 +4,9 @@
  * Zero-dependency Vanilla JS, Platform-First Architecture (ISO 27001 & Raricart Patterns).
  */
 
+(function () {
+'use strict';
+
 if (typeof window === 'undefined') {
     globalThis.window = globalThis;
 }
@@ -124,31 +127,37 @@ async function mountWiki() {
     }
 }
 
+async function postWikiApi(action, payload = {}, includeCsrf = true) {
+    const csrf = includeCsrf ? AppState.csrfToken : '';
+    const headers = { 'Content-Type': 'application/json' };
+    if (csrf) headers['X-CSRF-Token'] = csrf;
+    const bodyObj = csrf && payload && typeof payload === 'object' && !('csrf_token' in payload)
+        ? { csrf_token: csrf, ...payload }
+        : payload;
+    const res = await fetch(`${API_URL}?action=${encodeURIComponent(action)}`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers,
+        body: JSON.stringify(bodyObj)
+    });
+    return { ok: res.ok, data: await res.json() };
+}
+
 async function verifyExistingAdminSession(cachedCsrf) {
     try {
-        const res = await fetch(API_URL + '?action=check_auth', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': cachedCsrf
-            },
-            body: JSON.stringify({})
-        });
-        if (res.ok) {
-            const data = await res.json();
-            if (data.success && data.authenticated) {
-                AppState.isAdmin = true;
-                AppState.userRole = data.role || 'admin';
-                AppState.userName = data.user_name || 'Moderator';
-                AppState.userEmail = data.user_email || '';
-                AppState.forcePasswordChange = Boolean(data.force_change);
-                AppState.csrfToken = data.csrf_token || cachedCsrf;
-                sessionStorage.setItem('kato_csrf_token', AppState.csrfToken);
-                return;
-            }
+        AppState.csrfToken = cachedCsrf;
+        const { ok, data } = await postWikiApi('check_auth', {});
+        if (ok && data && data.success && data.authenticated) {
+            AppState.isAdmin = true;
+            AppState.userRole = data.role || 'admin';
+            AppState.userName = data.user_name || 'Moderator';
+            AppState.userEmail = data.user_email || '';
+            AppState.forcePasswordChange = Boolean(data.force_change);
+            AppState.csrfToken = data.csrf_token || cachedCsrf;
+            sessionStorage.setItem('kato_csrf_token', AppState.csrfToken);
+            return;
         }
-    } catch (e) {
+    } catch {
         // Ignoruj błąd połączenia w trybie statycznym
     }
     resetAuthState();
@@ -229,35 +238,30 @@ async function fetchTerms() {
 async function fetchPendingTerms() {
     if (!AppState.isAdmin) return;
     try {
-        const res = await fetch(API_URL + '?action=pending', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({ csrf_token: AppState.csrfToken })
-        });
-        if (res.ok) {
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                AppState.pending = data;
-                updateAdminBadges();
-            }
+        const { ok, data } = await postWikiApi('pending', {});
+        if (ok && Array.isArray(data)) {
+            AppState.pending = data;
+            updateAdminBadges();
         }
     } catch (err) {
         console.warn('[Salsopedia] Nie udało się pobrać kolejki moderacji:', err.message);
     }
 }
 
-// --- Zarządzanie Zdarzeniami DOM ---
+// --- Zarządzanie Zdarzeniami DOM (Rozdzielone na 4 wyspecjalizowane moduły bindowania) ---
 
 function setupEventListeners() {
     const root = document.getElementById('wikiGrid');
     if (!root || root.dataset.wikiListenersBound === '1') return;
     root.dataset.wikiListenersBound = '1';
 
-    // 1. Wyszukiwarka + bezciasteczkowa telemetria wyszukiwanych fraz (#34)
+    bindSearchAndCategoryEvents();
+    bindAdminAndTeamEvents();
+    bindStudioEditorEvents();
+    bindGridAndModalDelegationEvents();
+}
+
+function bindSearchAndCategoryEvents() {
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearchBtn');
     const trackSearchDebounced = debounce((query) => {
@@ -283,34 +287,26 @@ function setupEventListeners() {
         });
     }
 
-    // 2. Kategorie w Sidebarze
     const categoryList = document.getElementById('categoryList');
     if (categoryList) {
         categoryList.addEventListener('click', (e) => {
             const li = e.target.closest('li[data-category]');
-            if (!li) return;
-            const cat = li.dataset.category;
-            setActiveCategory(cat);
+            if (li) setActiveCategory(li.dataset.category);
         });
     }
 
-    // 3. Reset filtra
     const resetFilterBtn = document.getElementById('resetFilterBtn');
     if (resetFilterBtn) {
         resetFilterBtn.addEventListener('click', () => setActiveCategory('all'));
     }
 
-    // 4. Przyciski otwierające formularz
-    const sidebarAddBtn = document.getElementById('sidebarAddBtn');
-    if (sidebarAddBtn) sidebarAddBtn.addEventListener('click', () => window.openModal('new'));
+    ['sidebarAddBtn', 'addTermBtn', 'noResultsAddBtn'].forEach((btnId) => {
+        const btn = document.getElementById(btnId);
+        if (btn) btn.addEventListener('click', () => window.openModal('new'));
+    });
+}
 
-    const addTermBtn = document.getElementById('addTermBtn');
-    if (addTermBtn) addTermBtn.addEventListener('click', () => window.openModal('new'));
-
-    const noResultsAddBtn = document.getElementById('noResultsAddBtn');
-    if (noResultsAddBtn) noResultsAddBtn.addEventListener('click', () => window.openModal('new'));
-
-    // 5. Panel Moderacji / Oczekujące (oraz skrót Ctrl+Shift+M dla moderatora)
+function bindAdminAndTeamEvents() {
     const showPendingBtn = document.getElementById('showPendingBtn');
     if (showPendingBtn) {
         showPendingBtn.addEventListener('click', () => handleModerationButtonClick());
@@ -328,118 +324,27 @@ function setupEventListeners() {
         AppState.isInitialized = true;
     }
 
-    // 6. Przyciski Admin/Moderator Toolbara
-    const btnShowLive = document.getElementById('btnShowLive');
-    if (btnShowLive) {
-        btnShowLive.addEventListener('click', () => switchViewMode('live'));
-    }
+    const toolbarActions = [
+        ['btnShowLive', () => switchViewMode('live')],
+        ['btnShowUnverified', () => switchViewMode('unverified')],
+        ['btnShowPending', () => switchViewMode('pending')],
+        ['btnAdminAdd', () => window.openModal('admin_direct')],
+        ['btnManageTeam', () => window.openTeamModal()],
+        ['btnLogoutAdmin', () => logoutAdmin()]
+    ];
+    toolbarActions.forEach(([id, handler]) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', handler);
+    });
 
-    const btnShowUnverified = document.getElementById('btnShowUnverified');
-    if (btnShowUnverified) {
-        btnShowUnverified.addEventListener('click', () => switchViewMode('unverified'));
-    }
-
-    const btnShowPending = document.getElementById('btnShowPending');
-    if (btnShowPending) {
-        btnShowPending.addEventListener('click', () => switchViewMode('pending'));
-    }
-
-    const btnAdminAdd = document.getElementById('btnAdminAdd');
-    if (btnAdminAdd) {
-        btnAdminAdd.addEventListener('click', () => window.openModal('admin_direct'));
-    }
-
-    const btnManageTeam = document.getElementById('btnManageTeam');
-    if (btnManageTeam) {
-        btnManageTeam.addEventListener('click', () => window.openTeamModal());
-    }
-
-    const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
-    if (btnLogoutAdmin) {
-        btnLogoutAdmin.addEventListener('click', () => logoutAdmin());
-    }
-
-    // 7. Obsługa chipów kategorii w modalu + aktualizacja podglądu na żywo
-    setupChipsInteractions('categoryChips');
-    setupChipsInteractions('subcategoryChips');
-
-    // 8. Formularz zgłaszania/edycji hasła + Live Preview i Diff
-    const wikiForm = document.getElementById('wikiForm');
-    if (wikiForm) {
-        wikiForm.addEventListener('submit', handleFormSubmit);
-        wikiForm.addEventListener('input', () => {
-            updateStudioLivePreviewAndDiff();
-        });
-    }
-
-    // Pomocnik wstawiania linków wewnętrznych [Hasło]
-    const insertWikiLinkBtn = document.getElementById('insertWikiLinkBtn');
-    const closeWikiLinkPickerBtn = document.getElementById('closeWikiLinkPickerBtn');
-    const wikiLinkPicker = document.getElementById('wikiLinkPicker');
-    const wikiLinkSearchInput = document.getElementById('wikiLinkSearchInput');
-    const wikiLinkSuggestions = document.getElementById('wikiLinkSuggestions');
-
-    if (insertWikiLinkBtn && wikiLinkPicker) {
-        insertWikiLinkBtn.addEventListener('click', () => {
-            const isHidden = wikiLinkPicker.classList.toggle('is-hidden');
-            if (!isHidden && wikiLinkSearchInput) {
-                wikiLinkSearchInput.value = '';
-                renderWikiLinkSuggestions('');
-                wikiLinkSearchInput.focus();
-            }
-        });
-    }
-
-    if (closeWikiLinkPickerBtn && wikiLinkPicker) {
-        closeWikiLinkPickerBtn.addEventListener('click', () => {
-            wikiLinkPicker.classList.add('is-hidden');
-        });
-    }
-
-    if (wikiLinkSearchInput) {
-        wikiLinkSearchInput.addEventListener('input', (e) => {
-            renderWikiLinkSuggestions(e.target.value);
-        });
-    }
-
-    if (wikiLinkSuggestions) {
-        wikiLinkSuggestions.addEventListener('click', (e) => {
-            const btn = e.target.closest('[data-insert-term]');
-            if (!btn) return;
-            insertTermTagIntoDefinition(btn.dataset.insertTerm);
-        });
-    }
-
-    // Obsługa ostrzeżenia o duplikacie hasła
-    const dupWarn = document.getElementById('termDuplicateWarning');
-    if (dupWarn) {
-        dupWarn.addEventListener('click', (e) => {
-            const switchBtn = e.target.closest('[data-action="switch-to-existing"]');
-            if (!switchBtn) return;
-            const existingId = switchBtn.dataset.id;
-            const existingTerm = AppState.terms.find(t => t.id === existingId);
-            if (existingTerm) {
-                window.openModal(AppState.isAdmin ? 'admin_edit_live' : 'verify', existingTerm);
-            }
-        });
-    }
-
-    // 9. Formularz logowania administratora / moderatora
     const adminLoginForm = document.getElementById('adminLoginForm');
-    if (adminLoginForm) {
-        adminLoginForm.addEventListener('submit', handleAdminLoginSubmit);
-    }
+    if (adminLoginForm) adminLoginForm.addEventListener('submit', handleAdminLoginSubmit);
 
-    // 10. Formularze w modalu Kont i Haseł (#teamModal)
     const changePasswordForm = document.getElementById('changePasswordForm');
-    if (changePasswordForm) {
-        changePasswordForm.addEventListener('submit', handleChangePasswordSubmit);
-    }
+    if (changePasswordForm) changePasswordForm.addEventListener('submit', handleChangePasswordSubmit);
 
     const addModeratorForm = document.getElementById('addModeratorForm');
-    if (addModeratorForm) {
-        addModeratorForm.addEventListener('submit', handleSaveModeratorSubmit);
-    }
+    if (addModeratorForm) addModeratorForm.addEventListener('submit', handleSaveModeratorSubmit);
 
     const moderatorsListContainer = document.getElementById('moderatorsListContainer');
     if (moderatorsListContainer) {
@@ -459,22 +364,58 @@ function setupEventListeners() {
             }
         });
     }
+}
 
-    // 11. Przyciski zamykania i anulowania modali
-    const wikiModalCloseBtn = document.getElementById('wikiModalCloseBtn');
-    if (wikiModalCloseBtn) wikiModalCloseBtn.addEventListener('click', () => window.closeModal());
+function bindStudioEditorEvents() {
+    setupChipsInteractions('categoryChips');
+    setupChipsInteractions('subcategoryChips');
 
-    const cancelWikiModalBtn = document.getElementById('cancelWikiModalBtn');
-    if (cancelWikiModalBtn) cancelWikiModalBtn.addEventListener('click', () => window.closeModal());
+    const wikiForm = document.getElementById('wikiForm');
+    if (wikiForm) {
+        wikiForm.addEventListener('submit', handleFormSubmit);
+        wikiForm.addEventListener('input', () => updateStudioLivePreviewAndDiff());
+    }
 
-    const adminLoginModalCloseBtn = document.getElementById('adminLoginModalCloseBtn');
-    if (adminLoginModalCloseBtn) adminLoginModalCloseBtn.addEventListener('click', () => window.closeAdminLoginModal());
+    const insertWikiLinkBtn = document.getElementById('insertWikiLinkBtn');
+    const closeWikiLinkPickerBtn = document.getElementById('closeWikiLinkPickerBtn');
+    const wikiLinkPicker = document.getElementById('wikiLinkPicker');
+    const wikiLinkSearchInput = document.getElementById('wikiLinkSearchInput');
+    const wikiLinkSuggestions = document.getElementById('wikiLinkSuggestions');
 
-    const cancelAdminLoginBtn = document.getElementById('cancelAdminLoginBtn');
-    if (cancelAdminLoginBtn) cancelAdminLoginBtn.addEventListener('click', () => window.closeAdminLoginModal());
+    if (insertWikiLinkBtn && wikiLinkPicker) {
+        insertWikiLinkBtn.addEventListener('click', () => {
+            const isHidden = wikiLinkPicker.classList.toggle('is-hidden');
+            if (!isHidden && wikiLinkSearchInput) {
+                wikiLinkSearchInput.value = '';
+                renderWikiLinkSuggestions('');
+                wikiLinkSearchInput.focus();
+            }
+        });
+    }
+    if (closeWikiLinkPickerBtn && wikiLinkPicker) {
+        closeWikiLinkPickerBtn.addEventListener('click', () => wikiLinkPicker.classList.add('is-hidden'));
+    }
+    if (wikiLinkSearchInput) {
+        wikiLinkSearchInput.addEventListener('input', (e) => renderWikiLinkSuggestions(e.target.value));
+    }
+    if (wikiLinkSuggestions) {
+        wikiLinkSuggestions.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-insert-term]');
+            if (btn) insertTermTagIntoDefinition(btn.dataset.insertTerm);
+        });
+    }
 
-    const teamModalCloseBtn = document.getElementById('teamModalCloseBtn');
-    if (teamModalCloseBtn) teamModalCloseBtn.addEventListener('click', () => window.closeTeamModal());
+    const dupWarn = document.getElementById('termDuplicateWarning');
+    if (dupWarn) {
+        dupWarn.addEventListener('click', (e) => {
+            const switchBtn = e.target.closest('[data-action="switch-to-existing"]');
+            if (!switchBtn) return;
+            const existingTerm = AppState.terms.find((t) => t.id === switchBtn.dataset.id);
+            if (existingTerm) {
+                window.openModal(AppState.isAdmin ? 'admin_edit_live' : 'verify', existingTerm);
+            }
+        });
+    }
 
     const addSourceRowBtn = document.getElementById('addSourceRowBtn');
     if (addSourceRowBtn) {
@@ -484,61 +425,18 @@ function setupEventListeners() {
         });
     }
 
-    // 12. Delegacja usuwania wierszy źródeł
     const sourceContainer = document.getElementById('sourceContainer');
     if (sourceContainer) {
         sourceContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('[data-action="remove-source"]');
-            if (btn) {
-                const row = btn.closest('.source-row');
-                if (row) {
-                    row.remove();
-                    updateStudioLivePreviewAndDiff();
-                }
+            const row = btn ? btn.closest('.source-row') : null;
+            if (row) {
+                row.remove();
+                updateStudioLivePreviewAndDiff();
             }
         });
     }
 
-    // 13. Delegacja akcji w siatce haseł (Zero inline handlers)
-    const grid = document.getElementById('wikiGrid');
-    if (grid) {
-        grid.addEventListener('click', (e) => {
-            const target = e.target.closest('[data-action]');
-            if (!target) return;
-            const action = target.dataset.action;
-            const id = target.dataset.id;
-            const cat = target.dataset.cat;
-
-            if (action === 'filter-cat' && cat) {
-                setActiveCategory(cat);
-            } else if (action === 'jump-term' && id) {
-                e.preventDefault();
-                jumpToTermCard(id);
-            } else if (action === 'verify' && id) {
-                window.openVerifyModal(id);
-            } else if (action === 'quick-verify' && id) {
-                window.quickVerifyTerm(id);
-            } else if (action === 'unverify' && id) {
-                window.unverifyTerm(id);
-            } else if (action === 'approve' && id) {
-                window.approvePendingTerm(id);
-            } else if (action === 'reject' && id) {
-                window.rejectPendingTerm(id);
-            } else if (action === 'edit-pending' && id) {
-                window.openEditPendingModal(id);
-            } else if (action === 'edit-live' && id) {
-                window.openEditLiveModal(id);
-            } else if (action === 'delete-live' && id) {
-                window.deleteLiveTerm(id);
-            } else if (action === 'switch-live') {
-                switchViewMode('live');
-            } else if (action === 'retry-fetch') {
-                fetchTerms();
-            }
-        });
-    }
-
-    // 13b. Kliknięcie kategorii/podkategorii bezpośrednio na karcie podglądu na żywo w Studio
     const livePreviewContainer = document.getElementById('livePreviewContainer');
     if (livePreviewContainer) {
         livePreviewContainer.addEventListener('click', (e) => {
@@ -553,18 +451,49 @@ function setupEventListeners() {
             }
         });
     }
+}
 
-    // 14. Zamykanie modali kliknięciem w tło
-    ['wikiModal', 'adminLoginModal', 'teamModal'].forEach(modalId => {
+function bindGridAndModalDelegationEvents() {
+    const closeButtons = [
+        ['wikiModalCloseBtn', () => window.closeModal()],
+        ['cancelWikiModalBtn', () => window.closeModal()],
+        ['adminLoginModalCloseBtn', () => window.closeAdminLoginModal()],
+        ['cancelAdminLoginBtn', () => window.closeAdminLoginModal()],
+        ['teamModalCloseBtn', () => window.closeTeamModal()]
+    ];
+    closeButtons.forEach(([id, handler]) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', handler);
+    });
+
+    const grid = document.getElementById('wikiGrid');
+    if (grid) {
+        grid.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+            const { action, id, cat } = target.dataset;
+            if (action === 'filter-cat' && cat) setActiveCategory(cat);
+            else if (action === 'jump-term' && id) { e.preventDefault(); jumpToTermCard(id); }
+            else if (action === 'verify' && id) window.openVerifyModal(id);
+            else if (action === 'quick-verify' && id) window.quickVerifyTerm(id);
+            else if (action === 'unverify' && id) window.unverifyTerm(id);
+            else if (action === 'approve' && id) window.approvePendingTerm(id);
+            else if (action === 'reject' && id) window.rejectPendingTerm(id);
+            else if (action === 'edit-pending' && id) window.openEditPendingModal(id);
+            else if (action === 'edit-live' && id) window.openEditLiveModal(id);
+            else if (action === 'delete-live' && id) window.deleteLiveTerm(id);
+            else if (action === 'switch-live') switchViewMode('live');
+            else if (action === 'retry-fetch') fetchTerms();
+        });
+    }
+
+    ['wikiModal', 'adminLoginModal', 'teamModal'].forEach((modalId) => {
         const el = document.getElementById(modalId);
         if (el) {
             el.addEventListener('click', (e) => {
                 if (e.target === el) {
-                    if (modalId === 'teamModal') {
-                        window.closeTeamModal();
-                    } else {
-                        el.classList.remove('open', 'is-open');
-                    }
+                    if (modalId === 'teamModal') window.closeTeamModal();
+                    else el.classList.remove('open', 'is-open');
                 }
             });
         }
@@ -1682,19 +1611,7 @@ async function handleFormSubmit(e) {
     try {
         // Scenariusz 1: Moderator/Administrator bezpośrednio edytuje lub dodaje w bazie live
         if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_live') {
-            const res = await fetch(API_URL + '?action=admin_save', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': AppState.csrfToken
-                },
-                body: JSON.stringify({
-                    csrf_token: AppState.csrfToken,
-                    entry: payload
-                })
-            });
-            const result = await res.json();
+            const { data: result } = await postWikiApi('admin_save', { entry: payload });
             if (result.success) {
                 showMessage(msgBox, 'success', 'Hasło zostało pomyślnie zapisane i zweryfikowane w bazie!');
                 await fetchTerms();
@@ -1707,21 +1624,11 @@ async function handleFormSubmit(e) {
 
         // Scenariusz 2: Moderator/Administrator poprawia zgłoszenie przed zatwierdzeniem
         if (AppState.isAdmin && AppState.currentModalMode === 'admin_edit_pending') {
-            const res = await fetch(API_URL + '?action=moderate', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': AppState.csrfToken
-                },
-                body: JSON.stringify({
-                    csrf_token: AppState.csrfToken,
-                    id: payload.id,
-                    action: 'approve',
-                    updated_entry: payload
-                })
+            const { data: result } = await postWikiApi('moderate', {
+                id: payload.id,
+                action: 'approve',
+                updated_entry: payload
             });
-            const result = await res.json();
             if (result.success) {
                 showMessage(msgBox, 'success', 'Zgłoszenie poprawione i pomyślnie opublikowane!');
                 await fetchTerms();
@@ -1739,13 +1646,7 @@ async function handleFormSubmit(e) {
         // Scenariusz 3: Normalne zgłoszenie społeczności
         let responseSuccess = false;
         try {
-            const res = await fetch(API_URL + '?action=submit', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await res.json();
+            const { data: result } = await postWikiApi('submit', payload, false);
             if (result.success) {
                 responseSuccess = true;
             } else {
@@ -1802,13 +1703,7 @@ async function handleAdminLoginSubmit(e) {
     const msg = document.getElementById('adminLoginMessage');
 
     try {
-        const res = await fetch(API_URL + '?action=check_auth', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password: pass })
-        });
-        const result = await res.json();
+        const { data: result } = await postWikiApi('check_auth', { email, password: pass }, false);
         if (result.success && result.authenticated) {
             AppState.isAdmin = true;
             AppState.userRole = result.role || 'admin';
@@ -1832,19 +1727,15 @@ async function handleAdminLoginSubmit(e) {
         } else {
             showMessage(msg, 'error', result.error || 'Niepoprawne dane logowania!');
         }
-    } catch (err) {
+    } catch {
         showMessage(msg, 'error', 'Brak połączenia z serwerem autoryzacji.');
     }
 }
 
 async function logoutAdmin() {
     try {
-        await fetch(API_URL + '?action=logout', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: { 'X-CSRF-Token': AppState.csrfToken }
-        });
-    } catch (e) {
+        await postWikiApi('logout', {});
+    } catch {
         // Ignoruj błędy sieci przy wylogowaniu
     }
     resetAuthState();
@@ -1903,21 +1794,11 @@ async function handleChangePasswordSubmit(e) {
     const msg = document.getElementById('changePasswordMessage');
 
     try {
-        const res = await fetch(API_URL + '?action=change_password', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                old_password: oldPassword,
-                new_password: newPassword,
-                confirm_password: confirmPassword
-            })
+        const { data: result } = await postWikiApi('change_password', {
+            old_password: oldPassword,
+            new_password: newPassword,
+            confirm_password: confirmPassword
         });
-        const result = await res.json();
         if (result.success) {
             AppState.forcePasswordChange = false;
             const banner = document.getElementById('forcePasswordChangeBanner');
@@ -1927,7 +1808,7 @@ async function handleChangePasswordSubmit(e) {
         } else {
             showMessage(msg, 'error', result.error || 'Błąd zmiany hasła.');
         }
-    } catch (err) {
+    } catch {
         showMessage(msg, 'error', 'Błąd połączenia z serwerem.');
     }
 }
@@ -1938,16 +1819,7 @@ async function fetchModeratorsList() {
     if (!container) return;
 
     try {
-        const res = await fetch(API_URL + '?action=list_moderators', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({ csrf_token: AppState.csrfToken })
-        });
-        const result = await res.json();
+        const { data: result } = await postWikiApi('list_moderators', {});
         if (result.success && Array.isArray(result.users)) {
             AppState.moderators = result.users;
             if (result.users.length === 0) {
@@ -1973,7 +1845,7 @@ async function fetchModeratorsList() {
                 </div>
             `).join('');
         }
-    } catch (err) {
+    } catch {
         container.innerHTML = '<p class="label-hint">Nie udało się pobrać listy kont.</p>';
     }
 }
@@ -1988,23 +1860,13 @@ async function handleSaveModeratorSubmit(e) {
     const msg = document.getElementById('addModeratorMessage');
 
     try {
-        const res = await fetch(API_URL + '?action=save_moderator', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                email,
-                name,
-                role,
-                password,
-                force_change: forceChange
-            })
+        const { data: result } = await postWikiApi('save_moderator', {
+            email,
+            name,
+            role,
+            password,
+            force_change: forceChange
         });
-        const result = await res.json();
         if (result.success) {
             showMessage(msg, 'success', result.message || 'Zapisano konto moderatora!');
             document.getElementById('addModeratorForm')?.reset();
@@ -2012,7 +1874,7 @@ async function handleSaveModeratorSubmit(e) {
         } else {
             showMessage(msg, 'error', result.error || 'Błąd zapisu konta moderatora.');
         }
-    } catch (err) {
+    } catch {
         showMessage(msg, 'error', 'Błąd połączenia z serwerem.');
     }
 }
@@ -2020,19 +1882,7 @@ async function handleSaveModeratorSubmit(e) {
 async function deleteModeratorAccount(email) {
     if (!confirm(`Czy na pewno chcesz usunąć konto moderatora: ${email}?`)) return;
     try {
-        const res = await fetch(API_URL + '?action=delete_moderator', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                email
-            })
-        });
-        const result = await res.json();
+        const { data: result } = await postWikiApi('delete_moderator', { email });
         if (result.success) {
             await fetchModeratorsList();
         } else {
@@ -2045,164 +1895,81 @@ async function deleteModeratorAccount(email) {
 
 const inFlightMutations = new Set();
 
-window.quickVerifyTerm = async function (id) {
-    const lockKey = `verify:${id}`;
+async function runGuardedMutation(lockKey, action, payload, onSuccess, errorPrefix = 'Błąd') {
     if (inFlightMutations.has(lockKey)) return;
     inFlightMutations.add(lockKey);
     try {
-        const res = await fetch(API_URL + '?action=quick_verify', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                id
-            })
-        });
-        const result = await res.json();
-        if (result.success && result.entry) {
-            const idx = AppState.terms.findIndex(t => t.id === id);
-            if (idx !== -1) {
-                AppState.terms[idx] = result.entry;
-            }
-            notifyKnowledgeUpdated();
-            updateCategoryCounters();
-            renderCurrentView();
+        const { data: result } = await postWikiApi(action, payload);
+        if (result && result.success) {
+            await onSuccess(result);
         } else {
-            alert('Błąd weryfikacji: ' + (result.error || 'Nieznany'));
+            alert(`${errorPrefix}: ` + ((result && result.error) || 'Nieznany'));
         }
     } catch (err) {
-        console.error('Błąd szybkiej weryfikacji:', err);
+        console.error(`${errorPrefix}:`, err);
     } finally {
         inFlightMutations.delete(lockKey);
     }
+}
+
+window.quickVerifyTerm = async function (id) {
+    await runGuardedMutation(`verify:${id}`, 'quick_verify', { id }, (result) => {
+        if (result.entry) {
+            const idx = AppState.terms.findIndex((t) => t.id === id);
+            if (idx !== -1) AppState.terms[idx] = result.entry;
+        }
+        notifyKnowledgeUpdated();
+        updateCategoryCounters();
+        renderCurrentView();
+    }, 'Błąd weryfikacji');
 };
 
 window.unverifyTerm = async function (id) {
-    const lockKey = `verify:${id}`;
-    if (inFlightMutations.has(lockKey)) return;
-    inFlightMutations.add(lockKey);
-    try {
-        const res = await fetch(API_URL + '?action=quick_verify', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                id,
-                unverify: true
-            })
-        });
-        const result = await res.json();
-        if (result.success && result.entry) {
-            const idx = AppState.terms.findIndex(t => t.id === id);
-            if (idx !== -1) {
-                AppState.terms[idx] = result.entry;
-            }
-            notifyKnowledgeUpdated();
-            updateCategoryCounters();
-            renderCurrentView();
-        } else {
-            alert('Błąd zmiany statusu: ' + (result.error || 'Nieznany'));
+    await runGuardedMutation(`verify:${id}`, 'quick_verify', { id, unverify: true }, (result) => {
+        if (result.entry) {
+            const idx = AppState.terms.findIndex((t) => t.id === id);
+            if (idx !== -1) AppState.terms[idx] = result.entry;
         }
-    } catch (err) {
-        console.error('Błąd cofania weryfikacji:', err);
-    } finally {
-        inFlightMutations.delete(lockKey);
-    }
+        notifyKnowledgeUpdated();
+        updateCategoryCounters();
+        renderCurrentView();
+    }, 'Błąd zmiany statusu');
 };
 
 window.approvePendingTerm = async function (id) {
-    const lockKey = `moderate:${id}`;
-    if (inFlightMutations.has(lockKey)) return;
+    if (inFlightMutations.has(`moderate:${id}`)) return;
     if (!confirm('Czy na pewno chcesz zatwierdzić to zgłoszenie i opublikować je w bazie Salsopedii?')) return;
-    inFlightMutations.add(lockKey);
-    try {
-        const res = await fetch(API_URL + '?action=moderate', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                id,
-                action: 'approve'
-            })
-        });
-        const result = await res.json();
-        if (result.success) {
-            AppState.pending = AppState.pending.filter(t => t.id !== id);
-            updateAdminBadges();
-            await fetchTerms();
-            renderCurrentView();
-        } else {
-            alert('Błąd: ' + (result.error || 'Nieznany'));
-        }
-    } catch (err) {
-        console.error('Błąd zatwierdzania:', err);
-    } finally {
-        inFlightMutations.delete(lockKey);
-    }
+    await runGuardedMutation(`moderate:${id}`, 'moderate', { id, action: 'approve' }, async () => {
+        AppState.pending = AppState.pending.filter((t) => t.id !== id);
+        updateAdminBadges();
+        await fetchTerms();
+        renderCurrentView();
+    });
 };
 
 window.rejectPendingTerm = async function (id) {
-    const lockKey = `moderate:${id}`;
-    if (inFlightMutations.has(lockKey)) return;
+    if (inFlightMutations.has(`moderate:${id}`)) return;
     if (!confirm('Czy na pewno chcesz odrzucić to zgłoszenie? Zostanie ono trwale usunięte z kolejki.')) return;
-    inFlightMutations.add(lockKey);
-    try {
-        const res = await fetch(API_URL + '?action=moderate', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                id,
-                action: 'reject'
-            })
-        });
-        const result = await res.json();
-        if (result.success) {
-            AppState.pending = AppState.pending.filter(t => t.id !== id);
-            updateAdminBadges();
-            renderCurrentView();
-        } else {
-            alert('Błąd: ' + (result.error || 'Nieznany'));
-        }
-    } catch (err) {
-        console.error('Błąd odrzucania:', err);
-    } finally {
-        inFlightMutations.delete(lockKey);
-    }
+    await runGuardedMutation(`moderate:${id}`, 'moderate', { id, action: 'reject' }, () => {
+        AppState.pending = AppState.pending.filter((t) => t.id !== id);
+        updateAdminBadges();
+        renderCurrentView();
+    });
 };
 
 window.openEditLiveModal = function (id) {
-    const term = AppState.terms.find(t => t.id === id);
-    if (!term) return;
-    window.openModal('admin_edit_live', term);
+    const term = AppState.terms.find((t) => t.id === id);
+    if (term) window.openModal('admin_edit_live', term);
 };
 
 window.openEditPendingModal = function (id) {
-    const term = AppState.pending.find(t => t.id === id);
-    if (!term) return;
-    window.openModal('admin_edit_pending', term);
+    const term = AppState.pending.find((t) => t.id === id);
+    if (term) window.openModal('admin_edit_pending', term);
 };
 
 window.openVerifyModal = function (id) {
-    const term = AppState.terms.find(t => t.id === id);
-    if (!term) return;
-    window.openModal('verify', term);
+    const term = AppState.terms.find((t) => t.id === id);
+    if (term) window.openModal('verify', term);
 };
 
 window.deleteLiveTerm = async function (id) {
@@ -2210,37 +1977,14 @@ window.deleteLiveTerm = async function (id) {
         alert('Tylko główny Administrator może bezpowrotnie usuwać hasła z bazy.');
         return;
     }
-    const lockKey = `delete:${id}`;
-    if (inFlightMutations.has(lockKey)) return;
+    if (inFlightMutations.has(`delete:${id}`)) return;
     if (!confirm('UWAGA: Czy na pewno chcesz bezpowrotnie usunąć to hasło z bazy Salsopedii?')) return;
-    inFlightMutations.add(lockKey);
-    try {
-        const res = await fetch(API_URL + '?action=admin_delete', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': AppState.csrfToken
-            },
-            body: JSON.stringify({
-                csrf_token: AppState.csrfToken,
-                id
-            })
-        });
-        const result = await res.json();
-        if (result.success) {
-            AppState.terms = AppState.terms.filter(t => t.id !== id);
-            notifyKnowledgeUpdated();
-            updateCategoryCounters();
-            renderCurrentView();
-        } else {
-            alert('Błąd: ' + (result.error || 'Nieznany'));
-        }
-    } catch (err) {
-        console.error('Błąd usuwania hasła:', err);
-    } finally {
-        inFlightMutations.delete(lockKey);
-    }
+    await runGuardedMutation(`delete:${id}`, 'admin_delete', { id }, () => {
+        AppState.terms = AppState.terms.filter((t) => t.id !== id);
+        notifyKnowledgeUpdated();
+        updateCategoryCounters();
+        renderCurrentView();
+    });
 };
 
 // --- Pomocnicze Funkcje UI ---
@@ -2574,3 +2318,4 @@ if (typeof module !== 'undefined' && module.exports) {
         isSafeHttpUrl
     };
 }
+})();

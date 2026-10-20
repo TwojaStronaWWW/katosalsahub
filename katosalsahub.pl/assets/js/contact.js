@@ -1,4 +1,7 @@
 // Contact Form Logic with Event Delegation for SPA (RODO & Anti-Bot Ready)
+(function () {
+'use strict';
+
 const pageLoadedAt = Date.now();
 
 function ct(key, fallback) {
@@ -91,3 +94,4 @@ function showMessage(element, text, type) {
         element.classList.add('is-hidden');
     }, 5000);
 }
+})();

@@ -258,8 +258,8 @@ body.radio-playing .btn-radio {
 }
 
 .sleep-timer-buttons {
-  display: inline-flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
   align-items: center;
   gap: 6px;
   height: 34px;

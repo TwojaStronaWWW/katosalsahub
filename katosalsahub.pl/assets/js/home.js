@@ -2,6 +2,9 @@
  * Home Page Logic (Event Driven & Cloudflare Rocket Loader Safe)
  */
 
+(function () {
+'use strict';
+
 function activateMapZone(triggerBtn, doc = document) {
     if (!triggerBtn) return;
     const mapIframe = doc.getElementById('ksh-map-iframe');
@@ -116,7 +119,12 @@ if (typeof document !== 'undefined') {
     });
 }
 
+if (typeof window !== 'undefined') {
+    window.kshHome = { initHome, initMapTabs, activateMapZone };
+}
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { initHome, initMapTabs, activateMapZone };
 }
+})();
 

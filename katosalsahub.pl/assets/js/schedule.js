@@ -3,6 +3,9 @@
  * Architektura Zero-Bloat Vanilla JS, kompatybilna z routerem SPA (router.js) oraz testami node:test.
  */
 
+(function () {
+'use strict';
+
 const DAY_NAMES_PL = {
   1: 'Poniedziałek',
   2: 'Wtorek',
@@ -1114,6 +1117,16 @@ if (typeof document !== 'undefined') {
   });
 }
 
+if (typeof window !== 'undefined') {
+  window.kshSchedule = {
+    initSchedulePage,
+    switchScheduleTab,
+    filterScheduleClasses,
+    filterDancepulsEvents,
+    calculateSchoolPricingComparison,
+  };
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     filterScheduleClasses,
@@ -1125,3 +1138,4 @@ if (typeof module !== 'undefined' && module.exports) {
     switchScheduleTab,
   };
 }
+})();

@@ -304,10 +304,31 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.equal(i18n.t('wiki.resultsShown', 'en', { shown: 12, total: 200 }), 'Showing: 12 of 200 entries');
     });
 
-    it('wszystkie skrypty katosalsahub.pl/assets/js/*.js ładowane wspólnie w przeglądarce nie powinny mieć kolizji globalnego zasięgu leksykalnego (let/const/class)', () => {
+    it('wszystkie skrypty katosalsahub.pl/assets/js/*.js powinny być hermetyzowane w IIFE, wolne od manipulacji .style. / createElement("style") (SoC) i wolne od kolizji zasięgu', () => {
       const vm = require('node:vm');
       const jsDir = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js');
       const jsFiles = fs.readdirSync(jsDir).filter((f) => f.endsWith('.js')).sort();
+
+      for (const file of jsFiles) {
+        const src = fs.readFileSync(path.join(jsDir, file), 'utf-8');
+        const withoutComments = src.replace(/\/\*[\s\S]*?\*\/|^\s*\/\/.*$/gm, '').trim();
+        assert.match(
+          withoutComments,
+          /^\(function\s*\(\)\s*\{/,
+          `Plik ${file} nie jest hermetyzowany w domknięciu IIFE (function () { ... })()`
+        );
+        assert.doesNotMatch(
+          withoutComments,
+          /createElement\(\s*['"]style['"]\s*\)/,
+          `Plik ${file} wstrzykuje znacznik <style> przez JS, naruszając zasadę SoC`
+        );
+        assert.doesNotMatch(
+          withoutComments,
+          /\.[a-zA-Z0-9_$]+\.style\.[a-zA-Z]+/,
+          `Plik ${file} manipuluje bezpośrednio właściwością .style.*, naruszając zasadę SoC`
+        );
+      }
+
       const combinedSource = jsFiles
         .map((f) => `// === ${f} ===\n${fs.readFileSync(path.join(jsDir, f), 'utf-8')}`)
         .join('\n\n');

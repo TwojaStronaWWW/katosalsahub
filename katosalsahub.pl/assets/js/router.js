@@ -4,6 +4,9 @@
  * origin checks, and context-aware events.
  */
 
+(function () {
+'use strict';
+
 let navToken = 0; // Concurrency Token
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -195,3 +198,8 @@ function updateNavLinks(url) {
         if (burger) burger.classList.remove('active');
     }
 }
+
+if (typeof window !== 'undefined') {
+    window.kshRouter = { navigateTo, loadPage, updateNavLinks };
+}
+})();
