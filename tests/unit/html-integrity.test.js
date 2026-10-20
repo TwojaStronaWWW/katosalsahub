@@ -228,6 +228,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
 
       const htaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.htaccess'), 'utf-8');
       assert.match(htaccess, /RewriteCond\s+%\{HTTP_HOST\}\s+\^www\\\.katosalsahub\\\.pl\$/, 'Brak przekierowania 301 z www.katosalsahub.pl w .htaccess');
+      assert.match(htaccess, /microphone=\(self\)/, 'Nagłówek Permissions-Policy w .htaccess musi zezwalać na microphone=(self) dla dyktowania głosowego w Asystencie AI');
     });
 
     it('plik dancepuls.pl/index.html nie powinien zawierać stylów inline, inline event handlerów ani inline <script> (SoC)', () => {

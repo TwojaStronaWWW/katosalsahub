@@ -1108,6 +1108,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   let recognition = null;
   let isListening = false;
   let voiceBaseText = '';
+  let lastVoiceErrorPlaceholder = '';
 
   function setVoiceListeningState(active, customPlaceholder = '') {
     isListening = Boolean(active);
@@ -1133,6 +1134,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   }
 
   function stopVoiceRecognition() {
+    lastVoiceErrorPlaceholder = '';
     if (recognition && isListening) {
       try {
         recognition.stop();
@@ -1164,11 +1166,13 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
         recognition.maxAlternatives = 1;
 
         recognition.onstart = () => {
+          lastVoiceErrorPlaceholder = '';
           setVoiceListeningState(true);
         };
 
         recognition.onresult = (event) => {
           if (!chatInput || !event || !event.results) return;
+          lastVoiceErrorPlaceholder = '';
           let finalChunk = '';
           let interimChunk = '';
           for (let i = 0; i < event.results.length; i++) {
@@ -1187,19 +1191,29 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
 
         recognition.onerror = (event) => {
           const code = event?.error || '';
-          const errPlaceholder =
-            code === 'not-allowed' || code === 'service-not-allowed'
-              ? 'Brak zgody na mikrofon w przeglądarce'
-              : defaultPlaceholder;
-          setVoiceListeningState(false, errPlaceholder);
+          if (code === 'not-allowed' || code === 'service-not-allowed') {
+            lastVoiceErrorPlaceholder = '⚠️ Zezwól na mikrofon (ikona obok adresu URL)';
+          } else if (code === 'audio-capture') {
+            lastVoiceErrorPlaceholder = '⚠️ Nie wykryto mikrofonu w urządzeniu';
+          } else if (code === 'no-speech') {
+            lastVoiceErrorPlaceholder = '🎙️ Nie usłyszałem głosu — kliknij mikrofon ponownie';
+          } else if (code === 'network') {
+            lastVoiceErrorPlaceholder = '⚠️ Przeglądarka blokuje usługę mowy (np. tarcza Brave)';
+          } else {
+            lastVoiceErrorPlaceholder = defaultPlaceholder;
+          }
+          setVoiceListeningState(false, lastVoiceErrorPlaceholder);
         };
 
         recognition.onend = () => {
-          setVoiceListeningState(false);
-          chatInput?.focus?.();
+          setVoiceListeningState(false, lastVoiceErrorPlaceholder || defaultPlaceholder);
+          if (chatInput?.value) {
+            chatInput?.focus?.();
+          }
         };
       }
 
+      lastVoiceErrorPlaceholder = '';
       voiceBaseText = String(chatInput?.value || '').trim();
       setVoiceListeningState(true);
       recognition.start();
