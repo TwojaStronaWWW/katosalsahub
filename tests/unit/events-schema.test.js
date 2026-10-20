@@ -17,13 +17,14 @@ const {
   parseAirdanciaEventsHtml,
   parseFacebookEventHtml,
   extractFacebookEventUrlFromHtml
-} = require('../../dancepuls.pl/tools/sync_engine.js');
+} = require('../../scripts/sync_engine.js');
 
 const ROOT_DIR = path.resolve(__dirname, '..', '..');
-const EVENTS_JSON = path.join(ROOT_DIR, 'dancepuls.pl', 'data', 'events.json');
-const EVENTS_DB_MD = path.join(ROOT_DIR, 'dancepuls.pl', 'data', 'events_database.md');
-const LATEST_REPORT_MD = path.join(ROOT_DIR, 'dancepuls.pl', 'data', 'latest_report.md');
-const SALSOPEDIA_JSON = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'salsopedia.json');
+const DATA_DIR = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data');
+const EVENTS_JSON = path.join(DATA_DIR, 'events.json');
+const EVENTS_DB_MD = path.join(DATA_DIR, 'events_database.md');
+const LATEST_REPORT_MD = path.join(DATA_DIR, 'latest_report.md');
+const SALSOPEDIA_JSON = path.join(DATA_DIR, 'salsopedia.json');
 
 describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salsopedia)', () => {
   describe('DancePuls - events_database.md, events.json & latest_report.md', () => {
@@ -299,14 +300,23 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         }
       }
 
-      // Weryfikacja funkcji normalizeLevel, parsera CSV Good Mood, parsera cennika La Clave oraz Circuit Breakera
+      // Weryfikacja funkcji loadBaselineSchedule (SSOT), normalizeLevel, parsera CSV Good Mood, parsera cennika La Clave oraz Circuit Breakera
       const {
+        loadBaselineSchedule,
         normalizeLevel,
         parseCsvGrid,
         parseGoodMoodSheetCells,
         parseLaClavePricingHtml,
         validateScheduleSanity,
       } = require('../../scripts/sync-schedules.js');
+      const baseline = loadBaselineSchedule();
+      assert.strictEqual(baseline.schools.length, 3);
+      assert.strictEqual(baseline.classes.length, sched.classes.length);
+      const syncSchedulesSrc = fs.readFileSync(path.join(ROOT_DIR, 'scripts', 'sync-schedules.js'), 'utf-8');
+      assert.ok(
+        syncSchedulesSrc.split(/\r?\n/).length <= 800,
+        'scripts/sync-schedules.js nie powinien duplikować tysięcy linii danych z schedule.json (max 800 linii czystej logiki)'
+      );
       assert.strictEqual(normalizeLevel('GR. OD PODSTAW START: 26.10.2026'), 'P0');
       assert.strictEqual(normalizeLevel('BACHATA OD ZERA'), 'P0');
       assert.strictEqual(normalizeLevel('P0 - CZ.1'), 'P0');
@@ -508,10 +518,10 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         deepEnrichFacebookEvents,
         crawlFacebookOrganizerPages,
         FB_REGIONAL_ORGANIZER_PAGES,
-      } = require('../../dancepuls.pl/tools/fb_scraper.js');
-      const { parsujDateFB, toYMD } = await import('../../dancepuls.pl/js/utils.js');
-      const { parseClipboardData } = await import('../../dancepuls.pl/js/parser.js');
-      const { styleKeywords, miejscaWgMiasta, adresyMap } = await import('../../dancepuls.pl/js/config.js');
+      } = require('../../katosalsahub.pl/dancepuls/tools/fb_scraper.js');
+      const { parsujDateFB, toYMD } = await import('../../katosalsahub.pl/dancepuls/js/utils.js');
+      const { parseClipboardData } = await import('../../katosalsahub.pl/dancepuls/js/parser.js');
+      const { styleKeywords, miejscaWgMiasta, adresyMap } = await import('../../katosalsahub.pl/dancepuls/js/config.js');
 
       const refNow = new Date(2026, 9, 20); // 20.10.2026
 

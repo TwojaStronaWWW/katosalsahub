@@ -33,7 +33,7 @@ jobs:
           SKIP_REMOTE_SYNC: '1'
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          node dancepuls.pl/tools/sync_engine.js --check-remote || node dancepuls.pl/tools/sync_engine.js
+          node scripts/sync_engine.js --check-remote || node scripts/sync_engine.js
           node scripts/sync-schedules.js --check-remote || node scripts/sync-schedules.js
 
       - name: Walidacja integralności wygenerowanych plików JSON przed commitem (Circuit Breaker)
@@ -47,7 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dancepuls.pl/data/events.json dancepuls.pl/data/latest_report.md katosalsahub.pl/assets/data/events.json katosalsahub.pl/assets/data/schedule.json
+          git add katosalsahub.pl/assets/data/events.json katosalsahub.pl/assets/data/latest_report.md katosalsahub.pl/assets/data/schedule.json katosalsahub.pl/assets/data/events_database.md
           if git diff --cached --quiet; then
             echo "Brak zmian w danych wydarzeń, grafiku szkół i raporcie."
           else
@@ -67,8 +67,7 @@ jobs:
                 set sftp:auto-confirm yes;
                 put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/schedule.json;
                 put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/events.json;
-                put -O /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/ ./dancepuls.pl/data/events.json;
-                put -O /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/ ./dancepuls.pl/data/latest_report.md;
+                put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/latest_report.md;
                 quit
               "
 

@@ -20,7 +20,7 @@ Closes #
 
 - [ ] Sprawdzono składnię JS (`npm run check:syntax`)
 - [ ] Wszystkie testy jednostkowe przechodzą pomyślnie (`npm run check`)
-- [ ] Zachowano spójność bazy wydarzeń (`dancepuls.pl/data/events.json`)
+- [ ] Zachowano spójność bazy wydarzeń (`katosalsahub.pl/assets/data/events.json`)
 - [ ] Zachowano spójność Salsopedii (`katosalsahub.pl/assets/data/salsopedia.json`)
 - [ ] Brak inline CSS (`style="..."`) i brak inline JS (`onclick="..."`)
 - [ ] Brak wrażliwych danych, haseł i sekretów w commitach (zgodność z ISO 27001)

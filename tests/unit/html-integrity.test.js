@@ -8,7 +8,7 @@ const KSH_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'index.html');
 const PRIVACY_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'privacy.html');
 const SALSOPEDIA_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'salsopedia.html');
 const GRAFIK_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'grafik.html');
-const DANCEPULS_HTML = path.join(ROOT_DIR, 'dancepuls.pl', 'index.html');
+const DANCEPULS_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'dancepuls', 'index.html');
 
 describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
   describe('Kato Salsa Hub (katosalsahub.pl/index.html)', () => {
@@ -333,30 +333,82 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
     });
   });
 
-  describe('DancePuls (dancepuls.pl/index.html)', () => {
-    it('plik index.html powinien istnieć, mieć poprawny szkielet, meta description, canonical i zawierać panel 6-sekcyjnego raportu KSH', () => {
+  describe('DancePuls (katosalsahub.pl/dancepuls/index.html) & Centralizacja SEO na katosalsahub.pl', () => {
+    it('plik index.html powinien posiadać noindex/nofollow, canonical na grafik.html oraz przekierowanie 301 ze starej subdomeny w .htaccess', () => {
       assert.ok(fs.existsSync(DANCEPULS_HTML));
       const html = fs.readFileSync(DANCEPULS_HTML, 'utf-8');
       assert.match(html, /<!DOCTYPE html>/i);
       assert.match(html, /<html\s+lang="pl">/i);
+      assert.match(html, /<meta\s+name="robots"\s+content="noindex,\s*nofollow">/i, 'Roboczy generator DancePuls musi posiadać noindex, nofollow');
       assert.match(html, /<meta\s+name="description"\s+content="[^"]+"/i);
-      assert.match(html, /<link\s+rel="canonical"\s+href="https:\/\/dancepuls\.katosalsahub\.pl\/">/i);
+      assert.match(html, /<link\s+rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/grafik\.html">/i, 'Canonical generatora DancePuls musi wskazywać na publiczny kalendarz https://katosalsahub.pl/grafik.html');
       assert.match(html, /id="load-report-btn"/i);
       assert.match(html, /id="open-audit-btn"/i);
       assert.match(html, /id="wynik-przyszle"/i);
       assert.match(html, /id="copy-comment2-btn"/i);
       assert.match(html, /id="copy-all-poll-btn"/i);
 
+      const dpHtaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'dancepuls', '.htaccess'), 'utf-8');
+      assert.match(dpHtaccess, /dancepuls\\\.katosalsahub\\\.pl/, 'Brak reguły przekierowania 301 dla starej subdomeny dancepuls.katosalsahub.pl w katosalsahub.pl/dancepuls/.htaccess');
+      assert.match(dpHtaccess, /https:\/\/katosalsahub\.pl\/grafik\.html\s+\[R=301,L\]/, 'Subdomena dancepuls.katosalsahub.pl musi przekierowywać 301 na https://katosalsahub.pl/grafik.html');
+
       const htaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.htaccess'), 'utf-8');
       assert.match(htaccess, /RewriteCond\s+%\{HTTP_HOST\}\s+\^www\\\.katosalsahub\\\.pl\$/, 'Brak przekierowania 301 z www.katosalsahub.pl w .htaccess');
       assert.match(htaccess, /microphone=\(self\)/, 'Nagłówek Permissions-Policy w .htaccess musi zezwalać na microphone=(self) dla dyktowania głosowego w Asystencie AI');
     });
 
-    it('plik dancepuls.pl/index.html nie powinien zawierać stylów inline, inline event handlerów ani inline <script> (SoC)', () => {
+    it('wszystkie 4 widoki katosalsahub.pl (index, grafik, salsopedia, privacy) powinny mieć w 100% zsynchronizowany układ wspólny przez scripts/sync-layout.js oraz poprawne referencje lokalnych zasobów', () => {
+      const { syncAllLayouts } = require('../../scripts/sync-layout.js');
+      const status = syncAllLayouts({ write: false });
+      for (const page of status) {
+        assert.strictEqual(
+          page.changed,
+          false,
+          `Widok ${page.pageFile} ma niespójny nagłówek/stopkę/skrypty — uruchom: npm run sync:layout`
+        );
+      }
+
+      for (const dir of ['katosalsahub.pl', 'katosalsahub.pl/dancepuls']) {
+        const fullDir = path.join(ROOT_DIR, dir);
+        const htmlFiles = fs.readdirSync(fullDir).filter((f) => f.endsWith('.html'));
+        for (const f of htmlFiles) {
+          const html = fs.readFileSync(path.join(fullDir, f), 'utf-8');
+          const matches = html.matchAll(/(?:src|href)="(?!https?:\/\/|#|javascript:|mailto:|tel:)([^"]+)"/g);
+          for (const m of matches) {
+            const ref = m[1].split(/[?#]/)[0];
+            if (!ref) continue;
+            assert.ok(
+              fs.existsSync(path.join(fullDir, ref)),
+              `Brak lokalnego zasobu ${ref} referencjonowanego w ${dir}/${f}`
+            );
+          }
+        }
+      }
+    });
+
+    it('plik katosalsahub.pl/dancepuls/index.html oraz moduły katosalsahub.pl/dancepuls/js/*.js nie powinny zawierać stylów inline, manipulacji .style.*, inline event handlerów ani inline <script> (SoC)', () => {
       const html = fs.readFileSync(DANCEPULS_HTML, 'utf-8');
-      assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w dancepuls.pl/index.html naruszający SoC');
-      assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w dancepuls.pl/index.html naruszający SoC');
-      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w dancepuls.pl/index.html');
+      assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w katosalsahub.pl/dancepuls/index.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w katosalsahub.pl/dancepuls/index.html naruszający SoC');
+      assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w katosalsahub.pl/dancepuls/index.html');
+
+      const dpJsDir = path.join(ROOT_DIR, 'katosalsahub.pl', 'dancepuls', 'js');
+      const dpJsFiles = fs.readdirSync(dpJsDir).filter((f) => f.endsWith('.js'));
+      assert.ok(dpJsFiles.includes('post-generator.js'), 'Brak wydzielonego modułu katosalsahub.pl/dancepuls/js/post-generator.js');
+      for (const file of dpJsFiles) {
+        const src = fs.readFileSync(path.join(dpJsDir, file), 'utf-8');
+        const withoutComments = src.replace(/\/\*[\s\S]*?\*\/|^\s*\/\/.*$/gm, '').trim();
+        assert.doesNotMatch(
+          withoutComments,
+          /\.[a-zA-Z0-9_$]+\.style\.[a-zA-Z]+/,
+          `Plik katosalsahub.pl/dancepuls/js/${file} manipuluje bezpośrednio właściwością .style.*, naruszając zasadę SoC`
+        );
+        assert.doesNotMatch(
+          withoutComments,
+          /\.onclick\s*=/,
+          `Plik katosalsahub.pl/dancepuls/js/${file} używa .onclick zamiast addEventListener`
+        );
+      }
     });
   });
 

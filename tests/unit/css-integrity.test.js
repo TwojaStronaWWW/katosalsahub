@@ -12,7 +12,7 @@ const CSS_FILES = [
   'katosalsahub.pl/assets/css/radio.css',
   'katosalsahub.pl/assets/css/wiki.css',
   'katosalsahub.pl/assets/css/schedule.css',
-  'dancepuls.pl/css/style.css',
+  'katosalsahub.pl/dancepuls/css/style.css',
 ];
 
 describe('Integralność i składnia arkuszy stylów CSS (Kato Salsa Hub & DancePuls)', () => {
@@ -43,7 +43,7 @@ describe('Integralność i składnia arkuszy stylów CSS (Kato Salsa Hub & Dance
 
   it('główne arkusze stylów powinny definiować zmienne CSS (Design Tokens) w :root', () => {
     const kshStyle = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/style.css'), 'utf-8');
-    const dpStyle = fs.readFileSync(path.join(ROOT_DIR, 'dancepuls.pl/css/style.css'), 'utf-8');
+    const dpStyle = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/dancepuls/css/style.css'), 'utf-8');
 
     assert.match(kshStyle, /:root\s*\{/i);
     assert.match(dpStyle, /:root\s*\{/i);

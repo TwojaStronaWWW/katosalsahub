@@ -28,8 +28,8 @@ jobs:
       # 1. Sprawdź pliki wejściowe obu portali
       - name: 1.2 Sprawdzenie plików wejściowych (Kato Salsa Hub & DancePuls)
         run: |
-          if [ ! -f katosalsahub.pl/index.html ] || [ ! -f dancepuls.pl/index.html ]; then
-            echo "❌ Brak pliku wejściowego katosalsahub.pl/index.html lub dancepuls.pl/index.html!"
+          if [ ! -f katosalsahub.pl/index.html ] || [ ! -f katosalsahub.pl/dancepuls/index.html ]; then
+            echo "❌ Brak pliku wejściowego katosalsahub.pl/index.html lub katosalsahub.pl/dancepuls/index.html!"
             exit 1
           fi
 
@@ -71,7 +71,7 @@ jobs:
       # 6. Sprawdzanie integralności relatywnych linków i zasobów
       - name: 1.8 Sprawdzanie referencji lokalnych linków i zasobów
         run: |
-          for dir in katosalsahub.pl dancepuls.pl; do
+          for dir in katosalsahub.pl katosalsahub.pl/dancepuls; do
             echo "🔍 Sprawdzanie referencji w $dir..."
             for html_file in $dir/*.html; do
               [ -f "$html_file" ] || continue

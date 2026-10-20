@@ -14,7 +14,7 @@ const path = require('node:path');
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 const ROOT_DIR = path.resolve(__dirname, '..');
 const KSH_DIR = path.join(ROOT_DIR, 'katosalsahub.pl');
-const DANCEPULS_DIR = path.join(ROOT_DIR, 'dancepuls.pl');
+const DANCEPULS_DIR = path.join(KSH_DIR, 'dancepuls');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -57,7 +57,10 @@ function resolveSafeFilePath(rawInputUrl = '/', customBaseDir = null) {
   let targetBase = customBaseDir ? path.resolve(customBaseDir) : KSH_DIR;
   let relPath = decodedUrl;
 
-  if (!customBaseDir && (decodedUrl === '/dancepuls' || decodedUrl.startsWith('/dancepuls/'))) {
+  if (!customBaseDir && decodedUrl.startsWith('/dancepuls/data/')) {
+    targetBase = path.join(KSH_DIR, 'assets', 'data');
+    relPath = decodedUrl.replace(/^\/dancepuls\/data\//, '');
+  } else if (!customBaseDir && (decodedUrl === '/dancepuls' || decodedUrl.startsWith('/dancepuls/'))) {
     targetBase = DANCEPULS_DIR;
     relPath = decodedUrl.replace(/^\/dancepuls(\/)?/, '') || 'index.html';
   } else if (relPath === '/' || relPath === '') {

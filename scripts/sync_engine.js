@@ -16,11 +16,13 @@ const https = require('https');
 const zlib = require('zlib');
 const { execSync } = require('child_process');
 
-const BASE_DIR = path.resolve(__dirname, '..');
-const DB_PATH = path.join(BASE_DIR, 'data', 'events_database.md');
-const JSON_PATH = path.join(BASE_DIR, 'data', 'events.json');
-const KSH_EVENTS_JSON_PATH = path.resolve(BASE_DIR, '..', 'katosalsahub.pl', 'assets', 'data', 'events.json');
-const REPORT_PATH = path.join(BASE_DIR, 'data', 'latest_report.md');
+const ROOT_DIR = path.resolve(__dirname, '..');
+const DATA_DIR = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data');
+const DB_PATH = path.join(DATA_DIR, 'events_database.md');
+const JSON_PATH = path.join(DATA_DIR, 'events.json');
+const KSH_EVENTS_JSON_PATH = JSON_PATH;
+const REPORT_PATH = path.join(DATA_DIR, 'latest_report.md');
+const KSH_REPORT_PATH = REPORT_PATH;
 
 const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sI3oU5dNLhWsK0vcct069MENk-o-XuUh9UQ7k-O7Um8/export?format=csv&gid=1833510316';
 
@@ -1695,15 +1697,6 @@ function generateEventsJson(sections, options = {}) {
         `   Zapisano ${finalJson.length} dni z wydarzeniami (>= ${minDateIso || 'wszystkie'}, odfiltrowano minionych: ${skippedPastCount}) do: ${JSON_PATH}`
     );
 
-    try {
-        if (fs.existsSync(path.dirname(KSH_EVENTS_JSON_PATH))) {
-            writeFileAtomically(KSH_EVENTS_JSON_PATH, JSON.stringify(finalJson, null, 2));
-            console.log(`   Zsynchronizowano publiczną bazę wydarzeń KSH: ${KSH_EVENTS_JSON_PATH}`);
-        }
-    } catch (err) {
-        console.warn('   ⚠️ Nie udało się zapisać kopii events.json do katosalsahub.pl:', err.message);
-    }
-
     return finalJson;
 }
 
@@ -1984,14 +1977,13 @@ function syncToRemoteLH() {
         console.log('⏭️ [5/5] Pominięto bezpośredni transfer SSH (tryb CI/automatyczny).');
         return;
     }
-    console.log('🚀 [5/5] Synchronizacja z serwerem LH (dancepuls.katosalsahub.pl)...');
+    console.log('🚀 [5/5] Synchronizacja z serwerem LH (katosalsahub.pl/assets/data)...');
     try {
-        execSync('ssh lh-katosalsa "mkdir -p /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data"');
-        execSync(`scp "${JSON_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/events.json`);
-        execSync(`scp "${KSH_EVENTS_JSON_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/events.json`);
-        execSync(`scp "${DB_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/events_database.md`);
-        execSync(`scp "${REPORT_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/latest_report.md`);
-        console.log('   ✅ Pomyślnie zsynchronizowano bazę, JSON (DancePuls + KSH) i raport na serwer LH.pl!');
+        execSync('ssh lh-katosalsa "mkdir -p /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data"');
+        execSync(`scp "${JSON_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/events.json`);
+        execSync(`scp "${REPORT_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/latest_report.md`);
+        execSync(`scp "${DB_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/events_database.md`);
+        console.log('   ✅ Pomyślnie zsynchronizowano bazę, JSON i raport w katosalsahub.pl/assets/data na serwerze LH.pl!');
     } catch (e) {
         console.warn('   ⚠️ Synchronizacja SSH nie powiodła się:', e.message);
     }

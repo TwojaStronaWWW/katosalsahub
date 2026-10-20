@@ -22,8 +22,8 @@
   <a href="https://katosalsahub.pl" target="_blank">
     <img src="https://img.shields.io/badge/%F0%9F%8C%90_ODWIED%C5%B9_KATOSALSAHUB.PL-e63946?style=for-the-badge" alt="Odwiedź Kato Salsa Hub" />
   </a>
-  <a href="https://dancepuls.katosalsahub.pl" target="_blank">
-    <img src="https://img.shields.io/badge/%F0%9F%94%A5_ODKRYJ_WYDARZENIA_DANCEPULS.PL-1d3557?style=for-the-badge" alt="Odwiedź DancePuls" />
+  <a href="https://katosalsahub.pl/grafik.html" target="_blank">
+    <img src="https://img.shields.io/badge/%F0%9F%94%A5_GRAFIK_KURS%C3%93W_I_IMPREZ_DANCEPULS-1d3557?style=for-the-badge" alt="Wspólny Grafik i DancePuls" />
   </a>
 </p>
 
@@ -42,7 +42,7 @@
 **Kato Salsa Hub** to oddolna inicjatywa społeczna oraz oficjalny portal **Fundacji Kato Salsa Hub**, integrujący tancerzy muzyki latynoskiej (Salsa, Bachata, Kizomba) na terenie Katowic, aglomeracji śląskiej i Małopolski.
 
 Projekt rozwiązuje kluczowe wyzwania społeczności tanecznej:
-- **Centralny Kalendarz Taneczny (`dancepuls.pl`):** Agregacja imprez, festiwali, maratonów i warsztatów z wielu źródeł (social media, szkoły tańca, kluby) w jednym, responsywnym widoku.
+- **Wspólny Grafik Szkół i Kalendarz Imprez DancePuls (`katosalsahub.pl/grafik.html`):** Agregacja 128 kursów tanecznych oraz imprez, festiwali, maratonów i warsztatów z wielu źródeł (social media, szkoły tańca, kluby) w jednym, responsywnym widoku.
 - **Dedykowany Odtwarzacz Radiowy (Radio Player):** Płynny streaming stacji muzycznych (Salsa Dura, Bachata Sensual, Kizomba) z obsługą API `MediaSession` (sterowanie z poziomu lockscreena telefonu).
 - **Encyklopedia Taneczna (Salsopedia):** Baza wiedzy o stylach tańca (Salsa Casino, Linear On1/On2, Timba), etykiecie na parkiecie i historii muzyki afro-kubańskiej.
 - **Oficjalne Biuro Obsługi (Helpdesk osTicket):** Bezpieczny system zgłoszeń dla uczestników i wolontariuszy pod domeną `hd.twojastronawww.pl`.
@@ -52,12 +52,13 @@ Projekt rozwiązuje kluczowe wyzwania społeczności tanecznej:
 ## ✨ Kluczowe Możliwości i Moduły
 
 ### 🎪 Ekosystem Serwisów i Aplikacji
-| Moduł / Domena | Technologia | Specyfikacja i Gwarancje |
+| Moduł / Ścieżka | Technologia | Specyfikacja i Gwarancje |
 | :--- | :--- | :--- |
-| **Kato Salsa Hub** (`katosalsahub.pl`) | Vanilla JS SPA & CSS Grid | Wizytówka fundacji, relacje ze spotkań plenerowych, integracja social media, harmonogram. |
-| **DancePuls** (`dancepuls.pl`) | Dynamiczny silnik filtrowania JS | Interaktywny kalendarz imprez, podział na miasta (Katowice, Kraków, Gliwice) i style muzyczne. |
+| **Kato Salsa Hub** (`katosalsahub.pl/`) | Vanilla JS SPA & CSS Grid | Wizytówka fundacji, relacje ze spotkań plenerowych, interaktywna mapa 8 miejscówek, integracja social media. |
+| **Wspólny Grafik & Imprezy** (`katosalsahub.pl/grafik.html`) | Dynamiczny silnik filtrowania JS | Zintegrowana wyszukiwarka 128 kursów tanecznych, kalkulator karnetów i kalendarz imprez DancePuls. |
+| **DancePuls Studio** (`katosalsahub.pl/dancepuls/`) | Panel kuratorski & Generator FB | Narzędzie redakcyjne dla kuratorów wydarzeń, generator postów/ankiet na FB i skrzynka zgłoszeń CSV. |
 | **Radio Player** | HTML5 Audio & `MediaSession API` | Płynne przełączanie kanałów, automatyczne ponawianie połączenia, sterowanie z powiadomień mobilnych. |
-| **Silnik Synchronizacji** (`tools/sync_engine.js`) | Node.js Automatyzacja | Agregacja, normalizacja i deduplikacja wydarzeń, generowanie raportów i powiadomień. |
+| **Silnik Synchronizacji** (`scripts/sync_engine.js`) | Node.js Automatyzacja | Agregacja, normalizacja i deduplikacja wydarzeń, generowanie raportów i powiadomień. |
 | **Helpdesk & Zgłoszenia** | osTicket (ITIL 4) | Bezpieczne formularze kontaktowe zintegrowane z centralnym systemem obsługi zgłoszeń. |
 
 ---
@@ -66,20 +67,26 @@ Projekt rozwiązuje kluczowe wyzwania społeczności tanecznej:
 
 ```plaintext
 katosalsahub/
-├── .github/
-│   ├── workflows/                  # Potoki CI/CD i automatyzacji
-│   └── dependabot.yml              # Nadzór nad zależnościami narzędziowymi
-├── dancepuls.pl/                   # Moduł agregatora imprez tanecznych
-│   ├── assets/                     # Skrypty i arkusze filtrów wydarzeń
-│   ├── data/                       # Baza wydarzeń JSON
-│   └── tools/                      # sync_engine.js – silnik synchronizacji danych
-├── katosalsahub.pl/                # Główny portal społecznościowy i wizytówka fundacji
-│   ├── assets/                     # Komponenty Vanilla UI, Radio Player, style
-│   ├── index.html                  # Semantyczny szkielet SPA
-│   └── wiki.php                    # Baza wiedzy Salsopedia
-├── ROADMAP.md                      # Oficjalny rejestr sprintów i plan wydań
-├── package.json                    # Narzędzia synchronizacji i raportowania
-└── README.md                       # Pełna dokumentacja projektu
+├── .github/                        # Potoki CI/CD (ci.yml, deploy.yml, weekly-report.yml) i Dependabot
+├── .githooks/                      # Git hooki: pre-commit (npm run check), commit-msg (Conventional Commits)
+├── .vscode/                        # Standaryzacja IDE (settings.json, tasks.json)
+├── katosalsahub.pl/                # Zintegrowana aplikacja produkcyjna (DocumentRoot LH.pl)
+│   ├── assets/
+│   │   ├── css/                    # System tokenów CSS, komponenty, sekcje, radio, wiki, grafik
+│   │   ├── js/                     # Moduły Vanilla JS (router, home, radio, wiki, wiki-studio, schedule)
+│   │   ├── php/                    # Bezpieczne API (contact.php, wiki.php z ochroną Anti-TOCTOU)
+│   │   └── data/                   # Centralna baza SSOT (salsopedia.json, schedule.json, events.json, events_database.md)
+│   ├── dancepuls/                  # Panel kuratorski DancePuls i generator postów FB
+│   ├── index.html                  # Główny punkt wejścia i szkielet SPA
+│   ├── grafik.html                 # Wspólny Grafik Szkół Tańca i Kalendarz Imprez
+│   ├── salsopedia.html             # Encyklopedia Salsopedia (ponad 200 haseł i figur)
+│   └── privacy.html                # Polityka prywatności i RODO
+├── scripts/                        # Automatyzacja Backend/CLI (serve.js, sync_engine.js, sync-schedules.js, sync-layout.js)
+├── tests/                          # Natywne testy jednostkowe (node:test) i symulator DOM
+├── BLUEPRINT.md                    # Podręcznik architektury, runbook wdrożeniowy i szablony SEO
+├── SECURITY.md                     # Polityka bezpieczeństwa (ISO 27001 / RODO)
+├── package.json                    # Skrypty jakościowe, synchronizacji i raportowania
+└── README.md                       # Dokumentacja główna projektu
 ```
 
 ---
@@ -109,15 +116,10 @@ npm run report
 
 ---
 
-## 🗺️ Mapa Rozwoju (Roadmap)
+## 🗺️ Podręcznik Inżynieryjny i Runbook
 
-Rejestr sprintów, kamieni milowych i zgłoszonych zadań rozwojowych znajduje się w pliku:  
-👉 **[ROADMAP.md](ROADMAP.md)**
-
-* **Sprint 1:** Bezpieczeństwo i Kredencjały (Hotfix & Secrets audit).
-* **Sprint 2:** RODO & Nowoczesne potoki CI/CD (Quality Gate, smoke testy).
-* **Sprint 3:** Automatyzacja DancePuls & Baza Wiedzy Wiki.
-* **Sprint 4:** Radio Player, PWA & Optymalizacja Multimediów.
+Kompletny opis architektury, procedur wdrożeniowych CI/CD oraz gotowych szablonów SEO znajduje się w pliku:  
+👉 **[BLUEPRINT.md](BLUEPRINT.md)**
 
 ---
 

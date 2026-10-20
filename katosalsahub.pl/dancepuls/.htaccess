@@ -1,5 +1,12 @@
 Options -Indexes
 
+# Kanoniczne przekierowanie 301 ze starej subdomeny dancepuls.katosalsahub.pl na zintegrowany widok grafiku i imprez KSH
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^(www\.)?dancepuls\.katosalsahub\.pl$ [NC]
+  RewriteRule ^.*$ https://katosalsahub.pl/grafik.html [R=301,L]
+</IfModule>
+
 AddDefaultCharset UTF-8
 AddType 'text/html; charset=UTF-8' html
 AddType 'text/css; charset=UTF-8' css
@@ -11,6 +18,7 @@ AddType 'application/json; charset=UTF-8' json
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(self), camera=()"
+  Header always set X-Robots-Tag "noindex, nofollow"
 </IfModule>
 
 <FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|orig|psd|sh|sql|sw[op]|tmp)|~|\.env.*)$">

@@ -18,30 +18,35 @@ Projekt stanowi produkcyjne monorepo łączące dwa ściśle powiązane filary:
 ## 3. STRUKTURA PROJEKTU
 ```plaintext
 katosalsahub/
-├── .github/                    # Potoki CI/CD (ci.yml, deploy.yml), Dependabot, szablony zgłoszeń
+├── .github/                    # Potoki CI/CD (ci.yml, deploy.yml, weekly-report.yml), Dependabot, szablony zgłoszeń
 ├── .githooks/                  # Git hooki: pre-commit (npm run check), commit-msg (Conventional Commits)
-├── dancepuls.pl/               # Filar agregatora imprez tanecznych
-│   ├── css/ & js/              # Interfejs filtrów i kalendarza
-│   ├── data/                   # events_database.md, events.json, latest_report.md
-│   └── tools/sync_engine.js    # Silnik synchronizacji, parsowania i generowania raportów
-├── katosalsahub.pl/            # Główny portal społecznościowy
-│   ├── assets/                 # CSS (style, components, sections, radio, wiki), JS, PHP, dane
-│   │   ├── css/                # style.css, components.css, sections.css, radio.css, wiki.css
-│   │   ├── js/                 # router.js, home.js, radio.js, wiki.js, contact.js, cookies.js
+├── .vscode/                    # Standaryzacja IDE (settings.json, tasks.json)
+├── katosalsahub.pl/            # Zintegrowana aplikacja webowa (DocumentRoot LH.pl)
+│   ├── assets/                 # CSS, JS, PHP, obrazy, czcionki, ujednolicona baza danych (SSOT)
+│   │   ├── css/                # style.css, components.css, sections.css, radio.css, wiki.css, schedule.css
+│   │   ├── js/                 # router.js, home.js, radio.js, wiki.js, wiki-studio.js, schedule.js, contact.js, cookies.js, ai-widget.js
 │   │   ├── php/                # contact.php (antybot CRM), wiki.php (API Salsopedii)
-│   │   └── data/               # salsopedia.json (baza haseł), pending_edits.json (kolejka moderacji)
+│   │   └── data/               # Centralna baza SSOT: salsopedia.json, schedule.json, events_database.md, events.json, latest_report.md
+│   ├── dancepuls/              # Panel kuratorski DancePuls i generator postów FB (noindex, canonical -> /grafik.html)
+│   │   ├── css/                # style.css
+│   │   ├── js/                 # app.js, parser.js, post-generator.js, weather.js
+│   │   └── index.html          # Widok roboczy kuratora wydarzeń
 │   ├── index.html              # Główny punkt wejścia i szkielet SPA
+│   ├── grafik.html             # Wspólny Grafik Szkół Tańca (128 kursów) i Kalendarz Imprez DancePuls
 │   ├── salsopedia.html         # Dedykowany widok Salsopedii (baza wiedzy i moderacja)
 │   └── privacy.html            # Polityka prywatności i RODO
 ├── scripts/
-│   └── serve.js                # Lekki, bezbiblioteczny serwer HTTP w Node.js dla obu domen
+│   ├── serve.js                # Lekki, bezbiblioteczny serwer HTTP w Node.js
+│   ├── sync_engine.js          # Silnik synchronizacji, parsowania i generowania raportów DancePuls
+│   ├── sync-schedules.js       # Walidator i synchronizator grafików szkół tańca (schedule.json)
+│   └── sync-layout.js          # Generator spójności nawigacji i stopki we wszystkich plikach HTML
 ├── tests/
 │   ├── helpers/mock-dom.js     # Bezbiblioteczna symulacja DOM dla środowiska Node.js
 │   └── unit/                   # Natywne testy jednostkowe (node:test)
 │       ├── html-integrity.test.js # Testy semantyki HTML5, nagłówków SEO, a11y i linków
 │       ├── events-schema.test.js  # Walidacja integralności schematów danych (JSON & Markdown)
 │       └── repo-hygiene.test.js   # Testy higieny repozytorium, ISO 27001, hooków i CI/CD
-├── package.json                # Skrypty jakościowe (check, test, test:coverage, check:syntax, serve, dev)
+├── package.json                # Skrypty jakościowe (check, test, test:coverage, check:syntax, sync, sync:layout, serve, dev)
 ├── .lighthouserc.json          # Konfiguracja audytu Lighthouse CI (min. 90% a11y, SEO, best-practices)
 ├── .editorconfig               # Standaryzacja kodowania, wcięć i końców linii
 ├── .gitattributes              # Normalizacja końców linii LF
@@ -100,7 +105,7 @@ katosalsahub/
 
 ## 6. POTOK CI/CD (ZERO-TRUST SEQUENTIAL GITHUB ACTIONS)
 1. **Etap 1 – `CI & Quality Gate` (`ci.yml`, na `push` i `pull_request`, `cancel-in-progress: true`):**
-   - Weryfikacja plików wejściowych obu serwisów (`katosalsahub.pl/index.html`, `dancepuls.pl/index.html`).
+   - Weryfikacja plików wejściowych aplikacji (`katosalsahub.pl/index.html`, `katosalsahub.pl/dancepuls/index.html`).
    - Skaner sekretów **Gitleaks** oraz ochrona przed wyciekiem danych wrażliwych.
    - Walidacja składni PHP (`php -l`), JavaScript (`npm run check:syntax`) oraz referencji lokalnych linków (eliminacja 404).
    - Testy jednostkowe z raportem pokrycia (`node:test`) oraz przeglądarkowy **UI Smoke Test (Playwright Chromium)**.

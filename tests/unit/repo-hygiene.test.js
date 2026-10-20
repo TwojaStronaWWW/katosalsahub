@@ -35,9 +35,9 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'rate-limit.php')), 'Brak katosalsahub.pl/assets/php/rate-limit.php');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'robots.txt')), 'Brak katosalsahub.pl/robots.txt');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sitemap.xml')), 'Brak katosalsahub.pl/sitemap.xml');
-    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl', '.htaccess')), 'Brak dancepuls.pl/.htaccess');
-    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl', 'robots.txt')), 'Brak dancepuls.pl/robots.txt');
-    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl', 'sitemap.xml')), 'Brak dancepuls.pl/sitemap.xml');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'dancepuls', '.htaccess')), 'Brak katosalsahub.pl/dancepuls/.htaccess');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'dancepuls', 'index.html')), 'Brak katosalsahub.pl/dancepuls/index.html');
+    assert.ok(!fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl')), 'Stary katalog dancepuls.pl nie powinien już istnieć w głównym katalogu');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'manifest.json')), 'Brak manifest.json (#21)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sw.js')), 'Brak sw.js (#21)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'pull_request_template.md')), 'Brak .github/pull_request_template.md');
@@ -183,7 +183,7 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
   it('ochrona transakcyjna współbieżności powinna obejmować wiki.php (update_json_file + session_write_close), wiki.js (inFlightMutations), sync_engine.js (writeFileAtomically z PID) oraz potoki CI/CD', () => {
     const wikiPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'wiki.php'), 'utf-8');
     const wikiJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'wiki.js'), 'utf-8');
-    const syncEngineJs = fs.readFileSync(path.join(ROOT_DIR, 'dancepuls.pl', 'tools', 'sync_engine.js'), 'utf-8');
+    const syncEngineJs = fs.readFileSync(path.join(ROOT_DIR, 'scripts', 'sync_engine.js'), 'utf-8');
     const weeklyWf = fs.readFileSync(path.join(ROOT_DIR, '.github', 'workflows', 'weekly-report.yml'), 'utf-8');
 
     assert.match(wikiPhp, /function\s+update_json_file\s*\(/, 'Brak transakcyjnej funkcji update_json_file() w wiki.php');

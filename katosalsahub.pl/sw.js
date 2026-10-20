@@ -22,6 +22,7 @@ const STATIC_ASSETS = [
   '/assets/js/router.js?v=4.8',
   '/assets/js/home.js?v=4.8',
   '/assets/js/radio.js?v=4.8',
+  '/assets/js/wiki-studio.js?v=4.8',
   '/assets/js/wiki.js?v=4.8',
   '/assets/js/schedule.js?v=4.8',
   '/assets/js/contact.js?v=4.8',

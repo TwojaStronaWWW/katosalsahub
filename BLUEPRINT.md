@@ -20,17 +20,18 @@ Projekt stanowi monorepo łączące dwa ściśle współpracujące podprojekty:
   - Produkcja: `/home/platne/serwer417204/public_html/katosalsahub.pl`
   - Staging: `/home/platne/serwer417204/public_html/staging.katosalsahub.pl`
 
-### 1.2 Filar 2: DancePuls (`dancepuls.pl`)
-- **Rola:** Silnik agregacji, kuratorstwa i automatyzacji imprez, warsztatów i festiwali tanecznych (woj. śląskie i Kraków).
-- **Technologia:** Vanilla JS, Markdown / Flat-File JSON database, Node.js (`sync_engine.js`).
+### 1.2 Filar 2: DancePuls (`katosalsahub.pl/dancepuls` & `scripts/sync_engine.js`)
+- **Rola:** Silnik agregacji, kuratorstwa i automatyzacji imprez, warsztatów i festiwali tanecznych (woj. śląskie i Kraków), zintegrowany bezpośrednio w strukturze portalu `katosalsahub.pl`.
+- **Technologia:** Vanilla JS, Markdown / Flat-File JSON database (`katosalsahub.pl/assets/data/`), Node.js (`scripts/sync_engine.js`).
 - **Główne moduły:**
-  - Baza imprez: `dancepuls.pl/data/events_database.md` oraz skompilowany plik bazy `dancepuls.pl/data/events.json`.
-  - Generator cyklicznych raportów weekendowych: `dancepuls.pl/data/latest_report.md`.
-  - Silnik synchronizacji: `dancepuls.pl/tools/sync_engine.js` (pobiera zgłoszenia z Google Forms CSV, parsuje Markdown, aktualizuje JSON, generuje posty na FB i raporty).
-  - Interaktywny kalendarz imprez z filtrami miast i stylów (`app.js`, `parser.js`, `weather.js`).
-- **Hosting docelowy (LH.pl):**
-  - Produkcja: `/home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl`
-  - Staging: `/home/platne/serwer417204/public_html/staging.katosalsahub.pl/dancepuls`
+  - Centralna baza imprez (SSOT): `katosalsahub.pl/assets/data/events_database.md` oraz skompilowany plik bazy `katosalsahub.pl/assets/data/events.json`.
+  - Generator cyklicznych raportów weekendowych: `katosalsahub.pl/assets/data/latest_report.md`.
+  - Silnik synchronizacji: `scripts/sync_engine.js` (pobiera zgłoszenia z Google Forms CSV, parsuje Markdown, aktualizuje JSON, generuje posty na FB i raporty).
+  - Publiczny widok kalendarza imprez i wspólnego grafiku szkół: `katosalsahub.pl/grafik.html`.
+  - Panel roboczy kuratora i generator postów FB: `katosalsahub.pl/dancepuls/index.html` (`app.js`, `parser.js`, `post-generator.js`, `weather.js`).
+- **Hosting docelowy (LH.pl – pojedynczy zintegrowany wdrożeniowo katalog):**
+  - Produkcja: `/home/platne/serwer417204/public_html/katosalsahub.pl`
+  - Staging: `/home/platne/serwer417204/public_html/staging.katosalsahub.pl`
 
 ---
 
@@ -88,7 +89,7 @@ npm run sync
 ### 5.1 Architektura Techniczna SEO (On-Page & IndexNow)
 1. **Kanoniczne domeny (brak duplikacji `www`):**
    - W `.htaccess` wymuszone przekierowanie `301 Moved Permanently` z `www.katosalsahub.pl` na `https://katosalsahub.pl/`.
-   - Każda strona posiada jawny `<link rel="canonical" ...>` (`index.html`, `salsopedia.html`, `privacy.html`, `dancepuls.pl/index.html`).
+   - Każda strona posiada jawny `<link rel="canonical" ...>` (`index.html`, `grafik.html`, `salsopedia.html`, `privacy.html`, `dancepuls/index.html`).
 2. **Ochrona snippetów w Google (`data-nosnippet`):**
    - Kontener czatu AI (`#ksh-ai-widget` w `ai-widget.js`) oraz baner cookies (`#cookie-banner`) posiadają atrybut `data-nosnippet`, dzięki czemu Googlebot nigdy nie używa komunikatu powitalnego bota ani tekstu RODO jako opisu strony w wyszukiwarce.
 3. **Dane strukturalne `Schema.org` (JSON-LD w `katosalsahub.pl/index.html`):**
@@ -117,8 +118,8 @@ npm run sync
 Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
 👉 https://katosalsahub.pl/
-📅 Aktualny rozkład wszystkich imprez tanecznych na Śląsku:
-👉 https://dancepuls.katosalsahub.pl/
+📅 Aktualny rozkład wszystkich kursów i imprez tanecznych na Śląsku:
+👉 https://katosalsahub.pl/grafik.html
 
 #SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie
 ```
@@ -209,9 +210,9 @@ Sprawdźcie, gdzie dokładnie tańczymy w Katowicach (lokal Wolni Ludzie na ul. 
 Uczycie się salsy lub chodzicie na kursy? Na naszej stronie macie pierwszą w Polsce otwartą encyklopedię ponad 200 figur salsy kubańskiej, słownik komend ruedowych oraz bazę szkół i instruktorów w Katowicach:
 👉 https://katosalsahub.pl/salsopedia.html
 
-📅 3. KALENDARZ WSZYSTKICH IMPREZ NA ŚLĄSKU (DANCEPULS):
-Aktualny rozkład salsotek, praktyk, warsztatów i plenerów w całym regionie:
-👉 https://dancepuls.katosalsahub.pl/
+📅 3. WSPÓLNY GRAFIK SZKÓŁ I KALENDARZ IMPREZ NA ŚLĄSKU (DANCEPULS):
+Aktualny rozkład 128 kursów tanecznych, salsotek, praktyk, warsztatów i plenerów w całym regionie:
+👉 https://katosalsahub.pl/grafik.html
 
 🎉 4. NAJBLIŻSZA POTAŃCÓWKA W KATOWICACH (NIEDZIELA 15:00–18:00):
 Widzimy się w niedzielę w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice) – wpadajcie solo lub ze znajomymi, na miejscu rotujemy w parach i tańczymy w kole!
