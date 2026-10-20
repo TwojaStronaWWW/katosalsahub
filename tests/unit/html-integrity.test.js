@@ -7,6 +7,7 @@ const ROOT_DIR = path.resolve(__dirname, '..', '..');
 const KSH_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'index.html');
 const PRIVACY_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'privacy.html');
 const SALSOPEDIA_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'salsopedia.html');
+const GRAFIK_HTML = path.join(ROOT_DIR, 'katosalsahub.pl', 'grafik.html');
 const DANCEPULS_HTML = path.join(ROOT_DIR, 'dancepuls.pl', 'index.html');
 
 describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
@@ -182,6 +183,32 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w salsopedia.html naruszający SoC');
       assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w salsopedia.html');
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
+    });
+  });
+
+  describe('Wspólny Grafik Szkół & Wydarzenia DancePuls (katosalsahub.pl/grafik.html)', () => {
+    it('plik grafik.html powinien posiadać czysty widok SPA na wzór Salsopedii (bez sekcji strony głównej pod spodem), 3 zakładki trybów, filtry szkół (La Clave, Good Mood, Mil Pasos) oraz integrację z mapą i AI', () => {
+      assert.ok(fs.existsSync(GRAFIK_HTML), 'Brak pliku katosalsahub.pl/grafik.html');
+      const html = fs.readFileSync(GRAFIK_HTML, 'utf-8');
+      assert.match(html, /<!DOCTYPE html>/i);
+      assert.match(html, /<html\s+lang="pl">/i);
+      assert.match(html, /rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/grafik\.html"/i);
+      assert.match(html, /id="scheduleAppRoot"/);
+      assert.match(html, /id="scheduleSearchInput"/);
+      assert.match(html, /class="schedule-mode-tabs"/);
+      assert.match(html, /data-tab="classes"/);
+      assert.match(html, /data-tab="events"/);
+      assert.match(html, /data-tab="map"/);
+      assert.match(html, /La Clave/i);
+      assert.match(html, /Good Mood/i);
+      assert.match(html, /Mil Pasos/i);
+      assert.doesNotMatch(html, /id="faq"/i, 'Widok grafik.html nie powinien zawierać sekcji #faq pod spodem');
+      assert.doesNotMatch(html, /id="kontakt"/i, 'Widok grafik.html nie powinien zawierać sekcji #kontakt pod spodem');
+      assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w grafik.html naruszający SoC');
+      assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w grafik.html naruszający SoC');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w grafik.html');
+      assert.match(html, /src="assets\/js\/schedule\.js(\?[^"]*)?"/i);
+      assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
     });
   });
 

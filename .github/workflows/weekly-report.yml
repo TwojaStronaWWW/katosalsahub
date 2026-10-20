@@ -26,20 +26,22 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Uruchomienie silnika synchronizacji i raportowania (sync_engine.js)
+      - name: Uruchomienie silnika synchronizacji i raportowania (sync_engine.js & sync-schedules.js)
         env:
           SKIP_REMOTE_SYNC: '1'
-        run: node dancepuls.pl/tools/sync_engine.js
+        run: |
+          node dancepuls.pl/tools/sync_engine.js
+          node scripts/sync-schedules.js --check-remote || node scripts/sync-schedules.js
 
-      - name: Automatyczny commit i push zaktualizowanego raportu oraz events.json
+      - name: Automatyczny commit i push zaktualizowanego raportu, events.json oraz schedule.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dancepuls.pl/data/events.json dancepuls.pl/data/latest_report.md
+          git add dancepuls.pl/data/events.json dancepuls.pl/data/latest_report.md katosalsahub.pl/assets/data/events.json katosalsahub.pl/assets/data/schedule.json
           if git diff --cached --quiet; then
-            echo "Brak zmian w danych wydarzeń i raporcie."
+            echo "Brak zmian w danych wydarzeń, grafiku szkół i raporcie."
           else
-            git commit -m "chore(dancepuls): automatyczna aktualizacja raportu tygodniowego i events.json"
+            git commit -m "chore(dancepuls): automatyczna aktualizacja raportu tygodniowego, events.json i schedule.json"
             git pull --rebase origin ${{ github.ref_name }}
             git push
           fi

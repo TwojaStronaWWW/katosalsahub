@@ -11,6 +11,7 @@ const CSS_FILES = [
   'katosalsahub.pl/assets/css/sections.css',
   'katosalsahub.pl/assets/css/radio.css',
   'katosalsahub.pl/assets/css/wiki.css',
+  'katosalsahub.pl/assets/css/schedule.css',
   'dancepuls.pl/css/style.css',
 ];
 

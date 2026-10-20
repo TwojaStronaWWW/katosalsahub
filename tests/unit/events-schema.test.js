@@ -239,5 +239,69 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.ok(bongoResults.length >= 1 && /Bongó/i.test(bongoResults[0].term), 'Zapytanie "bongo" bez akcentu powinno znaleźć "Bongó (Bongosy)" na 1. miejscu');
     });
   });
+
+  describe('Kato Salsa Hub - Wspólny Grafik Szkół (schedule.json & schedule.js)', () => {
+    const SCHEDULE_JSON = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'schedule.json');
+    const KSH_EVENTS_JSON = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'data', 'events.json');
+
+    it('plik schedule.json oraz zsynchronizowany katosalsahub.pl/assets/data/events.json powinny istnieć i posiadać poprawny schemat oraz ustandaryzowane poziomy KSH', () => {
+      assert.ok(fs.existsSync(SCHEDULE_JSON), 'Brak pliku katosalsahub.pl/assets/data/schedule.json');
+      assert.ok(fs.existsSync(KSH_EVENTS_JSON), 'Brak zsynchronizowanego pliku katosalsahub.pl/assets/data/events.json');
+
+      const sched = JSON.parse(fs.readFileSync(SCHEDULE_JSON, 'utf-8'));
+      assert.ok(Array.isArray(sched.schools) && sched.schools.length >= 3, 'schedule.json musi zawierać co najmniej 3 katowickie szkoły tańca (La Clave, Good Mood, Mil Pasos)');
+      assert.ok(Array.isArray(sched.levelStandard) && sched.levelStandard.length === 5, 'schedule.json musi definiować 5-stopniowy standard poziomów KSH (P0, P1, P2, S1, OPEN)');
+      assert.ok(Array.isArray(sched.classes) && sched.classes.length >= 100, `Oczekiwano min. 100 realnych kursów z 3 szkół, znaleziono: ${sched.classes.length}`);
+
+      const schoolIds = new Set(sched.schools.map((s) => s.id));
+      assert.ok(schoolIds.has('LC'), 'Brak szkoły La Clave (LC) w schedule.json');
+      assert.ok(schoolIds.has('GM'), 'Brak szkoły Good Mood (GM) w schedule.json');
+      assert.ok(schoolIds.has('MP'), 'Brak szkoły Mil Pasos (MP) w schedule.json');
+
+      const allowedLevels = new Set(['P0', 'P1', 'P2', 'S1', 'OPEN']);
+      for (const cls of sched.classes) {
+        assert.ok(cls.id, 'Każde zajęcia muszą mieć pole id');
+        assert.ok(schoolIds.has(cls.schoolId), `Zajęcia ${cls.id} odwołują się do nieznanej szkoły ${cls.schoolId}`);
+        assert.ok(cls.dayOfWeek >= 1 && cls.dayOfWeek <= 7, `Zajęcia ${cls.id} mają niepoprawny dzień tygodnia`);
+        assert.match(cls.startTime, /^\d{2}:\d{2}$/, `Zajęcia ${cls.id} mają niepoprawny format startTime`);
+        assert.ok(allowedLevels.has(cls.levelCode), `Zajęcia ${cls.id} mają nieustandaryzowany kod poziomu: ${cls.levelCode}`);
+        assert.ok(Array.isArray(cls.instructors) && cls.instructors.length > 0, `Zajęcia ${cls.id} muszą mieć przypisanego instruktora`);
+      }
+
+      // Weryfikacja funkcji normalizeLevel z scripts/sync-schedules.js
+      const { normalizeLevel } = require('../../scripts/sync-schedules.js');
+      assert.strictEqual(normalizeLevel('GR. OD PODSTAW START: 26.10.2026'), 'P0');
+      assert.strictEqual(normalizeLevel('BACHATA OD ZERA'), 'P0');
+      assert.strictEqual(normalizeLevel('P0 - CZ.1'), 'P0');
+      assert.strictEqual(normalizeLevel('GR. PODSTAWOWA TAŃCZĄCA'), 'P1');
+      assert.strictEqual(normalizeLevel('SALSA BASIC 4'), 'P1');
+      assert.strictEqual(normalizeLevel('BACHATA P2 - CZ.1'), 'P2');
+      assert.strictEqual(normalizeLevel('BACHATA TAŃCZĄCY 6+ MIES.'), 'P2');
+      assert.strictEqual(normalizeLevel('GR. ŚR-ZAAWANSOWANA dla tańczących min. 6 miesięcy'), 'S1');
+      assert.strictEqual(normalizeLevel('SALSA KUBAŃSKA P4 GRUPA ZAMKNIĘTA'), 'S1');
+      assert.strictEqual(normalizeLevel('BACHATA PRAKTIS Z INSTRUKTOREM'), 'OPEN');
+    });
+
+    it('funkcje filterScheduleClasses oraz filterDancepulsEvents w schedule.js powinny poprawnie filtrować kursy i imprezy', () => {
+      const { filterScheduleClasses, filterDancepulsEvents } = require('../../katosalsahub.pl/assets/js/schedule.js');
+      const sched = JSON.parse(fs.readFileSync(SCHEDULE_JSON, 'utf-8'));
+      const evDays = JSON.parse(fs.readFileSync(KSH_EVENTS_JSON, 'utf-8'));
+
+      const lcClasses = filterScheduleClasses(sched.classes, { schoolFilter: 'LC' });
+      assert.ok(lcClasses.length > 0 && lcClasses.every((c) => c.schoolId === 'LC'));
+
+      const p0Classes = filterScheduleClasses(sched.classes, { levelFilter: 'P0' });
+      assert.ok(p0Classes.length > 0 && p0Classes.every((c) => c.levelCode === 'P0'));
+
+      const galasClasses = filterScheduleClasses(sched.classes, { searchQuery: 'Daniel Galas' });
+      assert.ok(galasClasses.length >= 1 && galasClasses.every((c) => c.schoolId === 'MP'));
+
+      const katoEvents = filterDancepulsEvents(evDays, { eventCityFilter: 'Katowice' });
+      assert.ok(katoEvents.length > 0);
+      for (const day of katoEvents) {
+        assert.ok(day.events.every((e) => e.miasto.toLowerCase() === 'katowice'));
+      }
+    });
+  });
 });
 

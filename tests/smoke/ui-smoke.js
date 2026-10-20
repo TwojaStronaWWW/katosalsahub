@@ -105,13 +105,19 @@ async function runSmokeTest() {
     const isRadioPlaying = await page.evaluate(() => document.body.classList.contains('radio-playing'));
     assert.strictEqual(isRadioPlaying, true, 'Klasa body.radio-playing nie pojawiła się po kliknięciu #header-radio-play');
 
-    console.log('📚 [3/4] Testowanie nawigacji SPA (router.js -> salsopedia.html)...');
+    console.log('📚 [3/5] Testowanie nawigacji SPA (router.js -> salsopedia.html)...');
     await page.click('a[data-page="wiki"]');
     await page.waitForSelector('#wikiGrid', { timeout: 5000 });
     const hasWikiGrid = await page.evaluate(() => Boolean(document.getElementById('wikiGrid')));
     assert.strictEqual(hasWikiGrid, true, 'Router SPA nie podmienił zawartości #app-content na widok Salsopedii');
 
-    console.log('🔍 [4/4] Weryfikacja braku błędów console.error...');
+    console.log('📅 [4/5] Testowanie nawigacji SPA (router.js -> grafik.html)...');
+    await page.click('a[data-page="schedule"]');
+    await page.waitForSelector('#scheduleAppRoot', { timeout: 5000 });
+    const hasScheduleRoot = await page.evaluate(() => Boolean(document.getElementById('scheduleAppRoot')));
+    assert.strictEqual(hasScheduleRoot, true, 'Router SPA nie podmienił zawartości #app-content na widok Grafiku');
+
+    console.log('🔍 [5/5] Weryfikacja braku błędów console.error...');
     assert.strictEqual(
       consoleErrors.length,
       0,
