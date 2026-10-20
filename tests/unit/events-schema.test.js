@@ -255,7 +255,7 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.ok(fs.existsSync(KSH_EVENTS_JSON), 'Brak zsynchronizowanego pliku katosalsahub.pl/assets/data/events.json');
 
       const sched = JSON.parse(fs.readFileSync(SCHEDULE_JSON, 'utf-8'));
-      assert.ok(Array.isArray(sched.schools) && sched.schools.length >= 3, 'schedule.json musi zawierać co najmniej 3 katowickie szkoły tańca (La Clave, Good Mood, Mil Pasos)');
+      assert.strictEqual(sched.schools.length, 3, 'schedule.json musi zawierać dokładnie 3 katowickie szkoły tańca (La Clave, Good Mood, Mil Pasos)');
       assert.ok(Array.isArray(sched.levelStandard) && sched.levelStandard.length === 5, 'schedule.json musi definiować 5-stopniowy standard poziomów KSH (P0, P1, P2, S1, OPEN)');
       assert.ok(Array.isArray(sched.classes) && sched.classes.length >= 100, `Oczekiwano min. 100 realnych kursów z 3 szkół, znaleziono: ${sched.classes.length}`);
 
@@ -263,6 +263,7 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.ok(schoolIds.has('LC'), 'Brak szkoły La Clave (LC) w schedule.json');
       assert.ok(schoolIds.has('GM'), 'Brak szkoły Good Mood (GM) w schedule.json');
       assert.ok(schoolIds.has('MP'), 'Brak szkoły Mil Pasos (MP) w schedule.json');
+      assert.strictEqual(schoolIds.has('EV'), false, 'Szkoła EV (Evolution & KIZLAB) nie powinna znajdować się w schedule.json');
 
       const allowedLevels = new Set(['P0', 'P1', 'P2', 'S1', 'OPEN']);
       for (const cls of sched.classes) {

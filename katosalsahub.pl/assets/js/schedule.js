@@ -113,7 +113,7 @@ const scheduleState = {
   activeTab: 'classes', // 'classes' | 'pricing' | 'events' | 'map'
   searchQuery: '',
   dayFilter: 'all', // 'all' | 'today' | '1'..'7'
-  schoolFilter: 'all', // 'all' | 'LC' | 'GM' | 'MP' | 'EV'
+  schoolFilter: 'all', // 'all' | 'LC' | 'GM' | 'MP'
   styleFilter: 'all', // 'all' | 'salsa_cubana' | 'rueda' | 'salsa_liniowa' | 'bachata' | 'kizomba' | 'solo'
   levelFilter: 'all', // 'all' | 'P0' | 'P1' | 'S1' | 'OPEN'
   eventCityFilter: 'all', // 'all' | 'Katowice' | 'Slask' | 'Krakow'
@@ -763,7 +763,7 @@ function updateSidebarCountsAndActivePills(doc = document) {
   // Liczniki szkół w sidebarze
   const countSchoolAll = doc.getElementById('count-school-all');
   if (countSchoolAll) countSchoolAll.textContent = String(scheduleState.classes.length);
-  ['LC', 'GM', 'MP', 'EV'].forEach((sId) => {
+  ['LC', 'GM', 'MP'].forEach((sId) => {
     const el = doc.getElementById(`count-school-${sId.toLowerCase()}`);
     if (el) {
       const cnt = scheduleState.classes.filter((c) => c.schoolId === sId).length;

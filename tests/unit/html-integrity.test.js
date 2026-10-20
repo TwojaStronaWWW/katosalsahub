@@ -235,6 +235,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /La Clave/i);
       assert.match(html, /Good Mood/i);
       assert.match(html, /Mil Pasos/i);
+      assert.doesNotMatch(html, /data-school="EV"/i, 'Widok grafik.html nie powinien zawierać usuniętego filtra szkoły EV (Evolution & KIZLAB)');
       assert.doesNotMatch(html, /id="faq"/i, 'Widok grafik.html nie powinien zawierać sekcji #faq pod spodem');
       assert.doesNotMatch(html, /id="kontakt"/i, 'Widok grafik.html nie powinien zawierać sekcji #kontakt pod spodem');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w grafik.html naruszający SoC');

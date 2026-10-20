@@ -248,23 +248,6 @@ const SCHOOLS = [
       pricingUpdatedAt: '2026-10-20',
     },
   },
-  {
-    id: 'EV',
-    name: 'Evolution & KIZLAB',
-    fullName: 'Evolution Dance Studio, KIZLAB & Kato Salsa Hub',
-    city: 'Katowice',
-    address: 'ul. Sobieskiego 11 / ul. Mariacka 2 / Dolina 3 Stawów, Katowice',
-    lat: 50.2599,
-    lng: 19.0218,
-    website: 'https://www.evolutiondancestudio.pl/',
-    facebook: 'https://www.facebook.com/kizlabkatowice',
-    salsopediaId: 'term_school_6',
-    sourceType: 'Grafik społecznościowy KSH / KIZLAB',
-    sourceUpdatedAt: '2026-10-19',
-    multisport: true,
-    medicover: true,
-    badgeClass: 'school-badge--ev',
-  },
 ];
 
 // Zweryfikowany rozkład wszystkich 3 szkół z października 2026 r.
@@ -1886,25 +1869,6 @@ const CLASSES = [
     notes: 'Ruch afro-kubański, Rumba i plastyka ciała w Timbie.',
   },
 
-  // --- KIZLAB / EVOLUTION (Czwartek) ---
-  {
-    id: 'ev_thu_1',
-    schoolId: 'EV',
-    dayOfWeek: 4,
-    dayName: 'Czwartek',
-    startTime: '19:30',
-    endTime: '21:30',
-    styleCategory: 'kizomba',
-    styleLabel: 'Urban Kiz & Tarraxo',
-    title: 'Urban Kiz – Flow, Kontrapunkt i Technika Prowadzenia',
-    levelCode: 'P2',
-    levelLabel: 'P2 • Urban Kiz (6+ mies.)',
-    room: 'Studio KIZLAB (ul. Sobieskiego 11)',
-    instructors: [{ name: 'Ela Stępień i Michał Rozewski', termId: 'term_inst_19' }],
-    multisport: true,
-    notes: 'Precyzja prowadzenia liniowego, tarraxo i nowoczesny Urban Kiz.',
-  },
-
   // =========================================================================
   // PIĄTEK (dayOfWeek: 5)
   // =========================================================================
@@ -2521,25 +2485,6 @@ const CLASSES = [
     instructors: [{ name: 'Zespół Mil Pasos', termId: 'term_school_2' }],
     multisport: true,
     notes: 'Niedzielny praktis bachatowy pod okiem instruktora.',
-  },
-
-  // --- KATO SALSA HUB (Niedziela) ---
-  {
-    id: 'ev_sun_1',
-    schoolId: 'EV',
-    dayOfWeek: 7,
-    dayName: 'Niedziela',
-    startTime: '15:00',
-    endTime: '18:00',
-    styleCategory: 'salsa_cubana',
-    styleLabel: 'Potańcówka & Praktyka Salsy KSH',
-    title: 'Niedzielna Potańcówka Kato Salsa Hub w Wolnych Ludziach (15:00–18:00)',
-    levelCode: 'OPEN',
-    levelLabel: 'OPEN • Dla każdego',
-    room: 'Wolni Ludzie (ul. Mariacka 2, Katowice)',
-    instructors: [{ name: 'Społeczność Kato Salsa Hub', termId: 'term_school_10' }],
-    multisport: false,
-    notes: 'Cotygodniowa niedzielna potańcówka i praktyka Salsy pod dachem (Casino, Timba, Rueda de Casino, Son) w godz. 15:00–18:00. W niedziele ulice wokół oraz rekomendowany parking pod NOSPR-em są darmowe!',
   },
 ];
 
@@ -3196,7 +3141,7 @@ function buildSchedulePayload(sourcesMeta = null) {
     updatedAt,
     city: 'Katowice',
     description:
-      'Wspólny grafik katowickich szkół tańca (La Clave ul. Chorzowska 11, Good Mood ul. Paderewskiego 35 & Gravitacja ul. Gliwicka 44, Mil Pasos ul. Kamienna 4, Evolution & KIZLAB) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH.',
+      'Wspólny grafik katowickich szkół tańca (La Clave ul. Chorzowska 11, Good Mood ul. Paderewskiego 35 & Gravitacja ul. Gliwicka 44, Mil Pasos ul. Kamienna 4) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH.',
     levelStandard: LEVEL_STANDARD,
     schools: SCHOOLS,
     classes: CLASSES,
