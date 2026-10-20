@@ -14,7 +14,7 @@ const path = require('node:path');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const KSH_DIR = path.join(ROOT_DIR, 'katosalsahub.pl');
-const ASSET_VERSION = '4.8';
+const ASSET_VERSION = '4.9';
 const HTML_PAGES = ['index.html', 'grafik.html', 'salsopedia.html', 'privacy.html'];
 
 function buildNavBar(pageFile) {
@@ -112,10 +112,10 @@ function buildCookieBanner() {
   </div>`;
 }
 
-function buildScriptsBlock(pageFile, version = ASSET_VERSION) {
+function buildScriptsBlock(_pageFile, version = ASSET_VERSION) {
   const scripts = [
     `  <script data-cfasync="false" src="assets/js/i18n.js?v=${version}"></script>`,
-    ...(pageFile === 'index.html' ? [`  <script data-cfasync="false" src="assets/js/contact.js?v=${version}"></script>`] : []),
+    `  <script data-cfasync="false" src="assets/js/contact.js?v=${version}"></script>`,
     `  <script data-cfasync="false" src="assets/js/cookies.js?v=${version}"></script>`,
     `  <script data-cfasync="false" src="assets/js/wiki-studio.js?v=${version}"></script>`,
     `  <script data-cfasync="false" src="assets/js/wiki.js?v=${version}"></script>`,

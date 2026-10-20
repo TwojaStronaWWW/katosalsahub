@@ -64,7 +64,7 @@
 
       const registerFreshServiceWorker = () => {
         navigator.serviceWorker
-          .register('sw.js?v=29', { updateViaCache: 'none' })
+          .register('sw.js?v=30', { updateViaCache: 'none' })
           .then((reg) => {
             if (reg && typeof reg.update === 'function') {
               reg.update().catch(() => {});

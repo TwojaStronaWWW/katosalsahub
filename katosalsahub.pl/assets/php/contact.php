@@ -27,8 +27,11 @@ function get_env_secret(string $key, string $default = ''): string {
         return (string)$_ENV[$key];
     }
     $envPaths = [
+        __DIR__ . '/../../../../.env',
+        __DIR__ . '/../../../.env',
         __DIR__ . '/../../.env',
         __DIR__ . '/../.env',
+        __DIR__ . '/.env',
     ];
     foreach ($envPaths as $envPath) {
         if (@is_readable($envPath)) {
@@ -93,8 +96,8 @@ if (!rate_limit('contact_' . $maskedIp, 5, 60)) {
     exit;
 }
 
-// 1. Zabezpieczenie Anty-Bot: Honeypot (pola pułapki)
-$honeypots = ['hp_chk', 'website', 'website_url', 'company_name', 'phone_extra'];
+// 1. Zabezpieczenie Anty-Bot: Honeypot (dedykowane pole pułapki odporne na Autofill przeglądarek)
+$honeypots = ['hp_chk', 'company_name', 'phone_extra'];
 foreach ($honeypots as $hp) {
     if (!empty($input[$hp])) {
         debug_log("BOT BLOCKED: Honeypot field '$hp' filled");
@@ -103,14 +106,14 @@ foreach ($honeypots as $hp) {
     }
 }
 
-// 2. Zabezpieczenie Anty-Bot: Sprawdzenie obecności tokena JS i czasu wypełniania (min 2.5s)
+// 2. Zabezpieczenie Anty-Bot: Sprawdzenie obecności tokena JS i czasu interakcji (min 1.2s)
 if (empty($input['js_check'])) {
     debug_log("BOT BLOCKED: Missing js_check token");
     echo json_encode(['success' => true, 'message' => 'Wiadomość wysłana pomyślnie!']);
     exit;
 }
 
-if (!isset($input['submission_seconds']) || (float)$input['submission_seconds'] < 2.5) {
+if (!isset($input['submission_seconds']) || (float)$input['submission_seconds'] < 1.2) {
     debug_log("BOT BLOCKED: Form submitted too quickly or missing submission_seconds");
     echo json_encode(['success' => true, 'message' => 'Wiadomość wysłana pomyślnie!']);
     exit;
@@ -148,7 +151,7 @@ if (preg_match('/\p{Cyrillic}/u', $message)) {
     exit;
 }
 
-if (preg_match_all('/https?:\/\//i', $message) > 2) {
+if (preg_match_all('/https?:\/\//i', $message) > 6) {
     debug_log("BOT BLOCKED: Excessive links in message");
     echo json_encode(['success' => true, 'message' => 'Wiadomość wysłana pomyślnie!']);
     exit;
@@ -156,9 +159,9 @@ if (preg_match_all('/https?:\/\//i', $message) > 2) {
 
 // 5. Utworzenie zgłoszenia w osTicket przez klucz ze zmiennej środowiskowej (Issue #2)
 $osTicketApiKey = get_env_secret('OSTICKET_API_KEY');
-$configuredApiUrl = get_env_secret('OSTICKET_API_URL', 'http://hd.twojastronawww.pl:8080/ticket_hook.php');
+$configuredApiUrl = get_env_secret('OSTICKET_API_URL', 'https://hd.twojastronawww.pl/ticket_hook.php');
 if (strpos($configuredApiUrl, 'crm.katosalsahub.pl') !== false) {
-    $configuredApiUrl = 'http://hd.twojastronawww.pl:8080/ticket_hook.php';
+    $configuredApiUrl = 'https://hd.twojastronawww.pl/ticket_hook.php';
 }
 $ticketCreated = false;
 $ticketNum = 'BRAK';
@@ -177,9 +180,11 @@ if (!empty($osTicketApiKey) && function_exists('curl_init')) {
     ];
 
     $endpoints = [
-        ['url' => $configuredApiUrl, 'resolve' => ['hd.twojastronawww.pl:8080:127.0.0.1']],
         ['url' => 'https://hd.twojastronawww.pl/ticket_hook.php', 'resolve' => []],
     ];
+    if ($configuredApiUrl !== 'https://hd.twojastronawww.pl/ticket_hook.php') {
+        $endpoints[] = ['url' => $configuredApiUrl, 'resolve' => ['hd.twojastronawww.pl:8080:127.0.0.1']];
+    }
 
     foreach ($endpoints as $ep) {
         $ch = curl_init($ep['url']);
@@ -195,8 +200,8 @@ if (!empty($osTicketApiKey) && function_exists('curl_init')) {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData, JSON_UNESCAPED_UNICODE));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
 
         $apiResponse = @curl_exec($ch);
         $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -229,7 +234,7 @@ $from_email = "noreply@katosalsahub.pl";
 $headers = "From: Kato Salsa Hub <$from_email>\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8\r\n";
 @mail($to, $subject, $email_content, $headers, "-f$from_email");
 
-// 7. Powiadomienie Push na Ntfy.sh (z przyciskami akcji 1-Klik)
+// 7. Powiadomienie Push na Ntfy.sh (z bezpiecznym kodowaniem RFC 2047 UTF-8 dla polskich znaków w nagłówkach)
 $ntfyTopic = get_env_secret('NTFY_TOPIC');
 if ($ntfyTopic !== '' && function_exists('curl_init')) {
     $ntfyLines = [
@@ -241,11 +246,14 @@ if ($ntfyTopic !== '' && function_exists('curl_init')) {
         "💬 Wiadomość:",
         $message
     ];
+    $rawTitle = "Formularz (katosalsahub) - {$name} | EMAIL: {$email}";
+    $encodedTitle = '=?UTF-8?B?' . base64_encode($rawTitle) . '?=';
+    $safeEmailForAction = preg_replace('/[;,\r\n]+/', '', $email);
     $ntfyHeaders = [
-        "Title: Formularz (katosalsahub) - {$name} | EMAIL: {$email}",
+        "Title: {$encodedTitle}",
         'Priority: high',
         'Tags: incoming_envelope,dancer',
-        "Actions: view, Napisz e-mail ({$email}), mailto:{$email}; view, Otworz Helpdesk, https://hd.twojastronawww.pl/scp/"
+        "Actions: view, Napisz e-mail ({$safeEmailForAction}), mailto:{$safeEmailForAction}; view, Otworz Helpdesk, https://hd.twojastronawww.pl/scp/"
     ];
     $chNtfy = curl_init("https://ntfy.sh/{$ntfyTopic}");
     curl_setopt_array($chNtfy, [
