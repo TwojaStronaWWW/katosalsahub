@@ -506,6 +506,85 @@ function handleLocalRadioApi(req, res) {
   });
 }
 
+function parseMultipartOrUrlEncoded(bodyStr, contentType = '') {
+  const result = {};
+  if (!bodyStr) return result;
+  if (contentType.includes('application/json')) {
+    try {
+      return JSON.parse(bodyStr) || {};
+    } catch {
+      return {};
+    }
+  }
+  const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+  if (boundaryMatch) {
+    const boundary = `--${(boundaryMatch[1] || boundaryMatch[2]).trim()}`;
+    const parts = bodyStr.split(boundary);
+    for (const part of parts) {
+      const nameMatch = part.match(/name="([^"]+)"/i);
+      if (!nameMatch) continue;
+      const splitIdx = part.indexOf('\r\n\r\n');
+      if (splitIdx === -1) continue;
+      const val = part.slice(splitIdx + 4).replace(/\r\n--\s*$/, '').replace(/\r\n$/, '');
+      result[nameMatch[1]] = val;
+    }
+    return result;
+  }
+  try {
+    const params = new URLSearchParams(bodyStr);
+    for (const [k, v] of params.entries()) {
+      result[k] = v;
+    }
+  } catch { /* ignore */ }
+  return result;
+}
+
+function handleLocalContactApi(req, res) {
+  const sendJson = (data, status = 200) => {
+    res.writeHead(status, {
+      'Content-Type': 'application/json; charset=utf-8',
+      ...SECURITY_HEADERS,
+    });
+    res.end(JSON.stringify(data));
+  };
+
+  if (req.method !== 'POST') {
+    return sendJson({ success: false, message: 'Brak danych wejściowych' });
+  }
+
+  let bodyStr = '';
+  req.on('data', (chunk) => {
+    bodyStr += chunk;
+  });
+  req.on('end', () => {
+    const input = parseMultipartOrUrlEncoded(bodyStr, String(req.headers['content-type'] || ''));
+    if (input.hp_chk) {
+      return sendJson({ success: true, message: 'Wiadomość wysłana pomyślnie!' });
+    }
+    const name = String(input.name || '').trim();
+    const email = String(input.email || '').trim();
+    const message = String(input.message || '').trim();
+    const gdpr = Boolean(input.gdpr_consent);
+    if (!name || !email || !message) {
+      return sendJson({
+        success: false,
+        message: 'Wypełnij wszystkie wymagane pola (imię lub pseudonim, e-mail, wiadomość)!',
+      });
+    }
+    if (!gdpr) {
+      return sendJson({
+        success: false,
+        message: 'Wymagana jest akceptacja Polityki Prywatności przed wysłaniem wiadomości.',
+      });
+    }
+    return sendJson({
+      success: true,
+      ticket: 'LOCAL-DEV',
+      message: 'Dziękujemy! Twoja wiadomość została wysłana.',
+    });
+  });
+}
+
 const server = http.createServer((req, res) => {
   const cleanUrlPath = String(req.url || '/').split('?')[0];
   if (cleanUrlPath === '/assets/php/wiki.php' && (req.method === 'POST' || String(req.url).includes('action='))) {
@@ -513,6 +592,9 @@ const server = http.createServer((req, res) => {
   }
   if (cleanUrlPath === '/assets/php/radio.php' && String(req.url).includes('action=')) {
     return handleLocalRadioApi(req, res);
+  }
+  if (cleanUrlPath === '/assets/php/contact.php' && req.method === 'POST') {
+    return handleLocalContactApi(req, res);
   }
 
   const { filePath, isAllowed, isMalformed } = resolveSafeFilePath(req.url);

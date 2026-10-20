@@ -494,6 +494,7 @@ main {
 /* --- About & Style Grids --- */
 .section-onas, .section-style, .section-radio, .section-kontakt, .section-mapa, .section-faq {
     padding: 52px 0;
+    scroll-margin-top: 84px;
     position: relative; /* Context for overlays */
     width: 100%;
     max-width: 100%;
@@ -1078,13 +1079,61 @@ body.radio-playing .radio-wrapper {
     width: 100%;
 }
 
+.kontakt-info > p {
+    color: var(--fg-muted);
+    line-height: 1.65;
+    margin: 0 0 24px;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.contact-item:hover {
+    border-color: rgba(251, 191, 36, 0.35);
+    background: rgba(251, 191, 36, 0.06);
+}
+
+.contact-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.contact-item a {
+    color: var(--fg);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.contact-item a:hover {
+    color: var(--yellow);
+}
+
 .kontakt-form {
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     background: linear-gradient(
       180deg,
-      rgba(255,255,255,0.04),
-      rgba(255,255,255,0.01)
+      rgba(255,255,255,0.045),
+      rgba(255,255,255,0.015)
     );
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
     border-radius: 24px;
     padding: 20px; /* Mobile */
     width: 100%;

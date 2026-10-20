@@ -191,5 +191,10 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.match(wikiJs, /inFlightMutations/, 'Brak strażnika inFlightMutations przeciw podwójnym kliknięciom w wiki.js');
     assert.match(syncEngineJs, /process\.pid/, 'Brak izolacji PID w writeFileAtomically w sync_engine.js');
     assert.match(weeklyWf, /concurrency:/, 'Brak bloku concurrency w weekly-report.yml');
+
+    const contactJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'contact.js'), 'utf-8');
+    const serveJs = fs.readFileSync(path.join(ROOT_DIR, 'scripts', 'serve.js'), 'utf-8');
+    assert.match(contactJs, /inFlightContactSubmit/, 'Brak strażnika inFlightContactSubmit w contact.js');
+    assert.match(serveJs, /handleLocalContactApi/, 'Brak lokalnego handlera handleLocalContactApi dla /assets/php/contact.php w scripts/serve.js');
   });
 });

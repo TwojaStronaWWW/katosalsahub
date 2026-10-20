@@ -29,12 +29,12 @@
   <meta name="twitter:description" content="Wspólny Grafik Szkół Tańca (128 kursów), plenery na 3 Stawach i pod NOSPR-em, niedziele w Wolnych Ludziach na Mariackiej 2.">
   <meta name="twitter:image" content="https://katosalsahub.pl/assets/images/hero.png">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="assets/css/style.css?v=4.8">
-  <link rel="stylesheet" href="assets/css/components.css?v=4.8">
-  <link rel="stylesheet" href="assets/css/sections.css?v=4.8">
-  <link rel="stylesheet" href="assets/css/radio.css?v=4.8">
-  <link rel="stylesheet" href="assets/css/wiki.css?v=4.8">
-  <link rel="stylesheet" href="assets/css/schedule.css?v=4.8">
+  <link rel="stylesheet" href="assets/css/style.css?v=4.9">
+  <link rel="stylesheet" href="assets/css/components.css?v=4.9">
+  <link rel="stylesheet" href="assets/css/sections.css?v=4.9">
+  <link rel="stylesheet" href="assets/css/radio.css?v=4.9">
+  <link rel="stylesheet" href="assets/css/wiki.css?v=4.9">
+  <link rel="stylesheet" href="assets/css/schedule.css?v=4.9">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://stream.zeno.fm">
@@ -745,12 +745,10 @@
           <div class="kontakt-form">
             <form name="contact" id="contactForm" action="assets/php/contact.php" method="POST">
               <input type="hidden" name="form-name" value="contact" />
-              <!-- Honeypot field (hidden for users, visible to bots) -->
+              <!-- Honeypot field (hidden for users, visible to bots; avoids 'website' name to prevent browser autofill false positives) -->
               <div class="hp-field" aria-hidden="true">
                 <label for="hp_chk">Nie wypełniaj tego pola:</label>
-                <input type="text" id="hp_chk" name="hp_chk" autocomplete="off" tabindex="-1" />
-                <input type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
-                <input type="text" id="website_url" name="website_url" autocomplete="off" tabindex="-1" />
+                <input type="text" id="hp_chk" name="hp_chk" autocomplete="new-password" tabindex="-1" />
               </div>
               <div class="form-group">
                 <label for="name" data-i18n="contact.nameLabel">Imię lub pseudonim</label>
@@ -828,15 +826,15 @@
     </div>
   </div>
 
-  <script data-cfasync="false" src="assets/js/i18n.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/contact.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/cookies.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/wiki.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/radio.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/home.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/schedule.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/router.js?v=4.8"></script>
-  <script data-cfasync="false" src="assets/js/ai-widget.js?v=4.8" data-site-id="katosalsahub" data-title="Asystent Kato Salsa Hub" data-kb-url="assets/data/salsopedia.json"></script>
+  <script data-cfasync="false" src="assets/js/i18n.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/contact.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/cookies.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/wiki.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/radio.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/home.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/schedule.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/router.js?v=4.9"></script>
+  <script data-cfasync="false" src="assets/js/ai-widget.js?v=4.9" data-site-id="katosalsahub" data-title="Asystent Kato Salsa Hub" data-kb-url="assets/data/salsopedia.json"></script>
 </body>
 
 </html>

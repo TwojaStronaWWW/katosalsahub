@@ -370,6 +370,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
         assert.match(html, /data-lang="es"/);
         assert.match(html, /data-lang="en"/);
         assert.match(html, /src="assets\/js\/i18n\.js(\?[^"]*)?"/);
+        assert.match(html, /src="assets\/js\/contact\.js(\?[^"]*)?"/, `Brak ładowania contact.js w ${path.basename(filePath)} (wymagane dla nawigacji SPA do #kontakt)`);
       }
 
       const sectionsCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'sections.css'), 'utf-8');
