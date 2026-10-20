@@ -140,6 +140,27 @@
           "Salsa",
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Teatro Cubano",
+        "miejsceInne": "Teatro Cubano (Jagiellońska 10)",
+        "adres": "Jagiellońska 10",
+        "lat": 50.0628,
+        "lng": 19.9352,
+        "tytul": "LIVE SHOW SATURDAYS – Alain Nc Afro",
+        "opis": "LIVE SHOW SATURDAYS – Alain Nc Afro - 20:00; Teatro Cubano Kraków; nowe w bazie 20.10",
+        "opisPubliczny": "LIVE SHOW SATURDAYS – Alain Nc Afro",
+        "dateLabel": "SOBOTA (24.10.2026)",
+        "endDate": "2026-10-24",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1294624072278735/",
+        "style": [
+          "Cubana"
+        ]
       }
     ]
   },
@@ -514,6 +535,27 @@
           "Salsa On1",
           "Salsa On2"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Częstochowa",
+        "miastoInne": "",
+        "miejsce": "Częstotańcz",
+        "miejsceInne": "Częstotańcz (Spółdzielczości 4)",
+        "adres": "Spółdzielczości 4",
+        "lat": 50.7951,
+        "lng": 19.042,
+        "tytul": "warsztaty Mambo New York Style On2",
+        "opis": "warsztaty Mambo New York Style On2 - Częstotańcz; nowe w bazie 20.10",
+        "opisPubliczny": "warsztaty Mambo New York Style On2",
+        "dateLabel": "SOBOTA (07.11.2026)",
+        "endDate": "2026-11-07",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1328664779481954/",
+        "style": [
+          "Salsa On2"
+        ]
       }
     ]
   },
@@ -672,6 +714,29 @@
       {
         "checked": true,
         "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Sabrosa Dance Studio",
+        "miejsceInne": "Sabrosa Dance Studio (rondo Mogilskie 1)",
+        "adres": "rondo Mogilskie 1",
+        "lat": 50.0658,
+        "lng": 19.9595,
+        "tytul": "warsztaty Musicality & Dance with Anichi Perez (5h)",
+        "opis": "warsztaty Musicality & Dance with Anichi Perez (5h) - Sabrosa Dance Studio; nowe w bazie 20.10",
+        "opisPubliczny": "warsztaty Musicality & Dance with Anichi Perez (5h)",
+        "dateLabel": "SOBOTA (21.11.2026)",
+        "endDate": "2026-11-21",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1636457378133646/",
+        "style": [
+          "Salsa",
+          "Mambo",
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
         "miasto": "Katowice",
         "miastoInne": "",
         "miejsce": "Gravitacja",
@@ -814,6 +879,32 @@
         "link": "https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/",
         "style": [
           "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-05",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Częstochowa",
+        "miastoInne": "",
+        "miejsce": "Częstotańcz",
+        "miejsceInne": "Częstotańcz (Spółdzielczości 4)",
+        "adres": "Spółdzielczości 4",
+        "lat": 50.7951,
+        "lng": 19.042,
+        "tytul": "warsztaty Mambo New York Style On2",
+        "opis": "warsztaty Mambo New York Style On2 - Częstotańcz; nowe w bazie 20.10",
+        "opisPubliczny": "warsztaty Mambo New York Style On2",
+        "dateLabel": "SOBOTA (05.12.2026)",
+        "endDate": "2026-12-05",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1718027052710083/",
+        "style": [
+          "Salsa On2"
         ]
       }
     ]
@@ -969,6 +1060,32 @@
         "style": [
           "Salsa",
           "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-01-09",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Częstochowa",
+        "miastoInne": "",
+        "miejsce": "Częstotańcz",
+        "miejsceInne": "Częstotańcz (Spółdzielczości 4)",
+        "adres": "Spółdzielczości 4",
+        "lat": 50.7951,
+        "lng": 19.042,
+        "tytul": "warsztaty Mambo New York Style On2",
+        "opis": "warsztaty Mambo New York Style On2 - Częstotańcz; nowe w bazie 20.10",
+        "opisPubliczny": "warsztaty Mambo New York Style On2",
+        "dateLabel": "SOBOTA (09.01.2027)",
+        "endDate": "2027-01-09",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1632915284664193/",
+        "style": [
+          "Salsa On2"
         ]
       }
     ]

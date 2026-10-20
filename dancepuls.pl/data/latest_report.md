@@ -1,16 +1,21 @@
 ## 1. PRYWATNIE — raport na 20.10.2026
-- **Stan zestawienia na weekend 23–25.10.2026:** **6 pozycji** (1 pt + 3 sb + 2 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **36 pozycji** (pełny horyzont do 2027 r.).
+- **Stan zestawienia na weekend 23–25.10.2026:** **7 pozycji** (1 pt + 4 sb + 2 nd).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **40 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (20.10 — 8 pozycji, data publikacji nieustalona):**
+- **Nowości w bazie z ostatniego sprawdzenia (20.10 — 13 pozycji, data publikacji nieustalona):**
   - **Kizomba w Piątym Domu – SH#75** | 20.10.2026 | Katowice, Piąty Dom | Kizomba | https://www.facebook.com/events/1410619787718525/
   - **RITMO DE LA HABANA – DJ Chava** | 23.10.2026 | Kraków, Teatro Cubano | Cubana | https://www.facebook.com/events/1568368601399250/
+  - **LIVE SHOW SATURDAYS – Alain Nc Afro** | 24.10.2026 | Kraków, Teatro Cubano | Cubana | https://www.facebook.com/events/1294624072278735/
   - **Halloween Dance Party,Praktis Bachata/Salsa/Kizomba** | 31.10.2026 | Bielsko-Biała, AllDance | Salsa/Bachata/Kizomba | https://www.facebook.com/events/1602739471550950/
   - **warsztaty Salsa On1 (od zera oraz dla tańczących)** | 07.11.2026 | Kraków, LOFToDANCE | Salsa On1 | https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287
   - **warsztaty Men Styling – Bachata Solo dla facetów** | 07.11.2026 | Kraków, LOFToDANCE | Bachata | https://sklep.loftodance.pl/wydarzenie/men-styling-bachata-solo-dla-facetow,1290
+  - **warsztaty Mambo New York Style On2** | 07.11.2026 | Częstochowa, Częstotańcz | Salsa On2 | https://www.facebook.com/events/1328664779481954/
   - **Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty** | 21.11.2026 | Katowice, Mil Pasos | Cubana/Rumba/Timba | https://www.milpasoskatowice.pl/?page=wydarzenia
+  - **warsztaty Musicality & Dance with Anichi Perez (5h)** | 21.11.2026 | Kraków, Sabrosa Dance Studio | Salsa/Mambo/Cubana | https://www.facebook.com/events/1636457378133646/
   - **Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis** | 28.11.2026 | Katowice, Mil Pasos | Kizomba/Tarraxo | https://www.milpasoskatowice.pl/?page=wydarzenia
   - **DobraNocka Party** | 28.11.2026 | Kraków, LOFToDANCE | Bachata | https://sklep.loftodance.pl/wydarzenie/dobranocka-party,1291
+  - **warsztaty Mambo New York Style On2** | 05.12.2026 | Częstochowa, Częstotańcz | Salsa On2 | https://www.facebook.com/events/1718027052710083/
+  - **warsztaty Mambo New York Style On2** | 09.01.2027 | Częstochowa, Częstotańcz | Salsa On2 | https://www.facebook.com/events/1632915284664193/
 - **Zgłoszenia z formularza Google KSH (CSV):** https://www.facebook.com/events/770886418668167/, https://zabrze.com.pl/artykuly/artykul/latino-pod-chmurka-w-zabrzu-w-piatek-odbedzie-sie-potancowka-na-placu-teatralnym?fbclid=IwdGRjcAUZF1ljbGNrBRkXUHBkb2YBZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMzUwNjg1NTMxNzI4AAEewv8xg3R1jnmM1CmuULeuhVIip33CaeCUMLX2mMW6CVHmyeo-RtPSo4x5ZBA_aem_eszY5TPvflkGax4IlgY3Ew.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
@@ -35,6 +40,7 @@ PIĄTEK (23.10): Kraków - Teatro Cubano (Cubana)
 SOBOTA (24.10): Kraków - Sabrosa Dance Studio (Mambo/Salsa On2)
 SOBOTA (24.10): Katowice - Mil Pasos (Bachata/Kizomba)
 SOBOTA (24.10): Kraków - Forum Tańca (Salsa/Bachata)
+SOBOTA (24.10): Kraków - Teatro Cubano (Cubana)
 NIEDZIELA (25.10): Katowice - Wolni Ludzie (Cubana)
 NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 
@@ -54,6 +60,8 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🔗 https://www.facebook.com/events/1040992492288985/
 ➡️ Kraków: Forum Tańca (Salsa/Bachata)
 🔗 https://www.facebook.com/events/1061231330083326/
+➡️ Kraków: Teatro Cubano (Cubana)
+🔗 https://www.facebook.com/events/1294624072278735/
 
 🗓️ NIEDZIELA (25.10):
 ⭐ Katowice: Wolni Ludzie (Cubana)
@@ -118,6 +126,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (07.11.2026)
 ➡️ Kraków: LOFToDANCE, ¡A bailar salsa!,impreza i wcześniejsze warsztaty (Salsa On1/Salsa On2)
 🔗 https://onlydanceapp.com/event/2b905e5e085c44a3924e
+🗓️ SOBOTA (07.11.2026)
+➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)
+🔗 https://www.facebook.com/events/1328664779481954/
 🗓️ NIEDZIELA (08.11.2026)
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)
 🔗 https://www.facebook.com/events/1617716113426642/
@@ -137,6 +148,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 ➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)
 🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
 🗓️ SOBOTA (21.11.2026)
+➡️ Kraków: Sabrosa Dance Studio, warsztaty Musicality & Dance with Anichi Perez (5h) (Salsa/Mambo/Cubana)
+🔗 https://www.facebook.com/events/1636457378133646/
+🗓️ SOBOTA (21.11.2026)
 ➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)
 🔗 https://www.facebook.com/events/1368901197951496/
 🗓️ NIEDZIELA (22.11.2026)
@@ -154,6 +168,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ CZWARTEK–NIEDZIELA (03–06.12.2026)
 ➡️ Hucisko: Orle Gniazdo, FeelTheFlow (Bachata)
 🔗 https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/
+🗓️ SOBOTA (05.12.2026)
+➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)
+🔗 https://www.facebook.com/events/1718027052710083/
 🗓️ NIEDZIELA (06.12.2026)
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS–Mikołajki (Kizomba)
 🔗 https://www.facebook.com/events/1617716113426642/
@@ -172,6 +189,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ CZWARTEK (31.12.2026)
 ➡️ Kraków: Forum Tańca, Sylwester (Salsa/Bachata)
 🔗 https://onlydanceapp.com/event/d657e4d472494187a483
+🗓️ SOBOTA (09.01.2027)
+➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)
+🔗 https://www.facebook.com/events/1632915284664193/
 🗓️ PIĄTEK–NIEDZIELA (29–31.01.2027)
 ➡️ Kraków: Forum Tańca, Cracovia Rueda Festival (Cubana/Rueda)
 🔗 https://www.facebook.com/events/1430429125397912/

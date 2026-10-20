@@ -494,6 +494,8 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         parseFBDate,
         canonicalizeEventUrl,
         extractEventsFromRelayJson,
+        parseEventDetailHtml,
+        deepEnrichFacebookEvents,
       } = require('../../dancepuls.pl/tools/fb_scraper.js');
       const { parsujDateFB, toYMD } = await import('../../dancepuls.pl/js/utils.js');
       const { parseClipboardData } = await import('../../dancepuls.pl/js/parser.js');
@@ -582,6 +584,41 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
         '2026-10-25',
         'Waga rawDate/isoDate (25.10) musi mieć priorytet nad wcześniejszą datą zapisów (21.10) w opisie'
       );
+
+      // 5. Testy Same-Origin Deep Fetch w fb_scraper.js (parseEventDetailHtml & deepEnrichFacebookEvents)
+      const detailHtml = `
+        <meta property="og:title" content="Musicality &amp; Dance with Anichi Perez (5h)" />
+        <meta property="og:description" content="Wydarzenie w dniu sobota, listopada 21 2026" />
+        <meta property="og:url" content="https://www.facebook.com/events/1636457378133646/" />
+        <script type="application/json">{"event_description":{"text":"5 godzin warsztatów Salsa i Mambo w Sabrosa Dance Studio Kraków"},"contextual_name":"Sabrosa Dance Studio, Kraków"}</script>
+      `;
+      const enrichedDetail = parseEventDetailHtml(detailHtml, 'https://www.facebook.com/events/1636457378133646/', refNow);
+      assert.ok(enrichedDetail);
+      assert.strictEqual(enrichedDetail.isoDate, '2026-11-21');
+      assert.strictEqual(enrichedDetail.location, 'Sabrosa Dance Studio, Kraków');
+      assert.match(enrichedDetail.description, /Sabrosa Dance Studio/);
+
+      const deepList = await deepEnrichFacebookEvents(
+        [{ url: 'https://www.facebook.com/events/1636457378133646/', title: 'Anichi', rawDate: '21.11', isoDate: '2026-11-21', location: '', description: '' }],
+        null,
+        async () => ({ ok: true, text: async () => detailHtml }),
+        refNow
+      );
+      assert.strictEqual(deepList.length, 1);
+      assert.strictEqual(deepList[0].location, 'Sabrosa Dance Studio, Kraków');
+
+      // 6. Test ekstrakcji JSON-LD @graph ze stron organizatorów Krajownika (/organizator/...)
+      const sampleKrajownikOrgLd = `
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@graph":[
+          {"@type":"Event","name":"Musicality & Dance with Anichi Perez (5h)","startDate":"2026-11-21T12:00:00.000Z","location":{"name":"Sabrosa Dance Studio","address":{"addressLocality":"Kraków"}},"organizer":{"name":"Sabrosa Dance Studio"},"url":"https://krajownik.pl/krakow/wydarzenia/musicality-anichi-perez-500001"}
+        ]}
+        </script>
+      `;
+      const orgEvents = parseKrajownikEventsHtml(sampleKrajownikOrgLd, 'Kraków');
+      assert.strictEqual(orgEvents.length, 1);
+      assert.strictEqual(orgEvents[0].isoStartDate, '2026-11-21');
+      assert.strictEqual(orgEvents[0].venue, 'Sabrosa Dance Studio');
     });
   });
 });

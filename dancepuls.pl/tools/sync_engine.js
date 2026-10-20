@@ -55,15 +55,15 @@ const KNOWN_VENUES_GEO = [
     { match: /pachanguero/i, city: 'Rybnik', venue: 'Akademia El Pachanguero', address: 'ul. Grunwaldzka 46', lat: 50.0948, lng: 18.5198 },
     { match: /havana\s+dance/i, city: 'Rybnik', venue: 'Havana Dance Studio', address: 'ul. Jana Kotucza 36', lat: 50.1014, lng: 18.5365 },
     { match: /este\s+loco/i, city: 'Częstochowa', venue: 'Este Loco–Dance with passion', address: 'ul. Dekabrystów 35B', lat: 50.8257, lng: 19.1147 },
-    { match: /cz[eę]stota[nń]cz/i, city: 'Częstochowa', venue: 'Częstotańcz', address: 'ul. Spółdzielczości 4', lat: 50.7951, lng: 19.0420 },
+    { match: /cz[eę]stota[nń]cz|sp[oó][lł]dzielczo[sś]ci\s*4/i, city: 'Częstochowa', venue: 'Częstotańcz', address: 'ul. Spółdzielczości 4', lat: 50.7951, lng: 19.0420 },
     { match: /beleza/i, city: 'Siewierz', venue: 'Beleza', address: 'Rynek 11', lat: 50.4681, lng: 19.2358 },
     { match: /alldance|1\s+maja\s*20/i, city: 'Bielsko-Biała', venue: 'AllDance', address: 'ul. 1 Maja 20', lat: 49.8178, lng: 19.0457 },
     { match: /orle\s+gniazdo/i, city: 'Hucisko', venue: 'Orle Gniazdo', address: 'Orle Gniazdo 20', lat: 50.5947, lng: 19.5297 },
     { match: /paprocany|przysta[nń]\s+kajakowa/i, city: 'Tychy', venue: 'Paprocany, przystań kajakowa', address: 'ul. Sikorskiego', lat: 50.0978, lng: 18.9956 },
-    { match: /dzie[nń]\s+i\s+noc/i, city: 'Katowice', venue: 'Dzień i Noc', address: 'ul. Warszawska 5', lat: 50.2589, lng: 19.0239 },
-    { match: /pi[aą]tym?\s+dom/i, city: 'Katowice', venue: 'Piąty Dom', address: 'ul. Matejki 2', lat: 50.2602, lng: 19.0168 },
-    { match: /mojitos/i, city: 'Kraków', venue: 'Mojitos', address: 'ul. Mikołajska 13', lat: 50.0615, lng: 19.9408 },
-    { match: /teatro\s+cubano/i, city: 'Kraków', venue: 'Teatro Cubano', address: 'ul. Jagiellońska 10', lat: 50.0628, lng: 19.9352 },
+    { match: /dzie[nń]\s+i\s+noc|warszawska\s*5/i, city: 'Katowice', venue: 'Dzień i Noc', address: 'ul. Warszawska 5', lat: 50.2589, lng: 19.0239 },
+    { match: /pi[aą]tym?\s+dom|matejki\s*2/i, city: 'Katowice', venue: 'Piąty Dom', address: 'ul. Matejki 2', lat: 50.2602, lng: 19.0168 },
+    { match: /mojitos|miko[lł]ajska\s*13/i, city: 'Kraków', venue: 'Mojitos', address: 'ul. Mikołajska 13', lat: 50.0615, lng: 19.9408 },
+    { match: /teatro\s+cubano|jagiello[nń]ska\s*10/i, city: 'Kraków', venue: 'Teatro Cubano', address: 'ul. Jagiellońska 10', lat: 50.0628, lng: 19.9352 },
     { match: /panorama\s+forum/i, city: 'Kraków', venue: 'Panorama Forum', address: 'ul. Konopnickiej 28', lat: 50.0451, lng: 19.9361 },
     { match: /hala\s+lipowa/i, city: 'Kraków', venue: 'Hala Lipowa', address: 'ul. Lipowa 4D', lat: 50.0478, lng: 19.9614 },
     { match: /hotel\s+galaxy/i, city: 'Kraków', venue: 'Hotel Galaxy', address: 'ul. Gęsia 22a', lat: 50.0558, lng: 19.9602 },
@@ -785,12 +785,76 @@ function parseKrajownikEventsHtml(html = '', defaultCity = 'Katowice') {
     };
 
     const danceRegex = /\b(sals[ayę]|bachat[ayę]|kizomb[ayę]|cuban[ay]?|timbeando|timb[ay]|rueda|son\s+cubano|urbankiz|urban\s*kiz|sensual\s+impro|habana|la\s+clave|mil\s+pasos|good\s*mood|gravitacja|sabrosa|forum\s+ta[nń]ca|loftodance|danceloveit|alldance|pachanguero|havana\s+dance|kizlab|teatro\s+cubano)\b/i;
-    const excludeRegex = /\b(salsation|zumba\s+kids|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
+    const excludeRegex = /\b(salsation|zumba\s+kids|zouk\s+solo|west\s+coast\s+swing|kurs\s+regularny|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
 
     const matches = [...src.matchAll(/href=["']([^"']*\/wydarzenia\/[a-z0-9-]+-\d+)["'][^>]*>([\s\S]*?)<\/a>/gi)];
     const results = [];
     const seenUrls = new Set();
 
+    // Warstwa A: Ekstrakcja strukturalnych obiektów Event z JSON-LD (@graph) osadzonych na stronach Krajownika (w tym /organizator/...)
+    const ldScripts = [...src.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+    for (const sMatch of ldScripts) {
+        try {
+            const parsed = JSON.parse(sMatch[1]);
+            const nodes = Array.isArray(parsed)
+                ? parsed
+                : Array.isArray(parsed?.['@graph'])
+                    ? parsed['@graph']
+                    : [parsed];
+            for (const node of nodes) {
+                if (!node || typeof node !== 'object') continue;
+                const typeStr = Array.isArray(node['@type']) ? node['@type'].join(' ') : String(node['@type'] || '');
+                if (!/Event/i.test(typeStr)) continue;
+                const url = String(node.url || '').trim();
+                const rawTitle = decodeHtmlEntities(String(node.name || '').trim());
+                if (!url || !rawTitle || seenUrls.has(url)) continue;
+
+                const citySlugMatch = url.match(/krajownik\.pl\/([a-z0-9-]+)\/wydarzenia\//i);
+                let resolvedCity = node.location?.address?.addressLocality || defaultCity;
+                if (citySlugMatch) {
+                    const slug = citySlugMatch[1].toLowerCase();
+                    if (!KRAJOWNIK_CITY_SLUGS[slug]) continue;
+                    resolvedCity = KRAJOWNIK_CITY_SLUGS[slug];
+                }
+
+                const locName = decodeHtmlEntities(String(node.location?.name || ''));
+                const orgName = decodeHtmlEntities(String(node.organizer?.name || ''));
+                const combinedCheck = `${rawTitle} ${locName} ${orgName} ${url}`;
+                if (!danceRegex.test(combinedCheck)) continue;
+                if (excludeRegex.test(combinedCheck)) continue;
+
+                const startIsoMatch = String(node.startDate || '').match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}:\d{2}))?/);
+                if (!startIsoMatch) continue;
+                seenUrls.add(url);
+
+                const year = parseInt(startIsoMatch[1], 10);
+                const month = startIsoMatch[2];
+                const day = startIsoMatch[3];
+                const startTime = startIsoMatch[4] || '';
+                const rawDate = year === 2026 ? `${day}.${month}` : `${day}.${month}.${year}`;
+                const dateInfo = parseEventDateInfo(rawDate, year);
+                const loc = normalizeLocation(locName ? `${resolvedCity},${locName}` : resolvedCity);
+                const styles = inferEventStyles(`${rawTitle} ${locName} ${orgName}`);
+
+                results.push({
+                    rawDate,
+                    isoStartDate: dateInfo.isoStartDate,
+                    isoEndDate: dateInfo.isoEndDate,
+                    venueCode: `${loc.city},${loc.venue}`,
+                    city: loc.city,
+                    venue: loc.venue,
+                    title: rawTitle,
+                    styles,
+                    url,
+                    notes: `${startTime ? startTime + '; ' : ''}${loc.venue}`
+                });
+            }
+        } catch {
+            // Ignoruj niepoprawne bloki JSON-LD
+        }
+    }
+
+    // Warstwa B: Ekstrakcja z kart HTML <a href="/.../wydarzenia/...">
     for (const m of matches) {
         const relOrAbs = m[1].trim();
         const url = relOrAbs.startsWith('http') ? relOrAbs : `https://krajownik.pl${relOrAbs}`;
@@ -919,6 +983,91 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
             name: 'Krajownik Rybnik (Weekend)',
             url: 'https://krajownik.pl/rybnik/wydarzenia/weekend',
             parser: (html) => parseKrajownikEventsHtml(html, 'Rybnik')
+        },
+        {
+            name: 'Krajownik Katowice (Taniec)',
+            url: 'https://krajownik.pl/katowice/wydarzenia/kategoria/taniec',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
+        },
+        {
+            name: 'Krajownik Kraków (Taniec)',
+            url: 'https://krajownik.pl/krakow/wydarzenia/kategoria/taniec',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Kraków')
+        },
+        {
+            name: 'Krajownik Gliwice (Taniec)',
+            url: 'https://krajownik.pl/gliwice/wydarzenia/kategoria/taniec',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Gliwice')
+        },
+        {
+            name: 'Krajownik Bielsko-Biała (Taniec)',
+            url: 'https://krajownik.pl/bielsko-biala/wydarzenia/kategoria/taniec',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Bielsko-Biała')
+        },
+        {
+            name: 'Krajownik Organizator: Kato Salsa Hub',
+            url: 'https://krajownik.pl/organizator/kato-salsa-hub-85966',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
+        },
+        {
+            name: 'Krajownik Organizator: Mil Pasos',
+            url: 'https://krajownik.pl/organizator/szkola-tanca-mil-pasos-4946',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
+        },
+        {
+            name: 'Krajownik Organizator: Piąty Dom',
+            url: 'https://krajownik.pl/organizator/piaty-dom-2188',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Katowice')
+        },
+        {
+            name: 'Krajownik Organizator: Mohito Gliwice',
+            url: 'https://krajownik.pl/organizator/szkola-tanca-mohito-gliwice-2173',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Gliwice')
+        },
+        {
+            name: 'Krajownik Organizator: Mohito Tychy',
+            url: 'https://krajownik.pl/organizator/szkola-tanca-mohito-tychy-9627',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Tychy')
+        },
+        {
+            name: 'Krajownik Organizator: AllDance Bielsko-Biała',
+            url: 'https://krajownik.pl/organizator/szkola-tanca-alldance-bielsko-biala-4024',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Bielsko-Biała')
+        },
+        {
+            name: 'Krajownik Organizator: DANCE#LOVEit & Corazon',
+            url: 'https://krajownik.pl/organizator/danceloveit-corazon-szkola-tanca-9515',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Bielsko-Biała')
+        },
+        {
+            name: 'Krajownik Organizator: Częstotańcz',
+            url: 'https://krajownik.pl/organizator/czestotancz-znajdz-swoj-taniec-w-czestochowie-szkola-tanca-czestochowa-17492',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Częstochowa')
+        },
+        {
+            name: 'Krajownik Organizator: Forum Tańca Kraków',
+            url: 'https://krajownik.pl/organizator/forum-tanca-17531',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Kraków')
+        },
+        {
+            name: 'Krajownik Organizator: Sabrosa Kraków',
+            url: 'https://krajownik.pl/organizator/sabrosa-dance-studio-3594',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Kraków')
+        },
+        {
+            name: 'Krajownik Organizator: LOFToDANCE Kraków',
+            url: 'https://krajownik.pl/organizator/loftodance-lukasz-ras-402',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Kraków')
+        },
+        {
+            name: 'Krajownik Organizator: VivaSalsa Kraków',
+            url: 'https://krajownik.pl/organizator/vivasalsa-krakow-4784',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Kraków')
+        },
+        {
+            name: 'Krajownik Organizator: Teatro Cubano Kraków',
+            url: 'https://krajownik.pl/organizator/teatro-cubano-krakow-resto-rum-bar-799',
+            parser: (html) => parseKrajownikEventsHtml(html, 'Kraków')
         }
     ];
 
@@ -957,7 +1106,8 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
         return true;
     });
 
-    // Dla nowych pozycji z Krajownika wyciągnij równolegle bezpośredni link do wydarzenia na Facebooku (jeśli istnieje na karcie)
+    // Dla nowych pozycji z Krajownika wyciągnij równolegle bezpośredni link do wydarzenia na Facebooku
+    // oraz wzbogać metadane (style, organizator, lokal) przez OpenGraph FB (fetchFacebookEventDetails)
     await Promise.allSettled(
         freshEvents.map(async (ev) => {
             if (ev.url && ev.url.includes('krajownik.pl/')) {
@@ -966,6 +1116,20 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
                     const fbUrl = extractFacebookEventUrlFromHtml(detailHtml);
                     if (fbUrl) {
                         ev.url = fbUrl;
+                        try {
+                            const fbDetails = await fetchFacebookEventDetails(fbUrl);
+                            if (fbDetails) {
+                                if (fbDetails.venue && fbDetails.venue !== 'Inne' && (!ev.venue || ev.venue === 'Inne')) {
+                                    ev.venue = fbDetails.venue;
+                                    ev.venueCode = fbDetails.venueCode;
+                                }
+                                if (fbDetails.styles && ev.styles === 'Salsa/Bachata/Kizomba') {
+                                    ev.styles = fbDetails.styles;
+                                }
+                            }
+                        } catch {
+                            // Zachowaj metadane Krajownika, jeśli FB OpenGraph nie odpowiedział
+                        }
                     }
                 } catch {
                     // Zachowaj link Krajownika jako fallback
@@ -1372,7 +1536,10 @@ function generateWeeklyReport(sections, newSubmissions = []) {
 
     // SEKCJA 1: PRYWATNIE
     const newItemsSummary = newlyAddedToday.length > 0
-        ? newlyAddedToday.map(e => `  - **${e.title}** | ${e.rawDate}.2026 | ${e.city}, ${e.venue} | ${e.styles} | ${e.url}`).join('\n')
+        ? newlyAddedToday.map(e => {
+            const fullDateLabel = /\.\d{4}$/.test(e.rawDate) ? e.rawDate : `${e.rawDate}.2026`;
+            return `  - **${e.title}** | ${fullDateLabel} | ${e.city}, ${e.venue} | ${e.styles} | ${e.url}`;
+        }).join('\n')
         : '  - Na dziś nie znalazłem nowych ogłoszeń (wszystkie pozycje w bazie zweryfikowane wcześniej).';
 
     const sec1 = `## 1. PRYWATNIE — raport na ${todayStr}
@@ -1630,11 +1797,25 @@ async function main() {
                 styles: ev.styles,
                 url: ev.url,
                 notes: `${ev.notes}; nowe w bazie ${todayIso.slice(8, 10)}.${todayIso.slice(5, 7)}`,
-                isKSH: false
+                isKSH: Boolean(ev.isKSH)
             };
-            sections.future.push(newEntry);
+
+            // Inteligentna klasyfikacja nowego wydarzenia do właściwego koszyka (PN–CZ / BIEŻĄCY WEEKEND / DALSZE TERMINY)
+            const weekendDates = new Set(sections.currentWeekend.map(w => w.isoStartDate).filter(Boolean));
+            if (weekendDates.has(newEntry.isoStartDate)) {
+                sections.currentWeekend.push(newEntry);
+            } else {
+                const maxWeekendIso = Array.from(weekendDates).sort().pop() || '';
+                if (maxWeekendIso && newEntry.isoStartDate >= todayIso && newEntry.isoStartDate < maxWeekendIso && !['PIĄTEK', 'SOBOTA', 'NIEDZIELA'].includes(newEntry.weekdayPL)) {
+                    sections.thisWeekMid.push(newEntry);
+                } else {
+                    sections.future.push(newEntry);
+                }
+            }
             allKnown.push(newEntry);
         }
+        sections.thisWeekMid = deduplicateEvents(sections.thisWeekMid);
+        sections.currentWeekend = deduplicateEvents(sections.currentWeekend);
         sections.future = deduplicateEvents(sections.future).sort((a, b) => (a.sortTimestamp || 0) - (b.sortTimestamp || 0));
     }
 

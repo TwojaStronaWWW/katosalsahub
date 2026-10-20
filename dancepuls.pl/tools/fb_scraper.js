@@ -441,6 +441,180 @@
     return Array.from(collected.values()).sort((a, b) => a.isoDate.localeCompare(b.isoDate));
   }
 
+  /**
+   * Parsuje surowy kod HTML podstrony pojedynczego wydarzenia (np. pobrany przez fetch('/events/ID/') w tle)
+   * i wyciąga z niego pełny opis (event_description / og:description / JSON-LD), dokładny czas startu i lokalizację.
+   */
+  function parseEventDetailHtml(html = '', fallbackUrl = '', now = new Date()) {
+    const src = String(html || '');
+    if (!src) return null;
+
+    const decodeEntities = (s = '') =>
+      String(s || '')
+        .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => {
+          try {
+            return String.fromCodePoint(parseInt(hex, 16));
+          } catch {
+            return '';
+          }
+        })
+        .replace(/&#(\d+);/g, (_, dec) => {
+          try {
+            return String.fromCodePoint(parseInt(dec, 10));
+          } catch {
+            return '';
+          }
+        })
+        .replace(/&amp;/gi, '&')
+        .replace(/&quot;/gi, '"')
+        .replace(/&#039;|&apos;/gi, "'")
+        .replace(/&nbsp;/gi, ' ')
+        .trim();
+
+    const getMeta = (prop) => {
+      const m =
+        src.match(new RegExp(`<meta[^>]+(?:property|name)=["']${prop}["'][^>]+content=["']([^"']+)["']`, 'i')) ||
+        src.match(new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']${prop}["']`, 'i'));
+      return m ? decodeEntities(m[1]) : '';
+    };
+
+    let title = getMeta('og:title');
+    let ogDesc = getMeta('og:description') || getMeta('description');
+    const ogUrl = getMeta('og:url') || fallbackUrl;
+
+    // Sprawdź węzły Relay JSON wewnątrz pobranego HTML
+    const relayItems = extractEventsFromRelayJson(src, now);
+    const primaryRelay = relayItems[0] || null;
+
+    // Wyciągnij pełny tekst opisu z Relay ("event_description":{"text":"..."})
+    let relayFullDesc = '';
+    const descMatch = src.match(/"event_description"\s*:\s*\{\s*"text"\s*:\s*"((?:[^"\\]|\\.)+)"/);
+    if (descMatch) {
+      try {
+        relayFullDesc = JSON.parse(`"${descMatch[1]}"`);
+      } catch {
+        relayFullDesc = descMatch[1];
+      }
+    }
+
+    let locName = primaryRelay?.location || '';
+    if (!locName) {
+      const locMatch = src.match(/"contextual_name"\s*:\s*"((?:[^"\\]|\\.)+)"/);
+      if (locMatch) {
+        try {
+          locName = JSON.parse(`"${locMatch[1]}"`);
+        } catch {
+          locName = locMatch[1];
+        }
+      }
+    }
+    if (!locName && ogUrl) {
+      const slugMatch = ogUrl.match(/facebook\.com\/events\/([^/]+)\/[^/]+\/\d+/i);
+      if (slugMatch && slugMatch[1] !== 's') {
+        locName = decodeURIComponent(slugMatch[1]).replace(/-/g, ' ');
+      }
+    }
+
+    const parsedDate =
+      (primaryRelay && parseFBDate(primaryRelay.isoDate, now)) ||
+      parseFBDate(ogDesc, now) ||
+      parseFBDate(title, now) ||
+      parseFBDate(relayFullDesc, now);
+
+    if (!parsedDate) return null;
+
+    const finalTitle = primaryRelay?.title || title || 'Wydarzenie bez tytułu';
+    const combinedDesc = cleanDescription([relayFullDesc, ogDesc, locName].filter(Boolean).join(' | '));
+
+    return {
+      url: canonicalizeEventUrl(ogUrl || fallbackUrl),
+      title: finalTitle,
+      rawDate: formatRawDateDDMM(parsedDate),
+      isoDate: toLocalYMD(parsedDate),
+      location: locName,
+      description: combinedDesc || finalTitle,
+    };
+  }
+
+  /**
+   * Warstwa 4b (Same-Origin Deep Fetch):
+   * Dociąga w tle (w paczkach po 4 równoległe żądania) podstrony znalezionych wydarzeń,
+   * uzupełniając brakujące lokalizacje, pełne opisy stylów oraz daty z bezpośrednich linków /events/ID/.
+   */
+  async function deepEnrichFacebookEvents(events = [], doc = null, fetchImpl = null, now = new Date()) {
+    const fetcher =
+      fetchImpl || (typeof window !== 'undefined' && typeof window.fetch === 'function' ? window.fetch.bind(window) : null);
+    if (!fetcher) return events;
+
+    const byUrl = new Map();
+    for (const ev of events) {
+      byUrl.set(canonicalizeEventUrl(ev.url), { ...ev });
+    }
+
+    // Dodaj również linki /events/ID/ z dokumentu, które na karcie listy nie miały widocznej daty
+    if (doc && doc.querySelectorAll) {
+      const allEventLinks = Array.from(doc.querySelectorAll('a[href*="/events/"]'));
+      for (const a of allEventLinks) {
+        const href = a.href || a.getAttribute('href') || '';
+        const canon = canonicalizeEventUrl(href);
+        if (/facebook\.com\/events\/\d+\/$/.test(canon) && !byUrl.has(canon) && byUrl.size < 30) {
+          byUrl.set(canon, {
+            url: canon,
+            title: (a.innerText || a.textContent || '').trim(),
+            rawDate: '',
+            isoDate: '',
+            location: '',
+            description: '',
+            _needsDate: true,
+          });
+        }
+      }
+    }
+
+    const targets = Array.from(byUrl.values()).filter(
+      (ev) =>
+        /facebook\.com\/events\/\d+\/$/.test(ev.url) &&
+        (ev._needsDate || !ev.location || !ev.description || ev.description.length < 80)
+    );
+
+    const BATCH_SIZE = 4;
+    for (let i = 0; i < Math.min(targets.length, 20); i += BATCH_SIZE) {
+      const batch = targets.slice(i, i + BATCH_SIZE);
+      await Promise.allSettled(
+        batch.map(async (ev) => {
+          try {
+            const res = await fetcher(ev.url, { credentials: 'same-origin' });
+            if (!res || !res.ok) return;
+            const html = await res.text();
+            const enriched = parseEventDetailHtml(html, ev.url, now);
+            if (!enriched) return;
+            const existing = byUrl.get(ev.url);
+            if (existing) {
+              existing.title =
+                !existing.title || existing.title === 'Wydarzenie bez tytułu' || existing.title.length < 4
+                  ? enriched.title
+                  : existing.title;
+              existing.rawDate = existing.rawDate || enriched.rawDate;
+              existing.isoDate = existing.isoDate || enriched.isoDate;
+              existing.location = existing.location || enriched.location;
+              if (enriched.description && enriched.description.length > (existing.description || '').length) {
+                existing.description = enriched.description;
+              }
+              delete existing._needsDate;
+            }
+          } catch {
+            // Ignoruj błędy pojedynczych podstron
+          }
+        })
+      );
+    }
+
+    const todayIso = toLocalYMD(now);
+    return Array.from(byUrl.values())
+      .filter((ev) => !ev._needsDate && ev.isoDate && ev.isoDate >= todayIso)
+      .sort((a, b) => a.isoDate.localeCompare(b.isoDate));
+  }
+
   async function autoScrollPage(steps = 3, delayMs = 350) {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
     if (/\/events\/\d+/.test(window.location.href)) return;
@@ -474,18 +648,20 @@
 
   async function runBrowserScraper() {
     if (typeof window === 'undefined' || typeof document === 'undefined') return [];
-    console.log('🚀 [DancePuls Scraper v3.0] Rozpoczynam wielowarstwową ekstrakcję wydarzeń...');
+    console.log('🚀 [DancePuls Scraper v3.1] Rozpoczynam wielowarstwową ekstrakcję wydarzeń + Deep Fetch...');
     await autoScrollPage(3, 300);
-    const events = extractEventsFromDocument(document, window.location.href, new Date());
+    const now = new Date();
+    const initialEvents = extractEventsFromDocument(document, window.location.href, now);
+    const events = await deepEnrichFacebookEvents(initialEvents, document, null, now);
 
     if (events.length > 0) {
       const json = JSON.stringify(events, null, 2);
       await copyToClipboardModern(json);
-      console.log(`✅ [DancePuls Scraper v3.0] Pobrano i skopiowano ${events.length} wydarzeń!`);
+      console.log(`✅ [DancePuls Scraper v3.1] Pobrano, wzbogacono i skopiowano ${events.length} wydarzeń!`);
       console.table(events.map((e) => ({ data: e.rawDate, iso: e.isoDate, tytul: e.title, miejsce: e.location, url: e.url })));
-      alert(`✅ DancePuls Scraper v3.0: Skopiowano ${events.length} wydarzeń do schowka!`);
+      alert(`✅ DancePuls Scraper v3.1: Skopiowano ${events.length} wzbogaconych wydarzeń do schowka!`);
     } else {
-      console.warn('⚠️ [DancePuls Scraper v3.0] Nie znaleziono nadchodzących wydarzeń na tej stronie.');
+      console.warn('⚠️ [DancePuls Scraper v3.1] Nie znaleziono nadchodzących wydarzeń na tej stronie.');
       alert('⚠️ Nie znaleziono nadchodzących wydarzeń (>= dzisiaj). Przewiń listę wydarzeń i spróbuj ponownie.');
     }
     return events;
@@ -503,6 +679,8 @@
     cleanDescription,
     extractEventsFromRelayJson,
     extractEventsFromDocument,
+    parseEventDetailHtml,
+    deepEnrichFacebookEvents,
     runBrowserScraper,
   };
 
