@@ -1,93 +1,65 @@
-## 1. PRYWATNIE — raport na 15.10.2026
-- **Stan zestawienia na weekend 16–18.10.2026:** **16 pozycji** (2 pt + 10 sb + 4 nd).
+## 1. PRYWATNIE — raport na 20.10.2026
+- **Stan zestawienia na weekend 23–25.10.2026:** **6 pozycji** (1 pt + 3 sb + 2 nd).
 - **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **36 pozycji** (pełny horyzont do 2027 r.).
-- **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (15.10 — 6 pozycji, data publikacji nieustalona):**
-  - **Praktis IMPRO z Samborem** | 15.10.2026 | Kraków, Forum Tańca | Sensual Impro | https://onlydanceapp.com/event/1b697a7fb3e249feae92
-  - **Praktis URBANKIZ** | 16.10.2026 | Kraków, Forum Tańca | Urban Kiz | https://onlydanceapp.com/event/cf94eaa4a26b4794b860
-  - **Praktis BACHATOWY** | 18.10.2026 | Kraków, Forum Tańca | Bachata | https://onlydanceapp.com/event/5a14d3007427471c9f00
-  - **SONDAY vol.19,zajęcia Son Cubano w parach i praktis** | 18.10.2026 | Kraków, Forum Tańca | Son Cubano | https://onlydanceapp.com/event/3ffea57a1eec446c8dfd
-  - **Overpower Dancers Edition vol.19** | 07.11.2026 | Kraków, Forum Tańca | Bachata | https://onlydanceapp.com/event/91178caf3b1c456e8cc8
-  - **¡A bailar salsa!,impreza i wcześniejsze warsztaty** | 07.11.2026 | Kraków, LOFToDANCE | Salsa On1/Salsa On2 | https://onlydanceapp.com/event/2b905e5e085c44a3924e
+- **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
+- **Nowości w bazie z ostatniego sprawdzenia (20.10 — 8 pozycji, data publikacji nieustalona):**
+  - **Kizomba w Piątym Domu – SH#75** | 20.10.2026 | Katowice, Piąty Dom | Kizomba | https://www.facebook.com/events/1410619787718525/
+  - **RITMO DE LA HABANA – DJ Chava** | 23.10.2026 | Kraków, Teatro Cubano | Cubana | https://www.facebook.com/events/1568368601399250/
+  - **Halloween Dance Party,Praktis Bachata/Salsa/Kizomba** | 31.10.2026 | Bielsko-Biała, AllDance | Salsa/Bachata/Kizomba | https://www.facebook.com/events/1602739471550950/
+  - **warsztaty Salsa On1 (od zera oraz dla tańczących)** | 07.11.2026 | Kraków, LOFToDANCE | Salsa On1 | https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287
+  - **warsztaty Men Styling – Bachata Solo dla facetów** | 07.11.2026 | Kraków, LOFToDANCE | Bachata | https://sklep.loftodance.pl/wydarzenie/men-styling-bachata-solo-dla-facetow,1290
+  - **Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty** | 21.11.2026 | Katowice, Mil Pasos | Cubana/Rumba/Timba | https://www.milpasoskatowice.pl/?page=wydarzenia
+  - **Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis** | 28.11.2026 | Katowice, Mil Pasos | Kizomba/Tarraxo | https://www.milpasoskatowice.pl/?page=wydarzenia
+  - **DobraNocka Party** | 28.11.2026 | Kraków, LOFToDANCE | Bachata | https://sklep.loftodance.pl/wydarzenie/dobranocka-party,1291
 - **Zgłoszenia z formularza Google KSH (CSV):** https://www.facebook.com/events/770886418668167/, https://zabrze.com.pl/artykuly/artykul/latino-pod-chmurka-w-zabrzu-w-piatek-odbedzie-sie-potancowka-na-placu-teatralnym?fbclid=IwdGRjcAUZF1ljbGNrBRkXUHBkb2YBZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMzUwNjg1NTMxNzI4AAEewv8xg3R1jnmM1CmuULeuhVIip33CaeCUMLX2mMW6CVHmyeo-RtPSo4x5ZBA_aem_eszY5TPvflkGax4IlgY3Ew.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
 ---
 
 ## 2. POST NA FB
-🎉 Gdzie tańczymy w ten weekend? (16-18.10)
+🎉 Gdzie tańczymy w ten weekend? (23-25.10)
 
 🗓️ PIĄTEK
-W Katowicach i na Śląsku piątkowy wieczór jeszcze bez potwierdzonych ogłoszeń, ale w Krakowie potańczycie bachatę z DJ-em Kołki w PROMINENT oraz poćwiczycie na praktisie Urban Kiz w Forum Tańca.
+W Katowicach piątkowy wieczór jeszcze bez potwierdzonych ogłoszeń, ale na wieczorną salsę cubana możecie wyskoczyć do Krakowa (Teatro Cubano – Ritmo de la Habana z DJ Chavą).
 
 🗓️ SOBOTA
-W Katowicach czekają popołudniowe warsztaty Timbeando z muzyką na żywo w La Clave i intensywne warsztaty salsy w Mil Pasos, a wieczorem imprezy Bachata meets Impro w La Clave oraz kizombowe Dance++ w Gravitacji. W regionie parkiety otwierają Siewierz i Bielsko-Biała, natomiast na wieczorną salsę cubana z DJ-em El Honguito możecie wybrać się do krakowskiej Hali Lipowej.
+W Katowicach w Mil Pasos czekają popołudniowe warsztaty oraz dwusalowa impreza K Experience + Early Vibes & Goodnights Pumpkin Edition (Bachata/Kizomba), natomiast w Krakowie Sabrosa startuje z weekendowymi warsztatami mambo z Marco Faravellim, a Forum Tańca zaprasza na imprezę Halloween Hogwarts.
 
 🗓️ NIEDZIELA
-Niedziela w Katowicach to warsztaty Salsa Street z Anną Cibis w Mil Pasos oraz wielkie otwarcie kizombowego cyklu KIZLAB Sundays przy Sobieskiego. W Krakowie Forum Tańca zaprasza na popołudniowe zajęcia i praktis Son Cubano z cyklu Sonday oraz na praktis bachatowy.
+W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub – Salsa Habana Picante vol. 68 w lokalu Wolni Ludzie przy Mariackiej 2 w Katowicach! W Krakowie trwa drugi dzień warsztatów z Marco Faravellim w Sabrosie, a wieczorem potańczycie bachatę w Teatro Cubano.
 
 ---
 
 ## 3. ANKIETA
-PIĄTEK (16.10): Kraków - PROMINENT (Bachata)
-PIĄTEK (16.10): Kraków - Forum Tańca (Urban Kiz)
-SOBOTA (17.10): Katowice - La Clave, TIMBEANDO LIVE MUSIC (Timba/Cubana)
-SOBOTA (17.10): Katowice - La Clave, BACHATA meets IMPRO vol24 (Bachata/Impro)
-SOBOTA (17.10): Katowice - Mil Pasos (Salsa)
-SOBOTA (17.10): Katowice - Gravitacja (Kizomba)
-SOBOTA (17.10): Siewierz - Beleza (Kizomba/Semba)
-SOBOTA (17.10): Bielsko-Biała - DANCE#LOVEit & Corazon, warsztaty Social Warmup (Bachata/Impro)
-SOBOTA (17.10): Bielsko-Biała - DANCE#LOVEit & Corazon, Domówka (Salsa/Bachata/Kizomba)
-SOBOTA (17.10): Bielsko-Biała - AllDance (Salsa/Bachata/Kizomba)
-SOBOTA (17.10): Kraków - Hala Lipowa (Cubana)
-SOBOTA (17.10): Kraków - LOFToDANCE (Bachata)
-NIEDZIELA (18.10): Katowice - Mil Pasos (Cubana/Bodymovement/Reggaeton)
-NIEDZIELA (18.10): Katowice - KIZLAB (Kizomba)
-NIEDZIELA (18.10): Kraków - Forum Tańca, Praktis BACHATOWY (Bachata)
-NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
+PIĄTEK (23.10): Kraków - Teatro Cubano (Cubana)
+SOBOTA (24.10): Kraków - Sabrosa Dance Studio (Mambo/Salsa On2)
+SOBOTA (24.10): Katowice - Mil Pasos (Bachata/Kizomba)
+SOBOTA (24.10): Kraków - Forum Tańca (Salsa/Bachata)
+NIEDZIELA (25.10): Katowice - Wolni Ludzie (Cubana)
+NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 
 ---
 
 ## 4. KOMENTARZ 1 — WEEKEND
 🎉 Zestawienie imprezowe
 
-🗓️ PIĄTEK (16.10):
-➡️ Kraków: PROMINENT (Bachata)
-🔗 https://www.facebook.com/events/1432950208788026/
-➡️ Kraków: Forum Tańca (Urban Kiz)
-🔗 https://onlydanceapp.com/event/cf94eaa4a26b4794b860
+🗓️ PIĄTEK (23.10):
+➡️ Kraków: Teatro Cubano (Cubana)
+🔗 https://www.facebook.com/events/1568368601399250/
 
-🗓️ SOBOTA (17.10):
-➡️ Katowice: La Clave, TIMBEANDO LIVE MUSIC (Timba/Cubana)
-🔗 https://krajownik.pl/katowice/wydarzenia/timbeando-live-music-warsztaty-z-klaudia-i-adriano-1710-377712
-➡️ Katowice: La Clave, BACHATA meets IMPRO vol24 (Bachata/Impro)
-🔗 https://www.facebook.com/events/28288351754151971/
-➡️ Katowice: Mil Pasos (Salsa)
-🔗 https://krajownik.pl/katowice/wydarzenia/crash-course-salsa-3h-i-tanczysz-sobota-1600-1900-17102026-417443
-➡️ Katowice: Gravitacja (Kizomba)
-🔗 https://www.facebook.com/events/2184800225400574/
-➡️ Siewierz: Beleza (Kizomba/Semba)
-🔗 https://www.facebook.com/events/1078285134652928/
-➡️ Bielsko-Biała: DANCE#LOVEit & Corazon, warsztaty Social Warmup (Bachata/Impro)
-🔗 https://onlydanceapp.com/event/d34c15295db34b9eb85c
-➡️ Bielsko-Biała: DANCE#LOVEit & Corazon, Domówka (Salsa/Bachata/Kizomba)
-🔗 https://onlydanceapp.com/event/9bb5eb718f5e4dcc9b30
-➡️ Bielsko-Biała: AllDance (Salsa/Bachata/Kizomba)
-🔗 https://krajownik.pl/bielsko-biala/wydarzenia/praktis-bachatasalsakizomba-w-alldance-415046
-➡️ Kraków: Hala Lipowa (Cubana)
-🔗 https://www.facebook.com/events/4497510513844745/
-➡️ Kraków: LOFToDANCE (Bachata)
-🔗 https://onlydanceapp.com/event/659f6c54531b45cbab52
+🗓️ SOBOTA (24.10):
+➡️ Kraków: Sabrosa Dance Studio (Mambo/Salsa On2)
+🔗 https://www.facebook.com/groups/1202777840091298/posts/2864429500592782/
+➡️ Katowice: Mil Pasos (Bachata/Kizomba)
+🔗 https://www.facebook.com/events/1040992492288985/
+➡️ Kraków: Forum Tańca (Salsa/Bachata)
+🔗 https://www.facebook.com/events/1061231330083326/
 
-🗓️ NIEDZIELA (18.10):
-➡️ Katowice: Mil Pasos (Cubana/Bodymovement/Reggaeton)
-🔗 https://krajownik.pl/katowice/wydarzenia/salsa-street-warsztaty-415772
-➡️ Katowice: KIZLAB (Kizomba)
-🔗 https://www.facebook.com/events/1617716113426642/
-➡️ Kraków: Forum Tańca, Praktis BACHATOWY (Bachata)
-🔗 https://onlydanceapp.com/event/5a14d3007427471c9f00
-➡️ Kraków: Forum Tańca, SONDAY vol.19 (Son Cubano)
-🔗 https://onlydanceapp.com/event/3ffea57a1eec446c8dfd
+🗓️ NIEDZIELA (25.10):
+⭐ Katowice: Wolni Ludzie (Cubana)
+🔗 https://www.facebook.com/events/891329324066083/
+➡️ Kraków: Teatro Cubano (Bachata)
+🔗 https://onlydanceapp.com/event/bUBcJYprLm1Iak6fHe3B
 
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
@@ -104,24 +76,6 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 ## 5. KOMENTARZ 2 — PRZYSZŁOŚĆ
 🎉 Zaplanowane wydarzenia — kolejne tygodnie
 
-🗓️ WTOREK (20.10.2026)
-➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)
-🔗 https://www.facebook.com/events/1968496233786036/
-🗓️ SOBOTA–NIEDZIELA (24–25.10.2026)
-➡️ Kraków: Sabrosa Dance Studio, Marco Faravelli wraca do Sabrosy,warsztaty weekendowe (Mambo/Salsa On2)
-🔗 https://www.facebook.com/groups/1202777840091298/posts/2864429500592782/
-🗓️ SOBOTA (24.10.2026)
-➡️ Katowice: Mil Pasos, K Experience + Early Vibes & Goodnights Pumpkin Edition,warsztaty i impreza (Bachata/Kizomba)
-🔗 https://www.facebook.com/events/1040992492288985/
-🗓️ SOBOTA (24.10.2026)
-➡️ Kraków: Forum Tańca, Halloween Hogwarts (Salsa/Bachata)
-🔗 https://www.facebook.com/events/1061231330083326/
-🗓️ NIEDZIELA (25.10.2026)
-⭐ Katowice: Wolni Ludzie, Salsa Habana Picante vol. 68 (Cubana)
-🔗 https://www.facebook.com/events/891329324066083/
-🗓️ NIEDZIELA (25.10.2026)
-➡️ Kraków: Teatro Cubano, Bachata at Teatro Cubano (Bachata)
-🔗 https://onlydanceapp.com/event/bUBcJYprLm1Iak6fHe3B
 🗓️ ŚRODA (28.10.2026)
 ➡️ Katowice: Mil Pasos, Upiorna nagrywka z Izabelą,zajęcia specjalne (Bachata)
 🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
@@ -138,6 +92,9 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 ➡️ Katowice: Gravitacja, Halloween Bachata Party–Día de los Muertos (Bachata)
 🔗 https://onlydanceapp.com/event/ca531940745043df9786
 🗓️ SOBOTA (31.10.2026)
+➡️ Bielsko-Biała: AllDance, Halloween Dance Party,Praktis Bachata/Salsa/Kizomba (Salsa/Bachata/Kizomba)
+🔗 https://www.facebook.com/events/1602739471550950/
+🗓️ SOBOTA (31.10.2026)
 ➡️ Kraków: LOFToDANCE, warsztaty Unlock Your Freestyle–Level2 (Bachata solo/Impro)
 🔗 https://sklep.loftodance.pl/wydarzenie/unlock-your-freestyle-level-2,1281
 🗓️ SOBOTA (31.10.2026)
@@ -152,6 +109,12 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 🗓️ SOBOTA (07.11.2026)
 ➡️ Kraków: Forum Tańca, Overpower Dancers Edition vol.19 (Bachata)
 🔗 https://onlydanceapp.com/event/91178caf3b1c456e8cc8
+🗓️ SOBOTA (07.11.2026)
+➡️ Kraków: LOFToDANCE, warsztaty Salsa On1 (od zera oraz dla tańczących) (Salsa On1)
+🔗 https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287
+🗓️ SOBOTA (07.11.2026)
+➡️ Kraków: LOFToDANCE, warsztaty Men Styling – Bachata Solo dla facetów (Bachata)
+🔗 https://sklep.loftodance.pl/wydarzenie/men-styling-bachata-solo-dla-facetow,1290
 🗓️ SOBOTA (07.11.2026)
 ➡️ Kraków: LOFToDANCE, ¡A bailar salsa!,impreza i wcześniejsze warsztaty (Salsa On1/Salsa On2)
 🔗 https://onlydanceapp.com/event/2b905e5e085c44a3924e
@@ -171,11 +134,20 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)
 🔗 https://www.facebook.com/events/2970730173282777/
 🗓️ SOBOTA (21.11.2026)
+➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
+🗓️ SOBOTA (21.11.2026)
 ➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)
 🔗 https://www.facebook.com/events/1368901197951496/
 🗓️ NIEDZIELA (22.11.2026)
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)
 🔗 https://www.facebook.com/events/1617716113426642/
+🗓️ SOBOTA (28.11.2026)
+➡️ Katowice: Mil Pasos, Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis (Kizomba/Tarraxo)
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia
+🗓️ SOBOTA (28.11.2026)
+➡️ Kraków: LOFToDANCE, DobraNocka Party (Bachata)
+🔗 https://sklep.loftodance.pl/wydarzenie/dobranocka-party,1291
 🗓️ WTOREK (01.12.2026)
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)
 🔗 https://www.facebook.com/events/1249676614905478/
@@ -227,11 +199,9 @@ NIEDZIELA (18.10): Kraków - Forum Tańca, SONDAY vol.19 (Son Cubano)
 
 ## 6. PRYWATNIE — pominięcia, wydarzenia pn–cz, konflikty danych i kolejne kroki
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą weekendową):**
-  - 13.10.2026 (WTOREK): Katowice, Dzień i Noc — Kizombada (Kizomba) -> https://www.facebook.com/events/3376069955899024/ (dzień miniony)
-  - 14.10.2026 (ŚRODA): Bielsko-Biała, DANCE#LOVEit & Corazon — Bachata Ladies Masterclass by Hanna Nazarenko,warsztaty solo dla kobiet (Bachata) -> https://www.facebook.com/events/1607796560752954/ (dzień miniony)
-  - 15.10.2026 (CZWARTEK): Kraków, Forum Tańca — Praktis IMPRO z Samborem (Sensual Impro) -> https://onlydanceapp.com/event/1b697a7fb3e249feae92 (bieżący tydzień poza ankietą weekendową)
+  - 20.10.2026 (WTOREK): Katowice, Piąty Dom — Kizomba w Piątym Domu – SH#75 (Kizomba) -> https://www.facebook.com/events/1410619787718525/ (bieżący tydzień poza ankietą weekendową)
+  - 20.10.2026 (WTOREK): Kraków, Zaraz Wracam Tu — Salsunia (Cubana) -> https://www.facebook.com/events/1968496233786036/ (bieżący tydzień poza ankietą weekendową)
 - **Wstrzymane / niepewne tropy (poza publikacją do czasu weryfikacji):**
-  - 16–18.10: Kraków — SabroFest (Salsa/Bachata) — powód wstrzymania: nadal nieustalone miejsce; następnie znajdź konkretną kartę OnlyDance zamiast powtarzać zapytania
   - 22–23.10: Świętochłowice, Stylowa Willa — Impreza taneczna (Latino) — powód wstrzymania: konflikt daty 22 vs 23.10; ponawiaj tylko przy nowej przesłance
   - 07.11: Bielsko-Biała — REPARTO z Leidel Portuondo (Cubana/Reparto) — powód wstrzymania: Ania Ana Kurowska; brak konkretnej sali/adresu, nie publikuj do potwierdzenia miejsca
   - 05.12: Katowice, Mil Pasos — Ania Kurowska & Daniel Galas–Live Music Interpretation (Cubana) — powód wstrzymania: 11–15; oficjalne wydarzenia potwierdzają datę/miejsce/kulturę kubańską, ale konkretny program/styl TBA, na razie poza publikacją

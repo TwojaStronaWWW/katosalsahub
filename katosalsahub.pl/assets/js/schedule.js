@@ -138,6 +138,13 @@ function getCurrentIsoWeekday(now = new Date()) {
   return WEEKDAY_FROM_JS_DAY[now.getDay()] || 1;
 }
 
+function getTodayIsoDate(now = new Date()) {
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 /**
  * Czysta funkcja filtrująca zajęcia w grafiku szkół (testowalna w node:test)
  */
@@ -216,23 +223,32 @@ function filterScheduleClasses(classes, filters = {}, now = new Date()) {
 }
 
 /**
- * Czysta funkcja filtrująca wydarzenia z DancePuls (testowalna w node:test)
+ * Czysta funkcja filtrująca wydarzenia z DancePuls (testowalna w node:test).
+ * Domyślnie odcina minione dni (pokazuje wyłącznie dzisiejsze i późniejsze: effectiveEndDate >= todayIso).
  */
-function filterDancepulsEvents(eventsDays, filters = {}) {
+function filterDancepulsEvents(eventsDays, filters = {}, now = new Date()) {
   if (!Array.isArray(eventsDays)) return [];
   const query = String(filters.searchQuery || '').trim().toLowerCase();
   const cityFilter = filters.eventCityFilter || 'all';
   const styleFilter = filters.styleFilter || 'all';
-  const minDateIso = filters.minDateIso || '';
+  const minDateIso =
+    filters.includePast === true
+      ? ''
+      : typeof filters.minDateIso === 'string'
+        ? filters.minDateIso
+        : getTodayIsoDate(now);
 
   const filteredDays = [];
 
   for (const dayEntry of eventsDays) {
     if (!dayEntry || !Array.isArray(dayEntry.events)) continue;
-    if (minDateIso && String(dayEntry.date || '') < minDateIso) continue;
+    const dayDate = String(dayEntry.date || '');
 
     const matchingEvents = dayEntry.events.filter((ev) => {
       if (!ev) return false;
+      const effectiveEndDate = String(ev.endDate || dayDate);
+      if (minDateIso && effectiveEndDate < minDateIso) return false;
+
       const city = String(ev.miasto || '').trim();
 
       if (cityFilter === 'Katowice' && city.toLowerCase() !== 'katowice') {
@@ -1133,6 +1149,7 @@ if (typeof module !== 'undefined' && module.exports) {
     filterDancepulsEvents,
     calculateSchoolPricingComparison,
     getCurrentIsoWeekday,
+    getTodayIsoDate,
     formatPlDateHeader,
     initSchedulePage,
     switchScheduleTab,

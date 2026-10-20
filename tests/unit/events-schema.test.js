@@ -7,7 +7,13 @@ const {
   deduplicateEvents,
   expandSourceUrl,
   parseEventDateInfo,
-  buildVenueAndStyleLabel
+  buildVenueAndStyleLabel,
+  inferEventStyles,
+  parseMilPasosEventsHtml,
+  parseLoftodanceEventsHtml,
+  parseKrajownikEventsHtml,
+  parseFacebookEventHtml,
+  extractFacebookEventUrlFromHtml
 } = require('../../dancepuls.pl/tools/sync_engine.js');
 
 const ROOT_DIR = path.resolve(__dirname, '..', '..');
@@ -359,11 +365,97 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       const galasClasses = filterScheduleClasses(sched.classes, { searchQuery: 'Daniel Galas' });
       assert.ok(galasClasses.length >= 1 && galasClasses.every((c) => c.schoolId === 'MP'));
 
-      const katoEvents = filterDancepulsEvents(evDays, { eventCityFilter: 'Katowice' });
+      const katoEvents = filterDancepulsEvents(evDays, { eventCityFilter: 'Katowice' }, new Date('2026-10-20T12:00:00'));
       assert.ok(katoEvents.length > 0);
       for (const day of katoEvents) {
+        assert.ok(day.date >= '2026-10-20', `Widok nie powinien zwracać minionych dat (< 2026-10-20): ${day.date}`);
         assert.ok(day.events.every((e) => e.miasto.toLowerCase() === 'katowice'));
       }
+
+      // Weryfikacja domyślnego odfiltrowywania wydarzeń minionych (pokazuj wyłącznie dzisiejsze i późniejsze)
+      const mixedDays = [
+        {
+          date: '2026-10-18',
+          events: [{ opis: 'Stara impreza weekendowa', miasto: 'Katowice', miejsce: 'La Clave', style: ['Salsa'] }]
+        },
+        {
+          date: '2026-10-19',
+          events: [{ endDate: '2026-10-21', opis: 'Festiwal wielodniowy trwający dziś', miasto: 'Kraków', miejsce: 'Forum Tańca', style: ['Bachata'] }]
+        },
+        {
+          date: '2026-10-20',
+          events: [{ opis: 'Dzisiejszy praktis', miasto: 'Katowice', miejsce: 'Piąty Dom', style: ['Kizomba'] }]
+        },
+        {
+          date: '2026-10-25',
+          events: [{ opis: 'Salsa Habana Picante vol. 68', miasto: 'Katowice', miejsce: 'Wolni Ludzie', style: ['Cubana'] }]
+        }
+      ];
+      const activeOnly = filterDancepulsEvents(mixedDays, {}, new Date('2026-10-20T18:00:00'));
+      assert.strictEqual(activeOnly.length, 3, 'Wydarzenia zakończone przed dzisiejszą datą (2026-10-18) muszą być odfiltrowane');
+      assert.ok(activeOnly.every((d) => d.date !== '2026-10-18'));
+
+      // Weryfikacja zunifikowanych konektorów HTML dla wydarzeń tanecznych (Mil Pasos, LOFToDANCE, Krajownik)
+      assert.match(inferEventStyles('Cuban Ladies – Rumba Guaguancó & Timba'), /Cubana/);
+      assert.match(inferEventStyles('Cuban Ladies – Rumba Guaguancó & Timba'), /Timba/);
+
+      const sampleMpHtml = `
+        <div class="event">
+          <h3>Cuban Ladies - Rumba Guaguancó, Oshun &amp; Timba Ladies - sobota 21.11</h3>
+          <p>21.11.2026 12:30 - 21.11.2026 15:45</p>
+        </div>
+      `;
+      const mpEvents = parseMilPasosEventsHtml(sampleMpHtml);
+      assert.strictEqual(mpEvents.length, 1);
+      assert.strictEqual(mpEvents[0].rawDate, '21.11');
+      assert.strictEqual(mpEvents[0].isoStartDate, '2026-11-21');
+      assert.strictEqual(mpEvents[0].venue, 'Mil Pasos');
+
+      const sampleLoftHtml = `
+        <a href="https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287">
+          07.11.2026 Salsa On1 - warsztaty od zera oraz dla tańczących 120 zł Zobacz szczegóły
+        </a>
+      `;
+      const loftEvents = parseLoftodanceEventsHtml(sampleLoftHtml);
+      assert.strictEqual(loftEvents.length, 1);
+      assert.strictEqual(loftEvents[0].rawDate, '07.11');
+      assert.strictEqual(loftEvents[0].venue, 'LOFToDANCE');
+      assert.match(loftEvents[0].styles, /Salsa On1/);
+
+      const sampleKrajownikHtml = `
+        <a href="/katowice/wydarzenia/kizomba-w-piatym-domu-sh75-423287">
+          Kizomba w Piątym Domu - SH#75 20 Października 2026, od 21:00 Katowice Piąty Dom, Katowice
+        </a>
+        <a href="/szczecin/wydarzenia/kizomba-podstawy-407133">
+          Kizomba Podstawy 24 Października 2026, od 11:00 Szczecin
+        </a>
+        <a href="/katowice/wydarzenia/salsation-fitness-400000">
+          Maraton Salsation Fitness 24 Października 2026, od 12:00 Katowice
+        </a>
+      `;
+      const krEvents = parseKrajownikEventsHtml(sampleKrajownikHtml, 'Katowice');
+      assert.strictEqual(krEvents.length, 1, 'Parser Krajownika powinien pominąć zajęcia fitness Salsation oraz miasta spoza regionu (Szczecin)');
+      assert.strictEqual(krEvents[0].isoStartDate, '2026-10-20');
+      assert.strictEqual(krEvents[0].venue, 'Piąty Dom');
+
+      assert.strictEqual(
+        extractFacebookEventUrlFromHtml('<a href="https://www.facebook.com/events/1410619787718525">FB</a>'),
+        'https://www.facebook.com/events/1410619787718525/'
+      );
+
+      const sampleFbEventHtml = `
+        <meta property="og:title" content="Salsa Habana Picante&#x1f525;- Wolni Ludzie vol. 68" />
+        <meta property="og:description" content="Wydarzenie w miejscowo&#x15b;ci Katowice organizowane przez KATO SALSA HUB w dniu niedziela, pa&#x17a;dziernika 25 2026" />
+        <meta property="og:url" content="https://www.facebook.com/events/wolni-ludzie/salsa-habana-picante-wolni-ludzie-vol-68/891329324066083/" />
+      `;
+      const fbEv = parseFacebookEventHtml(sampleFbEventHtml);
+      assert.ok(fbEv, 'parseFacebookEventHtml powinien sparsować metatagi OpenGraph wydarzenia FB');
+      assert.strictEqual(fbEv.rawDate, '25.10');
+      assert.strictEqual(fbEv.isoStartDate, '2026-10-25');
+      assert.strictEqual(fbEv.city, 'Katowice');
+      assert.strictEqual(fbEv.venue, 'Wolni Ludzie');
+      assert.strictEqual(fbEv.url, 'https://www.facebook.com/events/891329324066083/');
+      assert.strictEqual(fbEv.isKSH, true);
 
       // Weryfikacja kalkulatora opłacalności cenników (Unit Economics)
       const std8 = calculateSchoolPricingComparison(sched.schools, { units: 8, profile: 'standard' });
@@ -395,6 +487,101 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       const student16 = calculateSchoolPricingComparison([], { units: 16, profile: 'student' });
       assert.strictEqual(student16.find((r) => r.schoolId === 'GM').costPer60Min, 16.25);
       assert.strictEqual(student16.find((r) => r.schoolId === 'MP').costPerUnit, 16.82);
+    });
+
+    it('zrefaktoryzowany Universal Event Scraper v3.0 (fb_scraper.js) oraz parser schowka (utils.js & parser.js) powinny bezbłędnie rozpoznawać daty, JSON-LD, Relay i priorytety źródeł', async () => {
+      const {
+        parseFBDate,
+        canonicalizeEventUrl,
+        extractEventsFromRelayJson,
+      } = require('../../dancepuls.pl/tools/fb_scraper.js');
+      const { parsujDateFB, toYMD } = await import('../../dancepuls.pl/js/utils.js');
+      const { parseClipboardData } = await import('../../dancepuls.pl/js/parser.js');
+
+      const refNow = new Date(2026, 9, 20); // 20.10.2026
+
+      // 1. Testy parseFBDate z fb_scraper.js (OpenGraph, zakresy, kropki, ISO)
+      assert.strictEqual(
+        toYMD(parseFBDate('Wydarzenie w dniu niedziela, października 25 2026', refNow)),
+        '2026-10-25'
+      );
+      assert.strictEqual(
+        toYMD(parseFBDate('24–25.10.2026 o 21:00', refNow)),
+        '2026-10-24'
+      );
+      assert.strictEqual(
+        canonicalizeEventUrl('https://www.facebook.com/events/wolni-ludzie/salsa-habana-picante/891329324066083/?acontext=%7B%7D'),
+        'https://www.facebook.com/events/891329324066083/'
+      );
+
+      // 2. Testy ekstraktora Facebook Relay / GraphQL (start_timestamp)
+      const sampleRelayPayload = {
+        data: {
+          viewer: {
+            events: {
+              edges: [
+                {
+                  node: {
+                    __typename: 'Event',
+                    id: '891329324066083',
+                    name: 'Salsa Habana Picante - Wolni Ludzie vol. 68',
+                    start_timestamp: Math.floor(new Date(2026, 9, 25, 21, 0, 0).getTime() / 1000),
+                    event_place: { contextual_name: 'Wolni Ludzie, Katowice' },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const relayEvents = extractEventsFromRelayJson(sampleRelayPayload);
+      assert.strictEqual(relayEvents.length, 1);
+      assert.strictEqual(relayEvents[0].isoDate, '2026-10-25');
+      assert.strictEqual(relayEvents[0].rawDate, '25.10');
+      assert.strictEqual(relayEvents[0].url, 'https://www.facebook.com/events/891329324066083/');
+      assert.strictEqual(relayEvents[0].location, 'Wolni Ludzie, Katowice');
+
+      // 3. Testy parsujDateFB (utils.js) — odporność na przypadkowe dni tygodnia i godziny w opisie
+      assert.strictEqual(
+        toYMD(parsujDateFB('2026-10-25', { now: refNow })),
+        '2026-10-25'
+      );
+      assert.strictEqual(
+        toYMD(parsujDateFB('października 25 2026', { now: refNow })),
+        '2026-10-25'
+      );
+      assert.strictEqual(
+        parsujDateFB('Start imprezy o 20.00, zapisy na warsztaty trwają do środy!', { now: refNow, allowWeekdayOnly: false }),
+        null,
+        'Opis z godziną 20.00 i słowem "do środy" nie może fałszywie zwracać daty w trybie allowWeekdayOnly: false'
+      );
+
+      // 4. Testy parseClipboardData (parser.js) — ważenie źródeł (rawDate/isoDate > description) i odrzucanie minionych dat
+      const clipboardPayload = JSON.stringify([
+        {
+          url: 'https://www.facebook.com/events/891329324066083/',
+          title: 'Salsa Habana Picante - Wolni Ludzie vol. 68',
+          rawDate: '25.10',
+          isoDate: '2026-10-25',
+          location: 'Wolni Ludzie, Katowice',
+          description: 'Zapisy i przedpłaty do środy 21.10! Start o 21.00 w niedzielę.',
+        },
+        {
+          url: 'https://www.facebook.com/events/111111111111111/',
+          title: 'Miniona impreza sprzed tygodnia',
+          rawDate: '12.10.2026',
+          isoDate: '2026-10-12',
+          location: 'Katowice',
+          description: 'Archiwalne wydarzenie',
+        },
+      ]);
+      const parsedClipboard = parseClipboardData(clipboardPayload, { now: refNow });
+      assert.strictEqual(parsedClipboard.events.length, 1, 'Minione wydarzenie z 12.10 musi zostać odrzucone');
+      assert.strictEqual(
+        parsedClipboard.events[0].isoDate,
+        '2026-10-25',
+        'Waga rawDate/isoDate (25.10) musi mieć priorytet nad wcześniejszą datą zapisów (21.10) w opisie'
+      );
     });
   });
 });

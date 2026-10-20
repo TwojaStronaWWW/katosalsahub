@@ -33,7 +33,7 @@ jobs:
           SKIP_REMOTE_SYNC: '1'
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          node dancepuls.pl/tools/sync_engine.js
+          node dancepuls.pl/tools/sync_engine.js --check-remote || node dancepuls.pl/tools/sync_engine.js
           node scripts/sync-schedules.js --check-remote || node scripts/sync-schedules.js
 
       - name: Walidacja integralności wygenerowanych plików JSON przed commitem (Circuit Breaker)

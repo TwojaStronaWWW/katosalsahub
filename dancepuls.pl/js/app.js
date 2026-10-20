@@ -7,10 +7,10 @@ import {
 	adresMiastoSztywne,
 	styleKeywords,
 	FB_QUICK_LINKS,
-} from './config.js?v=20261005_v1'
-import { parsujDateFB, formatujDatePL, toYMD, dodajDni, generujDniOdJutra } from './utils.js?v=20261005_v1'
-import { initWeather } from './weather.js?v=20261005_v1'
-import { parseClipboardData } from './parser.js?v=20261005_v1'
+} from './config.js?v=20261020_v3'
+import { parsujDateFB, formatujDatePL, toYMD, dodajDni, generujDniOdJutra } from './utils.js?v=20261020_v3'
+import { initWeather } from './weather.js?v=20261020_v3'
+import { parseClipboardData } from './parser.js?v=20261020_v3'
 
 document.addEventListener('DOMContentLoaded', function () {
 	console.log('[DancePuls] Inicjalizacja wersji 20260205...')
@@ -716,17 +716,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 
-	// Odpalamy
+	// Odpalamy — zawsze pobieramy świeżą bazę z data/events.json (aby nie utknąć na przestarzałym stanie z poprzedniego tygodnia w localStorage)
 	nasluchujZmian()
-	if (localStorage.getItem('party_generator_stan')) {
-		wczytajStan()
+	zaladujZPlikuJSON().then(() => {
+		generujPost()
 		zaladujRaportKSH(true)
-	} else {
-		zaladujZPlikuJSON().then(() => {
-			generujPost()
-			zaladujRaportKSH(true)
-		})
-	}
+	})
 
 	// PRE-FETCH SCRAPER SCRIPT FOR CLIPBOARD
 	window.scraperScriptCache = ''
@@ -835,6 +830,11 @@ document.addEventListener('DOMContentLoaded', function () {
 					mainCheckbox.dispatchEvent(new Event('change'))
 					eventBlock.querySelector('.link').value = ev.url
 
+					const tytulInput = eventBlock.querySelector('.tytul-wydarzenia')
+					if (tytulInput && ev.title && ev.title !== 'Wydarzenie bez tytułu') {
+						tytulInput.value = ev.title
+					}
+
 					const miastoSelect = eventBlock.querySelector('.miasto')
 					const miejsceSelect = eventBlock.querySelector('.miejsce')
 					const miastoInne = eventBlock.querySelector('.miasto-inne')
@@ -920,8 +920,13 @@ document.addEventListener('DOMContentLoaded', function () {
 						}
 					})
 
-					// Auto-promote
-					if (fullText.includes('promowane')) {
+					// Auto-promote (KSH / Wolni Ludzie / Dolina Trzech Stawów / słowo kluczowe promowane)
+					if (
+						fullText.includes('promowane') ||
+						fullText.includes('kato salsa hub') ||
+						bestPlace === 'Wolni Ludzie' ||
+						bestPlace === 'Dolina Trzech Stawów'
+					) {
 						const promoteCb = container.querySelector('.promowane')
 						if (promoteCb) {
 							promoteCb.checked = true
