@@ -3741,5 +3741,56 @@
     ],
     "status": "verified",
     "verification_count": 10
+  },
+  {
+    "id": "term_school_14",
+    "term": "Taneczna Kompania (Katowice)",
+    "category": [
+      "schools",
+      "dance"
+    ],
+    "subcategory": [
+      "Bachata",
+      "Kizomba",
+      "Urban Kiz",
+      "Salsa",
+      "Latino Solo"
+    ],
+    "definition": "Popularna szkoła tańca zlokalizowana na katowickim Brynowie (ul. Tadeusza Kościuszki 227, obok parku trampolin Jumpcity oraz węzła przesiadkowego Brynów), założona przez parę instruktorów Ulę Miś i Michała Saternusa. Specjalizuje się w tańcach socialowych (użytkowych): Bachacie, Kizombie / Urban Kiz oraz Salsie, a także prowadzi kursy Tanga Argentyńskiego, Tańca Towarzyskiego i zajęcia solo (Lady Styling / Latino Solo). Dużym atutem lokalizacji jest przestronny, bezpłatny parking bezpośrednio pod budynkiem szkoły.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://tanecznakompania.pl",
+    "source": [
+      {
+        "name": "Oficjalna strona: tanecznakompania.pl",
+        "url": "https://tanecznakompania.pl"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_36",
+    "term": "Ula Miś & Michał Saternus",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Bachata",
+      "Kizomba",
+      "Urban Kiz",
+      "Salsa"
+    ],
+    "definition": "Założyciele, właściciele i główni instruktorzy katowickiej szkoły tańca Taneczna Kompania (ul. Kościuszki 227 w Katowicach). Specjalizują się w tańcach socialowych — przede wszystkim w Bachacie, Kizombie / Urban Kiz oraz Salsie — kładąc nacisk na swobodną komunikację w parze (Lead & Follow), naturalny ruch i bezstresowe wprowadzanie osób początkujących na śląskie parkiety.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://tanecznakompania.pl",
+    "source": [
+      {
+        "name": "Szkoła Tańca Taneczna Kompania Katowice",
+        "url": "https://tanecznakompania.pl"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
   }
 ]

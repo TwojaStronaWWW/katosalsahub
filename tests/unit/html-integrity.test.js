@@ -145,6 +145,12 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(kml, /Trasa piesza: Parking Rekomendowany NOSPR ↔ Wolnych Ludzi|Trasa piesza: Parking Rekomendowany NOSPR ↔ Wolni Ludzie/, 'Brak trasy pieszej od Parkingu Rekomendowanego NOSPR do Wolnych Ludzi');
       assert.doesNotMatch(kml, /Trasa piesza: Parking CH 3 Stawy/, 'Stara trasa piesza z CH 3 Stawy powinna zostać usunięta');
       assert.match(kml, /19\.0304412,50\.2641287,0/, 'Brak dokładnych współrzędnych Amfiteatru pod NOSPR-em w pliku KML');
+      assert.match(kml, /Szkoły Tańca i Kluby – Katowice/, 'Brak warstwy Szkół Tańca w Katowicach w pliku KML');
+      assert.match(kml, /La Clave Katowice/, 'Brak szkoły La Clave w pliku KML');
+      assert.match(kml, /Szkoła Tańca Good Mood/, 'Brak szkoły Good Mood w pliku KML');
+      assert.match(kml, /Mil Pasos Katowice/, 'Brak szkoły Mil Pasos w pliku KML');
+      assert.match(kml, /Taneczna Kompania.*Kościuszki 227/, 'Brak szkoły Taneczna Kompania (ul. Kościuszki 227) w pliku KML');
+      assert.match(kml, /18\.9894412,50\.2247965,0/, 'Brak dokładnych współrzędnych Tanecznej Kompanii w pliku KML');
       assert.doesNotMatch(kml, /http:\/\/maps\.google\.com/i, 'Ikony w KML powinny używać protokołu HTTPS');
     });
   });
