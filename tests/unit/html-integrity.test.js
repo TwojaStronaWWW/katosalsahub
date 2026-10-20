@@ -35,6 +35,9 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /<meta\s+property="og:title"\s+content="[^"]*Salsa Katowice[^"]*"/i, 'Brak tagu og:title z frazą Salsa Katowice');
       assert.match(html, /itemtype="https:\/\/schema\.org\/DanceGroup"/i, 'Brak mikrodanych Schema.org/DanceGroup');
       assert.match(html, /"@type":\s*"GeoCoordinates"[\s\S]*?"latitude":\s*50\.2449289[\s\S]*?"longitude":\s*19\.046362/, 'Brak dokładnych współrzędnych GeoCoordinates dla Kamiennego Kręgu w Schema.org');
+      assert.match(html, /"@type":\s*"SiteNavigationElement"/, 'Brak elementów SiteNavigationElement w Schema.org dla Sitelinks');
+      assert.match(html, /"performer":\s*\{[\s\S]*?"@type":\s*"DanceGroup"/, 'Brak pola performer w DanceEvent wymaganych przez Google Rich Results');
+      assert.match(html, /"offers":\s*\{[\s\S]*?"@type":\s*"Offer"/, 'Brak pola offers w DanceEvent wymaganych przez Google Rich Results');
       assert.match(html, /itemtype="https:\/\/schema\.org\/FAQPage"/i, 'Brak sekcji FAQ z mikrodanymi Schema.org/FAQPage');
       assert.match(html, /https:\/\/www\.facebook\.com\/KatoSalsaHub/, 'Brak linku do oficjalnego fanpage Facebook KatoSalsaHub');
       assert.match(html, /https:\/\/www\.instagram\.com\/katosalsahub\//, 'Brak linku do oficjalnego profilu Instagram katosalsahub');
