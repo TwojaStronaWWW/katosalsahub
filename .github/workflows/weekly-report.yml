@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: weekly-report-${{ github.ref }}
@@ -15,9 +16,9 @@ concurrency:
 
 jobs:
   generate-report:
-    name: 📅 Generowanie cotygodniowego raportu DancePuls
+    name: 📅 Generowanie cotygodniowego raportu DancePuls & Sync Grafików
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Pobranie kodu repozytorium
         uses: actions/checkout@v7
@@ -38,7 +39,11 @@ jobs:
       - name: Walidacja integralności wygenerowanych plików JSON przed commitem (Circuit Breaker)
         run: npm test
 
-      - name: Automatyczny commit i push zaktualizowanego raportu, events.json oraz schedule.json
+      - name: Automatyczny commit, push i wdrożenie SFTP na LH.pl po wykryciu zmian
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CF_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -49,4 +54,31 @@ jobs:
             git commit -m "chore(dancepuls): automatyczna aktualizacja raportu tygodniowego, events.json i schedule.json"
             git pull --rebase origin ${{ github.ref_name }}
             git push
+
+            echo "🚀 Wdrażanie zaktualizowanego grafiku i wydarzeń bezpośrednio na serwer LH.pl (SFTP)..."
+            sudo apt-get install -y -qq lftp > /dev/null 2>&1
+            lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
+              -p 40022 \
+              sftp://${{ secrets.FTP_SERVER }} \
+              -e "
+                set net:timeout 20;
+                set net:max-retries 3;
+                set net:reconnect-interval-base 3;
+                set sftp:auto-confirm yes;
+                put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/schedule.json;
+                put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/events.json;
+                put -O /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/ ./dancepuls.pl/data/events.json;
+                put -O /home/platne/serwer417204/public_html/dancepuls.katosalsahub.pl/data/ ./dancepuls.pl/data/latest_report.md;
+                quit
+              "
+
+            if [ -n "$CF_ZONE" ] && [ -n "$CF_TOKEN" ]; then
+              echo "⚡ Czyszczenie pamięci podręcznej Cloudflare CDN..."
+              curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE/purge_cache" \
+                -H "Authorization: Bearer $CF_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data '{"purge_everything":true}' || true
+            fi
+
+            gh workflow run deploy.yml --ref "${{ github.ref_name }}" || true
           fi

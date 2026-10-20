@@ -2447,17 +2447,17 @@ const CLASSES = [
     schoolId: 'EV',
     dayOfWeek: 7,
     dayName: 'Niedziela',
-    startTime: '19:00',
-    endTime: '23:00',
+    startTime: '15:00',
+    endTime: '18:00',
     styleCategory: 'salsa_cubana',
-    styleLabel: 'Potańcówka & Animacje KSH',
-    title: 'Niedzielna Potańcówka Kato Salsa Hub (Social & Rueda)',
+    styleLabel: 'Potańcówka & Praktyka Salsy KSH',
+    title: 'Niedzielna Potańcówka Kato Salsa Hub w Wolnych Ludziach (15:00–18:00)',
     levelCode: 'OPEN',
     levelLabel: 'OPEN • Dla każdego',
-    room: 'Wolni Ludzie (ul. Mariacka 2) / Dolina 3 Stawów',
+    room: 'Wolni Ludzie (ul. Mariacka 2, Katowice)',
     instructors: [{ name: 'Społeczność Kato Salsa Hub', termId: 'term_school_10' }],
     multisport: false,
-    notes: 'Cotygodniowa integracja katowickich szkół tańca przy muzyce z radia Kato Salsa Hub.',
+    notes: 'Cotygodniowa niedzielna potańcówka i praktyka Salsy pod dachem (Casino, Timba, Rueda de Casino, Son) w godz. 15:00–18:00. W niedziele ulice wokół oraz rekomendowany parking pod NOSPR-em są darmowe!',
   },
 ];
 
@@ -2480,6 +2480,19 @@ const DAY_NUMBER_TO_NAME = {
   6: 'Sobota',
   7: 'Niedziela',
 };
+
+/**
+ * Mapuje surową nazwę stylu z arkusza Google Sheets / OCR na kategorię filtra KSH.
+ */
+function inferStyleCategory(styleText = '') {
+  const s = String(styleText || '').toUpperCase();
+  if (/RUEDA/i.test(s)) return 'rueda';
+  if (/SALSA\s*(NY|LA|ON1|ON2|LINIOWA)|MAMBO/i.test(s)) return 'salsa_liniowa';
+  if (/SALSA|TIMBA|SON|CASINO|CUBAN/i.test(s)) return 'salsa_cubana';
+  if (/BACHATA/i.test(s)) return 'bachata';
+  if (/KIZOMBA|URBAN\s*KIZ|ZOUK|SEMBA|TARRAXO/i.test(s)) return 'kizomba';
+  return 'solo';
+}
 
 /**
  * Parser CSV zgodny z RFC-4180 (obsługuje wieloliniowe komórki w cudzysłowach z Google Sheets).
@@ -2568,9 +2581,21 @@ function parseGoodMoodSheetCells(csvText = '', locationSuffix = 'Paderewskiego 3
         .filter(Boolean);
 
       const styleLine = lines[0] || 'Zajęcia taneczne';
+      const timeLineIdx = lines.findIndex((l) => /(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/.test(l));
+      const instructorLine =
+        timeLineIdx >= 0 && lines[timeLineIdx + 1]
+          ? lines.slice(timeLineIdx + 1).join(' & ')
+          : lines.length >= 3
+            ? lines[lines.length - 1]
+            : 'Zespół Good Mood';
+      const levelDetailLines =
+        timeLineIdx > 1 ? lines.slice(1, timeLineIdx).filter((l) => !/^START/i.test(l)) : [];
+      const rawLevelLine = levelDetailLines.join(' ') || styleLine;
+
       const startMatch = rawCell.match(/START[:\s]*(\d{1,2}\.\d{1,2}(?:\.\d{2,4})?)/i);
       const startDate = startMatch ? startMatch[1] : null;
       const levelCode = normalizeLevel(rawCell);
+      const styleCategory = inferStyleCategory(styleLine);
 
       parsedBlocks.push({
         dayOfWeek: currentDay,
@@ -2579,6 +2604,9 @@ function parseGoodMoodSheetCells(csvText = '', locationSuffix = 'Paderewskiego 3
         startTime,
         endTime,
         styleLine,
+        styleCategory,
+        rawLevelLine,
+        instructorLine,
         startDate,
         levelCode,
         rawText: rawCell,
@@ -2586,6 +2614,51 @@ function parseGoodMoodSheetCells(csvText = '', locationSuffix = 'Paderewskiego 3
     }
   }
   return parsedBlocks;
+}
+
+/**
+ * Łączy sąsiadujące 45-minutowe bloki tego samego kursu z arkusza Good Mood (np. 17:20-18:05 + 18:10-18:55)
+ * w pojedynczy blok kursu 2x45 min, aby umożliwić pełną żywą synchronizację nowych i zmienionych godzin.
+ */
+function mergeGoodMoodAdjacentBlocks(blocks = []) {
+  const sorted = [...blocks].sort((a, b) => {
+    if (a.dayOfWeek !== b.dayOfWeek) return a.dayOfWeek - b.dayOfWeek;
+    if (a.room !== b.room) return a.room.localeCompare(b.room);
+    return a.startTime.localeCompare(b.startTime);
+  });
+
+  const toMinutes = (hhmm) => {
+    const [h, m] = String(hhmm || '00:00').split(':').map(Number);
+    return (h || 0) * 60 + (m || 0);
+  };
+
+  const merged = [];
+  for (const blk of sorted) {
+    const prev = merged[merged.length - 1];
+    const sameBaseStyle =
+      prev && prev.styleLine.toUpperCase() === blk.styleLine.toUpperCase();
+    const sameGroupLevel =
+      prev &&
+      prev.levelCode === blk.levelCode &&
+      prev.rawLevelLine.toUpperCase() === blk.rawLevelLine.toUpperCase();
+    const totalDurationMin = prev ? toMinutes(blk.endTime) - toMinutes(prev.startTime) : 999;
+
+    if (
+      prev &&
+      prev.dayOfWeek === blk.dayOfWeek &&
+      prev.room === blk.room &&
+      sameBaseStyle &&
+      sameGroupLevel &&
+      Math.abs(toMinutes(blk.startTime) - toMinutes(prev.endTime)) <= 15 &&
+      totalDurationMin <= 120
+    ) {
+      prev.endTime = blk.endTime;
+      if (!prev.startDate && blk.startDate) prev.startDate = blk.startDate;
+    } else {
+      merged.push({ ...blk });
+    }
+  }
+  return merged;
 }
 
 /**
@@ -2634,76 +2707,82 @@ function writeScheduleAtomically(targetPath, dataObj) {
 }
 
 /**
- * Opcjonalny ekstraktor OCR Vision (Gemini 2.5 Flash) wywoływany wyłącznie wtedy,
+ * Ekstraktor OCR Vision (kaskada Gemini 3.5 Flash -> 2.5 Flash -> 2.0 Flash) wywoływany wyłącznie wtedy,
  * gdy zmieni się suma kontrolna SHA-256 planszy grafiku PNG/JPG i ustawiono GEMINI_API_KEY.
  */
 async function extractClassesWithGeminiVision(imageBuffer, mimeType, schoolId, dayOfWeek) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return null;
 
-  const prompt = `Odczytaj wszystkie zajęcia taneczne z tej planszy grafiku szkoły ${schoolId} dla dnia ${DAY_NUMBER_TO_NAME[dayOfWeek]} (dayOfWeek=${dayOfWeek}). Zwróć tablicę JSON obiektów z polami: startTime (HH:MM), endTime (HH:MM), styleCategory (salsa_cubana|salsa_liniowa|bachata|kizomba|zouk_wcs|solo_styling), styleLabel, title, rawLevelText, room, instructors (tablica obiektów {name}), notes.`;
+  const prompt = `Odczytaj wszystkie zajęcia taneczne z tej planszy grafiku szkoły ${schoolId} dla dnia ${DAY_NUMBER_TO_NAME[dayOfWeek]} (dayOfWeek=${dayOfWeek}). Zwróć tablicę JSON obiektów z polami: startTime (HH:MM), endTime (HH:MM), styleCategory (salsa_cubana|rueda|salsa_liniowa|bachata|kizomba|solo), styleLabel, title, rawLevelText, room, instructors (tablica obiektów {name}), notes.`;
+  const visionModels = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-2.0-flash'];
 
-  try {
-    const res = await fetchWithTimeout(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                { text: prompt },
-                {
-                  inlineData: {
-                    mimeType,
-                    data: Buffer.from(imageBuffer).toString('base64'),
+  for (const modelName of visionModels) {
+    try {
+      const res = await fetchWithTimeout(
+        `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  { text: prompt },
+                  {
+                    inlineData: {
+                      mimeType,
+                      data: Buffer.from(imageBuffer).toString('base64'),
+                    },
                   },
-                },
-              ],
+                ],
+              },
+            ],
+            generationConfig: {
+              temperature: 0.1,
+              responseMimeType: 'application/json',
             },
-          ],
-          generationConfig: {
-            temperature: 0.1,
-            responseMimeType: 'application/json',
-          },
-        }),
-      },
-      25000
-    );
+          }),
+        },
+        25000
+      );
 
-    if (!res.ok) return null;
-    const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) return null;
-    const extracted = JSON.parse(text);
-    // Sanity check: plansza dziennego grafiku musi zawierać min. 3 poprawne kursy
-    if (!Array.isArray(extracted) || extracted.length < 3) return null;
+      if (!res.ok) continue;
+      const data = await res.json();
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) continue;
+      const extracted = JSON.parse(text);
+      // Sanity check: plansza dziennego grafiku musi zawierać min. 3 poprawne kursy
+      if (!Array.isArray(extracted) || extracted.length < 3) continue;
 
-    return extracted.map((item, idx) => {
-      const levelCode = normalizeLevel(`${item.rawLevelText || ''} ${item.title || ''}`);
-      return {
-        id: `${schoolId.toLowerCase()}_d${dayOfWeek}_v${idx + 1}`,
-        schoolId,
-        dayOfWeek,
-        dayName: DAY_NUMBER_TO_NAME[dayOfWeek],
-        startTime: String(item.startTime || '18:00').padStart(5, '0'),
-        endTime: String(item.endTime || '19:00').padStart(5, '0'),
-        styleCategory: item.styleCategory || 'salsa_cubana',
-        styleLabel: item.styleLabel || 'Taniec',
-        title: item.title || 'Zajęcia taneczne',
-        levelCode,
-        levelLabel: `${levelCode} • ${item.rawLevelText || 'Poziom ustandaryzowany'}`,
-        room: item.room || 'Sala główna',
-        instructors: Array.isArray(item.instructors) && item.instructors.length ? item.instructors : [{ name: 'Zespół Instruktorów' }],
-        multisport: true,
-        notes: item.notes || 'Zaktualizowano automatycznie przez AI Vision z nowej planszy grafiku.',
-      };
-    });
-  } catch (err) {
-    console.warn(`   ⚠️ [Fallback] AI Vision nie odczytało planszy (${err.message}) — zachowano dotychczasowe kursy.`);
-    return null;
+      return extracted.map((item, idx) => {
+        const levelCode = normalizeLevel(`${item.rawLevelText || ''} ${item.title || ''}`);
+        const styleCat = item.styleCategory && ['salsa_cubana', 'rueda', 'salsa_liniowa', 'bachata', 'kizomba', 'solo'].includes(item.styleCategory)
+          ? item.styleCategory
+          : inferStyleCategory(`${item.styleLabel || ''} ${item.title || ''}`);
+        return {
+          id: `${schoolId.toLowerCase()}_d${dayOfWeek}_v${idx + 1}`,
+          schoolId,
+          dayOfWeek,
+          dayName: DAY_NUMBER_TO_NAME[dayOfWeek],
+          startTime: String(item.startTime || '18:00').padStart(5, '0'),
+          endTime: String(item.endTime || '19:00').padStart(5, '0'),
+          styleCategory: styleCat,
+          styleLabel: item.styleLabel || 'Taniec',
+          title: item.title || 'Zajęcia taneczne',
+          levelCode,
+          levelLabel: `${levelCode} • ${item.rawLevelText || 'Poziom ustandaryzowany'}`,
+          room: item.room || 'Sala główna',
+          instructors: Array.isArray(item.instructors) && item.instructors.length ? item.instructors : [{ name: 'Zespół Instruktorów' }],
+          multisport: true,
+          notes: item.notes || `Zaktualizowano automatycznie przez AI Vision (${modelName}) z nowej planszy grafiku.`,
+        };
+      });
+    } catch (err) {
+      console.warn(`   ⚠️ [Fallback] Model Vision ${modelName} nie odczytał planszy (${err.message}) — próba kolejnego modelu.`);
+    }
   }
+  return null;
 }
 
 async function checkRemoteFreshness() {
@@ -2738,24 +2817,58 @@ async function checkRemoteFreshness() {
     const gliwBlocks = parseGoodMoodSheetCells(gmGliwCsv, 'Gliwicka 44');
 
     const allLiveGmBlocks = [...padBlocks, ...gliwBlocks];
+    const mergedLiveGmBlocks = mergeGoodMoodAdjacentBlocks(allLiveGmBlocks);
     if (allLiveGmBlocks.length >= 20) {
+      const prevHash0 = existingMeta?.gm?.paderewskiegoSha256;
+      const prevHashGliw = existingMeta?.gm?.gliwickaSha256;
+      const gmSheetChanged = Boolean(
+        (prevHash0 && prevHash0 !== gmHash0) || (prevHashGliw && prevHashGliw !== gmHashGliw)
+      );
+
       let gmUpdatedStarts = 0;
+      let gmUpdatedCourses = 0;
       for (const cls of CLASSES) {
         if (cls.schoolId !== 'GM') continue;
-        const matchingBlock = allLiveGmBlocks.find(
-          (b) => b.dayOfWeek === cls.dayOfWeek && b.startTime === cls.startTime && cls.room.toLowerCase().includes(b.room.split(' ')[1]?.toLowerCase() || '')
-        );
-        if (matchingBlock && matchingBlock.startDate) {
-          const updatedLabel = cls.levelLabel.replace(/Start\s+\d{1,2}\.\d{1,2}(?:\.\d{2,4})?/i, `Start ${matchingBlock.startDate}`);
-          if (updatedLabel !== cls.levelLabel) {
-            cls.levelLabel = updatedLabel;
-            gmUpdatedStarts++;
+        const matchingBlock =
+          mergedLiveGmBlocks.find(
+            (b) =>
+              b.dayOfWeek === cls.dayOfWeek &&
+              b.startTime === cls.startTime &&
+              cls.room.toLowerCase().includes(b.room.split(' ')[1]?.toLowerCase() || '')
+          ) ||
+          allLiveGmBlocks.find(
+            (b) =>
+              b.dayOfWeek === cls.dayOfWeek &&
+              b.startTime === cls.startTime &&
+              cls.room.toLowerCase().includes(b.room.split(' ')[1]?.toLowerCase() || '')
+          );
+        if (matchingBlock) {
+          if (matchingBlock.startDate) {
+            const updatedLabel = cls.levelLabel.replace(
+              /Start\s+\d{1,2}\.\d{1,2}(?:\.\d{2,4})?/i,
+              `Start ${matchingBlock.startDate}`
+            );
+            if (updatedLabel !== cls.levelLabel) {
+              cls.levelLabel = updatedLabel;
+              gmUpdatedStarts++;
+            }
+          }
+          // Gdy arkusz Good Mood uległ zmianie, zaktualizuj również poziom i godziny z żywego arkusza
+          if (gmSheetChanged && matchingBlock.levelCode && matchingBlock.levelCode !== cls.levelCode) {
+            cls.levelCode = matchingBlock.levelCode;
+            gmUpdatedCourses++;
           }
         }
       }
+
+      if (gmSheetChanged) {
+        const gmSchool = SCHOOLS.find((s) => s.id === 'GM');
+        if (gmSchool) gmSchool.sourceUpdatedAt = new Date().toISOString().slice(0, 10);
+      }
+
       gmMeta = { paderewskiegoSha256: gmHash0, gliwickaSha256: gmHashGliw, liveCellsCount: allLiveGmBlocks.length };
       console.log(
-        `   ✅ Good Mood Live CSV: wyodrębniono ${allLiveGmBlocks.length} bloków komórek (sha256=${gmHash0}/${gmHashGliw}, zaktualizowane daty START: ${gmUpdatedStarts})`
+        `   ✅ Good Mood Live CSV: wyodrębniono ${allLiveGmBlocks.length} bloków komórek (${mergedLiveGmBlocks.length} połączonych kursów, sha256=${gmHash0}/${gmHashGliw}, zaktualizowane daty START: ${gmUpdatedStarts}, korekty kursów: ${gmUpdatedCourses})`
       );
     } else {
       console.warn('   ⚠️ [Fallback] Arkusz Good Mood zwrócił zbyt mało komórek — zachowano ostatni zweryfikowany stan.');
@@ -2807,6 +2920,8 @@ async function checkRemoteFreshness() {
               if (CLASSES[i].schoolId === 'LC' && CLASSES[i].dayOfWeek === b.day) CLASSES.splice(i, 1);
             }
             CLASSES.push(...visionClasses);
+            const lcSchool = SCHOOLS.find((s) => s.id === 'LC');
+            if (lcSchool) lcSchool.sourceUpdatedAt = new Date().toISOString().slice(0, 10);
             console.log(`   🤖 Gemini Vision zaktualizowało ${visionClasses.length} kursów La Clave dla dnia ${b.day}`);
           }
         }
@@ -2829,7 +2944,12 @@ async function checkRemoteFreshness() {
       m[1].replace(/&amp;/g, '&')
     );
     if (mpImgUrls.length > 0) {
-      const mpHash = crypto.createHash('sha256').update(mpImgUrls.join('|')).digest('hex').slice(0, 16);
+      // Stabilny fingerprint oparty na nazwach plików JPG (z pominięciem tymczasowych tokenów sesyjnych ?oh=...&oe=... CDN)
+      const stableMpAssetIds = mpImgUrls.map((u) => {
+        const cleanPath = u.split('?')[0];
+        return cleanPath.split('/').pop() || cleanPath;
+      });
+      const mpHash = crypto.createHash('sha256').update(stableMpAssetIds.join('|')).digest('hex').slice(0, 16);
       const prevMpHash = existingMeta?.mp?.urlsFingerprint;
       if (prevMpHash && prevMpHash !== mpHash && process.env.GEMINI_API_KEY) {
         console.log(`   ⚡ Wykryto zmianę plansz Mil Pasos: ${prevMpHash} -> ${mpHash}`);
@@ -2843,6 +2963,8 @@ async function checkRemoteFreshness() {
                 if (CLASSES[i].schoolId === 'MP' && CLASSES[i].dayOfWeek === d) CLASSES.splice(i, 1);
               }
               CLASSES.push(...visionClasses);
+              const mpSchool = SCHOOLS.find((s) => s.id === 'MP');
+              if (mpSchool) mpSchool.sourceUpdatedAt = new Date().toISOString().slice(0, 10);
             }
           }
         }
@@ -2864,8 +2986,29 @@ async function checkRemoteFreshness() {
 }
 
 function buildSchedulePayload(sourcesMeta = null) {
+  let updatedAt = '2026-10-20';
+  let effectiveMeta = sourcesMeta;
+
+  if (fs.existsSync(SCHEDULE_JSON_PATH)) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(SCHEDULE_JSON_PATH, 'utf-8'));
+      if (prev.updatedAt) updatedAt = prev.updatedAt;
+      if (!effectiveMeta && prev.sourcesMeta) effectiveMeta = prev.sourcesMeta;
+
+      const prevClassesJson = JSON.stringify(prev.classes || []);
+      const nextClassesJson = JSON.stringify(CLASSES);
+      const prevMetaJson = JSON.stringify(prev.sourcesMeta || {});
+      const nextMetaJson = JSON.stringify(effectiveMeta || {});
+      if (prevClassesJson !== nextClassesJson || (sourcesMeta && prevMetaJson !== nextMetaJson)) {
+        updatedAt = new Date().toISOString().slice(0, 10);
+      }
+    } catch {
+      updatedAt = new Date().toISOString().slice(0, 10);
+    }
+  }
+
   const payload = {
-    updatedAt: '2026-10-20',
+    updatedAt,
     city: 'Katowice',
     description:
       'Wspólny grafik katowickich szkół tańca (La Clave ul. Chorzowska 11, Good Mood ul. Paderewskiego 35 & Gravitacja ul. Gliwicka 44, Mil Pasos ul. Kamienna 4, Evolution & KIZLAB) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH.',
@@ -2873,8 +3016,8 @@ function buildSchedulePayload(sourcesMeta = null) {
     schools: SCHOOLS,
     classes: CLASSES,
   };
-  if (sourcesMeta) {
-    payload.sourcesMeta = sourcesMeta;
+  if (effectiveMeta) {
+    payload.sourcesMeta = effectiveMeta;
   }
   return payload;
 }
@@ -2911,8 +3054,10 @@ if (require.main === module) {
 module.exports = {
   LEVEL_STANDARD,
   normalizeLevel,
+  inferStyleCategory,
   parseCsvGrid,
   parseGoodMoodSheetCells,
+  mergeGoodMoodAdjacentBlocks,
   validateScheduleSanity,
   buildSchedulePayload,
 };

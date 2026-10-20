@@ -2906,14 +2906,14 @@
       "schoolId": "EV",
       "dayOfWeek": 7,
       "dayName": "Niedziela",
-      "startTime": "19:00",
-      "endTime": "23:00",
+      "startTime": "15:00",
+      "endTime": "18:00",
       "styleCategory": "salsa_cubana",
-      "styleLabel": "Potańcówka & Animacje KSH",
-      "title": "Niedzielna Potańcówka Kato Salsa Hub (Social & Rueda)",
+      "styleLabel": "Potańcówka & Praktyka Salsy KSH",
+      "title": "Niedzielna Potańcówka Kato Salsa Hub w Wolnych Ludziach (15:00–18:00)",
       "levelCode": "OPEN",
       "levelLabel": "OPEN • Dla każdego",
-      "room": "Wolni Ludzie (ul. Mariacka 2) / Dolina 3 Stawów",
+      "room": "Wolni Ludzie (ul. Mariacka 2, Katowice)",
       "instructors": [
         {
           "name": "Społeczność Kato Salsa Hub",
@@ -2921,7 +2921,7 @@
         }
       ],
       "multisport": false,
-      "notes": "Cotygodniowa integracja katowickich szkół tańca przy muzyce z radia Kato Salsa Hub."
+      "notes": "Cotygodniowa niedzielna potańcówka i praktyka Salsy pod dachem (Casino, Timba, Rueda de Casino, Son) w godz. 15:00–18:00. W niedziele ulice wokół oraz rekomendowany parking pod NOSPR-em są darmowe!"
     }
   ],
   "sourcesMeta": {
@@ -2964,7 +2964,7 @@
     },
     "mp": {
       "imageCount": 8,
-      "urlsFingerprint": "281a1d64a2bfd8af"
+      "urlsFingerprint": "8d1307ea025226e3"
     }
   }
 }
