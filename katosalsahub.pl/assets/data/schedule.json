@@ -814,7 +814,8 @@
       "room": "Sala Duża (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Dawid"
+          "name": "Dawid Bawor",
+          "termId": "term_inst_37"
         }
       ],
       "multisport": true,
@@ -835,7 +836,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Dominika"
+          "name": "Dominika",
+          "termId": "term_inst_38"
         }
       ],
       "multisport": true,
@@ -878,7 +880,8 @@
       "room": "Sala Mała (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Ania & Kuba"
+          "name": "Ania Seruga & Kuba Tracz",
+          "termId": "term_inst_31"
         }
       ],
       "multisport": true,
@@ -921,7 +924,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Ania & Kuba"
+          "name": "Ania Seruga & Kuba Tracz",
+          "termId": "term_inst_31"
         }
       ],
       "multisport": true,
@@ -986,7 +990,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Ania & Kuba"
+          "name": "Ania Seruga & Kuba Tracz",
+          "termId": "term_inst_31"
         }
       ],
       "multisport": true,
@@ -1350,7 +1355,8 @@
       "room": "Sala Mała (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Anita"
+          "name": "Anita",
+          "termId": "term_inst_35"
         }
       ],
       "multisport": true,
@@ -1371,7 +1377,7 @@
       "room": "Sala Duża (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Olita & Ziemowit",
+          "name": "Ziemek & Olita",
           "termId": "term_inst_4"
         }
       ],
@@ -1415,7 +1421,7 @@
       "room": "Sala Duża (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Olita & Ziemowit",
+          "name": "Ziemek & Olita",
           "termId": "term_inst_4"
         }
       ],
@@ -1437,7 +1443,8 @@
       "room": "Sala Mała (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Anita"
+          "name": "Anita",
+          "termId": "term_inst_35"
         }
       ],
       "multisport": true,
@@ -1458,7 +1465,7 @@
       "room": "Sala Duża (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Olita & Ziemowit",
+          "name": "Ziemek & Olita",
           "termId": "term_inst_4"
         }
       ],
@@ -1846,7 +1853,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Dawid"
+          "name": "Dawid Bawor",
+          "termId": "term_inst_37"
         }
       ],
       "multisport": true,
@@ -2278,7 +2286,8 @@
       "room": "Sala Duża (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Ela & Piotr"
+          "name": "Piotr i Ela",
+          "termId": "term_inst_34"
         }
       ],
       "multisport": true,
@@ -2299,7 +2308,8 @@
       "room": "Sala Mała (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Tomek"
+          "name": "Tomek",
+          "termId": "term_inst_6"
         }
       ],
       "multisport": true,
@@ -2320,7 +2330,8 @@
       "room": "Sala Duża (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Ela & Piotr"
+          "name": "Piotr i Ela",
+          "termId": "term_inst_34"
         }
       ],
       "multisport": true,
@@ -2362,7 +2373,8 @@
       "room": "Sala Duża (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Ela & Piotr"
+          "name": "Piotr i Ela",
+          "termId": "term_inst_34"
         }
       ],
       "multisport": true,
@@ -2782,7 +2794,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Martica"
+          "name": "Martica Zaldivar",
+          "termId": "term_inst_33"
         }
       ],
       "multisport": true,
@@ -2825,7 +2838,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Martica"
+          "name": "Martica Zaldivar",
+          "termId": "term_inst_33"
         }
       ],
       "multisport": true,
@@ -2868,7 +2882,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Martica"
+          "name": "Martica Zaldivar",
+          "termId": "term_inst_33"
         }
       ],
       "multisport": true,
@@ -2911,7 +2926,8 @@
       "room": "Sala Średnia (Chorzowska 11)",
       "instructors": [
         {
-          "name": "Dominik & Natalia"
+          "name": "Dominik & Natalia",
+          "termId": "term_inst_32"
         }
       ],
       "multisport": true,

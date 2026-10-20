@@ -2141,11 +2141,18 @@ const POLISH_KEYWORD_ALIASES = {
     'Sebastian Ciosiński (La Clave)': ['Sebastian Ciosiński', 'Sebastiana Ciosińskiego', 'Sebastianem Ciosińskim'],
     'Ania Seruga (La Clave)': ['Ania Seruga', 'Ani Serugi', 'Anią Serugą'],
     'Dariusz „Darek” Gruszczyk (La Clave)': ['Dariusz Gruszczyk', 'Dariusza Gruszczyka', 'Darek Gruszczyk'],
-    'Ziemek i Olita (La Clave)': ['Ziemek i Olita', 'Ziemek & Olita'],
+    'Ziemek i Olita (La Clave)': ['Ziemek i Olita', 'Ziemek & Olita', 'Ziemowit Mazur'],
     'Klaudia i Adriano (La Clave)': ['Klaudia i Adriano', 'Klaudia & Adriano'],
-    'Marzena „Marziiik” i Jacek (La Clave)': ['Marzena „Marziiik” i Jacek', 'Marziiik'],
+    'Marzena i Tomek (La Clave)': ['Marzena i Tomek', 'Marzena & Tomek'],
     'Maciek Zahorodny (La Clave)': ['Maciek Zahorodny', 'Maćka Zahorodnego'],
     'Justyna Sarzyńska (La Clave)': ['Justyna Sarzyńska', 'Justyny Sarzyńskiej'],
+    'Claudio Mineo (La Clave / Good Mood)': ['Claudio Mineo'],
+    'Judyta „Niyaf” Mężyk i Joanna Fujawa (La Clave / Good Mood)': ['Judyta „Niyaf” Mężyk', 'Judyta Mężyk „Niyaf”', 'Judyta Niyaf', 'Joanna Fujawa'],
+    'Kuba Tracz (La Clave)': ['Kuba Tracz', 'Kuby Tracza', 'Kubą Traczem'],
+    'Dominik i Natalia (La Clave)': ['Dominik i Natalia', 'Dominik & Natalia'],
+    'Martica Zaldivar (La Clave)': ['Martica Zaldivar'],
+    'Piotr i Ela (La Clave)': ['Piotr i Ela', 'Ela & Piotr'],
+    'Dawid Bawor (La Clave)': ['Dawid Bawor', 'Dawida Bawora'],
     'Daniel Galas (Mil Pasos)': ['Daniel Galas', 'Daniela Galasa', 'Danielem Galasem'],
     'Anita i Grzegorz (Mil Pasos)': ['Anita i Grzegorz'],
     'Iza i Krystian (Mil Pasos)': ['Iza i Krystian'],
@@ -2170,7 +2177,7 @@ const POLISH_KEYWORD_ALIASES = {
 const GEO_IGNORE_TOKENS = new Set([
     'katowice', 'kuba', 'śląsk', 'gliwice / tychy', 'bielsko-biała',
     'katowice / śląsk', 'kuba / katowice', 'katowice / sosnowiec',
-    'w salsie', 'orishas', '70', '7', '71', 'la clave', 'mil pasos',
+    'w salsie', 'orishas', '70', '7', '71', 'la clave', 'la clave / good mood', 'good mood', 'mil pasos',
     'salsa los amigos', 'śląska szkoła tańca', 'kizlab', 'vamula.pl', 'krok podstawowy'
 ]);
 

@@ -165,9 +165,18 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.ok(schools.length >= 14, `Oczekiwano min. 14 szkół tańca w Katowicach/Śląsku, znaleziono: ${schools.length}`);
       assert.ok(schools.some(s => /Good Mood/i.test(s.term)), 'Brak Szkoły Tańca Good Mood w kategorii schools');
       assert.ok(schools.some(s => /Taneczna Kompania/i.test(s.term)), 'Brak Szkoły Tańca Taneczna Kompania w kategorii schools');
-      assert.ok(instructors.length >= 30, `Oczekiwano min. 30 instruktorów z katowickich szkół, znaleziono: ${instructors.length}`);
+      assert.ok(instructors.length >= 37, `Oczekiwano min. 37 instruktorów z katowickich szkół, znaleziono: ${instructors.length}`);
       assert.ok(instructors.some(i => /Dronszczyk/i.test(i.term)), 'Brak Adriana „Dronsona” Dronszczyka (Good Mood) w kategorii instructors');
-      assert.ok(instructors.some(i => /Claudio Mineo/i.test(i.term)), 'Brak Claudio Mineo (Good Mood) w kategorii instructors');
+      assert.ok(instructors.some(i => /Claudio Mineo/i.test(i.term)), 'Brak Claudio Mineo (La Clave / Good Mood) w kategorii instructors');
+      assert.ok(instructors.some(i => /Marzena i Tomek/i.test(i.term)), 'Brak Marzeny i Tomka (La Clave) w kategorii instructors');
+      assert.ok(instructors.some(i => /Kuba Tracz/i.test(i.term)), 'Brak Kuby Tracza (La Clave) w kategorii instructors');
+      assert.ok(instructors.some(i => /Dominik i Natalia/i.test(i.term)), 'Brak Dominika i Natalii (La Clave) w kategorii instructors');
+      assert.ok(instructors.some(i => /Martica Zaldivar/i.test(i.term)), 'Brak Marticy Zaldivar (La Clave) w kategorii instructors');
+      assert.ok(instructors.some(i => /Piotr i Ela/i.test(i.term)), 'Brak Piotra i Eli (La Clave) w kategorii instructors');
+      assert.ok(instructors.some(i => /Anita \(La Clave\)/i.test(i.term)), 'Brak Anity (La Clave) w kategorii instructors');
+      assert.ok(instructors.some(i => /Dawid Bawor/i.test(i.term)), 'Brak Dawida Bawora (La Clave) w kategorii instructors');
+      assert.ok(instructors.some(i => /Dominika \(La Clave\)/i.test(i.term)), 'Brak Dominiki (La Clave) w kategorii instructors');
+      assert.ok(!instructors.some(i => /Marziiik/i.test(i.term)), 'W bazie nie powinno być błędnego hasła Marzena „Marziiik” i Jacek');
       assert.ok(instruments.length >= 18, `Oczekiwano min. 18 instrumentów w Salsopedii, znaleziono: ${instruments.length}`);
 
       for (const entry of entries) {

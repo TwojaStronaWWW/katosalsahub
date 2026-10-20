@@ -1811,17 +1811,17 @@
       "Bachata",
       "Kizomba"
     ],
-    "definition": "Jedna z najważniejszych szkół tańca w Katowicach (ul. Chorzowska 11, założona w 2013 r. przez Sebastiana Ciosińskiego; drugi oddział działa w Gliwicach). Słynie z silnej społeczności Salsy Kubańskiej (Casino), Ruedy de Casino, Timby, Bachaty oraz Kizomby. W kadrze salsowej i bachatowej uczą m.in. Sebastian Ciosiński, Ania Seruga, Dariusz Gruszczyk, Ziemek i Olita, Klaudia i Adriano, Marzena „Marziiik” i Jacek oraz Maciek Zahorodny.",
-    "author": "Niezweryfikowane",
-    "author_link": "https://laclave.pl",
+    "definition": "Jedna z najważniejszych szkół tańca w Katowicach (ul. Chorzowska 11, założona w 2013 r. przez Sebastiana Ciosińskiego; drugi oddział działa w Gliwicach). Słynie z silnej społeczności Salsy Kubańskiej (Casino), Ruedy de Casino, Timby, Sonu Kubańskiego, Bachaty oraz Kizomby. Oficjalną kadrę instruktorską tworzą: Sebastian Ciosiński, Ania Seruga, Dariusz Gruszczyk, Ziemek i Olita (Ziemowit Mazur i Olita), Justyna Sarzyńska, Claudio Mineo, Marzena i Tomek, Judyta „Niyaf” Mężyk, Maciek Zahorodny, Kuba Tracz, Klaudia i Adriano, Dominik i Natalia, Martica Zaldivar, Piotr i Ela, Anita, Dawid Bawor oraz Dominika.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?instruktorzy",
     "source": [
       {
-        "name": "Oficjalna strona: laclave.pl",
-        "url": "https://laclave.pl"
+        "name": "Oficjalna kadra: laclave.pl/?instruktorzy",
+        "url": "https://www.laclave.pl/?instruktorzy"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_school_2",
@@ -2136,15 +2136,15 @@
       "Timba"
     ],
     "definition": "Założyciel szkoły tańca La Clave w Katowicach (2013) oraz Gliwicach (2022), jeden z głównych filarów śląskiej sceny Salsy Kubańskiej (Casino), Ruedy de Casino i Timby. Organizator ogólnopolskich wyjazdów i festiwali, m.in. Tumbao Dance Camp oraz Salsa Mini Festival.",
-    "author": "Niezweryfikowane",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?sebastian-ciosinski"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_2",
@@ -2155,19 +2155,22 @@
     ],
     "subcategory": [
       "Salsa Cubana",
-      "Lady Styling",
-      "Rueda de Casino"
+      "Timba",
+      "Rumba",
+      "Afro",
+      "Bachata",
+      "shines"
     ],
-    "definition": "Doświadczona instruktorka Salsy Kubańskiej (Casino), Ruedy de Casino oraz Cuban Lady Styling w katowickiej szkole tańca La Clave. Ceniona za precyzję techniki, kubański bodymovement i muzykalność w Timbie.",
-    "author": "Niezweryfikowane",
+    "definition": "Pasjonatka i instruktorka Salsy Kubańskiej (Casino), jej afrokubańskich korzeni (Rumba Kubańska, Cuban Bodymovement), Timby Solo oraz Bachaty w katowickiej szkole tańca La Clave (uczy także w Szkole Tańca Corazon w Bielsku-Białej). Założycielka i choreografka kobiecej formacji Salseras de Corazon, występującej na czołowych festiwalach w Polsce i za granicą (m.in. ¡Qué Calor! Salsa Festival, Calle de Timberos, Salsa Live Ostrava, Timba Paradise w Niemczech). W La Clave prowadzi również kursy Bachaty w parze z Kubą Traczem.",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?ania-seruga"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_3",
@@ -2179,18 +2182,18 @@
     "subcategory": [
       "Salsa Cubana",
       "Rueda de Casino",
-      "Son"
+      "partnerwork"
     ],
-    "definition": "Instruktor Salsy Kubańskiej (Casino), Ruedy de Casino oraz Sonu Kubańskiego w szkole La Clave w Katowicach. Słynie z przejrzystego tłumaczenia mechaniki prowadzenia (Lead & Follow) oraz płynnej dynamiki w Ruedzie.",
-    "author": "Niezweryfikowane",
+    "definition": "Instruktor Salsy Kubańskiej (Casino), partnerworku oraz Ruedy de Casino w szkole tańca La Clave w Katowicach (od lat związany również ze Szkołą Tańca Corazon w Bielsku-Białej). Zwolennik łagodnego i czytelnego prowadzenia (Lead & Follow), świadomości ruchu oraz muzykalnej interpretacji utworów kubańskich, łączący na zajęciach solidny warsztat z radosną atmosferą katowickich salsotek.",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?dariusz-gruszczyk"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_4",
@@ -2201,18 +2204,20 @@
     ],
     "subcategory": [
       "Salsa Cubana",
-      "Rueda de Casino"
+      "Rueda de Casino",
+      "Son",
+      "partnerwork"
     ],
-    "definition": "Charyzmatyczna para instruktorska prowadząca regularne kursy Salsy Kubańskiej (Casino) i Ruedy de Casino w katowickiej szkole La Clave. Na zajęciach łączą solidny fundament techniczny z radosną, społeczną energią kubańskich salsotek.",
-    "author": "Niezweryfikowane",
+    "definition": "Charyzmatyczna para instruktorska prowadząca regularne kursy Salsy Kubańskiej (autorski cykl La Clave Del Estilo – Partnerwork), Ruedy de Casino oraz tradycyjnego Sonu Kubańskiego (Contratiempo) w katowickiej szkole La Clave. Ziemowit „Ziemek” Mazur tańczy salsę kubańską od 2008 roku i w całym śląskim środowisku salsowym słynie z prowadzenia energetycznych, otwartych rued na salsotekach.",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?ziemek-olita"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_5",
@@ -2223,41 +2228,49 @@
     ],
     "subcategory": [
       "Salsa Cubana",
-      "Rueda de Casino"
+      "Timba",
+      "Rueda de Casino",
+      "shines",
+      "partnerwork"
     ],
-    "definition": "Duet instruktorski Salsy Kubańskiej i Ruedy de Casino w szkole tańca La Clave w Katowicach, prowadzący grupy od poziomu podstawowego po zaawansowane kombinacje w parach.",
-    "author": "Niezweryfikowane",
+    "definition": "Duet instruktorski Salsy Kubańskiej (Casino), Timby (Timba Conexion w parach) oraz kubańskiego footworku (Suelta Solo) w szkole tańca La Clave w Katowicach, prowadzący grupy od poziomu podstawowego po zaawansowane kombinacje muzykalne.",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?klaudia-adriano"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_6",
-    "term": "Marzena „Marziiik” i Jacek (La Clave)",
+    "term": "Marzena i Tomek (La Clave)",
     "category": [
       "instructors",
       "dance"
     ],
     "subcategory": [
       "Salsa Cubana",
+      "Timba",
       "Rueda de Casino",
-      "Animacje"
+      "partnerwork"
     ],
-    "definition": "Instruktorzy Salsy Kubańskiej i Ruedy de Casino związani z katowicką szkołą La Clave, znani z energetycznych kursów oraz animacji tanecznych na śląskich parkietach.",
-    "author": "Niezweryfikowane",
+    "definition": "Instruktorzy Salsy Kubańskiej (Casino), Timby oraz Ruedy de Casino w szkole tańca La Clave w Katowicach. Wspólnie prowadzą grupy średniozaawansowane Timba & Salsa Cubana, a Tomek prowadzi również piątkowe treningi i praktisy Ruedy de Casino. Marzena rozwijała swój styl na międzynarodowych festiwalach kubańskich (m.in. ¡Qué Calor!, Calle de Timberos, El Sol, I Am Cuban All Star, Havana en Belgrado), stawiając na zajęciach na interpretację muzyki, świadomość ruchu i przełamywanie barier na parkiecie.",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil Marzeny w La Clave",
+        "url": "https://www.laclave.pl/?marzena"
+      },
+      {
+        "name": "Profil Tomka w La Clave",
+        "url": "https://www.laclave.pl/?tomek"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_7",
@@ -2271,15 +2284,15 @@
       "Semba"
     ],
     "definition": "Czołowy specjalista i instruktor Kizomby oraz Semby w szkole La Clave w Katowicach, kładący nacisk na naturalne połączenie w parze, muzykalność i kulturę parkietu socialowego.",
-    "author": "Niezweryfikowane",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?maciek"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_8",
@@ -2289,20 +2302,21 @@
       "dance"
     ],
     "subcategory": [
-      "Latino Solo",
-      "Lady Styling",
-      "Salsa"
+      "Bachata",
+      "partnerwork",
+      "technique",
+      "follow"
     ],
-    "definition": "Instruktorka Latino Solo, Lady Styling oraz technik kobiecych w katowickiej szkole La Clave, skupiona na koordynacji, izolacjach ciała i pewności siebie na parkiecie.",
-    "author": "Niezweryfikowane",
+    "definition": "Tancerka i instruktorka Bachaty w katowickiej szkole La Clave (wcześniej związana m.in. z krakowskim Forum Tańca oraz formacją Rocketesheels by Tomasz Jakowienko). Jej styl bachatowy wzbogaca wieloletnie przygotowanie z zakresu tańca klasycznego, jazzu oraz high heels. W La Clave prowadzi kursy Bachaty od podstaw i dla grup tańczących oraz środowe praktisy wspólnie z Kubą Traczem, zwracając szczególną uwagę na technikę, relację w parze i wyrażanie emocji w tańcu.",
+    "author": "Kato Salsa Hub",
     "source": [
       {
-        "name": "Kadra La Clave Katowice",
-        "url": "https://laclave.pl"
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?justyna-sarzynska"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_9",
@@ -2655,26 +2669,31 @@
   },
   {
     "id": "term_inst_24",
-    "term": "Claudio Mineo (Good Mood)",
+    "term": "Claudio Mineo (La Clave / Good Mood)",
     "category": [
       "instructors",
       "dance"
     ],
     "subcategory": [
-      "Salsa",
       "Bachata",
+      "Salsa",
+      "partnerwork",
       "technique"
     ],
-    "definition": "Pochodzący z Włoch tancerz, instruktor i choreograf tańców latynoamerykańskich oraz karaibskich związany z tańcem od 2006 roku, prowadzący zajęcia w katowickiej Szkole Tańca Good Mood. Na kursach łączy południowy temperament i ekspresję z precyzyjną pracą nad techniką ruchu i izolacjami.",
-    "author": "Niezweryfikowane",
+    "definition": "Pochodzący z Włoch tancerz, instruktor i choreograf tańców latynoamerykańskich oraz karaibskich związany z tańcem od 2006 roku, prowadzący zajęcia w katowickich szkołach La Clave (m.in. kursy Bachaty od podstaw, Bachaty Fusion w parze z Olą oraz Bachaty Solo) i Good Mood. Na kursach łączy południowy temperament i ekspresję z precyzyjną pracą nad techniką ruchu i izolacjami.",
+    "author": "Kato Salsa Hub",
     "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?claudio"
+      },
       {
         "name": "Kadra Good Mood Katowice",
         "url": "https://goodmood.dance"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_inst_25",
@@ -2795,7 +2814,7 @@
   },
   {
     "id": "term_inst_30",
-    "term": "Joanna Fujawa i Judyta Mężyk „Niyaf” (Good Mood)",
+    "term": "Judyta „Niyaf” Mężyk i Joanna Fujawa (La Clave / Good Mood)",
     "category": [
       "instructors",
       "dance"
@@ -2804,16 +2823,20 @@
       "shines",
       "technique"
     ],
-    "definition": "Instruktorki technik solowych, choreografii i świadomości ciała w katowickiej Szkole Tańca Good Mood. Joanna Fujawa odpowiada za przygotowanie motoryczne, pilates, mobilność i choreografię, natomiast Judyta Mężyk „Niyaf” (wielokrotnie nagradzana tancerka orientalna) uczy precyzyjnych izolacji klatki piersiowej i bioder wykorzystywanych w kobiecym stylingu.",
-    "author": "Niezweryfikowane",
+    "definition": "Instruktorki technik solowych, choreografii i świadomości ciała w katowickich szkołach La Clave oraz Good Mood. Judyta „Niyaf” Mężyk (wielokrotnie nagradzana tancerka orientalna) prowadzi w La Clave regularne kursy Tańca Brzucha (od grup podstawowych po zaawansowane i formację pokazową) oraz uczy precyzyjnych izolacji klatki piersiowej i bioder w Good Mood, natomiast Joanna Fujawa odpowiada za przygotowanie motoryczne, pilates, mobilność i choreografię.",
+    "author": "Kato Salsa Hub",
     "source": [
+      {
+        "name": "Profil Judyty Niyaf w La Clave",
+        "url": "https://www.laclave.pl/?judyta-niyaf"
+      },
       {
         "name": "Kadra Good Mood Katowice",
         "url": "https://goodmood.dance"
       }
     ],
-    "status": "unverified",
-    "verification_count": 0
+    "status": "verified",
+    "verification_count": 5
   },
   {
     "id": "term_step_new_1",
@@ -3788,6 +3811,175 @@
       {
         "name": "Szkoła Tańca Taneczna Kompania Katowice",
         "url": "https://tanecznakompania.pl"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_31",
+    "term": "Kuba Tracz (La Clave)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Bachata",
+      "partnerwork",
+      "shines",
+      "lead"
+    ],
+    "definition": "Instruktor Bachaty (Dominikańskiej, Sensual oraz tradycyjnej) w szkole tańca La Clave w Katowicach. Prowadzi regularne kursy w parach i zajęcia footworku w duetach z Anią Serugą (Ania & Kuba) oraz Justyną Sarzyńską (Justyna & Kuba), a także środowe praktisy bachatowe na ul. Chorzowskiej 11.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?kuba-tracz",
+    "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?kuba-tracz"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_32",
+    "term": "Dominik i Natalia (La Clave)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Bachata",
+      "partnerwork",
+      "lead",
+      "follow"
+    ],
+    "definition": "Para instruktorska specjalizująca się w Bachacie w katowickiej szkole tańca La Clave. Prowadzą regularne kursy dla grup tańczących przy ul. Chorzowskiej 11, stawiając na płynne prowadzenie, muzykalność i komfort w tańcu użytkowym (social dancing).",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?dominik-natalia",
+    "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?dominik-natalia"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_33",
+    "term": "Martica Zaldivar (La Clave)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "Bachata",
+      "shines",
+      "technique"
+    ],
+    "definition": "Instruktorka w szkole tańca La Clave w Katowicach, prowadząca kursy solowe Salsa Solo Ladies, Bachata Solo Ladies oraz zajęcia techniki i pracy stóp Bachata Footwork Unisex. Na zajęciach łączy kubańską ekspresję, rytmikę i kobiecy styling z precyzyjną koordynacją ruchu.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?martica-zaldivar",
+    "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?martica-zaldivar"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_34",
+    "term": "Piotr i Ela (La Clave)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Bachata",
+      "partnerwork",
+      "lead",
+      "follow"
+    ],
+    "definition": "Para instruktorska Bachaty Sensual w katowickiej szkole tańca La Clave. Prowadzą piątkowe bloki kursowe od podstaw i dla grup tańczących oraz długie piątkowe praktisy bachatowe na Sali Dużej przy ul. Chorzowskiej 11, kładąc nacisk na prawidłową ramę, bezpieczne prowadzenie fal i izolacji oraz płynność w parze.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?piotr-i-ela",
+    "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?piotr-i-ela"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_35",
+    "term": "Anita (La Clave)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "shines",
+      "technique"
+    ],
+    "definition": "Instruktorka zajęć solowych Sensual Twerk oraz Sexy Dance w szkole tańca La Clave w Katowicach. Na zajęciach skupia się na izolacjach bioder, płynności ruchu, kondycji oraz budowaniu pewności siebie na parkiecie.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?anita",
+    "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?anita"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_37",
+    "term": "Dawid Bawor (La Clave)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "shines",
+      "technique"
+    ],
+    "definition": "Instruktor tańca w katowickiej szkole La Clave, prowadzący energetyczne kursy Latino Solo we wtorki i czwartki przy ul. Chorzowskiej 11. Na zajęciach stawia na dynamikę, koordynację i radość z ruchu w rytmach latynoskich bez konieczności posiadania pary.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?dawid-bawor",
+    "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?dawid-bawor"
+      }
+    ],
+    "status": "verified",
+    "verification_count": 5
+  },
+  {
+    "id": "term_inst_38",
+    "term": "Dominika (La Clave)",
+    "category": [
+      "instructors",
+      "dance"
+    ],
+    "subcategory": [
+      "Salsa Cubana",
+      "technique"
+    ],
+    "definition": "Instruktorka w szkole tańca La Clave w Katowicach, prowadząca kursy podstaw Salsy i rytmiki dla osób rozpoczynających swoją przygodę z tańcem na ul. Chorzowskiej 11.",
+    "author": "Kato Salsa Hub",
+    "author_link": "https://www.laclave.pl/?dominika",
+    "source": [
+      {
+        "name": "Profil w La Clave Katowice",
+        "url": "https://www.laclave.pl/?dominika"
       }
     ],
     "status": "verified",
