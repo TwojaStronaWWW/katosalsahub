@@ -9,7 +9,7 @@
     "test:smoke": "node tests/smoke/ui-smoke.js",
     "test:coverage": "node --test --experimental-test-coverage tests/**/*.test.js",
     "test:watch": "node --test --watch tests/**/*.test.js",
-    "check:syntax": "node --check dancepuls.pl/tools/sync_engine.js dancepuls.pl/js/app.js dancepuls.pl/js/config.js dancepuls.pl/js/parser.js dancepuls.pl/js/utils.js dancepuls.pl/js/weather.js scripts/serve.js katosalsahub.pl/assets/js/contact.js katosalsahub.pl/assets/js/cookies.js katosalsahub.pl/assets/js/home.js katosalsahub.pl/assets/js/radio.js katosalsahub.pl/assets/js/router.js katosalsahub.pl/assets/js/wiki.js katosalsahub.pl/assets/js/ai-widget.js katosalsahub.pl/sw.js tests/smoke/ui-smoke.js",
+    "check:syntax": "node --check dancepuls.pl/tools/sync_engine.js dancepuls.pl/js/app.js dancepuls.pl/js/config.js dancepuls.pl/js/parser.js dancepuls.pl/js/utils.js dancepuls.pl/js/weather.js scripts/serve.js katosalsahub.pl/assets/js/i18n.js katosalsahub.pl/assets/js/contact.js katosalsahub.pl/assets/js/cookies.js katosalsahub.pl/assets/js/home.js katosalsahub.pl/assets/js/radio.js katosalsahub.pl/assets/js/router.js katosalsahub.pl/assets/js/wiki.js katosalsahub.pl/assets/js/ai-widget.js katosalsahub.pl/sw.js tests/smoke/ui-smoke.js",
     "check": "npm run check:syntax && npm test",
     "serve": "node scripts/serve.js",
     "dev": "node scripts/serve.js",

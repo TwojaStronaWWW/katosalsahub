@@ -267,6 +267,19 @@ function stopMetadataPolling() {
   }
 }
 
+const DEFAULT_TRACK_TITLES = new Set([
+  'Kubańska Energia 24/7 (Salsa & Timba)',
+  'Energía Cubana 24/7 (Salsa y Timba)',
+  'Cuban Energy 24/7 (Salsa & Timba)'
+]);
+
+function rt(key, fallback) {
+  if (typeof window !== 'undefined' && window.kshI18n && typeof window.kshI18n.t === 'function') {
+    return window.kshI18n.t(key) || fallback;
+  }
+  return fallback;
+}
+
 function updateTrackUI() {
   const artistEl = document.getElementById('radio-track-artist');
   const titleEl = document.getElementById('radio-track-title');
@@ -276,7 +289,11 @@ function updateTrackUI() {
     artistEl.textContent = currentTrack.artist;
   }
   if (titleEl) {
-    titleEl.textContent = currentTrack.title;
+    if (DEFAULT_TRACK_TITLES.has(currentTrack.title)) {
+      titleEl.textContent = rt('radio.defaultTrack', currentTrack.title);
+    } else {
+      titleEl.textContent = currentTrack.title;
+    }
   }
   if (nowPlayingBox) {
     nowPlayingBox.classList.toggle('is-active', isPlaying);
@@ -383,7 +400,7 @@ function updateSleepTimerUI() {
       const secs = remainingSec % 60;
       const paddedSecs = secs < 10 ? `0${secs}` : `${secs}`;
       statusEl.textContent = `⏱ ${mins}:${paddedSecs}`;
-      statusEl.title = `Wyłączenie radia za ${mins}:${paddedSecs}`;
+      statusEl.title = `${rt('radio.sleepTooltipPrefix', 'Wyłączenie radia za')} ${mins}:${paddedSecs}`;
       statusEl.classList.remove('is-hidden');
     } else {
       statusEl.textContent = '⏱ 00:00';
@@ -539,14 +556,14 @@ function updateUI(headerBtn, sectionBtn) {
 
   if (sectionBtn) {
     if (state === 'loading') {
-      sectionBtn.textContent = '⏳ Łączenie...';
+      sectionBtn.textContent = rt('radio.loadingBtn', '⏳ Łączenie...');
       sectionBtn.classList.add('loading');
     } else if (state === 'playing') {
-      sectionBtn.textContent = '⏹ Wyłącz radio';
+      sectionBtn.textContent = rt('radio.stopBtn', '⏹ Wyłącz radio');
       sectionBtn.classList.add('playing');
       sectionBtn.classList.remove('loading');
     } else {
-      sectionBtn.textContent = '▶ Włącz radio';
+      sectionBtn.textContent = rt('radio.playBtn', '▶ Włącz radio');
       sectionBtn.classList.remove('playing', 'loading');
     }
   }
@@ -564,7 +581,11 @@ function updateUI(headerBtn, sectionBtn) {
     } else {
       headerBtn.innerHTML = '<i class="fas fa-play"></i>';
     }
-    headerBtn.title = state === 'playing' ? 'Zatrzymaj radio' : 'Włącz radio';
+    const label = state === 'playing'
+      ? rt('nav.radioStopAria', 'Zatrzymaj radio')
+      : rt('nav.radioAria', 'Włącz radio');
+    headerBtn.title = label;
+    headerBtn.setAttribute('aria-label', label);
   }
 
   if (sectionRadio) {

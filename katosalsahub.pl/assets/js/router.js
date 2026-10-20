@@ -54,8 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Ignore special targets
-        if (link.target === '_blank' || link.hasAttribute('download') || link.relList.contains('external')) return;
+        // Ignore special targets (close mobile menu first if clicked inside .nav-links)
+        if (link.target === '_blank' || link.hasAttribute('download') || link.relList.contains('external')) {
+            if (link.closest('.nav-links')) {
+                if (navLinks) navLinks.classList.remove('active');
+                if (burger) burger.classList.remove('active');
+            }
+            return;
+        }
 
         // Origin Check (Robust)
         try {

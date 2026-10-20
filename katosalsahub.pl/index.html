@@ -224,24 +224,32 @@
         <span class="logo-text">KATO SALSA HUB</span>
         <span class="logo-emoji">🔥</span>
       </a>
-      <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio">
+      <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio" data-i18n-aria-label="nav.radioAria">
         <i class="fas fa-play"></i>
       </button>
     </div>
     <div class="nav-links">
-      <a href="#hero">Start</a>
-      <a href="#onas">O nas</a>
-      <a href="#style">Style</a>
-      <a href="salsopedia.html" data-page="wiki">Salsopedia</a>
-      <a href="#radio">Radio</a>
-      <a href="#mapa">Lokacja</a>
-      <a href="#faq">FAQ</a>
-      <a href="#kontakt" class="cta-link">Kontakt</a>
+      <a href="#hero" data-i18n="nav.start">Start</a>
+      <a href="#onas" data-i18n="nav.about">O nas</a>
+      <a href="#style" data-i18n="nav.styles">Style</a>
+      <a href="salsopedia.html" data-page="wiki" data-i18n="nav.wiki">Salsopedia</a>
+      <a href="#radio" data-i18n="nav.radio">Radio</a>
+      <a href="#mapa" data-i18n="nav.map">Lokacja</a>
+      <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      <a href="#kontakt" class="cta-link" data-i18n="nav.contact">Kontakt</a>
     </div>
-    <div class="burger-menu">
-      <span></span>
-      <span></span>
-      <span></span>
+    <div class="nav-right-group">
+      <div class="lang-switcher" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+        <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+      </div>
+      <div class="burger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </nav>
 
@@ -256,22 +264,22 @@
       <div class="hero-content">
         <h1 class="hero-title">
           <span class="hero-badge-wrapper">
-            <span class="hero-badge">🌴 Salsa Katowice • Kubańska Energia na Śląsku 🌴</span>
+            <span class="hero-badge" data-i18n="hero.badge">🌴 Salsa Katowice • Kubańska Energia na Śląsku 🌴</span>
           </span>
-          <span class="title-line">Zatańcz</span>
-          <span class="title-line glow">z nami salsę</span>
-          <span class="title-line">w Katowicach</span>
+          <span class="title-line" data-i18n="hero.line1">Zatańcz</span>
+          <span class="title-line glow" data-i18n="hero.line2">z nami salsę</span>
+          <span class="title-line" data-i18n="hero.line3">w Katowicach</span>
         </h1>
-        <p class="hero-subtitle" itemprop="description">Otwarta społeczność salsy kubańskiej, timby, bachaty i kizomby w Katowicach. Tańczymy razem, na luzie – po prostu wpadaj! 💃🕺</p>
+        <p class="hero-subtitle" itemprop="description" data-i18n="hero.subtitle">Otwarta społeczność salsy kubańskiej, timby, bachaty i kizomby w Katowicach. Tańczymy razem, na luzie – po prostu wpadaj! 💃🕺</p>
         <div class="hero-buttons">
           <a href="https://www.facebook.com/groups/519446499987373" target="_blank" rel="noopener noreferrer" class="btn btn-primary" itemprop="sameAs">
-            <span>Bądź na bieżąco z wydarzeniami</span>
+            <span data-i18n="hero.btnPrimary">Bądź na bieżąco z wydarzeniami</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" />
             </svg>
           </a>
-          <a href="#mapa" class="btn btn-secondary">Gdzie i kiedy tańczymy</a>
+          <a href="#mapa" class="btn btn-secondary" data-i18n="hero.btnSecondary">Gdzie i kiedy tańczymy</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -286,24 +294,24 @@
     <section id="onas" class="section-onas">
       <div class="container">
         <div class="section-header center">
-          <span class="section-tag">Salsa Katowice – Kim jesteśmy</span>
-          <h2 class="section-title">Społeczność Salsy w Katowicach</h2>
+          <span class="section-tag" data-i18n="about.tag">Salsa Katowice – Kim jesteśmy</span>
+          <h2 class="section-title" data-i18n="about.title">Społeczność Salsy w Katowicach</h2>
         </div>
         <div class="onas-grid">
           <div class="card card--interactive onas-card">
             <div class="card-icon">🌟</div>
-            <h3>Otwarta Społeczność</h3>
-            <p>Każdy jest mile widziany – od osób stawiających pierwsze kroki po zaawansowanych tancerzy. Na katowickich parkietach poznasz ludzi, którzy kochają kubańskie rytmy tak samo jak Ty!</p>
+            <h3 data-i18n="about.c1.title">Otwarta Społeczność</h3>
+            <p data-i18n="about.c1.text">Każdy jest mile widziany – od osób stawiających pierwsze kroki po zaawansowanych tancerzy. Na katowickich parkietach poznasz ludzi, którzy kochają kubańskie rytmy tak samo jak Ty!</p>
           </div>
           <div class="card card--interactive onas-card">
             <div class="card-icon">🎵</div>
-            <h3>Autentyczny Klimat</h3>
-            <p>Salsa w Katowicach to nie tylko kursy i kroki – to styl życia! Kubańska energia, gorąca timba, rueda de casino i niepowtarzalna atmosfera Karaibów w samym sercu Śląska.</p>
+            <h3 data-i18n="about.c2.title">Autentyczny Klimat</h3>
+            <p data-i18n="about.c2.text">Salsa w Katowicach to nie tylko kursy i kroki – to styl życia! Kubańska energia, gorąca timba, rueda de casino i niepowtarzalna atmosfera Karaibów w samym sercu Śląska.</p>
           </div>
           <div class="card card--interactive onas-card">
             <div class="card-icon">🔥</div>
-            <h3>Regularne Potańcówki i Plenery</h3>
-            <p>Spotykamy się na darmowych plenerach w Dolinie Trzech Stawów i pod NOSPR-em oraz na niedzielnych praktykach w lokalu Wolni Ludzie (ul. Mariacka 2 w Katowicach).</p>
+            <h3 data-i18n="about.c3.title">Regularne Potańcówki i Plenery</h3>
+            <p data-i18n="about.c3.text">Spotykamy się na darmowych plenerach w Dolinie Trzech Stawów i pod NOSPR-em oraz na niedzielnych praktykach w lokalu Wolni Ludzie (ul. Mariacka 2 w Katowicach).</p>
           </div>
         </div>
       </div>
@@ -313,45 +321,45 @@
     <section id="style" class="section-style">
       <div class="container">
         <div class="section-header center">
-          <span class="section-tag">Co tańczymy w Katowicach</span>
-          <h2 class="section-title">Style Tańca – Salsa Kubańska i Rytmy Latino</h2>
+          <span class="section-tag" data-i18n="styles.tag">Co tańczymy w Katowicach</span>
+          <h2 class="section-title" data-i18n="styles.title">Style Tańca – Salsa Kubańska i Rytmy Latino</h2>
         </div>
         <div class="style-grid">
           <!-- 1. Salsa Cubana (Featured) -->
           <div class="card card--interactive style-card featured salsa">
             <h3>Salsa Cubana <span class="style-icon">💫</span></h3>
-            <p>To nie tylko taniec, to rozmowa ciał! Żywiołowa, pełna radości improwizacja w parze (Casino), gdzie
+            <p data-i18n="styles.salsa.desc">To nie tylko taniec, to rozmowa ciał! Żywiołowa, pełna radości improwizacja w parze (Casino), gdzie
               skomplikowane węzły rąk przeplatają się z kubańskim "sabor". Podstawa, od której zaczyna się Twoja
               przygoda!</p>
           </div>
           <div class="card card--interactive style-card timba">
             <h3>Timba <span class="style-icon">⚡</span></h3>
-            <p>Kubańska odmiana salsy z dużą dawką ekspresji, szybkim tempem i niesamowitą energią!</p>
+            <p data-i18n="styles.timba.desc">Kubańska odmiana salsy z dużą dawką ekspresji, szybkim tempem i niesamowitą energią!</p>
           </div>
           <div class="card card--interactive style-card rueda">
             <h3>Rueda de Casino <span class="style-icon">⭐</span></h3>
-            <p>Taniec w kole z wywoływanymi figurami. Energia grupy, synchronizacja i mnóstwo zabawy!</p>
+            <p data-i18n="styles.rueda.desc">Taniec w kole z wywoływanymi figurami. Energia grupy, synchronizacja i mnóstwo zabawy!</p>
           </div>
           <div class="card card--interactive style-card likiowa">
-            <h3>Salsa Liniowa <span class="style-icon">💃</span></h3>
-            <p>Elegancki styl tańczony w linii, znany z efektownych obrotów i precyzyjnego prowadzenia.</p>
+            <h3 data-i18n-html="styles.linear.title">Salsa Liniowa <span class="style-icon">💃</span></h3>
+            <p data-i18n="styles.linear.desc">Elegancki styl tańczony w linii, znany z efektownych obrotów i precyzyjnego prowadzenia.</p>
           </div>
           <div class="card card--interactive style-card son">
             <h3>Son Cubano <span class="style-icon">🎩</span></h3>
-            <p>Ojciec salsy. Elegancki, rytmiczny, tańczony "na kontrazas". Klasyka, styl i tradycja.</p>
+            <p data-i18n="styles.son.desc">Ojciec salsy. Elegancki, rytmiczny, tańczony "na kontrazas". Klasyka, styl i tradycja.</p>
           </div>
           <div class="card card--interactive style-card rumba-afro">
             <h3>Rumba Cubana <span class="style-icon">🥁</span></h3>
-            <p>Afrykańskie korzenie. Guaguancó, Yambú, Columbia. Gra uwodzenia, czyste emocje i rytm bębnów.</p>
+            <p data-i18n="styles.rumba.desc">Afrykańskie korzenie. Guaguancó, Yambú, Columbia. Gra uwodzenia, czyste emocje i rytm bębnów.</p>
           </div>
           <div class="card card--interactive style-card afro">
             <h3>Afro Cubano <span class="style-icon">🗿</span></h3>
-            <p>Święte tańce Orishas (Yoruba). Eleggua, Chango, Ochun. Pierwotna energia, kontakt z ziemią i duchowość
+            <p data-i18n="styles.afro.desc">Święte tańce Orishas (Yoruba). Eleggua, Chango, Ochun. Pierwotna energia, kontakt z ziemią i duchowość
               zaklęta w ruchu.</p>
           </div>
           <div class="card card--interactive style-card reggaeton">
             <h3>Reggaeton / Reparto <span class="style-icon">🧢</span></h3>
-            <p>Ulica Hawany! Nowoczesna, drapieżna energia Kuby. Izolacje ciała, mocny beat i nieskrępowana ekspresja "a
+            <p data-i18n="styles.reggaeton.desc">Ulica Hawany! Nowoczesna, drapieżna energia Kuby. Izolacje ciała, mocny beat i nieskrępowana ekspresja "a
               lo cubano".</p>
           </div>
         </div>
@@ -371,27 +379,27 @@
             </div>
           </div>
           <div class="radio-content">
-            <span class="section-tag">Posłuchaj</span>
+            <span class="section-tag" data-i18n="radio.tag">Posłuchaj</span>
             <h2 class="section-title">Timba Nation Radio 🎺</h2>
-            <p class="radio-desc">Najlepsze kubańskie rytmy non-stop! Puść muzykę i poczuj klimat Hawany w swoim domu.
+            <p class="radio-desc" data-i18n="radio.desc">Najlepsze kubańskie rytmy non-stop! Puść muzykę i poczuj klimat Hawany w swoim domu.
             </p>
             <div id="radio-now-playing" class="radio-now-playing" aria-live="polite">
               <span class="now-playing-icon"><i class="fas fa-music"></i></span>
               <div class="now-playing-meta">
-                <span class="now-playing-label">Teraz na antenie</span>
+                <span class="now-playing-label" data-i18n="radio.nowPlaying">Teraz na antenie</span>
                 <span class="now-playing-track">
-                  <strong id="radio-track-artist">Timba Nation Radio</strong> — <span id="radio-track-title">Kubańska Energia 24/7 (Salsa &amp; Timba)</span>
+                  <strong id="radio-track-artist">Timba Nation Radio</strong> — <span id="radio-track-title" data-i18n="radio.defaultTrack">Kubańska Energia 24/7 (Salsa &amp; Timba)</span>
                 </span>
               </div>
             </div>
-            <button id="radio-play" class="btn btn-radio">▶ Włącz radio</button>
-            <div class="radio-sleep-timer" aria-label="Wyłącznik czasowy radia">
-              <span class="sleep-timer-label"><i class="fas fa-moon"></i> Wyłącznik czasowy:</span>
+            <button id="radio-play" class="btn btn-radio" data-i18n="radio.playBtn">▶ Włącz radio</button>
+            <div class="radio-sleep-timer" aria-label="Wyłącznik czasowy radia" data-i18n-aria-label="radio.sleepAria">
+              <span class="sleep-timer-label" data-i18n-html="radio.sleepLabel"><i class="fas fa-moon"></i> Wyłącznik czasowy:</span>
               <div class="sleep-timer-buttons">
                 <button type="button" class="sleep-timer-btn" data-minutes="15">15 min</button>
                 <button type="button" class="sleep-timer-btn" data-minutes="30">30 min</button>
                 <button type="button" class="sleep-timer-btn" data-minutes="60">60 min</button>
-                <button type="button" id="sleep-timer-cancel" class="sleep-timer-cancel is-hidden">Wyłącz timer</button>
+                <button type="button" id="sleep-timer-cancel" class="sleep-timer-cancel is-hidden" data-i18n="radio.sleepCancel">Wyłącz timer</button>
               </div>
               <span id="sleep-timer-status" class="sleep-timer-status is-hidden" aria-live="polite"></span>
             </div>
@@ -404,20 +412,21 @@
     <section id="mapa" class="section-mapa">
       <div class="container">
         <div class="section-header center">
-          <span class="section-tag">Salsa Katowice – Miejscówki</span>
-          <h2 class="section-title">Gdzie Tańczymy <span class="text-gradient">Salsę w Katowicach?</span> 📍</h2>
-          <p class="section-subtitle">Tańczymy salsę plenerowo w Dolinie Trzech Stawów i pod NOSPR-em w Katowicach, a w niedziele także pod dachem w lokalu Wolni Ludzie (ul. Mariacka 2). Wybierz strefę, sprawdź darmowe parkingi i włącz nawigację jednym kliknięciem!</p>
+          <span class="section-tag" data-i18n="map.tag">Salsa Katowice – Miejscówki</span>
+          <h2 class="section-title" data-i18n-html="map.title">Gdzie Tańczymy <span class="text-gradient">Salsę w Katowicach?</span> 📍</h2>
+          <p class="section-subtitle" data-i18n="map.subtitle">Tańczymy salsę plenerowo w Dolinie Trzech Stawów i pod NOSPR-em w Katowicach, a w niedziele także pod dachem w lokalu Wolni Ludzie (ul. Mariacka 2). Wybierz strefę, sprawdź darmowe parkingi i włącz nawigację jednym kliknięciem!</p>
         </div>
 
         <div class="map-hub">
           <!-- Pasek górny widgetu: ustandaryzowane przełączniki widoku + stabilny pasek statusu -->
           <div class="map-hub-header">
-            <div class="map-tabs" role="group" aria-label="Wybierz widok mapy">
+            <div class="map-tabs" role="group" aria-label="Wybierz widok mapy" data-i18n-aria-label="map.tabsAria">
               <button
                 type="button"
                 class="map-tab-btn is-active"
                 aria-pressed="true"
                 data-zone="wolni"
+                data-i18n-label="map.wolni.label"
                 data-label="Śródmieście: Wolni Ludzie (ul. Mariacka 2) i darmowe parkingi"
                 data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving"
                 data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2577281%2C19.0248325&amp;z=16">
@@ -428,6 +437,8 @@
                 class="map-tab-btn"
                 aria-pressed="false"
                 data-zone="stawy"
+                data-i18n="map.tab.stawy"
+                data-i18n-label="map.stawy.label"
                 data-label="Dolina 3 Stawów: Kamienny Krąg, Wiata i 3 Toalety"
                 data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2370851,19.0470498&amp;travelmode=driving"
                 data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2449289%2C19.046362&amp;z=16">
@@ -438,6 +449,8 @@
                 class="map-tab-btn"
                 aria-pressed="false"
                 data-zone="nospr"
+                data-i18n="map.tab.nospr"
+                data-i18n-label="map.nospr.label"
                 data-label="Strefa Kultury: Amfiteatr i Parking Rekomendowany pod NOSPR-em"
                 data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving"
                 data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2641287%2C19.0304412&amp;z=16">
@@ -468,29 +481,31 @@
                 <div class="map-spot-title-group">
                   <span class="map-spot-emoji">🍹</span>
                   <div>
-                    <h3 itemprop="name">Wolni Ludzie – Pod dachem</h3>
-                    <span class="map-spot-address" itemprop="address">ul. Mariacka 2, Katowice (róg ul. Mielęckiego)</span>
+                    <h3 itemprop="name" data-i18n="map.wolni.title">Wolni Ludzie – Pod dachem</h3>
+                    <span class="map-spot-address" itemprop="address" data-i18n="map.wolni.addr">ul. Mariacka 2, Katowice (róg ul. Mielęckiego)</span>
                   </div>
                 </div>
-                <span class="map-spot-badge map-spot-badge--gold">Niedziele 15:00–18:00</span>
+                <span class="map-spot-badge map-spot-badge--gold" data-i18n="map.wolni.badge">Niedziele 15:00–18:00</span>
               </div>
               <ul class="map-spot-points">
-                <li><strong>💃 Kiedy tańczymy:</strong> w <strong>każdą niedzielę od 15:00 do 18:00</strong> — otwarte potańcówki i praktyki (Salsa Cubana, Timba, Rueda, Bachata, Kizomba).</li>
-                <li><strong>📸 Fotorelacja z 18.10 (65 zdjęć):</strong> zobacz klimat naszych niedziel w obiektywie Jacka Cupiała — <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer">Otwórz galerię zdjęć</a>!</li>
-                <li><strong>⭐ Parking Rekomendowany (12 min):</strong> ogromny, darmowy w niedzielę parking pod NOSPR-em z wyznaczoną trasą pieszą przez kładkę!</li>
-                <li><strong>🅿️ Darmowe ulice wokół (niedziele i po 17:00):</strong> Warszawska / Św. Stanisława (1 min), Tylna Mariacka / Dworcowa (2 min), Wojewódzka (3 min), pl. Szramka (4 min).</li>
+                <li data-i18n-html="map.wolni.p1"><strong>💃 Kiedy tańczymy:</strong> w <strong>każdą niedzielę od 15:00 do 18:00</strong> — otwarte potańcówki i praktyki (Salsa Cubana, Timba, Rueda, Bachata, Kizomba).</li>
+                <li data-i18n-html="map.wolni.p2"><strong>📸 Fotorelacja z 18.10 (65 zdjęć):</strong> zobacz klimat naszych niedziel w obiektywie Jacka Cupiała — <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer">Otwórz galerię zdjęć</a>!</li>
+                <li data-i18n-html="map.wolni.p3"><strong>⭐ Parking Rekomendowany (12 min):</strong> ogromny, darmowy w niedzielę parking pod NOSPR-em z wyznaczoną trasą pieszą przez kładkę!</li>
+                <li data-i18n-html="map.wolni.p4"><strong>🅿️ Darmowe ulice wokół (niedziele i po 17:00):</strong> Warszawska / Św. Stanisława (1 min), Tylna Mariacka / Dworcowa (2 min), Wojewódzka (3 min), pl. Szramka (4 min).</li>
               </ul>
               <div class="map-spot-actions">
                 <button
                   type="button"
                   class="map-focus-btn"
                   data-zone="wolni"
+                  data-i18n-html="map.showBtn"
+                  data-i18n-label="map.wolni.label"
                   data-label="Śródmieście: Wolni Ludzie (ul. Mariacka 2) i darmowe parkingi"
                   data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving"
                   data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2577281%2C19.0248325&amp;z=16">
                   <i class="fas fa-crosshairs"></i> Pokaż na mapie
                 </button>
-                <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn" data-i18n-html="map.navBtn">
                   <i class="fas fa-parking"></i> Nawiguj na Parking Rekomendowany
                 </a>
               </div>
@@ -502,28 +517,30 @@
                 <div class="map-spot-title-group">
                   <span class="map-spot-emoji">💃</span>
                   <div>
-                    <h3 itemprop="name">Kamienny Krąg – 3 Stawy</h3>
-                    <span class="map-spot-address" itemprop="address">ul. Trzech Stawów 22, Katowice (obok przystani i La Cantina)</span>
+                    <h3 itemprop="name" data-i18n="map.stawy.title">Kamienny Krąg – 3 Stawy</h3>
+                    <span class="map-spot-address" itemprop="address" data-i18n="map.stawy.addr">ul. Trzech Stawów 22, Katowice (obok przystani i La Cantina)</span>
                   </div>
                 </div>
-                <span class="map-spot-badge map-spot-badge--blue">Plener</span>
+                <span class="map-spot-badge map-spot-badge--blue" data-i18n="map.stawy.badge">Plener</span>
               </div>
               <ul class="map-spot-points">
-                <li><strong>☔ Wiata w razie deszczu:</strong> zadaszona wiata przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10).</li>
-                <li><strong>⭐ Parking Rekomendowany (13 min):</strong> darmowy parking Południe / Rolkostrada z zaznaczoną trasą pieszą + Najbliższy przy La Cantina (1 min).</li>
-                <li><strong>🚻 Infrastruktura:</strong> 3 toalety na mapie oraz przystanek <em>Kolonia Zuzanna</em>.</li>
+                <li data-i18n-html="map.stawy.p1"><strong>☔ Wiata w razie deszczu:</strong> zadaszona wiata przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10).</li>
+                <li data-i18n-html="map.stawy.p2"><strong>⭐ Parking Rekomendowany (13 min):</strong> darmowy parking Południe / Rolkostrada z zaznaczoną trasą pieszą + Najbliższy przy La Cantina (1 min).</li>
+                <li data-i18n-html="map.stawy.p3"><strong>🚻 Infrastruktura:</strong> 3 toalety na mapie oraz przystanek <em>Kolonia Zuzanna</em>.</li>
               </ul>
               <div class="map-spot-actions">
                 <button
                   type="button"
                   class="map-focus-btn"
                   data-zone="stawy"
+                  data-i18n-html="map.showBtn"
+                  data-i18n-label="map.stawy.label"
                   data-label="Dolina 3 Stawów: Kamienny Krąg, Wiata i 3 Toalety"
                   data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.2370851,19.0470498&amp;travelmode=driving"
                   data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2449289%2C19.046362&amp;z=16">
                   <i class="fas fa-crosshairs"></i> Pokaż na mapie
                 </button>
-                <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.2370851,19.0470498&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.2370851,19.0470498&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn" data-i18n-html="map.navBtn">
                   <i class="fas fa-parking"></i> Nawiguj na Parking Rekomendowany
                 </a>
               </div>
@@ -535,27 +552,29 @@
                 <div class="map-spot-title-group">
                   <span class="map-spot-emoji">🏛️</span>
                   <div>
-                    <h3 itemprop="name">Amfiteatr i Parking NOSPR</h3>
-                    <span class="map-spot-address" itemprop="address">pl. Wojciecha Kilara 1 / ul. Olimpijska, Katowice</span>
+                    <h3 itemprop="name" data-i18n="map.nospr.title">Amfiteatr i Parking NOSPR</h3>
+                    <span class="map-spot-address" itemprop="address" data-i18n="map.nospr.addr">pl. Wojciecha Kilara 1 / ul. Olimpijska, Katowice</span>
                   </div>
                 </div>
-                <span class="map-spot-badge map-spot-badge--purple">Strefa Kultury</span>
+                <span class="map-spot-badge map-spot-badge--purple" data-i18n="map.nospr.badge">Strefa Kultury</span>
               </div>
               <ul class="map-spot-points">
-                <li><strong>💃 Parkiet plenerowy:</strong> od wschodniej strony gmachu NOSPR przy fontannach.</li>
-                <li><strong>⭐ Darmowy w niedzielę parking rekomendowany:</strong> ogromne parkingi od ul. Olimpijskiej i Muzeum Śląskiego (2 min pod NOSPR, 12 min trasą pieszą na Mariacką 2).</li>
+                <li data-i18n-html="map.nospr.p1"><strong>💃 Parkiet plenerowy:</strong> od wschodniej strony gmachu NOSPR przy fontannach.</li>
+                <li data-i18n-html="map.nospr.p2"><strong>⭐ Darmowy w niedzielę parking rekomendowany:</strong> ogromne parkingi od ul. Olimpijskiej i Muzeum Śląskiego (2 min pod NOSPR, 12 min trasą pieszą na Mariacką 2).</li>
               </ul>
               <div class="map-spot-actions">
                 <button
                   type="button"
                   class="map-focus-btn"
                   data-zone="nospr"
+                  data-i18n-html="map.showBtn"
+                  data-i18n-label="map.nospr.label"
                   data-label="Strefa Kultury: Amfiteatr i Parking Rekomendowany pod NOSPR-em"
                   data-parking-url="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving"
                   data-map-src="https://www.google.com/maps/d/embed?mid=1uVKmGBXSW7Gv2VXC_B1MErhEKRn5vJI&amp;ehbc=2E312F&amp;noprof=1&amp;ll=50.2641287%2C19.0304412&amp;z=16">
                   <i class="fas fa-crosshairs"></i> Pokaż na mapie
                 </button>
-                <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn">
+                <a href="https://www.google.com/maps/dir/?api=1&amp;destination=50.263743,19.0313587&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" class="map-nav-btn" data-i18n-html="map.navBtn">
                   <i class="fas fa-parking"></i> Nawiguj na Parking Rekomendowany
                 </a>
               </div>
@@ -569,33 +588,33 @@
     <section id="faq" class="section-faq" itemscope itemtype="https://schema.org/FAQPage">
       <div class="container">
         <div class="section-header center">
-          <span class="section-tag">Warto wiedzieć</span>
-          <h2 class="section-title">Salsa w Katowicach – <span class="text-gradient">Pytania i Odpowiedzi</span> 💬</h2>
-          <p class="section-subtitle">Stawiasz pierwsze kroki na śląskich parkietach lub szukasz informacji o naszych potańcówkach? Sprawdź odpowiedzi na najczęstsze pytania!</p>
+          <span class="section-tag" data-i18n="faq.tag">Warto wiedzieć</span>
+          <h2 class="section-title" data-i18n-html="faq.title">Salsa w Katowicach – <span class="text-gradient">Pytania i Odpowiedzi</span> 💬</h2>
+          <p class="section-subtitle" data-i18n="faq.subtitle">Stawiasz pierwsze kroki na śląskich parkietach lub szukasz informacji o naszych potańcówkach? Sprawdź odpowiedzi na najczęstsze pytania!</p>
         </div>
         <div class="faq-grid">
           <details class="card faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" open>
-            <summary class="faq-question" itemprop="name">Gdzie można potańczyć salsę w Katowicach?</summary>
+            <summary class="faq-question" itemprop="name" data-i18n="faq.q1">Gdzie można potańczyć salsę w Katowicach?</summary>
             <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text">Społeczność <strong>Kato Salsa Hub</strong> spotyka się w trzech głównych punktach w Katowicach: pod dachem w lokalu <strong>Wolni Ludzie (ul. Mariacka 2)</strong> w <strong>każdą niedzielę od 15:00 do 18:00</strong> oraz w sezonie wiosenno-letnim na darmowych plenerach tanecznych w <strong>Dolinie Trzech Stawów (Kamienny Krąg przy ul. Trzech Stawów 22)</strong> i w <strong>Strefie Kultury pod Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)</strong>.</p>
+              <p itemprop="text" data-i18n-html="faq.a1">Społeczność <strong>Kato Salsa Hub</strong> spotyka się w trzech głównych punktach w Katowicach: pod dachem w lokalu <strong>Wolni Ludzie (ul. Mariacka 2)</strong> w <strong>każdą niedzielę od 15:00 do 18:00</strong> oraz w sezonie wiosenno-letnim na darmowych plenerach tanecznych w <strong>Dolinie Trzech Stawów (Kamienny Krąg przy ul. Trzech Stawów 22)</strong> i w <strong>Strefie Kultury pod Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)</strong>.</p>
             </div>
           </details>
           <details class="card faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <summary class="faq-question" itemprop="name">Czy na salsotekę lub plener w Katowicach trzeba przyjść z własną parą?</summary>
+            <summary class="faq-question" itemprop="name" data-i18n="faq.q2">Czy na salsotekę lub plener w Katowicach trzeba przyjść z własną parą?</summary>
             <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text">Nie! Salsa kubańska (Casino) oraz Rueda de Casino w Katowicach opierają się na integracji i swobodnej rotacji w parach. Większość uczestników przychodzi solo – na miejscu błyskawicznie poznasz innych tancerzy i włączysz się do wspólnej zabawy.</p>
+              <p itemprop="text" data-i18n="faq.a2">Nie! Salsa kubańska (Casino) oraz Rueda de Casino w Katowicach opierają się na integracji i swobodnej rotacji w parach. Większość uczestników przychodzi solo – na miejscu błyskawicznie poznasz innych tancerzy i włączysz się do wspólnej zabawy.</p>
             </div>
           </details>
           <details class="card faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <summary class="faq-question" itemprop="name">Jakie style tańca królują na potańcówkach Kato Salsa Hub?</summary>
+            <summary class="faq-question" itemprop="name" data-i18n="faq.q3">Jakie style tańca królują na potańcówkach Kato Salsa Hub?</summary>
             <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text">Sercem naszych spotkań w Katowicach jest <strong>Salsa Cubana (Casino)</strong>, energetyczna <strong>Timba</strong>, taniec w kole <strong>Rueda de Casino</strong> oraz tradycyjny <strong>Son Cubano, Rumba i Afro</strong>. Na śląskich parkietach i w naszym zestawieniu wydarzeń DancePuls znajdziesz również imprezy łączące salsę z bachatą i kizombą.</p>
+              <p itemprop="text" data-i18n-html="faq.a3">Sercem naszych spotkań w Katowicach jest <strong>Salsa Cubana (Casino)</strong>, energetyczna <strong>Timba</strong>, taniec w kole <strong>Rueda de Casino</strong> oraz tradycyjny <strong>Son Cubano, Rumba i Afro</strong>. Na śląskich parkietach i w naszym zestawieniu wydarzeń DancePuls znajdziesz również imprezy łączące salsę z bachatą i kizombą.</p>
             </div>
           </details>
           <details class="card faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <summary class="faq-question" itemprop="name">Skąd czerpać wiedzę o figurach salsy i aktualnych imprezach na Śląsku?</summary>
+            <summary class="faq-question" itemprop="name" data-i18n="faq.q4">Skąd czerpać wiedzę o figurach salsy i aktualnych imprezach na Śląsku?</summary>
             <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text">Na naszej stronie znajdziesz <a href="salsopedia.html" data-page="wiki"><strong>Salsopedię</strong></a> – otwartą encyklopedię ponad 200 figur salsy kubańskiej, szkół tańca w Katowicach i instruktorów, całodobowe radio kubańskie <strong>Timba Nation</strong> oraz cotygodniowy rozkład imprez tanecznych na Śląsku.</p>
+              <p itemprop="text" data-i18n-html="faq.a4">Na naszej stronie znajdziesz <a href="salsopedia.html" data-page="wiki"><strong>Salsopedię</strong></a> – otwartą encyklopedię ponad 200 figur salsy kubańskiej, szkół tańca w Katowicach i instruktorów, całodobowe radio kubańskie <strong>Timba Nation</strong> oraz cotygodniowy rozkład imprez tanecznych na Śląsku.</p>
             </div>
           </details>
         </div>
@@ -607,22 +626,22 @@
       <div class="container">
         <div class="kontakt-grid">
           <div class="kontakt-info">
-            <span class="section-tag">Napisz do nas</span>
-            <h2 class="section-title">Skontaktuj się z nami</h2>
-            <p>Masz pytania o salsę w Katowicach? Chcesz dołączyć do społeczności? A może organizujesz event taneczny na Śląsku i potrzebujesz tancerzy? Napisz!
+            <span class="section-tag" data-i18n="contact.tag">Napisz do nas</span>
+            <h2 class="section-title" data-i18n="contact.title">Skontaktuj się z nami</h2>
+            <p data-i18n="contact.desc">Masz pytania o salsę w Katowicach? Chcesz dołączyć do społeczności? A może organizujesz event taneczny na Śląsku i potrzebujesz tancerzy? Napisz!
             </p>
             <div class="contact-details">
               <div class="contact-item">
                 <span class="contact-icon">📍</span>
-                <span>Katowice – ul. Mariacka 2 / Dolina Trzech Stawów / NOSPR</span>
+                <span data-i18n="contact.loc">Katowice – ul. Mariacka 2 / Dolina Trzech Stawów / NOSPR</span>
               </div>
               <div class="contact-item">
                 <span class="contact-icon">👥</span>
-                <a href="https://www.facebook.com/groups/519446499987373" target="_blank" rel="noopener noreferrer">Grupa Facebook: Kato Salsa Hub</a>
+                <a href="https://www.facebook.com/groups/519446499987373" target="_blank" rel="noopener noreferrer" data-i18n="contact.fbGroup">Grupa Facebook: Kato Salsa Hub</a>
               </div>
               <div class="contact-item">
                 <span class="contact-icon">📘</span>
-                <a href="https://www.facebook.com/KatoSalsaHub" target="_blank" rel="noopener noreferrer">Fanpage Facebook: @KatoSalsaHub</a>
+                <a href="https://www.facebook.com/KatoSalsaHub" target="_blank" rel="noopener noreferrer" data-i18n="contact.fbPage">Fanpage Facebook: @KatoSalsaHub</a>
               </div>
               <div class="contact-item">
                 <span class="contact-icon">📸</span>
@@ -630,7 +649,7 @@
               </div>
               <div class="contact-item">
                 <span class="contact-icon">📷</span>
-                <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer">Galeria zdjęć: Wolni Ludzie (18.10 – 65 ujęć)</a>
+                <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="contact.gallery">Galeria zdjęć: Wolni Ludzie (18.10 – 65 ujęć)</a>
               </div>
             </div>
           </div>
@@ -645,23 +664,23 @@
                 <input type="text" id="website_url" name="website_url" autocomplete="off" tabindex="-1" />
               </div>
               <div class="form-group">
-                <label for="name">Imię lub pseudonim</label>
-                <input type="text" id="name" name="name" required placeholder="np. Janek, SalsaLover" />
+                <label for="name" data-i18n="contact.nameLabel">Imię lub pseudonim</label>
+                <input type="text" id="name" name="name" required placeholder="np. Janek, SalsaLover" data-i18n-placeholder="contact.namePh" />
               </div>
               <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required placeholder="jan@example.com" />
+                <label for="email" data-i18n="contact.emailLabel">Email</label>
+                <input type="email" id="email" name="email" required placeholder="jan@example.com" data-i18n-placeholder="contact.emailPh" />
               </div>
               <div class="form-group">
-                <label for="message">Wiadomość</label>
-                <textarea id="message" name="message" required placeholder="Twoja wiadomość..." rows="5"></textarea>
+                <label for="message" data-i18n="contact.msgLabel">Wiadomość</label>
+                <textarea id="message" name="message" required placeholder="Twoja wiadomość..." data-i18n-placeholder="contact.msgPh" rows="5"></textarea>
               </div>
               <div class="form-checkbox-group">
                 <input type="checkbox" id="gdpr_consent" name="gdpr_consent" value="1" required />
-                <label for="gdpr_consent">Akceptuję <a href="privacy.html">Politykę Prywatności</a> i wyrażam zgodę na przetwarzanie podanych danych w celu obsługi mojego zapytania w systemie Helpdesk.</label>
+                <label for="gdpr_consent" data-i18n-html="contact.gdpr">Akceptuję <a href="privacy.html">Politykę Prywatności</a> i wyrażam zgodę na przetwarzanie podanych danych w celu obsługi mojego zapytania w systemie Helpdesk.</label>
               </div>
               <button type="submit" class="btn btn-primary full-width">
-                <span>Wyślij wiadomość</span>
+                <span data-i18n="contact.submit">Wyślij wiadomość</span>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
@@ -679,24 +698,30 @@
     <div class="footer-content">
       <div class="footer-brand">
         <h3>KATO SALSA HUB 🔥</h3>
-        <p>Salsa Katowice – Kubańska energia w sercu Śląska</p>
+        <p data-i18n="footer.tagline">Salsa Katowice – Kubańska energia w sercu Śląska</p>
+        <div class="lang-switcher lang-switcher--footer" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+          <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+        </div>
       </div>
       <div class="footer-links">
-        <a href="#hero">Start</a>
-        <a href="#onas">O nas</a>
-        <a href="#style">Style</a>
+        <a href="#hero" data-i18n="nav.start">Start</a>
+        <a href="#onas" data-i18n="nav.about">O nas</a>
+        <a href="#style" data-i18n="nav.styles">Style</a>
         <a href="salsopedia.html">Salsopedia</a>
-        <a href="#mapa">Gdzie tańczymy</a>
-        <a href="#faq">FAQ</a>
-        <a href="#kontakt">Kontakt</a>
+        <a href="#mapa" data-i18n="footer.where">Gdzie tańczymy</a>
+        <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+        <a href="#faq" data-i18n="nav.faq">FAQ</a>
+        <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
         <a href="https://www.facebook.com/KatoSalsaHub" target="_blank" rel="noopener noreferrer">Facebook</a>
         <a href="https://www.instagram.com/katosalsahub/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="privacy.html">Polityka Prywatności</a>
+        <a href="privacy.html" data-i18n="footer.privacy">Polityka Prywatności</a>
         <a href="https://dancepuls.katosalsahub.pl/" target="_blank" rel="noopener noreferrer">DancePuls Generator</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
+      <p>&copy; <span id="rok"></span> Kato Salsa Hub. <span data-i18n="footer.createdBy">Stworzone przez</span> <a href="https://twojastronawww.pl"
           target="_blank" rel="noopener noreferrer">TwojaStronaWWW</a></p>
     </div>
   </footer>
@@ -704,15 +729,16 @@
   <!-- Cookie Banner -->
   <div id="cookie-banner" class="cookie-banner" data-nosnippet>
     <div class="cookie-content">
-      <h4>🍪 Ciasteczka i Prywatność</h4>
-      <p>Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
+      <h4 data-i18n="cookie.title">🍪 Ciasteczka i Prywatność</h4>
+      <p data-i18n-html="cookie.text">Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
           href="privacy.html">Politykę Prywatności</a>.</p>
     </div>
     <div class="cookie-actions">
-      <button id="accept-cookies" class="btn btn-primary">Akceptuję</button>
+      <button id="accept-cookies" class="btn btn-primary" data-i18n="cookie.accept">Akceptuję</button>
     </div>
   </div>
 
+  <script data-cfasync="false" src="assets/js/i18n.js?v=4.3"></script>
   <script data-cfasync="false" src="assets/js/contact.js?v=3.9"></script>
   <script data-cfasync="false" src="assets/js/cookies.js?v=3.9"></script>
   <script data-cfasync="false" src="assets/js/wiki.js?v=3.9"></script>

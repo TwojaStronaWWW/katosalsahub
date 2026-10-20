@@ -55,52 +55,61 @@
                 <span class="logo-text">KATO SALSA HUB</span>
                 <span class="logo-emoji">🔥</span>
             </a>
-            <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio">
+            <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio" data-i18n-aria-label="nav.radioAria">
                 <i class="fas fa-play"></i>
             </button>
         </div>
         <div class="nav-links">
-            <a href="index.html#hero">Start</a>
-            <a href="index.html#onas">O nas</a>
-            <a href="index.html#style">Style</a>
-            <a href="salsopedia.html" data-page="wiki">Salsopedia</a>
-            <a href="index.html#radio">Radio</a>
-            <a href="index.html#mapa">Lokacja</a>
-            <a href="index.html#kontakt" class="cta-link">Kontakt</a>
+            <a href="index.html#hero" data-i18n="nav.start">Start</a>
+            <a href="index.html#onas" data-i18n="nav.about">O nas</a>
+            <a href="index.html#style" data-i18n="nav.styles">Style</a>
+            <a href="salsopedia.html" data-page="wiki" data-i18n="nav.wiki">Salsopedia</a>
+            <a href="index.html#radio" data-i18n="nav.radio">Radio</a>
+            <a href="index.html#mapa" data-i18n="nav.map">Lokacja</a>
+            <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+            <a href="index.html#faq" data-i18n="nav.faq">FAQ</a>
+            <a href="index.html#kontakt" class="cta-link" data-i18n="nav.contact">Kontakt</a>
         </div>
-        <div class="burger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="nav-right-group">
+            <div class="lang-switcher" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+                <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+                <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+            </div>
+            <div class="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </nav>
 
     <main id="app-content">
         <div class="container">
             <div class="privacy-content">
-                <a href="index.html" class="back-link">← Wróć do strony głównej</a>
-                <h1>Polityka Prywatności</h1>
+                <a href="index.html" class="back-link" data-i18n="privacy.back">← Wróć do strony głównej</a>
+                <h1 data-i18n="privacy.title">Polityka Prywatności</h1>
 
                 <div class="privacy-section">
-                    <h2>1. Informacje ogólne i Administrator</h2>
-                    <p>Niniejsza polityka prywatności określa zasady przetwarzania i ochrony danych osobowych przekazywanych przez użytkowników w związku z korzystaniem z serwisu społecznościowego katosalsahub.pl prowadzonego przez społeczność Kato Salsa Hub.</p>
+                    <h2 data-i18n="privacy.s1.title">1. Informacje ogólne i Administrator</h2>
+                    <p data-i18n="privacy.s1.p1">Niniejsza polityka prywatności określa zasady przetwarzania i ochrony danych osobowych przekazywanych przez użytkowników w związku z korzystaniem z serwisu społecznościowego katosalsahub.pl prowadzonego przez społeczność Kato Salsa Hub.</p>
                 </div>
 
                 <div class="privacy-section">
-                    <h2>2. Pliki Cookies i Analityka Cookieless</h2>
-                    <p>Serwis stosuje zasadę minimalizacji danych (Privacy by Design). Wykorzystujemy wyłącznie techniczne pamięci przeglądarki niezbędne do zapamiętania akceptacji komunikatu prywatności oraz działania aplikacji webowej (PWA).</p>
-                    <p>Statystyki odwiedzin prowadzone są w modelu <strong>Cookieless</strong> (bez śledzących plików cookies i z poszanowaniem nagłówka Do Not Track), co pozwala nam rozwijać portal bez profilowania użytkowników.</p>
+                    <h2 data-i18n="privacy.s2.title">2. Pliki Cookies i Analityka Cookieless</h2>
+                    <p data-i18n="privacy.s2.p1">Serwis stosuje zasadę minimalizacji danych (Privacy by Design). Wykorzystujemy wyłącznie techniczne pamięci przeglądarki niezbędne do zapamiętania akceptacji komunikatu prywatności oraz działania aplikacji webowej (PWA).</p>
+                    <p data-i18n-html="privacy.s2.p2">Statystyki odwiedzin prowadzone są w modelu <strong>Cookieless</strong> (bez śledzących plików cookies i z poszanowaniem nagłówka Do Not Track), co pozwala nam rozwijać portal bez profilowania użytkowników.</p>
                 </div>
 
                 <div class="privacy-section">
-                    <h2>3. Formularz kontaktowy, Minimalizacja RODO i System Helpdesk</h2>
-                    <p>W formularzu kontaktowym stosujemy zasadę minimalizacji danych – nie wymagamy podawania pełnego imienia i nazwiska, wystarczy <strong>imię lub pseudonim</strong> oraz adres e-mail potrzebny do udzielenia odpowiedzi.</p>
-                    <p>Przesłane zapytania są obsługiwane za pośrednictwem wewnętrznego systemu zgłoszeniowego <strong>Helpdesk</strong> wyłącznie w celu prowadzenia korespondencji zwrotnej. Przed zarejestrowaniem zgłoszenia adres IP nadawcy podlega automatycznej anonimizacji (maskowaniu ostatniego członu adresu IP), a dane nie są udostępniane podmiotom trzecim w celach marketingowych.</p>
+                    <h2 data-i18n="privacy.s3.title">3. Formularz kontaktowy, Minimalizacja RODO i System Helpdesk</h2>
+                    <p data-i18n-html="privacy.s3.p1">W formularzu kontaktowym stosujemy zasadę minimalizacji danych – nie wymagamy podawania pełnego imienia i nazwiska, wystarczy <strong>imię lub pseudonim</strong> oraz adres e-mail potrzebny do udzielenia odpowiedzi.</p>
+                    <p data-i18n-html="privacy.s3.p2">Przesłane zapytania są obsługiwane za pośrednictwem wewnętrznego systemu zgłoszeniowego <strong>Helpdesk</strong> wyłącznie w celu prowadzenia korespondencji zwrotnej. Przed zarejestrowaniem zgłoszenia adres IP nadawcy podlega automatycznej anonimizacji (maskowaniu ostatniego członu adresu IP), a dane nie są udostępniane podmiotom trzecim w celach marketingowych.</p>
                 </div>
 
                 <div class="privacy-section">
-                    <h2>4. Prawa użytkownika i Kontakt</h2>
-                    <p>Każdej osobie przysługuje prawo dostępu do treści swoich danych, ich sprostowania, usunięcia lub ograniczenia przetwarzania. W sprawach dotyczących prywatności prosimy o kontakt poprzez formularz na stronie głównej.</p>
+                    <h2 data-i18n="privacy.s4.title">4. Prawa użytkownika i Kontakt</h2>
+                    <p data-i18n="privacy.s4.p1">Każdej osobie przysługuje prawo dostępu do treści swoich danych, ich sprostowania, usunięcia lub ograniczenia przetwarzania. W sprawach dotyczących prywatności prosimy o kontakt poprzez formularz na stronie głównej.</p>
                 </div>
             </div>
         </div>
@@ -110,21 +119,27 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <h3>KATO SALSA HUB 🔥</h3>
-                <p>Kubańska energia w sercu Śląska</p>
+                <p data-i18n="footer.tagline">Kubańska energia w sercu Śląska</p>
+                <div class="lang-switcher lang-switcher--footer" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+                    <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+                    <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+                    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+                </div>
             </div>
             <div class="footer-links">
-                <a href="index.html#hero">Start</a>
-                <a href="index.html#onas">O nas</a>
-                <a href="index.html#style">Style</a>
-                <a href="index.html#kontakt">Kontakt</a>
+                <a href="index.html#hero" data-i18n="nav.start">Start</a>
+                <a href="index.html#onas" data-i18n="nav.about">O nas</a>
+                <a href="index.html#style" data-i18n="nav.styles">Style</a>
+                <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+                <a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a>
                 <a href="https://www.facebook.com/KatoSalsaHub" target="_blank" rel="noopener noreferrer">Facebook</a>
                 <a href="https://www.instagram.com/katosalsahub/" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a href="privacy.html">Polityka Prywatności</a>
+                <a href="privacy.html" data-i18n="footer.privacy">Polityka Prywatności</a>
                 <a href="https://dancepuls.katosalsahub.pl/" target="_blank" rel="noopener noreferrer">DancePuls Generator</a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
+            <p>&copy; <span id="rok"></span> Kato Salsa Hub. <span data-i18n="footer.createdBy">Stworzone przez</span> <a href="https://twojastronawww.pl"
                     target="_blank" rel="noopener noreferrer">TwojaStronaWWW</a></p>
         </div>
     </footer>
@@ -132,15 +147,16 @@
     <!-- Cookie Banner -->
     <div id="cookie-banner" class="cookie-banner" data-nosnippet>
         <div class="cookie-content">
-            <h4>🍪 Ciasteczka i Prywatność</h4>
-            <p>Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
+            <h4 data-i18n="cookie.title">🍪 Ciasteczka i Prywatność</h4>
+            <p data-i18n-html="cookie.text">Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
                     href="privacy.html">Politykę Prywatności</a>.</p>
         </div>
         <div class="cookie-actions">
-            <button id="accept-cookies" class="btn btn-primary">Akceptuję</button>
+            <button id="accept-cookies" class="btn btn-primary" data-i18n="cookie.accept">Akceptuję</button>
         </div>
     </div>
 
+    <script data-cfasync="false" src="assets/js/i18n.js?v=4.3"></script>
     <script data-cfasync="false" src="assets/js/cookies.js?v=3.9"></script>
     <script data-cfasync="false" src="assets/js/radio.js?v=3.9"></script>
     <script data-cfasync="false" src="assets/js/router.js?v=3.9"></script>

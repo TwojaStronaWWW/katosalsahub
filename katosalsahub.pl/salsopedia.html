@@ -52,23 +52,32 @@
         <span class="logo-text">KATO SALSA HUB</span>
         <span class="logo-emoji">🔥</span>
       </a>
-      <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio">
+      <button id="header-radio-play" class="header-radio-btn" aria-label="Włącz radio" data-i18n-aria-label="nav.radioAria">
         <i class="fas fa-play"></i>
       </button>
     </div>
     <div class="nav-links">
-      <a href="index.html#hero">Start</a>
-      <a href="index.html#onas">O nas</a>
-      <a href="index.html#style">Style</a>
-      <a href="salsopedia.html" class="active" data-page="wiki">Salsopedia</a>
-      <a href="index.html#radio">Radio</a>
-      <a href="index.html#mapa">Lokacja</a>
-      <a href="index.html#kontakt" class="cta-link">Kontakt</a>
+      <a href="index.html#hero" data-i18n="nav.start">Start</a>
+      <a href="index.html#onas" data-i18n="nav.about">O nas</a>
+      <a href="index.html#style" data-i18n="nav.styles">Style</a>
+      <a href="salsopedia.html" class="active" data-page="wiki" data-i18n="nav.wiki">Salsopedia</a>
+      <a href="index.html#radio" data-i18n="nav.radio">Radio</a>
+      <a href="index.html#mapa" data-i18n="nav.map">Lokacja</a>
+      <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+      <a href="index.html#faq" data-i18n="nav.faq">FAQ</a>
+      <a href="index.html#kontakt" class="cta-link" data-i18n="nav.contact">Kontakt</a>
     </div>
-    <div class="burger-menu">
-      <span></span>
-      <span></span>
-      <span></span>
+    <div class="nav-right-group">
+      <div class="lang-switcher" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+        <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+      </div>
+      <div class="burger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </nav>
 
@@ -109,13 +118,14 @@
     <header class="wiki-header">
       <div class="wiki-header-content">
         <h1>Salsopedia</h1>
-        <p>Twoja otwarta encyklopedia wiedzy o salsie kubańskiej, muzyce i kulturze afro-kubańskiej.</p>
+        <p data-i18n="wiki.subtitle">Twoja otwarta encyklopedia wiedzy o salsie kubańskiej, muzyce i kulturze afro-kubańskiej.</p>
 
         <div class="search-container">
           <i class="fas fa-search search-icon"></i>
           <input type="text" id="searchInput" class="search-input"
-            placeholder="Szukaj pojęcia (np. Vacilala, Enchufla, Timba, Clave)...">
-          <button id="clearSearchBtn" class="search-clear-btn is-hidden" title="Wyczyść szukanie">&times;</button>
+            placeholder="Szukaj pojęcia (np. Vacilala, Enchufla, Timba, Clave)..."
+            data-i18n-placeholder="wiki.searchPh">
+          <button id="clearSearchBtn" class="search-clear-btn is-hidden" title="Wyczyść szukanie" data-i18n-title="wiki.clearSearch">&times;</button>
         </div>
         <div class="search-meta">
           <span id="resultsCount">Baza wiedzy: 183 haseł</span>
@@ -129,64 +139,64 @@
       <!-- Sidebar Navigation -->
       <aside class="wiki-sidebar">
         <div class="sidebar-block">
-          <h3>Kategorie</h3>
+          <h3 data-i18n="wiki.categories">Kategorie</h3>
           <ul class="category-list" id="categoryList">
             <li data-category="all" class="active">
-              <span>Wszystkie</span>
+              <span data-i18n="wiki.cat.all">Wszystkie</span>
               <span class="cat-count" id="count-all">-</span>
             </li>
             <li data-category="steps">
-              <span>Kroki (Podstawy)</span>
+              <span data-i18n="wiki.cat.steps">Kroki (Podstawy)</span>
               <span class="cat-count" id="count-steps">-</span>
             </li>
             <li data-category="figures">
-              <span>Figury (Casino / Rueda)</span>
+              <span data-i18n="wiki.cat.figures">Figury (Casino / Rueda)</span>
               <span class="cat-count" id="count-figures">-</span>
             </li>
             <li data-category="dance">
-              <span>Taniec</span>
+              <span data-i18n="wiki.cat.dance">Taniec</span>
               <span class="cat-count" id="count-dance">-</span>
             </li>
             <li data-category="styles">
-              <span>Style Tańca</span>
+              <span data-i18n="wiki.cat.styles">Style Tańca</span>
               <span class="cat-count" id="count-styles">-</span>
             </li>
             <li data-category="music">
-              <span>Muzyka</span>
+              <span data-i18n="wiki.cat.music">Muzyka</span>
               <span class="cat-count" id="count-music">-</span>
             </li>
             <li data-category="instruments">
-              <span>Instrumenty</span>
+              <span data-i18n="wiki.cat.instruments">Instrumenty</span>
               <span class="cat-count" id="count-instruments">-</span>
             </li>
             <li data-category="bands">
-              <span>Zespoły i Artyści</span>
+              <span data-i18n="wiki.cat.bands">Zespoły i Artyści</span>
               <span class="cat-count" id="count-bands">-</span>
             </li>
             <li data-category="history">
-              <span>Historia</span>
+              <span data-i18n="wiki.cat.history">Historia</span>
               <span class="cat-count" id="count-history">-</span>
             </li>
             <li data-category="gods">
-              <span>Bogowie (Orishas)</span>
+              <span data-i18n="wiki.cat.gods">Bogowie (Orishas)</span>
               <span class="cat-count" id="count-gods">-</span>
             </li>
             <li data-category="instructors">
-              <span>Instruktorzy</span>
+              <span data-i18n="wiki.cat.instructors">Instruktorzy</span>
               <span class="cat-count" id="count-instructors">-</span>
             </li>
             <li data-category="schools">
-              <span>Szkoły Tańca</span>
+              <span data-i18n="wiki.cat.schools">Szkoły Tańca</span>
               <span class="cat-count" id="count-schools">-</span>
             </li>
           </ul>
         </div>
 
         <div class="sidebar-actions">
-          <button id="sidebarAddBtn" class="btn btn-primary btn-full">
+          <button id="sidebarAddBtn" class="btn btn-primary btn-full" data-i18n-html="wiki.proposeBtn">
             <i class="fas fa-plus"></i> Zaproponuj hasło
           </button>
-          <button id="showPendingBtn" class="btn-text btn-moderation is-hidden">
+          <button id="showPendingBtn" class="btn-text btn-moderation is-hidden" data-i18n-html="wiki.modPanelBtn">
             <i class="fas fa-user-shield"></i> Panel Moderacji
           </button>
         </div>
@@ -196,15 +206,15 @@
       <section class="wiki-content">
         <!-- Active Filter Bar -->
         <div class="active-filter-bar">
-          <span class="filter-label">Aktualny widok:</span>
-          <span id="activeFilterBadge" class="filter-pill">Wszystkie hasła</span>
-          <button id="resetFilterBtn" class="btn-reset-filter is-hidden">Pokaż wszystkie</button>
+          <span class="filter-label" data-i18n="wiki.filterLabel">Aktualny widok:</span>
+          <span id="activeFilterBadge" class="filter-pill" data-i18n="wiki.filterAll">Wszystkie hasła</span>
+          <button id="resetFilterBtn" class="btn-reset-filter is-hidden" data-i18n="wiki.resetFilter">Pokaż wszystkie</button>
         </div>
 
         <!-- Loading Spinner -->
         <div id="loading" class="loading-spinner">
           <div class="spinner"></div>
-          <p>Wczytywanie bazy wiedzy...</p>
+          <p data-i18n="wiki.loading">Wczytywanie bazy wiedzy...</p>
         </div>
 
         <!-- Terms Grid -->
@@ -397,16 +407,16 @@
 <!-- No Results Message -->
         <div id="noResults" class="no-results is-hidden">
           <i class="fas fa-search-minus fa-3x no-results-icon"></i>
-          <h3>Nie znaleziono takiego hasła</h3>
-          <p>Znasz to pojęcie? Dodaj je do Salsopedii i pomóż rozwijać społeczność taneczną!</p>
-          <button id="noResultsAddBtn" class="btn btn-primary">Dodaj to hasło!</button>
+          <h3 data-i18n="wiki.noResultsTitle">Nie znaleziono takiego hasła</h3>
+          <p data-i18n="wiki.noResultsDesc">Znasz to pojęcie? Dodaj je do Salsopedii i pomóż rozwijać społeczność taneczną!</p>
+          <button id="noResultsAddBtn" class="btn btn-primary" data-i18n="wiki.noResultsBtn">Dodaj to hasło!</button>
         </div>
       </section>
 
     </div>
 
     <!-- Floating Action Button -->
-    <button id="addTermBtn" class="fab-add" title="Dodaj nowe hasło">
+    <button id="addTermBtn" class="fab-add" title="Dodaj nowe hasło" data-i18n-title="wiki.fabTitle">
       <i class="fas fa-plus"></i>
     </button>
 
@@ -415,8 +425,8 @@
       <div class="modal-content wiki-modal wiki-studio-modal">
         <button id="wikiModalCloseBtn" type="button" class="modal-close" title="Zamknij">&times;</button>
         <div class="studio-modal-header">
-          <h2 id="modalTitle">Dodaj nowe hasło</h2>
-          <p id="modalSubtitle" class="studio-subtitle">Wprowadź dane po lewej stronie i obserwuj podgląd karty oraz automatyczne linkowanie na żywo po prawej.</p>
+          <h2 id="modalTitle" data-i18n="wiki.modalTitleAdd">Dodaj nowe hasło</h2>
+          <p id="modalSubtitle" class="studio-subtitle" data-i18n="wiki.modalSubtitle">Wprowadź dane po lewej stronie i obserwuj podgląd karty oraz automatyczne linkowanie na żywo po prawej.</p>
         </div>
 
         <div class="wiki-studio-grid">
@@ -428,32 +438,32 @@
               <input type="hidden" id="formAdminDirect" name="admin_direct">
 
               <div class="form-group">
-                <label for="termInput">Nazwa pojęcia / hasła <span class="required">*</span></label>
-                <input type="text" id="termInput" name="term" required placeholder="np. Vacilala, Timba, Enchufla Doble">
+                <label for="termInput" data-i18n-html="wiki.termLabel">Nazwa pojęcia / hasła <span class="required">*</span></label>
+                <input type="text" id="termInput" name="term" required placeholder="np. Vacilala, Timba, Enchufla Doble" data-i18n-placeholder="wiki.termPh">
                 <div id="termDuplicateWarning" class="duplicate-warning is-hidden"></div>
               </div>
 
               <!-- Kategorie - Chip Selection -->
               <div class="form-group">
-                <label>Kategorie Główne <span class="required">*</span> <span class="label-hint">(kliknij, aby zaznaczyć)</span></label>
+                <label data-i18n-html="wiki.mainCatsLabel">Kategorie Główne <span class="required">*</span> <span class="label-hint">(kliknij, aby zaznaczyć)</span></label>
                 <div id="categoryChips" class="chips-container">
-                  <button type="button" class="chip" data-val="steps">Kroki</button>
-                  <button type="button" class="chip" data-val="figures">Figury</button>
-                  <button type="button" class="chip active" data-val="dance">Taniec</button>
-                  <button type="button" class="chip" data-val="styles">Style</button>
-                  <button type="button" class="chip" data-val="music">Muzyka</button>
-                  <button type="button" class="chip" data-val="instruments">Instrumenty</button>
-                  <button type="button" class="chip" data-val="bands">Zespoły i Artyści</button>
-                  <button type="button" class="chip" data-val="history">Historia</button>
-                  <button type="button" class="chip" data-val="gods">Bogowie (Orishas)</button>
-                  <button type="button" class="chip" data-val="instructors">Instruktorzy</button>
-                  <button type="button" class="chip" data-val="schools">Szkoły</button>
+                  <button type="button" class="chip" data-val="steps" data-i18n="wiki.cat.steps">Kroki</button>
+                  <button type="button" class="chip" data-val="figures" data-i18n="wiki.cat.figures">Figury</button>
+                  <button type="button" class="chip active" data-val="dance" data-i18n="wiki.cat.dance">Taniec</button>
+                  <button type="button" class="chip" data-val="styles" data-i18n="wiki.cat.styles">Style</button>
+                  <button type="button" class="chip" data-val="music" data-i18n="wiki.cat.music">Muzyka</button>
+                  <button type="button" class="chip" data-val="instruments" data-i18n="wiki.cat.instruments">Instrumenty</button>
+                  <button type="button" class="chip" data-val="bands" data-i18n="wiki.cat.bands">Zespoły i Artyści</button>
+                  <button type="button" class="chip" data-val="history" data-i18n="wiki.cat.history">Historia</button>
+                  <button type="button" class="chip" data-val="gods" data-i18n="wiki.cat.gods">Bogowie (Orishas)</button>
+                  <button type="button" class="chip" data-val="instructors" data-i18n="wiki.cat.instructors">Instruktorzy</button>
+                  <button type="button" class="chip" data-val="schools" data-i18n="wiki.cat.schools">Szkoły</button>
                 </div>
               </div>
 
               <!-- Podkategorie - Chip Selection -->
               <div class="form-group">
-                <label>Podkategorie <span class="label-hint">(opcjonalnie — kliknij, aby zaznaczyć)</span></label>
+                <label data-i18n-html="wiki.subCatsLabel">Podkategorie <span class="label-hint">(opcjonalnie — kliknij, aby zaznaczyć)</span></label>
                 <div id="subcategoryChips" class="chips-container">
                   <button type="button" class="chip" data-val="Salsa Cubana">Salsa Cubana</button>
                   <button type="button" class="chip" data-val="Rueda de Casino">Rueda de Casino</button>
@@ -463,20 +473,20 @@
                   <button type="button" class="chip" data-val="Son">Son</button>
                   <button type="button" class="chip" data-val="Rumba">Rumba</button>
                   <button type="button" class="chip" data-val="Afro">Afro</button>
-                  <button type="button" class="chip" data-val="lead">Prowadzenie</button>
-                  <button type="button" class="chip" data-val="follow">Podążanie</button>
-                  <button type="button" class="chip" data-val="partnerwork">W parach</button>
-                  <button type="button" class="chip" data-val="shines">Solo / Shines</button>
-                  <button type="button" class="chip" data-val="technique">Technika</button>
-                  <button type="button" class="chip" data-val="rhythm">Rytmika</button>
+                  <button type="button" class="chip" data-val="lead" data-i18n="wiki.sub.lead">Prowadzenie</button>
+                  <button type="button" class="chip" data-val="follow" data-i18n="wiki.sub.follow">Podążanie</button>
+                  <button type="button" class="chip" data-val="partnerwork" data-i18n="wiki.sub.partnerwork">W parach</button>
+                  <button type="button" class="chip" data-val="shines" data-i18n="wiki.sub.shines">Solo / Shines</button>
+                  <button type="button" class="chip" data-val="technique" data-i18n="wiki.sub.technique">Technika</button>
+                  <button type="button" class="chip" data-val="rhythm" data-i18n="wiki.sub.rhythm">Rytmika</button>
                 </div>
               </div>
 
               <div class="form-group">
                 <div class="definition-label-row">
-                  <label for="definitionInput">Definicja / Opis pojęcia <span class="required">*</span></label>
+                  <label for="definitionInput" data-i18n-html="wiki.defLabel">Definicja / Opis pojęcia <span class="required">*</span></label>
                   <div class="definition-toolbar">
-                    <button type="button" id="insertWikiLinkBtn" class="btn-tool-chip" title="Wstaw odnośnik [Hasło] do innego pojęcia w Salsopedii">
+                    <button type="button" id="insertWikiLinkBtn" class="btn-tool-chip" title="Wstaw odnośnik [Hasło] do innego pojęcia w Salsopedii" data-i18n-html="wiki.insertLinkBtn">
                       <i class="fas fa-link"></i> Wstaw link [Hasło]
                     </button>
                     <span id="definitionCharCount" class="char-counter">0 zn.</span>
@@ -494,7 +504,8 @@
                 </div>
 
                 <textarea id="definitionInput" name="definition" rows="6" required
-                  placeholder="Opisz dokładnie to pojęcie: jak się wykonuje ruch, jakie ma korzenie, z czego wynika... Słowa kluczowe lub frazy w nawiasach [Hasło] zostaną automatycznie podlinkowane."></textarea>
+                  placeholder="Opisz dokładnie to pojęcie: jak się wykonuje ruch, jakie ma korzenie, z czego wynika... Słowa kluczowe lub frazy w nawiasach [Hasło] zostaną automatycznie podlinkowane."
+                  data-i18n-placeholder="wiki.defPh"></textarea>
               </div>
 
               <div id="changeNoteGroup" class="form-group is-hidden">
@@ -503,42 +514,42 @@
               </div>
 
               <div class="form-group">
-                <label>Źródła / Odnośniki <span class="label-hint">(Książka, instruktor, wideo, link)</span></label>
+                <label data-i18n-html="wiki.sourcesLabel">Źródła / Odnośniki <span class="label-hint">(Książka, instruktor, wideo, link)</span></label>
                 <div id="sourceContainer"></div>
-                <button type="button" id="addSourceRowBtn" class="btn-add-inline">
+                <button type="button" id="addSourceRowBtn" class="btn-add-inline" data-i18n-html="wiki.addSourceBtn">
                   <i class="fas fa-plus"></i> Dodaj kolejne źródło
                 </button>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
-                  <label for="authorInput">Twój Podpis / Ksywka <span class="required">*</span></label>
-                  <input type="text" id="authorInput" name="author" required placeholder="np. TancerzKato, Ania">
+                  <label for="authorInput" data-i18n-html="wiki.authorInputLabel">Twój Podpis / Ksywka <span class="required">*</span></label>
+                  <input type="text" id="authorInput" name="author" required placeholder="np. TancerzKato, Ania" data-i18n-placeholder="wiki.authorInputPh">
                 </div>
                 <div class="form-group">
-                  <label for="authorLinkInput">Profil Instagram / Facebook <span class="label-hint">(opcjonalnie)</span></label>
+                  <label for="authorLinkInput" data-i18n-html="wiki.authorLinkLabel">Profil Instagram / Facebook <span class="label-hint">(opcjonalnie)</span></label>
                   <input type="url" id="authorLinkInput" name="author_link" placeholder="https://instagram.com/twojprofil">
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="userCategoryInput">Proponowana nowa kategoria <span class="label-hint">(jeśli brakuje odpowiedniej)</span></label>
-                <input type="text" id="userCategoryInput" name="user_category" placeholder="np. Stroje, Festiwale, Reguły parkietu...">
+                <label for="userCategoryInput" data-i18n-html="wiki.userCatLabel">Proponowana nowa kategoria <span class="label-hint">(jeśli brakuje odpowiedniej)</span></label>
+                <input type="text" id="userCategoryInput" name="user_category" placeholder="np. Stroje, Festiwale, Reguły parkietu..." data-i18n-placeholder="wiki.userCatPh">
               </div>
 
               <!-- Honeypot -->
               <input type="text" name="surname" class="hp-field" tabindex="-1" autocomplete="off">
               <input type="text" name="hp_chk" class="hp-field" tabindex="-1" autocomplete="off">
 
-              <p id="formModerationNote" class="form-note">
+              <p id="formModerationNote" class="form-note" data-i18n-html="wiki.modNote">
                 <i class="fas fa-info-circle"></i> Zgłoszenia społeczności trafiają do kolejki moderacji i są weryfikowane przed publikacją.
               </p>
 
               <div class="modal-form-actions">
-                <button type="submit" id="submitTermBtn" class="btn btn-primary">
+                <button type="submit" id="submitTermBtn" class="btn btn-primary" data-i18n-html="wiki.submitBtn">
                   <i class="fas fa-paper-plane"></i> Wyślij do moderacji
                 </button>
-                <button type="button" id="cancelWikiModalBtn" class="btn btn-secondary">Anuluj</button>
+                <button type="button" id="cancelWikiModalBtn" class="btn btn-secondary" data-i18n="wiki.cancelBtn">Anuluj</button>
               </div>
             </form>
 
@@ -559,7 +570,7 @@
             <!-- Panel Podglądu Karty na Żywo -->
             <div class="studio-preview-box">
               <div class="studio-panel-title">
-                <span><i class="fas fa-eye"></i> Podgląd karty na żywo</span>
+                <span data-i18n-html="wiki.livePreviewTitle"><i class="fas fa-eye"></i> Podgląd karty na żywo</span>
                 <span id="previewLinksCount" class="preview-links-badge">0 linków wewn.</span>
               </div>
               <div id="livePreviewContainer" class="live-preview-container"></div>
@@ -691,22 +702,28 @@
     <div class="container footer-content">
       <div class="footer-brand">
         <span class="logo-text">KATO SALSA HUB</span>
-        <p>Twoje centrum salsy na Śląsku. Muzyka, taniec, pasja i niepowtarzalny klimat.</p>
+        <p data-i18n="footer.tagline">Twoje centrum salsy na Śląsku. Muzyka, taniec, pasja i niepowtarzalny klimat.</p>
+        <div class="lang-switcher lang-switcher--footer" role="group" aria-label="Wybierz język / Idioma / Language" data-i18n-aria-label="nav.langAria">
+          <button type="button" class="lang-btn is-active" data-lang="pl" aria-pressed="true" title="Polski"><span class="lang-flag" aria-hidden="true">🇵🇱</span><span>PL</span></button>
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español (Cuba)"><span class="lang-flag" aria-hidden="true">🇨🇺</span><span>ES</span></button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English (UK)"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span>EN</span></button>
+        </div>
       </div>
       <div class="footer-links">
-        <a href="index.html#hero">Start</a>
-        <a href="index.html#onas">O nas</a>
-        <a href="index.html#style">Style</a>
-        <a href="salsopedia.html">Salsopedia</a>
-        <a href="index.html#kontakt">Kontakt</a>
+        <a href="index.html#hero" data-i18n="nav.start">Start</a>
+        <a href="index.html#onas" data-i18n="nav.about">O nas</a>
+        <a href="index.html#style" data-i18n="nav.styles">Style</a>
+        <a href="salsopedia.html" data-i18n="nav.wiki">Salsopedia</a>
+        <a href="https://photos.app.goo.gl/faiU7NhFAgpTEPRt9" target="_blank" rel="noopener noreferrer" data-i18n="nav.photos">Zdjęcia</a>
+        <a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a>
         <a href="https://www.facebook.com/KatoSalsaHub" target="_blank" rel="noopener noreferrer">Facebook</a>
         <a href="https://www.instagram.com/katosalsahub/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="privacy.html">Polityka Prywatności</a>
+        <a href="privacy.html" data-i18n="footer.privacy">Polityka Prywatności</a>
         <a href="https://dancepuls.katosalsahub.pl/" target="_blank" rel="noopener noreferrer">DancePuls Generator</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; <span id="rok"></span> Kato Salsa Hub. Stworzone przez <a href="https://twojastronawww.pl"
+      <p>&copy; <span id="rok"></span> Kato Salsa Hub. <span data-i18n="footer.createdBy">Stworzone przez</span> <a href="https://twojastronawww.pl"
           target="_blank" rel="noopener noreferrer">TwojaStronaWWW</a></p>
     </div>
   </footer>
@@ -714,15 +731,16 @@
   <!-- Cookie Banner -->
   <div id="cookie-banner" class="cookie-banner" data-nosnippet>
     <div class="cookie-content">
-      <h4>🍪 Ciasteczka i Prywatność</h4>
-      <p>Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
+      <h4 data-i18n="cookie.title">🍪 Ciasteczka i Prywatność</h4>
+      <p data-i18n-html="cookie.text">Używamy ciasteczek, aby zapewnić najlepszą jakość korzystania z naszej strony. Sprawdź naszą <a
           href="privacy.html">Politykę Prywatności</a>.</p>
     </div>
     <div class="cookie-actions">
-      <button id="accept-cookies" class="btn btn-primary">Akceptuję</button>
+      <button id="accept-cookies" class="btn btn-primary" data-i18n="cookie.accept">Akceptuję</button>
     </div>
   </div>
 
+  <script data-cfasync="false" src="assets/js/i18n.js?v=4.3"></script>
   <script data-cfasync="false" src="assets/js/cookies.js?v=3.9"></script>
   <script data-cfasync="false" src="assets/js/wiki.js?v=3.9"></script>
   <script data-cfasync="false" src="assets/js/radio.js?v=3.9"></script>

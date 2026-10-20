@@ -210,4 +210,63 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /<script(?![^>]*\bsrc\s*=)[^>]*>/i, 'Wykryto blok inline <script> w dancepuls.pl/index.html');
     });
   });
+
+  describe('Wielojęzyczność i18n (PL / Hiszpański Kubański es-CU / Angielski Brytyjski en-GB)', () => {
+    it('wszystkie widoki Kato Salsa Hub powinny posiadać przełącznik .lang-switcher w nawigacji i stopce oraz ładować i18n.js', () => {
+      for (const filePath of [KSH_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
+        const html = fs.readFileSync(filePath, 'utf-8');
+        assert.match(html, /class="lang-switcher"/, `Brak przełącznika .lang-switcher w ${path.basename(filePath)}`);
+        assert.match(html, /class="lang-switcher lang-switcher--footer"/, `Brak przełącznika .lang-switcher--footer w ${path.basename(filePath)}`);
+        assert.match(html, /data-lang="pl"/);
+        assert.match(html, /data-lang="es"/);
+        assert.match(html, /data-lang="en"/);
+        assert.match(html, /src="assets\/js\/i18n\.js(\?[^"]*)?"/);
+      }
+
+      const sectionsCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'css', 'sections.css'), 'utf-8');
+      assert.match(sectionsCss, /\.lang-switcher\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s, 'Brak stałej siatki CSS Grid 3x1fr dla .lang-switcher (CLS = 0)');
+    });
+
+    it('moduł i18n.js powinien zawierać kompletne słowniki (pl, es-CU z leksyką kubańską, en-GB z pisownią brytyjską) i poprawnie tłumaczyć klucze', () => {
+      const i18n = require(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'i18n.js'));
+      assert.ok(i18n.TRANSLATIONS.pl);
+      assert.ok(i18n.TRANSLATIONS.es);
+      assert.ok(i18n.TRANSLATIONS.en);
+
+      // Sprawdź spójność kluczy między PL, ES (Kuba) i EN (UK)
+      const plKeys = Object.keys(i18n.TRANSLATIONS.pl);
+      for (const key of plKeys) {
+        assert.ok(key in i18n.TRANSLATIONS.es, `Brak klucza "${key}" w słowniku hiszpańskim (es-CU)`);
+        assert.ok(key in i18n.TRANSLATIONS.en, `Brak klucza "${key}" w słowniku angielskim (en-GB)`);
+      }
+
+      // Sprawdź, czy każdy atrybut data-i18n* w plikach HTML ma pokrycie w słowniku
+      for (const filePath of [KSH_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
+        const html = fs.readFileSync(filePath, 'utf-8');
+        const matches = html.matchAll(/data-i18n(?:-[a-z-]+)?="([^"]+)"/g);
+        for (const match of matches) {
+          const key = match[1];
+          assert.ok(key in i18n.TRANSLATIONS.pl, `Brak klucza "${key}" z pliku ${path.basename(filePath)} w słowniku PL`);
+          assert.ok(key in i18n.TRANSLATIONS.es, `Brak klucza "${key}" z pliku ${path.basename(filePath)} w słowniku ES`);
+          assert.ok(key in i18n.TRANSLATIONS.en, `Brak klucza "${key}" z pliku ${path.basename(filePath)} w słowniku EN`);
+        }
+      }
+
+      // Autentyczny hiszpański kubański (parqueo, guagua, gozadera, bajo techo, descargas)
+      assert.match(i18n.t('map.navBtn', 'es'), /Parqueo Recomendado/);
+      assert.match(i18n.t('map.stawy.p3', 'es'), /guagua/);
+      assert.match(i18n.t('hero.subtitle', 'es'), /llégate/);
+      assert.match(i18n.t('about.c3.title', 'es'), /Descargas/);
+
+      // Autentyczny angielski brytyjski (car park, city centre, encyclopaedia, organise, practise)
+      assert.match(i18n.t('map.navBtn', 'en'), /Recommended Car Park/);
+      assert.match(i18n.t('map.wolni.label', 'en'), /City Centre/);
+      assert.match(i18n.t('wiki.subtitle', 'en'), /encyclopaedia/);
+      assert.match(i18n.t('contact.desc', 'en'), /organising/);
+
+      // Interpolacja zmiennych
+      assert.equal(i18n.t('wiki.resultsShown', 'es', { shown: 12, total: 200 }), 'Mostrando: 12 de 200 términos');
+      assert.equal(i18n.t('wiki.resultsShown', 'en', { shown: 12, total: 200 }), 'Showing: 12 of 200 entries');
+    });
+  });
 });

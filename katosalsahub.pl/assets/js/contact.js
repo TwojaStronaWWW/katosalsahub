@@ -1,6 +1,13 @@
 // Contact Form Logic with Event Delegation for SPA (RODO & Anti-Bot Ready)
 const pageLoadedAt = Date.now();
 
+function ct(key, fallback) {
+    if (typeof window !== 'undefined' && window.kshI18n && typeof window.kshI18n.t === 'function') {
+        return window.kshI18n.t(key) || fallback;
+    }
+    return fallback;
+}
+
 document.addEventListener('submit', async function (e) {
     if (e.target && (e.target.name === 'contact' || e.target.id === 'contactForm')) {
         e.preventDefault();
@@ -26,18 +33,18 @@ document.addEventListener('submit', async function (e) {
         const gdprCheckbox = form.querySelector('input[name="gdpr_consent"]');
 
         if (!nameTrimmed || !emailTrimmed || !msgTrimmed) {
-            showMessage(messageArea, 'Wypełnij wszystkie pola (imię lub pseudonim, e-mail oraz wiadomość)!', 'error');
+            showMessage(messageArea, ct('contact.errRequired', 'Wypełnij wszystkie pola (imię lub pseudonim, e-mail oraz wiadomość)!'), 'error');
             return;
         }
 
         if (gdprCheckbox && !gdprCheckbox.checked) {
-            showMessage(messageArea, 'Zaakceptuj Politykę Prywatności, aby wysłać wiadomość.', 'error');
+            showMessage(messageArea, ct('contact.errGdpr', 'Zaakceptuj Politykę Prywatności, aby wysłać wiadomość.'), 'error');
             return;
         }
 
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span>Wysyłanie...</span>';
+            submitBtn.innerHTML = `<span>${ct('contact.sending', 'Wysyłanie...')}</span>`;
         }
 
         try {
@@ -49,14 +56,14 @@ document.addEventListener('submit', async function (e) {
             const result = await response.json();
 
             if (response.ok && result.success !== false) {
-                showMessage(messageArea, result.message || 'Dziękujemy! Twoja wiadomość została wysłana.', 'success');
+                showMessage(messageArea, result.message || ct('contact.msgSuccess', 'Dziękujemy! Twoja wiadomość została wysłana.'), 'success');
                 form.reset();
             } else {
-                showMessage(messageArea, result.message || 'Wystąpił błąd podczas wysyłania.', 'error');
+                showMessage(messageArea, result.message || ct('contact.msgError', 'Wystąpił błąd podczas wysyłania.'), 'error');
             }
         } catch (error) {
             console.error('Error:', error);
-            showMessage(messageArea, 'Wystąpił błąd połączenia.', 'error');
+            showMessage(messageArea, ct('contact.msgNetError', 'Wystąpił błąd połączenia.'), 'error');
         } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;

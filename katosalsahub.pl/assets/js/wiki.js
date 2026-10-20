@@ -53,6 +53,37 @@ const SUBCATEGORY_NAMES = {
     'rhythm': 'Rytmika'
 };
 
+function wt(key, fallback, vars) {
+    if (typeof window !== 'undefined' && window.kshI18n && typeof window.kshI18n.t === 'function') {
+        const res = window.kshI18n.t(key, undefined, vars);
+        if (res && res !== key) return res;
+    }
+    if (vars && typeof fallback === 'string') {
+        return fallback.replace(/\{(\w+)\}/g, (_, k) => (vars[k] !== undefined ? String(vars[k]) : ''));
+    }
+    return fallback;
+}
+
+function getCategoryLabel(cat) {
+    if (cat === 'all') {
+        return wt('wiki.filterAll', CATEGORY_NAMES.all);
+    }
+    return wt('wiki.cat.' + cat, CATEGORY_NAMES[cat] || cat);
+}
+
+function getSubcategoryLabel(sub) {
+    return wt('wiki.sub.' + sub, SUBCATEGORY_NAMES[sub] || sub);
+}
+
+function refreshWikiLanguage() {
+    if (typeof document === 'undefined' || !document.getElementById('wikiGrid')) return;
+    const badge = document.getElementById('activeFilterBadge');
+    if (badge && AppState.viewMode === 'live') {
+        badge.textContent = getCategoryLabel(AppState.activeCategory);
+    }
+    renderCurrentView();
+}
+
 // --- Inicjalizacja i Montowanie ---
 
 async function mountWiki() {
@@ -578,7 +609,7 @@ function setActiveCategory(cat) {
     const badge = document.getElementById('activeFilterBadge');
     if (badge) {
         const prefix = AppState.viewMode === 'unverified' ? '🔍 Do weryfikacji: ' : '';
-        badge.textContent = prefix + (CATEGORY_NAMES[cat] || cat);
+        badge.textContent = prefix + getCategoryLabel(cat);
     }
 
     const resetBtn = document.getElementById('resetFilterBtn');
@@ -603,9 +634,9 @@ function switchViewMode(mode) {
         if (mode === 'pending') {
             filterBadge.textContent = '⏳ Kolejka Moderacji (Oczekujące Zgłoszenia Społeczności)';
         } else if (mode === 'unverified') {
-            filterBadge.textContent = `🔍 Hasła do weryfikacji merytorycznej (${CATEGORY_NAMES[AppState.activeCategory] || 'Wszystkie'})`;
+            filterBadge.textContent = `🔍 Hasła do weryfikacji merytorycznej (${getCategoryLabel(AppState.activeCategory)})`;
         } else {
-            filterBadge.textContent = CATEGORY_NAMES[AppState.activeCategory] || 'Wszystkie hasła';
+            filterBadge.textContent = getCategoryLabel(AppState.activeCategory);
         }
     }
 
@@ -763,8 +794,8 @@ function renderLiveTerms(grid, noResults, countEl) {
 
     if (countEl) {
         countEl.textContent = AppState.viewMode === 'unverified'
-            ? `Do weryfikacji w tym widoku: ${list.length} haseł`
-            : `Wyświetlono: ${list.length} z ${AppState.terms.length} haseł`;
+            ? wt('wiki.resultsUnverified', 'Do weryfikacji w tym widoku: {shown} haseł', { shown: list.length })
+            : wt('wiki.resultsShown', 'Wyświetlono: {shown} z {total} haseł', { shown: list.length, total: AppState.terms.length });
     }
 
     if (list.length === 0) {
@@ -875,7 +906,9 @@ function createTermCard(item, isPending = false) {
         const verifier = item.verified_by ? ` (ost. ${escapeHtml(item.verified_by)})` : '';
         verifiedHtml = `<span class="status-verified" title="Zweryfikowane merytorycznie (${count}x)${verifier}"><i class="fas fa-check"></i> ${count}</span>`;
     } else if (!isPending) {
-        verifiedHtml = `<span class="status-unverified-badge" title="Szablonowa odpowiedź oczekująca na weryfikację merytoryczną">Niezweryfikowane</span>`;
+        const unvLabel = escapeHtml(wt('wiki.unverifiedBadge', 'Niezweryfikowane'));
+        const unvTitle = escapeHtml(wt('wiki.unverifiedTitle', 'Szablonowa odpowiedź oczekująca na weryfikację merytoryczną'));
+        verifiedHtml = `<span class="status-unverified-badge" title="${unvTitle}">${unvLabel}</span>`;
     }
 
     let badgesHtml = '';
@@ -883,14 +916,14 @@ function createTermCard(item, isPending = false) {
     cats.forEach(c => {
         if (!c) return;
         const safeCat = escapeHtml(c);
-        const safeCatName = escapeHtml(CATEGORY_NAMES[c] || c);
+        const safeCatName = escapeHtml(getCategoryLabel(c));
         badgesHtml += `<span class="cat-badge main-cat" data-action="filter-cat" data-cat="${safeCat}">${safeCatName}</span>`;
     });
 
     const subs = Array.isArray(item.subcategory) ? item.subcategory : (item.subcategory ? [item.subcategory] : []);
     subs.forEach(s => {
         if (!s) return;
-        badgesHtml += `<span class="cat-badge sub-cat">${escapeHtml(SUBCATEGORY_NAMES[s] || s)}</span>`;
+        badgesHtml += `<span class="cat-badge sub-cat">${escapeHtml(getSubcategoryLabel(s))}</span>`;
     });
 
     let sourcesHtml = '';
@@ -911,10 +944,11 @@ function createTermCard(item, isPending = false) {
         sourcesHtml += '</div>';
     }
 
-    const safeAuthor = escapeHtml(item.author || 'Niezweryfikowane');
-    let authorHtml = `<span class="author-meta">Autor: <strong>${safeAuthor}</strong></span>`;
+    const safeAuthor = escapeHtml(item.author || wt('wiki.unverifiedBadge', 'Niezweryfikowane'));
+    const authorPrefix = escapeHtml(wt('wiki.authorLabel', 'Autor:'));
+    let authorHtml = `<span class="author-meta">${authorPrefix} <strong>${safeAuthor}</strong></span>`;
     if (isSafeHttpUrl(item.author_link)) {
-        authorHtml = `<span class="author-meta">Autor: <a href="${escapeHtml(item.author_link.trim())}" target="_blank" rel="noopener noreferrer"><strong>${safeAuthor}</strong> <i class="fas fa-link"></i></a></span>`;
+        authorHtml = `<span class="author-meta">${authorPrefix} <a href="${escapeHtml(item.author_link.trim())}" target="_blank" rel="noopener noreferrer"><strong>${safeAuthor}</strong> <i class="fas fa-link"></i></a></span>`;
     }
 
     let actionsHtml = '';
@@ -959,9 +993,11 @@ function createTermCard(item, isPending = false) {
                 ${deleteBtn}
             </div>`;
     } else {
+        const verifyTitle = escapeHtml(wt('wiki.verifyTitle', 'Zaproponuj poprawkę lub uzupełnienie do tego hasła'));
+        const verifyLabel = escapeHtml(wt('wiki.verifyBtn', 'Zgłoś poprawkę'));
         actionsHtml = `
-            <button type="button" class="btn-verify" data-action="verify" data-id="${safeId}" title="Zaproponuj poprawkę lub uzupełnienie do tego hasła">
-                <i class="fas fa-pencil-alt"></i> Zgłoś poprawkę
+            <button type="button" class="btn-verify" data-action="verify" data-id="${safeId}" title="${verifyTitle}">
+                <i class="fas fa-pencil-alt"></i> ${verifyLabel}
             </button>`;
     }
 
@@ -2513,6 +2549,7 @@ if (typeof window !== 'undefined') {
     window.notifyKnowledgeUpdated = notifyKnowledgeUpdated;
     window.switchViewMode = switchViewMode;
     window.setActiveCategory = setActiveCategory;
+    window.refreshWikiLanguage = refreshWikiLanguage;
     window.linkifyDefinition = linkifyDefinition;
     window.jumpToTermCard = jumpToTermCard;
     window.computeWordDiff = computeWordDiff;
