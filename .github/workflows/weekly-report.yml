@@ -17,6 +17,7 @@ jobs:
   generate-report:
     name: 📅 Generowanie cotygodniowego raportu DancePuls
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Pobranie kodu repozytorium
         uses: actions/checkout@v7
@@ -33,6 +34,9 @@ jobs:
         run: |
           node dancepuls.pl/tools/sync_engine.js
           node scripts/sync-schedules.js --check-remote || node scripts/sync-schedules.js
+
+      - name: Walidacja integralności wygenerowanych plików JSON przed commitem (Circuit Breaker)
+        run: npm test
 
       - name: Automatyczny commit i push zaktualizowanego raportu, events.json oraz schedule.json
         run: |

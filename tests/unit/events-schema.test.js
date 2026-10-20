@@ -269,7 +269,7 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       }
 
       // Weryfikacja funkcji normalizeLevel oraz żywego parsera CSV Good Mood z scripts/sync-schedules.js
-      const { normalizeLevel, parseCsvGrid, parseGoodMoodSheetCells } = require('../../scripts/sync-schedules.js');
+      const { normalizeLevel, parseCsvGrid, parseGoodMoodSheetCells, validateScheduleSanity } = require('../../scripts/sync-schedules.js');
       assert.strictEqual(normalizeLevel('GR. OD PODSTAW START: 26.10.2026'), 'P0');
       assert.strictEqual(normalizeLevel('BACHATA OD ZERA'), 'P0');
       assert.strictEqual(normalizeLevel('P0 - CZ.1'), 'P0');
@@ -290,6 +290,9 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(gmBlocks[0].startTime, '18:10');
       assert.strictEqual(gmBlocks[0].startDate, '26.10.2026');
       assert.strictEqual(gmBlocks[0].levelCode, 'P0');
+
+      assert.strictEqual(validateScheduleSanity(sched), true);
+      assert.throws(() => validateScheduleSanity({ classes: [] }), /Circuit Breaker/i);
     });
 
     it('funkcje filterScheduleClasses oraz filterDancepulsEvents w schedule.js powinny poprawnie filtrować kursy i imprezy', () => {

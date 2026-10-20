@@ -4,7 +4,7 @@
  * while bypassing live audio streams and dynamic PHP API mutations.
  */
 
-const CACHE_NAME = 'ksh-pwa-v17';
+const CACHE_NAME = 'ksh-pwa-v18';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -16,7 +16,7 @@ const STATIC_ASSETS = [
   '/assets/css/components.css?v=4.3',
   '/assets/css/sections.css?v=4.3',
   '/assets/css/radio.css?v=4.3',
-  '/assets/css/wiki.css?v=4.3',
+  '/assets/css/wiki.css?v=4.4',
   '/assets/css/schedule.css?v=4.3',
   '/assets/js/router.js?v=3.9',
   '/assets/js/home.js?v=3.9',
