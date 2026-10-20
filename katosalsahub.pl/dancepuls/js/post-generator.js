@@ -471,6 +471,75 @@ ${opisNd}`
 	renderPollButtons(wynikAnkieta)
 }
 
+export async function zaladujRaportKSH(silent = true) {
+	try {
+		const ts = Date.now()
+		let res = await fetch('../assets/data/latest_report.md?v=' + ts).catch(() => null)
+		if (!res || !res.ok) {
+			res = await fetch('data/latest_report.md?v=' + ts)
+		}
+		if (!res || !res.ok) return
+		const md = await res.text()
+		if (!md) return
+
+		window.latestFullReportMd = md
+		const parts = md.split(/\n---\n/)
+		const findSection = prefix => {
+			const found = parts.find(p => p.trim().startsWith(prefix))
+			if (!found) return ''
+			const lines = found.trim().split('\n')
+			return lines
+				.slice(1)
+				.map(l => l.replace(/ +$/, ''))
+				.join('\n')
+				.trim()
+		}
+
+		const sec1 = findSection('## 1.')
+		const sec2 = findSection('## 2.')
+		const sec3 = findSection('## 3.')
+		const sec4 = findSection('## 4.')
+		const sec5 = findSection('## 5.')
+		const sec6 = findSection('## 6.')
+
+		if (sec1) {
+			const el1 = document.getElementById('audit-sec1')
+			if (el1) el1.textContent = sec1
+		}
+		if (sec6) {
+			const el6 = document.getElementById('audit-sec6')
+			if (el6) el6.textContent = sec6
+		}
+		if (sec2) {
+			const postEl = document.getElementById('post-opis')
+			if (postEl) postEl.value = sec2
+		}
+		if (sec4) {
+			const wynikEl = document.getElementById('wynik')
+			if (wynikEl) wynikEl.value = sec4
+		}
+		if (sec5) {
+			const przyszleEl = document.getElementById('wynik-przyszle')
+			if (przyszleEl) przyszleEl.value = sec5
+		}
+		if (sec3) {
+			window.latestPollText = sec3
+			const ankietaEl = document.getElementById('wynik-ankieta')
+			if (ankietaEl) ankietaEl.value = sec3
+			renderPollButtons(sec3)
+		}
+
+		if (!silent) {
+			alert('✅ Wczytano wszystkie 6 sekcji raportu KSH z data/latest_report.md!')
+		}
+	} catch (e) {
+		console.warn('Nie udało się wczytać data/latest_report.md:', e)
+		if (!silent) {
+			alert('⚠️ Nie udało się wczytać raportu KSH: ' + e.message)
+		}
+	}
+}
+
 export function kopiujGotowyPost() {
 	const postOpisElem = document.getElementById('post-opis')
 	const tekst = postOpisElem ? postOpisElem.value : ''

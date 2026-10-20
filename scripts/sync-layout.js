@@ -131,6 +131,10 @@ function buildScriptsBlock(_pageFile, version = ASSET_VERSION) {
 function transformPageHtml(rawHtml, pageFile) {
   let html = String(rawHtml || '').replace(/\r\n/g, '\n');
 
+  html = html.replace(
+    /href="assets\/css\/([a-z0-9_-]+\.css)(?:\?v=[^"]*)?"/gi,
+    `href="assets/css/$1?v=${ASSET_VERSION}"`
+  );
   html = html.replace(/<nav class="nav-bar">[\s\S]*?<\/nav>/, buildNavBar(pageFile));
   html = html.replace(/<footer class="footer">[\s\S]*?<\/footer>/, buildFooter(pageFile));
   html = html.replace(/<div id="cookie-banner"[\s\S]*?<\/div>\s*<\/div>/, buildCookieBanner());
@@ -140,6 +144,15 @@ function transformPageHtml(rawHtml, pageFile) {
   );
 
   return html;
+}
+
+function transformServiceWorkerJs(rawSw) {
+  let sw = String(rawSw || '').replace(/\r\n/g, '\n');
+  sw = sw.replace(
+    /'\/assets\/(css|js)\/([a-z0-9_-]+\.(?:css|js))(?:\?v=[^']*)?'/gi,
+    `'/assets/$1/$2?v=${ASSET_VERSION}'`
+  );
+  return sw;
 }
 
 function syncAllLayouts({ write = true } = {}) {
@@ -154,6 +167,18 @@ function syncAllLayouts({ write = true } = {}) {
     }
     results.push({ pageFile, changed });
   }
+
+  const swPath = path.join(KSH_DIR, 'sw.js');
+  if (fs.existsSync(swPath)) {
+    const originalSw = fs.readFileSync(swPath, 'utf-8').replace(/\r\n/g, '\n');
+    const updatedSw = transformServiceWorkerJs(originalSw);
+    const swChanged = originalSw !== updatedSw;
+    if (swChanged && write) {
+      fs.writeFileSync(swPath, updatedSw, 'utf-8');
+    }
+    results.push({ pageFile: 'sw.js', changed: swChanged });
+  }
+
   return results;
 }
 
@@ -176,5 +201,6 @@ module.exports = {
   buildCookieBanner,
   buildScriptsBlock,
   transformPageHtml,
+  transformServiceWorkerJs,
   syncAllLayouts,
 };

@@ -77,7 +77,7 @@ jobs:
               set net:max-retries 3;
               set net:reconnect-interval-base 3;
               set sftp:auto-confirm yes;
-              mirror -R --parallel=4 --verbose --exclude-glob assets/data/pending_edits.json --exclude-glob assets/data/moderators.json --exclude-glob assets/data/login_attempts.json --exclude-glob assets/data/*.bak --exclude-glob assets/php/rate_limits/rate_*.json ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
+              mirror -R --parallel=4 --verbose --exclude-glob assets/data/pending_edits.json --exclude-glob assets/data/moderators.json --exclude-glob assets/data/login_attempts.json --exclude-glob assets/data/*.bak --exclude-glob assets/php/rate_limits/rate_*.json --exclude-glob dancepuls/js/package.json ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
               put -O /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }}/ ./katosalsahub.pl/dancepuls/.htaccess || true;
               quit
             "

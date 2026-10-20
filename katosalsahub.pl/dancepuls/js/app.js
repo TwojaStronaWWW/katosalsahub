@@ -3,20 +3,17 @@ import {
 	miejscaWgMiasta,
 	style,
 	dniTygodnia,
-	adresyMap,
-	adresMiastoSztywne,
-	styleKeywords,
 	FB_QUICK_LINKS,
 } from './config.js?v=20261020_v3'
-import { formatujDatePL, toYMD, generujDniOdJutra } from './utils.js?v=20261020_v3'
+import { formatujDatePL, generujDniOdJutra } from './utils.js?v=20261020_v3'
 import { initWeather } from './weather.js?v=20261020_v3'
-import { parseClipboardData } from './parser.js?v=20261020_v3'
+import { importujZFacebooka } from './parser.js?v=20261020_v3'
 import {
 	initInbox,
 	updateTitle,
 	kopiujTytul,
-	renderPollButtons,
 	generujPost,
+	zaladujRaportKSH,
 	kopiujGotowyPost,
 	kopiujWynik,
 	kopiujKomentarz2,
@@ -402,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	const btnImport = document.getElementById('import-btn')
 	if (btnImport) {
 		btnImport.addEventListener('click', () => {
-			importujZFacebooka(false)
+			importujZFacebooka(false, { ensureDayBlock, zapiszStan, generujPost })
 		})
 	}
 
@@ -585,75 +582,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 
-	async function zaladujRaportKSH(silent = true) {
-		try {
-			const ts = Date.now()
-			let res = await fetch('../assets/data/latest_report.md?v=' + ts).catch(() => null)
-			if (!res || !res.ok) {
-				res = await fetch('data/latest_report.md?v=' + ts)
-			}
-			if (!res || !res.ok) return
-			const md = await res.text()
-			if (!md) return
-
-			window.latestFullReportMd = md
-			const parts = md.split(/\n---\n/)
-			const findSection = prefix => {
-				const found = parts.find(p => p.trim().startsWith(prefix))
-				if (!found) return ''
-				const lines = found.trim().split('\n')
-				return lines
-					.slice(1)
-					.map(l => l.replace(/ +$/, ''))
-					.join('\n')
-					.trim()
-			}
-
-			const sec1 = findSection('## 1.')
-			const sec2 = findSection('## 2.')
-			const sec3 = findSection('## 3.')
-			const sec4 = findSection('## 4.')
-			const sec5 = findSection('## 5.')
-			const sec6 = findSection('## 6.')
-
-			if (sec1) {
-				const el1 = document.getElementById('audit-sec1')
-				if (el1) el1.textContent = sec1
-			}
-			if (sec6) {
-				const el6 = document.getElementById('audit-sec6')
-				if (el6) el6.textContent = sec6
-			}
-			if (sec2) {
-				const postEl = document.getElementById('post-opis')
-				if (postEl) postEl.value = sec2
-			}
-			if (sec4) {
-				const wynikEl = document.getElementById('wynik')
-				if (wynikEl) wynikEl.value = sec4
-			}
-			if (sec5) {
-				const przyszleEl = document.getElementById('wynik-przyszle')
-				if (przyszleEl) przyszleEl.value = sec5
-			}
-			if (sec3) {
-				window.latestPollText = sec3
-				const ankietaEl = document.getElementById('wynik-ankieta')
-				if (ankietaEl) ankietaEl.value = sec3
-				renderPollButtons(sec3)
-			}
-
-			if (!silent) {
-				alert('✅ Wczytano wszystkie 6 sekcji raportu KSH z data/latest_report.md!')
-			}
-		} catch (e) {
-			console.warn('Nie udało się wczytać data/latest_report.md:', e)
-			if (!silent) {
-				alert('⚠️ Nie udało się wczytać raportu KSH: ' + e.message)
-			}
-		}
-	}
-
 	const btnLoadDb = document.getElementById('load-db-btn')
 	if (btnLoadDb) {
 		btnLoadDb.addEventListener('click', async () => {
@@ -706,235 +634,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	window.addEventListener('focus', () => {
 		setTimeout(() => {
-			importujZFacebooka(true)
+			importujZFacebooka(true, { ensureDayBlock, zapiszStan, generujPost })
 		}, 500)
 	})
-
-	async function importujZFacebooka(silent = false) {
-		let jsonText
-		try {
-			jsonText = await navigator.clipboard.readText()
-			console.log('[Import] Surowe dane ze schowka:', jsonText ? jsonText.substring(0, 100) + '...' : 'PUSTY')
-		} catch {
-			if (!silent) alert('Błąd odczytu schowka! (Może wymagane kliknięcie w stronę?)')
-			return
-		}
-
-		if (!jsonText || !jsonText.trim()) {
-			if (!silent) alert('Schowek jest pusty!')
-			return
-		}
-
-		if (!jsonText.trim().startsWith('[')) {
-			if (!silent)
-				alert(
-					'Dane w schowku nie wyglądają na format FB (brak nawiasu [ ).\nUpewnij się, że użyłeś skrapera w konsoli.',
-				)
-			return
-		}
-
-		try {
-			const { events, skippedReasons } = parseClipboardData(jsonText)
-
-			let importedCount = 0
-			let duplicateCount = 0
-			let noSpaceCount = 0
-
-			const getIds = url => {
-				if (!url) return []
-				return url.match(/\d{8,}/g) || []
-			}
-
-			events.forEach(ev => {
-				const parsedDate = ev.parsedDate
-				const evYMD = toYMD(parsedDate)
-				console.log(`[Import] Przetwarzanie: "${ev.title}" na dzień ${evYMD}`)
-				const dayBlock = ensureDayBlock(evYMD)
-
-				if (!dayBlock) {
-					skippedReasons.push(`"${ev.title}": Nieprawidłowa data ${evYMD}`)
-					return
-				}
-
-				const newIds = getIds(ev.url)
-				const alreadyExists = Array.from(dayBlock.querySelectorAll('.event-block')).some(eb => {
-					if (eb.classList.contains('is-hidden')) return false
-					const linkVal = eb.querySelector('.link').value || ''
-					if (linkVal && linkVal === ev.url) return true
-					const existingIds = getIds(linkVal)
-					if (newIds.length > 0 && existingIds.length > 0) {
-						if (newIds.some(id => existingIds.includes(id))) return true
-					}
-					return false
-				})
-
-				if (alreadyExists) {
-					console.warn(`[Import] Pominięto duplikat: "${ev.title}"`)
-					duplicateCount++
-					return
-				}
-
-				let emptySlot = Array.from(dayBlock.querySelectorAll('.event-block')).find(eb => {
-					return eb.classList.contains('is-hidden') && !eb.querySelector('.link').value
-				})
-				if (!emptySlot && dayBlock._createEventContainer) {
-					const newIdx = dayBlock.querySelectorAll('.event-container').length
-					const newContainer = dayBlock._createEventContainer(dayBlock, newIdx)
-					dayBlock.appendChild(newContainer)
-					emptySlot = newContainer.querySelector('.event-block')
-				}
-
-				if (emptySlot) {
-					const container = emptySlot.parentElement
-					const eventBlock = emptySlot
-
-					const mainCheckbox = container.querySelector('.toggle-checkbox')
-					mainCheckbox.checked = true
-					mainCheckbox.dispatchEvent(new Event('change'))
-					eventBlock.querySelector('.link').value = ev.url
-
-					const tytulInput = eventBlock.querySelector('.tytul-wydarzenia')
-					if (tytulInput && ev.title && ev.title !== 'Wydarzenie bez tytułu') {
-						tytulInput.value = ev.title
-					}
-
-					const miastoSelect = eventBlock.querySelector('.miasto')
-					const miejsceSelect = eventBlock.querySelector('.miejsce')
-					const miastoInne = eventBlock.querySelector('.miasto-inne')
-
-					let bestCity = 'Katowice'
-					let bestPlace = null
-
-					const primaryText = ((ev.title || '') + ' ' + (ev.description || '')).toLowerCase()
-					const locationText = (ev.location || '').toLowerCase()
-					const fullText = primaryText + ' ' + locationText
-
-					const cityInflectionRegexMap = {
-						Katowice: /\bkatowic[a-ząćęłńóśźż]*\b/i,
-						Kraków: /\b(krak[oó]w[a-ząćęłńóśźż]*|cracow|cracovia)\b/i,
-						Gliwice: /\bgliwic[a-ząćęłńóśźż]*\b/i,
-						Tychy: /\btych(y|ach|ów|om)\b/i,
-						'Bielsko-Biała': /\bbielsk[a-ząćęłńóśźż-]*\b/i,
-						Częstochowa: /\bcz[eę]stochow[a-ząćęłńóśźż]*\b/i,
-						Chorzów: /\bchorz[oó]w[a-ząćęłńóśźż]*\b/i,
-						Bytom: /\bbytom[a-ząćęłńóśźż]*\b/i,
-						Świętochłowice: /\b[sś]wi[eę]toch[lł]owic[a-ząćęłńóśźż]*\b/i,
-						Rybnik: /\brybnik[a-ząćęłńóśźż]*\b/i,
-						Siewierz: /\bsiewierz[a-ząćęłńóśźż]*\b/i,
-						Hucisko: /\bhucisk[a-ząćęłńóśźż]*\b/i,
-						'Piekary Śląskie': /\bpiekar[a-ząćęłńóśźż]*\b/i,
-						'Tarnowskie Góry': /\btarnowski[a-ząćęłńóśźż\s]*g[oó]r[a-ząćęłńóśźż]*\b/i,
-						'Dąbrowa Górnicza': /\bd[aą]brow[a-ząćęłńóśźż\s]*g[oó]rnicz[a-ząćęłńóśźż]*\b/i,
-						Szczyrk: /\bszczyrk[a-ząćęłńóśźż]*\b/i,
-						Wisła: /\bwi[sś]l(a|e|ą)\b/i,
-					}
-
-					let matchedAddr = null
-					for (const [addr, place] of Object.entries(adresyMap || {})) {
-						if (primaryText.includes(addr)) {
-							bestPlace = place
-							matchedAddr = addr
-							break
-						}
-					}
-
-					if (!bestPlace) {
-						for (const [addr, place] of Object.entries(adresyMap || {})) {
-							if (locationText.includes(addr)) {
-								bestPlace = place
-								matchedAddr = addr
-								break
-							}
-						}
-					}
-
-					if (!bestPlace) {
-						for (const city of Object.keys(miejscaWgMiasta || {})) {
-							const cityRe = cityInflectionRegexMap[city]
-							const matchesCity = cityRe ? cityRe.test(fullText) : fullText.includes(city.toLowerCase())
-							if (matchesCity) {
-								bestCity = city
-								const places = miejscaWgMiasta[city]
-								for (const p of places) {
-									if (fullText.includes(p.toLowerCase())) {
-										bestPlace = p
-										break
-									}
-								}
-								break
-							}
-						}
-					} else if (matchedAddr && adresMiastoSztywne[matchedAddr]) {
-						bestCity = adresMiastoSztywne[matchedAddr]
-					} else {
-						for (const [city, places] of Object.entries(miejscaWgMiasta || {})) {
-							if (places.includes(bestPlace)) {
-								bestCity = city
-								break
-							}
-						}
-					}
-
-					if (bestPlace) {
-						miastoSelect.value = bestCity
-						miastoSelect.dispatchEvent(new Event('change'))
-						miejsceSelect.value = bestPlace
-					} else if (ev.location) {
-						miastoSelect.value = 'Inne'
-						miastoSelect.dispatchEvent(new Event('change'))
-						miastoInne.value = ev.location
-					} else {
-						miastoSelect.value = 'Katowice'
-						miastoSelect.dispatchEvent(new Event('change'))
-					}
-
-					const checkboxes = eventBlock.querySelectorAll('input.styl')
-					checkboxes.forEach(cb => (cb.checked = false))
-					Object.entries(styleKeywords || {}).forEach(([key, val]) => {
-						if (fullText.includes(key)) {
-							const cb = Array.from(checkboxes).find(c => c.value === val)
-							if (cb) cb.checked = true
-						}
-					})
-
-					if (
-						fullText.includes('promowane') ||
-						fullText.includes('kato salsa hub') ||
-						bestPlace === 'Wolni Ludzie' ||
-						bestPlace === 'Dolina Trzech Stawów'
-					) {
-						const promoteCb = container.querySelector('.promowane')
-						if (promoteCb) {
-							promoteCb.checked = true
-							promoteCb.dispatchEvent(new Event('change'))
-						}
-					}
-
-					importedCount++
-				} else {
-					noSpaceCount++
-				}
-			})
-
-			if (importedCount > 0) {
-				alert(`✅ Zaimportowano ${importedCount} wydarzeń!`)
-				zapiszStan()
-				generujPost()
-			} else if (!silent) {
-				let msg = '❌ Nie zaimportowano żadnych nowych wydarzeń.'
-				if (duplicateCount > 0) msg += `\n- Pominięto ${duplicateCount} duplikatów (są już na liście).`
-				if (noSpaceCount > 0) msg += `\n- Brak wolnych slotów na wybrane dni dla ${noSpaceCount} wydarzeń!`
-
-				if (skippedReasons.length > 0) {
-					msg += '\n\nInne powody:\n' + skippedReasons.slice(0, 3).join('\n')
-				}
-				alert(msg)
-			}
-		} catch (e) {
-			console.error('Import Error:', e)
-			if (!silent) alert('Błąd importu: ' + e.message)
-		}
-	}
 
 	function setupModal(modalId, openBtnId, closeBtnId) {
 		const modalEl = document.getElementById(modalId)

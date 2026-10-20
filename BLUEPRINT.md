@@ -26,7 +26,7 @@ Projekt stanowi monorepo łączące dwa ściśle współpracujące podprojekty:
 - **Główne moduły:**
   - Centralna baza imprez (SSOT): `katosalsahub.pl/assets/data/events_database.md` oraz skompilowany plik bazy `katosalsahub.pl/assets/data/events.json`.
   - Generator cyklicznych raportów weekendowych: `katosalsahub.pl/assets/data/latest_report.md`.
-  - Silnik synchronizacji: `scripts/sync_engine.js` (pobiera zgłoszenia z Google Forms CSV, parsuje Markdown, aktualizuje JSON, generuje posty na FB i raporty).
+  - Silnik synchronizacji: `scripts/sync_engine.js` wspierany przez `scripts/venue-dictionary.js` (słownik lokacji i geolokalizacja) oraz `scripts/event-scrapers.js` (parsery FB, Krajownika, Sabaki, OnlyDance i Airdancii).
   - Publiczny widok kalendarza imprez i wspólnego grafiku szkół: `katosalsahub.pl/grafik.html`.
   - Panel roboczy kuratora i generator postów FB: `katosalsahub.pl/dancepuls/index.html` (`app.js`, `parser.js`, `post-generator.js`, `weather.js`).
 - **Hosting docelowy (LH.pl – pojedynczy zintegrowany wdrożeniowo katalog):**

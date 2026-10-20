@@ -38,8 +38,10 @@ katosalsahub/
 ├── scripts/
 │   ├── serve.js                # Lekki, bezbiblioteczny serwer HTTP w Node.js
 │   ├── sync_engine.js          # Silnik synchronizacji, parsowania i generowania raportów DancePuls
+│   ├── venue-dictionary.js     # Słownik kanonicznych lokacji, geolokalizacji i normalizacji adresów
+│   ├── event-scrapers.js       # Parsery zewnętrznych źródeł imprez (FB, Krajownik, Sabaki, OnlyDance, Airdancia)
 │   ├── sync-schedules.js       # Walidator i synchronizator grafików szkół tańca (schedule.json)
-│   └── sync-layout.js          # Generator spójności nawigacji i stopki we wszystkich plikach HTML
+│   └── sync-layout.js          # Generator spójności nawigacji, stopki i wersji CSS/JS/SW we wszystkich widokach
 ├── tests/
 │   ├── helpers/mock-dom.js     # Bezbiblioteczna symulacja DOM dla środowiska Node.js
 │   └── unit/                   # Natywne testy jednostkowe (node:test)
