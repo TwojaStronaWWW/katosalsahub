@@ -4,32 +4,30 @@
     <name>Mapa ;) – Kato Salsa Hub: Parkiety, Szkoły Tańca i Parkingi</name>
     <description>Oficjalna mapa społeczności Kato Salsa Hub (Salsa Katowice) oraz DancePuls. Zawiera: 1) Miejsca potańcówek i plenerów KSH (Wolni Ludzie ul. Mariacka 2, Kamienny Krąg 3 Stawy, Amfiteatr NOSPR, wiata i toalety), 2) Wszystkie szkoły tańca i kluby w Katowicach (La Clave, Good Mood, Mil Pasos, Taneczna Kompania, Gravitacja / Dance++, KIZLAB, VAMULA.pl, Nova, Evolution, Śląska Szkoła Tańca, Dzień i Noc), 3) Szkoły i miejscówki taneczne w regionie (Gliwice, Tychy, Sosnowiec, Bielsko-Biała, Rybnik, Siewierz, Piekary Śląskie, Częstochowa), 4) Węzły komunikacyjne PKP/ZTM oraz 5) Darmowe parkingi i trasy piesze.</description>
 
-    <!-- ==================== STYLE GOOGLE MY MAPS (NATYWNE IKONY I KOLORY) ==================== -->
-    <!-- Czerwony / Koralowy (#DB4436) – Główne Parkiety Kato Salsa Hub -->
+    <!-- ==================== STYLE GOOGLE MY MAPS (IKONY Z GWIAZDKAMI, PARKING P I KOLORY) ==================== -->
+    <!-- Niebieskie gwiazdki – Główne Parkiety Kato Salsa Hub -->
     <Style id="icon-1899-DB4436-normal">
       <IconStyle>
-        <color>ff3644db</color>
-        <scale>1</scale>
+        <color>ffd18802</color>
+        <scale>1.25</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/blu-stars.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>0</scale>
+        <scale>1</scale>
       </LabelStyle>
     </Style>
     <Style id="icon-1899-DB4436-highlight">
       <IconStyle>
-        <color>ff3644db</color>
-        <scale>1</scale>
+        <color>ffd18802</color>
+        <scale>1.45</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/blu-stars.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>1</scale>
+        <scale>1.15</scale>
       </LabelStyle>
     </Style>
     <StyleMap id="icon-1899-DB4436">
@@ -43,31 +41,29 @@
       </Pair>
     </StyleMap>
 
-    <!-- Niebieski (#0288D1) – Szkoły Tańca i Kluby w Katowicach -->
+    <!-- Żółto-czerwone gwiazdki – Szkoły Tańca i Kluby w Katowicach -->
     <Style id="icon-1899-0288D1-normal">
       <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
+        <color>ff00b4ff</color>
+        <scale>1.25</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/ylw-stars.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>0</scale>
+        <scale>1</scale>
       </LabelStyle>
     </Style>
     <Style id="icon-1899-0288D1-highlight">
       <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
+        <color>ff00b4ff</color>
+        <scale>1.45</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/ylw-stars.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>1</scale>
+        <scale>1.15</scale>
       </LabelStyle>
     </Style>
     <StyleMap id="icon-1899-0288D1">
@@ -81,31 +77,29 @@
       </Pair>
     </StyleMap>
 
-    <!-- Pomarańczowy (#F57C00) – Szkoły Tańca i Miejscówki w Regionie (Śląsk i Zagłębie) -->
+    <!-- Czerwono-pomarańczowe gwiazdki – Szkoły Tańca i Miejscówki w Regionie (Śląsk i Zagłębie) -->
     <Style id="icon-1899-F57C00-normal">
       <IconStyle>
         <color>ff007cf5</color>
-        <scale>1</scale>
+        <scale>1.2</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/red-stars.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>0</scale>
+        <scale>1</scale>
       </LabelStyle>
     </Style>
     <Style id="icon-1899-F57C00-highlight">
       <IconStyle>
         <color>ff007cf5</color>
-        <scale>1</scale>
+        <scale>1.4</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/red-stars.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>1</scale>
+        <scale>1.15</scale>
       </LabelStyle>
     </Style>
     <StyleMap id="icon-1899-F57C00">
@@ -119,31 +113,29 @@
       </Pair>
     </StyleMap>
 
-    <!-- Zielony (#0F9D58) – Infrastruktura, Toalety i Komunikacja (PKP / Autobusy / Tramwaje) -->
+    <!-- Zielone kółka – Infrastruktura, Toalety i Komunikacja (PKP / Autobusy / Tramwaje) -->
     <Style id="icon-1899-0F9D58-normal">
       <IconStyle>
         <color>ff589d0f</color>
-        <scale>1</scale>
+        <scale>1.1</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>0</scale>
+        <scale>0.95</scale>
       </LabelStyle>
     </Style>
     <Style id="icon-1899-0F9D58-highlight">
       <IconStyle>
         <color>ff589d0f</color>
-        <scale>1</scale>
+        <scale>1.3</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>1</scale>
+        <scale>1.1</scale>
       </LabelStyle>
     </Style>
     <StyleMap id="icon-1899-0F9D58">
@@ -157,31 +149,29 @@
       </Pair>
     </StyleMap>
 
-    <!-- Fioletowy (#673AB7) – Parkingi Rekomendowane i Darmowe Strefy Parkowania -->
+    <!-- Ikona Parking P – Parkingi Rekomendowane i Darmowe Strefy Parkowania -->
     <Style id="icon-1899-673AB7-normal">
       <IconStyle>
-        <color>ffb73a67</color>
-        <scale>1</scale>
+        <color>ff4f0e88</color>
+        <scale>1.2</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/P.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>0</scale>
+        <scale>1</scale>
       </LabelStyle>
     </Style>
     <Style id="icon-1899-673AB7-highlight">
       <IconStyle>
-        <color>ffb73a67</color>
-        <scale>1</scale>
+        <color>ff4f0e88</color>
+        <scale>1.4</scale>
         <Icon>
-          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+          <href>https://maps.google.com/mapfiles/kml/paddle/P.png</href>
         </Icon>
-        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
       </IconStyle>
       <LabelStyle>
-        <scale>1</scale>
+        <scale>1.15</scale>
       </LabelStyle>
     </Style>
     <StyleMap id="icon-1899-673AB7">
