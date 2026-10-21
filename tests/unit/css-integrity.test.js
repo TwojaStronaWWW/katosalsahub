@@ -75,7 +75,11 @@ describe('Integralność i składnia arkuszy stylów CSS (Kato Salsa Hub & Dance
 
     assert.match(scheduleCss, /\.schedule-mode-btn\s*\{[^}]*white-space:\s*normal/s, 'Brak white-space: normal w .schedule-mode-btn');
     assert.match(scheduleCss, /\.day-pill-btn\s*\{[^}]*white-space:\s*normal/s, 'Brak white-space: normal w .day-pill-btn');
+    assert.match(scheduleCss, /\.schedule-card-actions\s*\{[^}]*display:\s*grid/s, 'Brak siatki CSS Grid w .schedule-card-actions (zapobiega rozciąganiu przycisków w pionie na mobile)');
+    assert.doesNotMatch(scheduleCss, /\.schedule-action-btn\s*\{[^}]*flex:\s*1\s+1\s+140px/s, 'Klasa .schedule-action-btn nie może mieć flex-basis: 140px rozciągającego wysokość przycisku do 140px na mobile');
     assert.match(scheduleCss, /\.schedule-action-btn\s*\{[^}]*min-height:\s*38px[^}]*height:\s*auto/s, 'Brak elastycznej wysokości w .schedule-action-btn');
+    assert.match(scheduleCss, /#scheduleAppRoot\s+\.wiki-sidebar\s*\{[^}]*order:\s*0/s, 'Panel filtrów .wiki-sidebar w widoku grafiku na mobile musi znajdować się nad listą kursów (order: 0)');
+    assert.match(scheduleCss, /#scheduleAppRoot\s+\.category-list\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s, 'Brak kompaktowej siatki 2-kolumnowej dla filtrów .category-list na mobile w schedule.css');
     assert.match(wikiCss, /\.wiki-card-header\s*\{[^}]*flex-wrap:\s*wrap/s, 'Brak flex-wrap: wrap w .wiki-card-header');
     assert.match(wikiCss, /\.wiki-card-footer\s*\{[^}]*flex-wrap:\s*wrap/s, 'Brak flex-wrap: wrap w .wiki-card-footer');
     assert.match(sectionsCss, /\.map-spot-badge\s*\{[^}]*overflow-wrap:\s*anywhere/s, 'Brak overflow-wrap: anywhere w .map-spot-badge');

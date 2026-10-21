@@ -891,6 +891,10 @@ function syncMapZoneForSchoolFilter(schoolId, doc = document) {
 
 function switchScheduleTab(targetTab, doc = document) {
   scheduleState.activeTab = targetTab;
+  const rootEl = doc.getElementById('scheduleAppRoot');
+  if (rootEl && typeof rootEl.setAttribute === 'function') {
+    rootEl.setAttribute('data-active-tab', targetTab);
+  }
 
   const tabBtns = doc.querySelectorAll('.schedule-mode-btn');
   tabBtns.forEach((btn) => {

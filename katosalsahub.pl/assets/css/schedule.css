@@ -91,12 +91,78 @@
 }
 
 @media (max-width: 959px) {
+  #scheduleAppRoot .wiki-main-container {
+    padding: 18px 14px;
+    gap: 16px;
+  }
+
+  #scheduleAppRoot .wiki-sidebar {
+    order: 0;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
   #scheduleAppRoot .wiki-content {
     order: 1;
   }
 
-  #scheduleAppRoot .wiki-sidebar {
-    order: 2;
+  /* W zakładkach Cenniki oraz Mapa panel filtrów kursów schodzi pod główną zawartość */
+  #scheduleAppRoot[data-active-tab="pricing"] .wiki-content,
+  #scheduleAppRoot[data-active-tab="map"] .wiki-content {
+    order: 0;
+  }
+
+  #scheduleAppRoot[data-active-tab="pricing"] .wiki-sidebar,
+  #scheduleAppRoot[data-active-tab="map"] .wiki-sidebar {
+    order: 1;
+  }
+
+  #scheduleAppRoot .sidebar-block h3 {
+    font-size: 0.78rem;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  #scheduleAppRoot .category-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  #scheduleAppRoot #scheduleStyleList li:first-child {
+    grid-column: 1 / -1;
+  }
+
+  #scheduleAppRoot .category-list li {
+    padding: 7px 10px;
+    font-size: 0.76rem;
+    border-radius: 10px;
+    gap: 6px;
+  }
+
+  #scheduleAppRoot .category-list li:hover {
+    transform: none;
+  }
+
+  #scheduleAppRoot .category-list .cat-count {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    min-width: 22px;
+  }
+
+  #scheduleAppRoot .sidebar-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  #scheduleAppRoot .sidebar-actions .btn {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    min-height: 36px;
+    line-height: 1.25;
   }
 }
 
@@ -546,24 +612,16 @@
 }
 
 .schedule-card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 8px;
   margin-top: 4px;
 }
 
-@media (max-width: 480px) {
-  .schedule-card-actions {
-    flex-direction: column;
-  }
-}
-
 .schedule-action-btn {
-  flex: 1 1 140px;
   min-height: 38px;
   height: auto;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.05);
@@ -584,6 +642,20 @@
   overflow-wrap: anywhere;
   word-break: break-word;
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+@media (max-width: 480px) {
+  .schedule-card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .schedule-action-btn {
+    min-height: 34px;
+    padding: 5px 8px;
+    font-size: 0.74rem;
+    gap: 5px;
+  }
 }
 
 .schedule-action-btn:hover {

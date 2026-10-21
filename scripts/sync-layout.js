@@ -14,7 +14,7 @@ const path = require('node:path');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const KSH_DIR = path.join(ROOT_DIR, 'katosalsahub.pl');
-const ASSET_VERSION = '4.9';
+const ASSET_VERSION = '5.0';
 const HTML_PAGES = ['index.html', 'grafik.html', 'salsopedia.html', 'privacy.html'];
 
 function buildNavBar(pageFile) {
