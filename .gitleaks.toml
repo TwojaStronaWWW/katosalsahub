@@ -16,7 +16,8 @@ regex = '''katoAdmin202[0-9]'''
 tags = ["password", "salsopedia", "security"]
 
 [allowlist]
-description = "Wykluczenie szablonów przykładowych, publicznego pliku weryfikacji IndexNow i testów jednostkowych"
+description = "Wykluczenie szablonów przykładowych, publicznego pliku weryfikacji IndexNow, publicznych linków do albumów Google Photos i testów jednostkowych"
+regexTarget = "line"
 paths = [
   '''^\.?env\.example$''',
   '''^\.?gitleaks\.toml$''',
@@ -24,5 +25,9 @@ paths = [
   '''^\.git/.*'''
 ]
 regexes = [
-  '''4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a'''
+  '''4f8b9d2e7a1c6f3b5e0d8a9c2b4f7e1a''',
+  '''photos\.google\.com/share/[A-Za-z0-9_-]+\?key=[A-Za-z0-9_-]+''',
+  '''Z2wxa3F5djRXSlhoSkxYSlRMMDVnN0tfS1BMaU1n''',
+  '''Y2JvWkpuZ0FTOUx3QnJPN3lxdWJfaUJHNVE1Q3NR''',
+  '''Ry1JbWZlVzR5WFBROWhlbHZxU19GX3R2ZkFsQXN3'''
 ]

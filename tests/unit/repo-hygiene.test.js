@@ -65,6 +65,10 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.match(contactPhp, /function\s+mask_ip/i, 'Brak funkcji anonimizacji IP mask_ip() w contact.php (#7)');
     assert.match(contactPhp, /HTTP_CF_CONNECTING_IP/i, 'Brak odczytu HTTP_CF_CONNECTING_IP w contact.php');
     assert.match(contactPhp, /rate_limit\s*\(/i, 'Brak ochrony rate_limit() w contact.php');
+
+    const gitleaksToml = fs.readFileSync(path.join(ROOT_DIR, '.gitleaks.toml'), 'utf-8');
+    assert.match(gitleaksToml, /regexTarget\s*=\s*"line"/, 'Brak regexTarget = "line" w .gitleaks.toml dla wykluczeń publicznych URL');
+    assert.match(gitleaksToml, /photos\\\.google\\\.com\/share\//, 'Brak wykluczenia publicznych albumów Google Photos (?key=...) w .gitleaks.toml');
   });
 
   it('git hook (.githooks/pre-commit) powinien istnieć, posiadać shebang bash i uruchamiać npm run check', () => {
