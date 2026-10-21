@@ -1,52 +1,5 @@
 [
   {
-    "date": "2026-10-20",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Piąty Dom",
-        "miejsceInne": "Piąty Dom (Matejki 2)",
-        "adres": "Matejki 2",
-        "lat": 50.2602,
-        "lng": 19.0168,
-        "tytul": "Kizomba w Piątym Domu – SH#75",
-        "opis": "Kizomba w Piątym Domu – SH#75 - 20:30; Piąty Dom Katowice; nowe w bazie 20.10",
-        "opisPubliczny": "Kizomba w Piątym Domu – SH#75",
-        "dateLabel": "WTOREK (20.10.2026)",
-        "endDate": "2026-10-20",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1410619787718525/",
-        "style": [
-          "Kizomba"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Zaraz Wracam Tu",
-        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
-        "adres": "ul. Miodowa 51",
-        "lat": 50.0528,
-        "lng": 19.9482,
-        "tytul": "Salsunia",
-        "opis": "Salsunia - VivaSalsa",
-        "opisPubliczny": "Salsunia",
-        "dateLabel": "WTOREK (20.10.2026)",
-        "endDate": "2026-10-20",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1968496233786036/",
-        "style": [
-          "Cubana"
-        ]
-      }
-    ]
-  },
-  {
     "date": "2026-10-23",
     "events": [
       {

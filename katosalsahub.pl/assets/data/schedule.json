@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-20",
+  "updatedAt": "2026-10-21",
   "city": "Katowice",
   "description": "Wspólny grafik katowickich szkół tańca (La Clave ul. Chorzowska 11, Good Mood ul. Paderewskiego 35 & Gravitacja ul. Gliwicka 44, Mil Pasos ul. Kamienna 4) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH.",
   "levelStandard": [
@@ -1115,7 +1115,7 @@
       "styleLabel": "Kizomba",
       "title": "Kizomba – Gr. Od Podstaw (Nowy Nabór!)",
       "levelCode": "P0",
-      "levelLabel": "P0 • Od podstaw (Start 06.10)",
+      "levelLabel": "P0 • Od podstaw (Start 6.10)",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
@@ -2433,7 +2433,7 @@
       "styleLabel": "Bachata",
       "title": "Bachata w Parach – Od Podstaw (Nowy Nabór!)",
       "levelCode": "P0",
-      "levelLabel": "P0 • Od podstaw (Start 09.10)",
+      "levelLabel": "P0 • Od podstaw (Start 9.10)",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
@@ -2454,7 +2454,7 @@
       "styleLabel": "Bachata Solo",
       "title": "Bachata Solo – Gr. Od Podstaw",
       "levelCode": "P0",
-      "levelLabel": "P0 • Od podstaw (Start 02.10)",
+      "levelLabel": "P0 • Od podstaw (Start 2.10)",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
@@ -2496,7 +2496,7 @@
       "styleLabel": "Latino Solo & Izolacje",
       "title": "Latino Solo Od Podstaw (19:50) + Izolacje Open (20:40)",
       "levelCode": "P0",
-      "levelLabel": "P0 • Start 02.10",
+      "levelLabel": "P0 • Start 2.10",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
         {
