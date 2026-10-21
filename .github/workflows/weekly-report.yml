@@ -2,8 +2,8 @@ name: DancePuls Weekly Report Cron
 
 on:
   schedule:
-    # Codziennie o 06:00 UTC (07:00/08:00 PL): lekki skan SHA-256/CSV grafików szkół + DancePuls (#15)
-    - cron: '0 6 * * *'
+    # Codziennie o 05:15 UTC (07:15 CEST / 06:15 CET): poranny skan grafików, cenników i imprez przed raportem e-mail o 07:30 (#15)
+    - cron: '15 5 * * *'
   workflow_dispatch:
 
 permissions:
