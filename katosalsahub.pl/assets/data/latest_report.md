@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 20.10.2026
 - **Stan zestawienia na weekend 23–25.10.2026:** **13 pozycji** (3 pt + 7 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **62 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **66 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (20.10 — 35 pozycji, data publikacji nieustalona):**
   - **Kizomba w Piątym Domu – SH#75** | 20.10.2026 | Katowice, Piąty Dom | Kizomba | https://www.facebook.com/events/1410619787718525/
@@ -124,6 +124,12 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 ## 5. KOMENTARZ 2 — PRZYSZŁOŚĆ
 🎉 Zaplanowane wydarzenia — kolejne tygodnie
 
+🗓️ PONIEDZIAŁEK (26.10.2026)  
+➡️ Katowice: La Clave, 🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min) (Bachata)  
+🔗 https://krajownik.pl/katowice/wydarzenia/bachata-od-zera-z-claudio-start-12102026-godz-1715-3x45min-426679  
+🗓️ PONIEDZIAŁEK (26.10.2026)  
+➡️ Gliwice: ul. Zwycięstwa 52A, Bachata Solo Footwork & Styling z Klaudią Lalewicz (Bachata)  
+🔗 https://krajownik.pl/gliwice/wydarzenia/bachata-solo-footwork-styling-z-klaudia-lalewicz-426313  
 🗓️ WTOREK (27.10.2026)  
 ➡️ Kraków: Salsa House, 💚 KIZ FUSION OPEN | PATRYK & MAGDA (Salsa/Kizomba)  
 🔗 https://www.facebook.com/events/898491509777899/  
@@ -169,6 +175,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ PIĄTEK (06.11.2026)  
 ➡️ Kraków: Panorama Forum, Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia (Bachata)  
 🔗 https://onlydanceapp.com/event/cEgGXQdo6UgY6u5z5CyB  
+🗓️ PIĄTEK (06.11.2026)  
+➡️ Częstochowa: Częstotańcz, Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA (Salsa On2/Bachata)  
+🔗 https://krajownik.pl/czestochowa/wydarzenia/piatkowa-potancowka-czestochowa-cultura-latina-tradycyjne-mambo-salsa-bachata-z-lekcja-tanca-427022  
 🗓️ SOBOTA (07.11.2026)  
 ➡️ Katowice: Mil Pasos, B Experience,zajęcia specjalne i praktis (Bachata)  
 🔗 https://www.facebook.com/events/3128955417294577/  
@@ -219,7 +228,7 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🔗 https://www.facebook.com/events/2970730173282777/  
 🗓️ WTOREK (17.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20 (Cubana)  
-🔗 https://www.facebook.com/events/1103229839073572/  
+🔗 https://krajownik.pl/krakow/wydarzenia/nowy-kurs-salsy-kubanskiej-w-parach-od-podstaw-start-1711-wtorki-2h-1930-2120-425370  
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)  
 🔗 https://www.facebook.com/events/1580872416500736/  
@@ -247,6 +256,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (01.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1249676614905478/  
+🗓️ ŚRODA (02.12.2026)  
+➡️ Katowice: Mil Pasos, ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ CZWARTEK–NIEDZIELA (03–06.12.2026)  
 ➡️ Hucisko: Orle Gniazdo, FeelTheFlow (Bachata)  
 🔗 https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/  

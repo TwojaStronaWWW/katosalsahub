@@ -296,6 +296,53 @@
     ]
   },
   {
+    "date": "2026-10-26",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.266,
+        "lng": 19.0188,
+        "tytul": "🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min)",
+        "opis": "🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min) - 16:15; La Clave; nowe w bazie 22.10",
+        "opisPubliczny": "🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min)",
+        "dateLabel": "PONIEDZIAŁEK (26.10.2026)",
+        "endDate": "2026-10-26",
+        "soldOut": false,
+        "link": "https://krajownik.pl/katowice/wydarzenia/bachata-od-zera-z-claudio-start-12102026-godz-1715-3x45min-426679",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Gliwice",
+        "miastoInne": "",
+        "miejsce": "ul. Zwycięstwa 52A",
+        "miejsceInne": "ul. Zwycięstwa 52A",
+        "adres": "",
+        "lat": 50.2945,
+        "lng": 18.6714,
+        "tytul": "Bachata Solo Footwork & Styling z Klaudią Lalewicz",
+        "opis": "Bachata Solo Footwork & Styling z Klaudią Lalewicz - 16:45; ul. Zwycięstwa 52A; nowe w bazie 22.10",
+        "opisPubliczny": "Bachata Solo Footwork & Styling z Klaudią Lalewicz",
+        "dateLabel": "PONIEDZIAŁEK (26.10.2026)",
+        "endDate": "2026-10-26",
+        "soldOut": false,
+        "link": "https://krajownik.pl/gliwice/wydarzenia/bachata-solo-footwork-styling-z-klaudia-lalewicz-426313",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-10-27",
     "events": [
       {
@@ -656,6 +703,28 @@
         "soldOut": false,
         "link": "https://onlydanceapp.com/event/cEgGXQdo6UgY6u5z5CyB",
         "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Częstochowa",
+        "miastoInne": "",
+        "miejsce": "Częstotańcz",
+        "miejsceInne": "Częstotańcz (ul. Spółdzielczości 4)",
+        "adres": "ul. Spółdzielczości 4",
+        "lat": 50.7951,
+        "lng": 19.042,
+        "tytul": "Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA",
+        "opis": "Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA - 20:30; Częstotańcz; nowe w bazie 22.10",
+        "opisPubliczny": "Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA",
+        "dateLabel": "PIĄTEK (06.11.2026)",
+        "endDate": "2026-11-06",
+        "soldOut": false,
+        "link": "https://krajownik.pl/czestochowa/wydarzenia/piatkowa-potancowka-czestochowa-cultura-latina-tradycyjne-mambo-salsa-bachata-z-lekcja-tanca-427022",
+        "style": [
+          "Salsa On2",
           "Bachata"
         ]
       }
@@ -1046,7 +1115,7 @@
         "dateLabel": "WTOREK (17.11.2026)",
         "endDate": "2026-11-17",
         "soldOut": false,
-        "link": "https://www.facebook.com/events/1103229839073572/",
+        "link": "https://krajownik.pl/krakow/wydarzenia/nowy-kurs-salsy-kubanskiej-w-parach-od-podstaw-start-1711-wtorki-2h-1930-2120-425370",
         "style": [
           "Cubana"
         ]
@@ -1263,6 +1332,32 @@
         "link": "https://www.facebook.com/events/1249676614905478/",
         "style": [
           "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-02",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
+        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 22.10",
+        "opisPubliczny": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
+        "dateLabel": "ŚRODA (02.12.2026)",
+        "endDate": "2026-12-02",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
         ]
       }
     ]
