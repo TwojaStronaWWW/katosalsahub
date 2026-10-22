@@ -296,6 +296,33 @@
     ]
   },
   {
+    "date": "2026-10-27",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (ul. Jana Zamoyskiego 79A/3)",
+        "adres": "ul. Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "💚 KIZ FUSION OPEN | PATRYK & MAGDA",
+        "opis": "💚 KIZ FUSION OPEN | PATRYK & MAGDA - 18:00; Salsa House; nowe w bazie 22.10",
+        "opisPubliczny": "💚 KIZ FUSION OPEN | PATRYK & MAGDA",
+        "dateLabel": "WTOREK (27.10.2026)",
+        "endDate": "2026-10-27",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/898491509777899/",
+        "style": [
+          "Salsa",
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-10-28",
     "events": [
       {
@@ -1002,6 +1029,27 @@
         "style": [
           "Cubana"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Zaraz Wracam Tu",
+        "miejsceInne": "Zaraz Wracam Tu (ul. Miodowa 51)",
+        "adres": "ul. Miodowa 51",
+        "lat": 50.0528,
+        "lng": 19.9482,
+        "tytul": "NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11",
+        "opis": "NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20 - 18:30; Zaraz Wracam Tu; nowe w bazie 22.10",
+        "opisPubliczny": "NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20",
+        "dateLabel": "WTOREK (17.11.2026)",
+        "endDate": "2026-11-17",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1103229839073572/",
+        "style": [
+          "Cubana"
+        ]
       }
     ]
   },
@@ -1073,6 +1121,27 @@
         "link": "https://www.facebook.com/events/1368901197951496/",
         "style": [
           "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Bachata Footwork od podstaw!",
+        "opis": "Bachata Footwork od podstaw! - LOFToDANCE Kraków; nowe w bazie 22.10",
+        "opisPubliczny": "Bachata Footwork od podstaw!",
+        "dateLabel": "SOBOTA (21.11.2026)",
+        "endDate": "2026-11-21",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/bachata-footwork-od-podstaw,1293",
+        "style": [
+          "Bachata"
         ]
       }
     ]

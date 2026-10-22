@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 20.10.2026
 - **Stan zestawienia na weekend 23–25.10.2026:** **13 pozycji** (3 pt + 7 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **59 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **62 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (20.10 — 35 pozycji, data publikacji nieustalona):**
   - **Kizomba w Piątym Domu – SH#75** | 20.10.2026 | Katowice, Piąty Dom | Kizomba | https://www.facebook.com/events/1410619787718525/
@@ -124,6 +124,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 ## 5. KOMENTARZ 2 — PRZYSZŁOŚĆ
 🎉 Zaplanowane wydarzenia — kolejne tygodnie
 
+🗓️ WTOREK (27.10.2026)  
+➡️ Kraków: Salsa House, 💚 KIZ FUSION OPEN | PATRYK & MAGDA (Salsa/Kizomba)  
+🔗 https://www.facebook.com/events/898491509777899/  
 🗓️ ŚRODA (28.10.2026)  
 ➡️ Katowice: Mil Pasos, Upiorna nagrywka z Izabelą,zajęcia specjalne (Bachata)  
 🔗 https://www.facebook.com/events/1614897007098369/  
@@ -214,6 +217,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (17.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/2970730173282777/  
+🗓️ WTOREK (17.11.2026)  
+➡️ Kraków: Zaraz Wracam Tu, NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20 (Cubana)  
+🔗 https://www.facebook.com/events/1103229839073572/  
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)  
 🔗 https://www.facebook.com/events/1580872416500736/  
@@ -223,6 +229,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)  
 🔗 https://www.facebook.com/events/1368901197951496/  
+🗓️ SOBOTA (21.11.2026)  
+➡️ Kraków: LOFToDANCE, Bachata Footwork od podstaw! (Bachata)  
+🔗 https://sklep.loftodance.pl/wydarzenie/bachata-footwork-od-podstaw,1293  
 🗓️ NIEDZIELA (22.11.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  
