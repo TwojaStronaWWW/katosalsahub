@@ -53,13 +53,33 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sI3oU5dNLhWsK0
 
 const FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
 
-📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649
+☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
 
-📻 PS2: Szukasz gdzie tańczyć salsę w Katowicach? Mapa miejscówek i darmowych parkingów, słownik ponad 200 figur Salsopedia oraz radio z salsą 24/7 bez reklam (działa przy zablokowanym telefonie!) czekają na naszej stronie Salsa Katowice: 👉 https://katosalsahub.pl/
+---
+🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
+Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
+📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
+👉 https://katosalsahub.pl/
+📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
+👉 https://katosalsahub.pl/grafik.html
 
-☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
+#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie`;
 
-#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia`;
+function toBoldUnicode(text) {
+    const chars = {
+        a: '𝐚', b: '𝐛', c: '𝐜', d: '𝐝', e: '𝐞', f: '𝐟', g: '𝐠', h: '𝐡', i: '𝐢', j: '𝐣', k: '𝐤', l: '𝐥', m: '𝐦',
+        n: '𝐧', o: '𝐨', p: '𝐩', q: '𝐪', r: '𝐫', s: '𝐬', t: '𝐭', u: '𝐮', v: '𝐯', w: '𝐰', x: '𝐱', y: '𝐲', z: '𝐳',
+        A: '𝐀', B: '𝐁', C: '𝐂', D: '𝐃', E: '𝐄', F: '𝐅', G: '𝐆', H: '𝐇', I: '𝐈', J: '𝐉', K: '𝐊', L: '𝐋', M: '𝐌',
+        N: '𝐍', O: '𝐎', P: '𝐏', Q: '𝐐', R: '𝐑', S: '𝐒', T: '𝐓', U: '𝐔', V: '𝐕', W: '𝐖', X: '𝐗', Y: '𝐘', Z: '𝐙',
+        0: '𝟎', 1: '𝟏', 2: '𝟐', 3: '𝟑', 4: '𝟒', 5: '𝟓', 6: '𝟔', 7: '𝟕', 8: '𝟖', 9: '𝟗',
+        ą: '𝐚̨', ć: '𝐜́', ę: '𝐞̨', ł: 'ł', ń: '𝐧́', ó: '𝐨́', ś: '𝐬́', ź: '𝐳́', ż: '𝐳̇',
+        Ą: '𝐀̨', Ć: '𝐂́', Ę: '𝐄̨', Ł: 'Ł', Ń: '𝐍́', Ó: '𝐎́', Ś: '𝐒́', Ź: '𝐙́', Ż: '𝐙̇',
+    };
+    return String(text || '')
+        .split('')
+        .map(c => chars[c] || c)
+        .join('');
+}
 
 /**
  * Buduje tekst miejsca i stylów dla Ankiety (Sekcja 3) i Komentarza 1 (Sekcja 4).
@@ -460,15 +480,15 @@ ${newItemsSummary}
     const sbText = narrative.SOBOTA || buildNaturalDayNarrative(saturdayEvents, 'sobota');
     const ndText = narrative.NIEDZIELA || buildNaturalDayNarrative(sundayEvents, 'niedziela');
 
-    const sec2 = `🎉 Gdzie tańczymy w ten weekend? (${weekendShortStr})
+    const sec2 = `🎉 ${toBoldUnicode(`Gdzie tańczymy w ten weekend? (${weekendShortStr})`)}
 
-🗓️ PIĄTEK
+🗓️ ${toBoldUnicode('PIĄTEK')}
 ${ptText}
 
-🗓️ SOBOTA
+🗓️ ${toBoldUnicode('SOBOTA')}
 ${sbText}
 
-🗓️ NIEDZIELA
+🗓️ ${toBoldUnicode('NIEDZIELA')}
 ${ndText}`;
 
     const sec3Lines = [];

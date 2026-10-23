@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 20.10.2026
-- **Stan zestawienia na weekend 23–25.10.2026:** **14 pozycji** (3 pt + 8 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **70 pozycji** (pełny horyzont do 2027 r.).
+- **Stan zestawienia na weekend 23–25.10.2026:** **13 pozycji** (3 pt + 7 sb + 3 nd).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **59 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (20.10 — 35 pozycji, data publikacji nieustalona):**
   - **Kizomba w Piątym Domu – SH#75** | 20.10.2026 | Katowice, Piąty Dom | Kizomba | https://www.facebook.com/events/1410619787718525/
@@ -44,15 +44,15 @@
 ---
 
 ## 2. POST NA FB
-🎉 Gdzie tańczymy w ten weekend? (23-25.10)
+🎉 𝐆𝐝𝐳𝐢𝐞 𝐭𝐚𝐧́𝐜𝐳𝐲𝐦𝐲 𝐰 𝐭𝐞𝐧 𝐰𝐞𝐞𝐤𝐞𝐧𝐝? (𝟐𝟑-𝟐𝟓.𝟏𝟎)
 
-🗓️ PIĄTEK
+🗓️ 𝐏𝐈𝐀̨𝐓𝐄𝐊
 W Katowicach piątkowy wieczór jeszcze bez potwierdzonych imprez (w La Clave w ten weekend trwają tylko regularne kursy, a ekipa Good Mood wyjechała na obóz taneczny w górach), ale tuż obok w Świętochłowicach czeka mieszana impreza z warsztatami w Stylowej Willi, natomiast w Krakowie możecie wyskoczyć na salsę cubana do Teatro Cubano (Ritmo de la Habana z DJ Chavą) lub na piątkowy praktis Urban Kiz & Kizomba do Salsa House.
 
-🗓️ SOBOTA
+🗓️ 𝐒𝐎𝐁𝐎𝐓𝐀
 W Katowicach w Mil Pasos czekają dwa duże wydarzenia: popołudniowe Mil Pasos K Experience (zajęcia specjalne + praktis Kizomba, 16:00–22:00) oraz nocna impreza Early Vibes & Goodnights Dance Party – Pumpkin Edition (Bachata/Kizomba, 20:00–02:00). W Krakowie Sabrosa startuje z weekendowymi warsztatami mambo z Marco Faravellim, Salsa House zaprasza na warsztaty Rueda Dynamica z Kleszką, Forum Tańca organizuje dzienne warsztaty i wieczorną imprezę Halloween Hogwarts Edition, a Teatro Cubano gra Live Show Saturdays.
 
-🗓️ NIEDZIELA
+🗓️ 𝐍𝐈𝐄𝐃𝐙𝐈𝐄𝐋𝐀
 W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub – Salsa Habana Picante vol. 68 w lokalu Wolni Ludzie przy Mariackiej 2 w Katowicach (15:00–18:00)! Wieczorem w Siewierzu potańczycie na Kizomba Sunday w Belezie, a w Krakowie na Bachata at Teatro Cubano.
 
 ---
@@ -68,7 +68,6 @@ SOBOTA (24.10): Kraków - Salsa House (Cubana/Rueda)
 SOBOTA (24.10): Kraków - Forum Tańca, Halloween w Forum Tańca – Hogwarts Edition (Salsa/Bachata)  
 SOBOTA (24.10): Kraków - Forum Tańca, Halloween Party – Hogwarts Edition (Salsa/Bachata)  
 SOBOTA (24.10): Kraków - Teatro Cubano (Cubana)  
-SOBOTA (24.10): Tychy - Mohito (Salsa/Bachata/Kizomba)  
 NIEDZIELA (25.10): Katowice - Wolni Ludzie (Cubana)  
 NIEDZIELA (25.10): Siewierz - Beleza (Kizomba)  
 NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)  
@@ -101,8 +100,6 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🔗 https://www.facebook.com/events/1061231330083326/  
 ➡️ Kraków: Teatro Cubano (Cubana)  
 🔗 https://www.facebook.com/events/1294624072278735/  
-➡️ Tychy: Mohito (Salsa/Bachata/Kizomba)  
-🔗 https://airdancia.com/event/social-flow-party-bachata-salsa-kizomba-na-3-sale-w-mohito-tychy-tychy/  
 
 🗓️ NIEDZIELA (25.10):  
 ⭐ Katowice: Wolni Ludzie (Cubana)  
@@ -114,37 +111,26 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
-📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649
+☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
 
-📻 PS2: Szukasz gdzie tańczyć salsę w Katowicach? Mapa miejscówek i darmowych parkingów, słownik ponad 200 figur Salsopedia oraz radio z salsą 24/7 bez reklam (działa przy zablokowanym telefonie!) czekają na naszej stronie Salsa Katowice: 👉 https://katosalsahub.pl/
+---
+🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
+Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
+📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
+👉 https://katosalsahub.pl/
+📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
+👉 https://katosalsahub.pl/grafik.html
 
-☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
-
-#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia
+#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie
 
 ---
 
 ## 5. KOMENTARZ 2 — PRZYSZŁOŚĆ
 🎉 Zaplanowane wydarzenia — kolejne tygodnie
 
-🗓️ PONIEDZIAŁEK (26.10.2026)  
-➡️ Gliwice: BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących, BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących (Bachata)  
-🔗 https://airdancia.com/event/bachata-leading-following-zajecia-dla-tanczacych-gliwice/  
-🗓️ PONIEDZIAŁEK (26.10.2026)  
-➡️ Katowice: La Clave, 🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min) (Bachata)  
-🔗 https://www.facebook.com/events/1422806175853218/  
-🗓️ PONIEDZIAŁEK (26.10.2026)  
-➡️ Gliwice: ul. Zwycięstwa 52A, Bachata Solo Footwork & Styling z Klaudią Lalewicz (Bachata)  
-🔗 https://www.facebook.com/events/1555940559881687/  
-🗓️ WTOREK (27.10.2026)  
-➡️ Kraków: Salsa House, 💚 KIZ FUSION OPEN | PATRYK & MAGDA (Salsa/Kizomba)  
-🔗 https://www.facebook.com/events/898491509777899/  
 🗓️ ŚRODA (28.10.2026)  
 ➡️ Katowice: Mil Pasos, Upiorna nagrywka z Izabelą,zajęcia specjalne (Bachata)  
 🔗 https://www.facebook.com/events/1614897007098369/  
-🗓️ ŚRODA (28.10.2026)  
-➡️ Kraków: LOFToDANCE, BACHATA VIRAL MOVES by Michał&Nicki (Bachata)  
-🔗 https://www.facebook.com/events/1431636645073748/  
 🗓️ CZWARTEK (29.10.2026)  
 ➡️ Kraków: Forum Tańca, Urodzinowy Praktis Bachatowy Justyny w Forum Tańca (Bachata)  
 🔗 https://www.facebook.com/events/2137456803520320/  
@@ -181,15 +167,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (03.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1083906274387790/  
-🗓️ ŚRODA (04.11.2026)  
-➡️ Katowice: NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55!, NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55! (Bachata)  
-🔗 https://airdancia.com/event/nowe-zajecia-regularne-bachata-moderna-praktis-z-instruktorami-4-11-26-sroda-18-00-20-55-katowice/  
 🗓️ PIĄTEK (06.11.2026)  
 ➡️ Kraków: Panorama Forum, Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia (Bachata)  
 🔗 https://onlydanceapp.com/event/cEgGXQdo6UgY6u5z5CyB  
-🗓️ PIĄTEK (06.11.2026)  
-➡️ Częstochowa: Częstotańcz, Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA (Salsa On2/Bachata)  
-🔗 https://www.facebook.com/events/2311106856407049/  
 🗓️ SOBOTA (07.11.2026)  
 ➡️ Katowice: Mil Pasos, B Experience,zajęcia specjalne i praktis (Bachata)  
 🔗 https://www.facebook.com/events/3128955417294577/  
@@ -238,9 +218,6 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (17.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/2970730173282777/  
-🗓️ WTOREK (17.11.2026)  
-➡️ Kraków: Zaraz Wracam Tu, NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20 (Cubana)  
-🔗 https://www.facebook.com/events/1103229839073572/  
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)  
 🔗 https://www.facebook.com/events/1580872416500736/  
@@ -250,9 +227,6 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)  
 🔗 https://www.facebook.com/events/1368901197951496/  
-🗓️ SOBOTA (21.11.2026)  
-➡️ Kraków: LOFToDANCE, Bachata Footwork od podstaw! (Bachata)  
-🔗 https://sklep.loftodance.pl/wydarzenie/bachata-footwork-od-podstaw,1293  
 🗓️ NIEDZIELA (22.11.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  
@@ -268,9 +242,6 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (01.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1249676614905478/  
-🗓️ ŚRODA (02.12.2026)  
-➡️ Katowice: Mil Pasos, ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! (Bachata)  
-🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ CZWARTEK–NIEDZIELA (03–06.12.2026)  
 ➡️ Hucisko: Orle Gniazdo, FeelTheFlow (Bachata)  
 🔗 https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/  
@@ -307,9 +278,6 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (09.01.2027)  
 ➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)  
 🔗 https://www.facebook.com/events/1632915284664193/  
-🗓️ SOBOTA (16.01.2027)  
-➡️ Bytom: Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy, Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy (Salsa/Bachata/Kizomba)  
-🔗 https://airdancia.com/event/karnawal-w-bytomiu-16-stycznia-2027-bal-maskowy-bytom/  
 🗓️ PIĄTEK–NIEDZIELA (29–31.01.2027)  
 ➡️ Kraków: Forum Tańca, Cracovia Rueda Festival (Cubana/Rueda)  
 🔗 https://www.facebook.com/events/1430429125397912/  
@@ -340,13 +308,17 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
-📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649
+☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
 
-📻 PS2: Szukasz gdzie tańczyć salsę w Katowicach? Mapa miejscówek i darmowych parkingów, słownik ponad 200 figur Salsopedia oraz radio z salsą 24/7 bez reklam (działa przy zablokowanym telefonie!) czekają na naszej stronie Salsa Katowice: 👉 https://katosalsahub.pl/
+---
+🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
+Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
+📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
+👉 https://katosalsahub.pl/
+📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
+👉 https://katosalsahub.pl/grafik.html
 
-☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
-
-#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia
+#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie
 
 ---
 

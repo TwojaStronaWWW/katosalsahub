@@ -118,7 +118,7 @@ npm run sync
 Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
 👉 https://katosalsahub.pl/
-📅 Aktualny rozkład wszystkich kursów i imprez tanecznych na Śląsku:
+📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
 👉 https://katosalsahub.pl/grafik.html
 
 #SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie

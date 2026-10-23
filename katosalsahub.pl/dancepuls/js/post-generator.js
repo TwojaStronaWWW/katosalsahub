@@ -188,13 +188,22 @@ export function toBoldUnicode(text) {
 		n: '𝐧', o: '𝐨', p: '𝐩', q: '𝐪', r: '𝐫', s: '𝐬', t: '𝐭', u: '𝐮', v: '𝐯', w: '𝐰', x: '𝐱', y: '𝐲', z: '𝐳',
 		A: '𝐀', B: '𝐁', C: '𝐂', D: '𝐃', E: '𝐄', F: '𝐅', G: '𝐆', H: '𝐇', I: '𝐈', J: '𝐉', K: '𝐊', L: '𝐋', M: '𝐌',
 		N: '𝐍', O: '𝐎', P: '𝐏', Q: '𝐐', R: '𝐑', S: '𝐒', T: '𝐓', U: '𝐔', V: '𝐕', W: '𝐖', X: '𝐗', Y: '𝐘', Z: '𝐙',
+		0: '𝟎', 1: '𝟏', 2: '𝟐', 3: '𝟑', 4: '𝟒', 5: '𝟓', 6: '𝟔', 7: '𝟕', 8: '𝟖', 9: '𝟗',
 		ą: '𝐚̨', ć: '𝐜́', ę: '𝐞̨', ł: 'ł', ń: '𝐧́', ó: '𝐨́', ś: '𝐬́', ź: '𝐳́', ż: '𝐳̇',
 		Ą: '𝐀̨', Ć: '𝐂́', Ę: '𝐄̨', Ł: 'Ł', Ń: '𝐍́', Ó: '𝐎́', Ś: '𝐒́', Ź: '𝐙́', Ż: '𝐙̇',
 	}
-	return text
+	return String(text || '')
 		.split('')
 		.map(c => chars[c] || c)
 		.join('')
+}
+
+export function formatMainPostBoldings(rawText) {
+	if (!rawText) return ''
+	return rawText
+		.replace(/🎉\s*(Gdzie tańczymy w ten weekend\?[^\n]*)/g, (_, phrase) => `🎉 ${toBoldUnicode(phrase.trim())}`)
+		.replace(/(Gdzie tańczymy w danym dniu[^\n:]*)/gi, (_, phrase) => toBoldUnicode(phrase))
+		.replace(/^🗓️\s*(PIĄTEK|SOBOTA|NIEDZIELA)\b/gm, (_, day) => `🗓️ ${toBoldUnicode(day)}`)
 }
 
 export function getWeekNumber(d) {
@@ -297,6 +306,7 @@ export function renderPollButtons(pollText) {
 export function generujPost() {
 	updateTitle()
 	const blocks = document.querySelectorAll('.day-block')
+	if (blocks.length === 0) return
 	let wynik = '🎉 Zestawienie imprezowe\n\n'
 	let wynikAnkieta = ''
 	const dayEvents = {}
@@ -432,7 +442,7 @@ export function generujPost() {
 	const opisSb = budujOpisDlaDnia(dayEvents[sbKey])
 	const opisNd = budujOpisDlaDnia(dayEvents[ndKey])
 
-	const gotowyPost = `🎉 Gdzie tańczymy w ten weekend?${weekendRangeLabel}
+	const gotowyPost = formatMainPostBoldings(`🎉 Gdzie tańczymy w ten weekend?${weekendRangeLabel}
 
 🗓️ PIĄTEK
 ${opisPt}
@@ -441,24 +451,27 @@ ${opisPt}
 ${opisSb}
 
 🗓️ NIEDZIELA
-${opisNd}`
+${opisNd}`)
 
 	const postOpisElem = document.getElementById('post-opis')
 	if (postOpisElem) {
 		postOpisElem.value = gotowyPost
 	}
 
-	const hashtagiVal =
-		document.getElementById('hashtagi')?.value ||
-		'#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia'
 	wynik += '@wszyscy Do zobaczenia na parkiecie! 💃🕺\n\n'
 	wynik +=
-		'📝 PS1: Chcesz zgłosić imprezę? Wypełnij krótki formularz, a dodamy ją do następnego zestawienia: 👉 https://tiny.pl/2bc8z7649\n\n'
+		'☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
+	wynik += '---\n'
+	wynik += '🌴 SALSA KATOWICE – KATO SALSA HUB 🌴\n'
+	wynik += 'Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?\n'
 	wynik +=
-		'📻 PS2: Szukasz gdzie tańczyć salsę w Katowicach? Mapa miejscówek i darmowych parkingów, słownik ponad 200 figur Salsopedia oraz radio z salsą 24/7 bez reklam (działa przy zablokowanym telefonie!) czekają na naszej stronie Salsa Katowice: 👉 https://katosalsahub.pl/\n\n'
+		'📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:\n'
+	wynik += '👉 https://katosalsahub.pl/\n'
 	wynik +=
-		'☕ PS3: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
-	wynik += hashtagiVal
+		'📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:\n'
+	wynik += '👉 https://katosalsahub.pl/grafik.html\n\n'
+	wynik +=
+		'#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie'
 
 	const wynikElem = document.getElementById('wynik')
 	if (wynikElem) {
@@ -512,7 +525,7 @@ export async function zaladujRaportKSH(silent = true) {
 		}
 		if (sec2) {
 			const postEl = document.getElementById('post-opis')
-			if (postEl) postEl.value = sec2
+			if (postEl) postEl.value = formatMainPostBoldings(sec2)
 		}
 		if (sec4) {
 			const wynikEl = document.getElementById('wynik')
@@ -527,10 +540,18 @@ export async function zaladujRaportKSH(silent = true) {
 			const ankietaEl = document.getElementById('wynik-ankieta')
 			if (ankietaEl) ankietaEl.value = sec3
 			renderPollButtons(sec3)
+			const counterEl = document.getElementById('event-counter')
+			if (counterEl) {
+				const pollCount = sec3
+					.trim()
+					.split('\n')
+					.filter(l => l.trim()).length
+				counterEl.textContent = `Liczba wgranych wydarzeń: ${pollCount}`
+			}
 		}
 
 		if (!silent) {
-			alert('✅ Wczytano wszystkie 6 sekcji raportu KSH z data/latest_report.md!')
+			alert('✅ Odświeżono bazę i raport KSH z latest_report.md!')
 		}
 	} catch (e) {
 		console.warn('Nie udało się wczytać data/latest_report.md:', e)

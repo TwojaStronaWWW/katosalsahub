@@ -21,211 +21,78 @@
 
 <body>
   <header class="top-bar">
-    <div id="weather-widget" class="weather-widget">
-      <!-- Weather loaded via JS -->
-    </div>
     <h2 class="top-bar-title">🕺Dance Puls - Generator</h2>
-    <button id="help-btn" type="button">❓ Pomoc</button>
     <a href="https://twojastronawww.pl/" target="_blank" rel="noopener noreferrer" class="author-badge">by TwojaStronaWWW</a>
   </header>
 
-  <div class="app-container">
-
-    <!-- LEFT COLUMN: Inputs & Forms -->
-    <div class="col-left">
-      <div class="filters inbox-card">
-        <div class="inbox-header">
-          <h3 class="inbox-title">📬 Skrzynka zgłoszeń (CSV)</h3>
-          <button id="check-inbox-btn" type="button" class="btn-inbox-check">🔄 Sprawdź</button>
-        </div>
-        <div id="inbox-container"></div>
-      </div>
-
-      <div class="filters view-filter-card">
-        <label for="filter-select">Widok kalendarza:</label>
-        <select id="filter-select">
-          <option value="thisweek">Ten tydzień (do niedzieli)</option>
-          <option value="weekend">Tylko weekend (Pt–Nd)</option>
-          <option value="all">Wszystkie 14 dni</option>
-        </select>
-      </div>
-
-      <!-- Rząd 1: Linki zewnętrzne -->
-      <div class="toolbar-row">
-        <button id="open-fb-links-btn" type="button" class="btn-primary toolbar-btn">
-          🌐 Otwórz zakładki
-        </button>
-        <button id="open-ksh-btn" type="button" class="btn-primary toolbar-btn">
-          🏠 Otwórz KSH
-        </button>
-      </div>
-
-      <!-- Rząd 2: Narzędzia importu -->
-      <div class="toolbar-row">
-        <button id="copy-scraper-btn" type="button" class="btn-danger toolbar-btn">
-          📋 Kopiuj Skraper
-        </button>
-        <button id="import-btn" type="button" class="btn-primary toolbar-btn"
-          title="Próbuje zaimportować wydarzenia z danych w schowku">
-          📥 Wklej i Importuj
-        </button>
-      </div>
-
-      <!-- Rząd 3: Baza, Raport KSH i Czyszczenie -->
-      <div class="toolbar-row toolbar-row-bottom">
-        <button id="load-db-btn" type="button" class="btn-primary toolbar-btn-sm">
-          🔄 Wczytaj Bazę
-        </button>
-        <button id="reset-history-btn" type="button" class="btn-neutral toolbar-btn-sm">
-          🗑️ Reset Historii
-        </button>
-        <button id="clear-form-btn" type="button" class="btn-neutral toolbar-btn-sm">
-          🧹 Wyczyść Formularz
-        </button>
-      </div>
-
-      <div id="form"></div>
+  <div class="app-container app-container-centered">
+    <!-- TOP CONTROLS: 2 BUTTONS -->
+    <div class="top-controls-bar">
+      <button id="run-scrapers-btn" type="button" class="btn-scraper-green"
+        title="Uruchamia wszystkie scrapery wyszukujące wydarzenia i kopiuje skrypt skrapera FB do schowka">
+        🚀 Uruchom wszystkie scrapery
+      </button>
+      <button id="load-report-btn" type="button" class="btn-refresh-db"
+        title="Odświeża wczytaną bazę i raport z latest_report.md">
+        🔄 Odśwież bazę
+      </button>
     </div>
 
-    <!-- MIDDLE COLUMN: Post Content & KSH 6-Section Report (Sticky) -->
-    <div class="col-middle sticky-col">
-      <div class="ksh-report-bar">
-        <button id="load-report-btn" type="button" class="btn-report-load"
-          title="Wczytuje wygenerowany 6-sekcyjny raport z data/latest_report.md">
-          📊 Wczytaj Raport KSH (6 sekcji)
-        </button>
-        <button id="open-audit-btn" type="button" class="btn-report-audit"
-          title="Podgląd prywatnych sekcji 1 i 6 (nowości, pn–cz, niepewne tropy, kolejne kroki)">
-          🔍 Audyt (Sekcje 1 i 6)
-        </button>
-      </div>
-
+    <!-- CENTERED MAIN CARD -->
+    <div class="pulse-main-card">
+      <!-- 1. GŁÓWNY POST -->
+      <h3 class="section-subtitle">✍️ Główny post:</h3>
+      <textarea id="post-opis" class="textarea-post" rows="9"></textarea>
       <div class="copy-actions-stack">
         <button id="copy-post-btn" type="button" class="btn-copy-post">
-          📋 1. KOPIUJ GOTOWY POST NA FB (SEKCJA 2)
-        </button>
-        <button id="copy-skeleton-btn" type="button" class="btn-copy-skeleton">
-          📋 Kopiuj sam pusty szkielet
+          📋 1. KOPIUJ GŁÓWNY POST NA FB
         </button>
       </div>
 
-      <h3 class="section-subtitle">✍️ Sekcja 2 — Gotowy Post na FB (Opis weekendu):</h3>
-      <textarea id="post-opis" class="textarea-post" rows="8"></textarea>
-
-      <h3 class="section-subtitle">📋 Sekcja 4 — Komentarz 1 (Ten Weekend):</h3>
-      <textarea id="wynik" class="textarea-code" rows="14"></textarea>
+      <!-- 2. KOMENTARZE (TEN WEEKEND) -->
+      <h3 class="section-subtitle">📋 Komentarze (Ten Weekend):</h3>
+      <textarea id="wynik" class="textarea-code textarea-comments-wide" rows="16"></textarea>
 
       <div id="event-counter" class="event-counter">Liczba wgranych wydarzeń: 0</div>
 
       <button id="copy-comment1-btn" type="button" class="btn-copy-comment1">
-        📋 2. KOPIUJ KOMENTARZ 1 — WEEKEND (SEKCJA 4)
+        📋 2. KOPIUJ KOMENTARZE (TEN WEEKEND)
       </button>
 
-      <h3 class="section-subtitle">🔮 Sekcja 5 — Komentarz 2 (Kolejne Tygodnie):</h3>
-      <textarea id="wynik-przyszle" class="textarea-code" rows="12"></textarea>
+      <!-- UKRYTE: KOMENTARZE KOLEJNE TYGODNIE + HASHTAGI -->
+      <div class="is-hidden">
+        <h3 class="section-subtitle">🔮 Sekcja 5 — Komentarz 2 (Kolejne Tygodnie):</h3>
+        <textarea id="wynik-przyszle" class="textarea-code" rows="12"></textarea>
+        <button id="copy-comment2-btn" type="button" class="btn-copy-comment2">
+          📋 3. KOPIUJ KOMENTARZ 2 — PRZYSZŁOŚĆ (SEKCJA 5)
+        </button>
+        <div class="hashtag-box is-hidden">
+          <label for="hashtagi" class="hashtag-label">Hashtagi (w stopce komentarzy):</label>
+          <input id="hashtagi" type="text" class="hashtag-input" value="#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie">
+        </div>
+      </div>
 
-      <button id="copy-comment2-btn" type="button" class="btn-copy-comment2">
-        📋 3. KOPIUJ KOMENTARZ 2 — PRZYSZŁOŚĆ (SEKCJA 5)
-      </button>
-
-      <div class="hashtag-box">
-        <label for="hashtagi" class="hashtag-label">Hashtagi (w stopce komentarzy):</label>
-        <input id="hashtagi" type="text" class="hashtag-input" value="#SalsaKatowice #KatoSalsaHub #Salsa #Bachata #Kizomba #Taniec #Katowice #Silesia">
+      <!-- 3. ANKIETA (SEKCJA OSTATNIA) -->
+      <div class="poll-section-box">
+        <h3 class="section-subtitle poll-col-title">🔢 Ankieta:</h3>
+        <p class="poll-hint">Kliknij pojedynczy wiersz, aby skopiować opcję ankiety na FB:</p>
+        <div id="kopiuj-ankiete-container"></div>
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: Poll Buttons (Sticky) -->
-    <div class="col-right sticky-col">
-      <h3 class="poll-col-title">🔢 Sekcja 3 — Ankieta:</h3>
-      <textarea id="wynik-ankieta" class="textarea-code" rows="8"></textarea>
-      <button id="copy-all-poll-btn" type="button" class="btn-copy-all-poll">
-        📋 Kopiuj całą ankietę (wszystkie linie)
-      </button>
-      <p class="poll-hint">Lub kliknij pojedynczy wiersz, aby wkleić opcję na FB:</p>
-      <div id="kopiuj-ankiete-container"></div>
-    </div>
-
-    <!-- AUDIT MODAL (SECTIONS 1 & 6 + FULL REPORT) -->
-    <div id="audit-modal" class="modal">
-      <div class="modal-content modal-content-wide">
-        <span class="close-modal" id="close-audit-modal">&times;</span>
-        <h2>📊 Raport KSH — Sekcje Prywatne (1 i 6) oraz Pełny Zrzut</h2>
-        <p class="modal-lead">
-          Poniższe sekcje są <strong>prywatne</strong> (dla Ciebie i zespołu KSH): podsumowują stan bazy, nowości,
-          wydarzenia z początku tygodnia (pn–cz), wstrzymane tropy i kolejne kroki.
+    <!-- MOBILE WARNING MODAL -->
+    <div id="mobile-warning-modal" class="modal-glass">
+      <div class="glass-content">
+        <h2>📱 Wersja Desktopowa</h2>
+        <p>Cześć! Wygląda na to, że korzystasz z telefonu.</p>
+        <p>Ze względu na specyfikę Generatora (kopiowanie, edycja, skrypty), został on zaprojektowany
+          <strong>wyłącznie do użytku na komputerach</strong>.
         </p>
-        <div class="audit-grid">
-          <div class="audit-box">
-            <h3>1. PRYWATNIE — Stan, nowości i wykonana praca</h3>
-            <pre id="audit-sec1" class="audit-pre">Wczytywanie Sekcji 1...</pre>
-          </div>
-          <div class="audit-box">
-            <h3>6. PRYWATNIE — Pn–Cz, pominięcia i kolejne kroki</h3>
-            <pre id="audit-sec6" class="audit-pre">Wczytywanie Sekcji 6...</pre>
-          </div>
-        </div>
-        <div class="audit-actions">
-          <button id="copy-full-report-btn" type="button" class="btn-primary">
-            📋 Kopiuj pełny 6-sekcyjny raport (Markdown)
-          </button>
-        </div>
+        <p>Możesz spróbować używać go na telefonie, ale wygoda i działanie niektórych funkcji mogą być ograniczone.
+        </p>
+        <button id="mobile-warning-close" type="button" class="glass-btn">Rozumiem, chcę tylko popatrzeć</button>
       </div>
     </div>
-
-    <!-- HELP MODAL -->
-    <div id="help-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal" id="close-help-modal">&times;</span>
-        <h2>📖 Instrukcja Obsługi DancePuls &amp; Raportów KSH</h2>
-
-        <div class="instruction-step">
-          <h3>1. Cykliczny 6-sekcyjny Raport KSH (Baza + Automatyzacja)</h3>
-          <p>Cały ekosystem raportowania jest zintegrowany ze wspólną bazą <code>katosalsahub.pl/assets/data/events_database.md</code>:</p>
-          <ol>
-            <li>W terminalu (lub przez Agenta AI) uruchom <code>npm run report</code> — skrypt sprawdzi arkusz zgłoszeń Google, znormalizuje lokalizacje i wygeneruje <code>events.json</code> oraz <code>latest_report.md</code> w <code>katosalsahub.pl/assets/data/</code>.</li>
-            <li>Kliknij <strong>📊 Wczytaj Raport KSH (6 sekcji)</strong> w środkowej kolumnie, aby załadować gotowy Post (Sekcja 2), Ankietę (Sekcja 3), Komentarz 1 na weekend (Sekcja 4) oraz Komentarz 2 na kolejne tygodnie (Sekcja 5).</li>
-            <li>Kliknij <strong>🔍 Audyt (Sekcje 1 i 6)</strong>, aby sprawdzić prywatne notatki, wydarzenia pn–cz oraz wstrzymane tropy.</li>
-          </ol>
-        </div>
-
-        <div class="instruction-step">
-          <h3>2. Pobieranie wydarzeń z Facebooka (Skraper)</h3>
-          <ol>
-            <li>Kliknij <strong>📋 Kopiuj Skraper</strong>.</li>
-            <li>Wejdź na Facebooka (zakładka Wydarzenia), otwórz konsolę (F12), wklej skrypt i naciśnij Enter.</li>
-            <li>Wróć na kartę DancePuls — wydarzenia zaimportują się ze schowka.</li>
-          </ol>
-        </div>
-
-        <div class="instruction-step">
-          <h3>3. Publikacja na Facebooku (3 kroki)</h3>
-          <ol>
-            <li><strong>📋 1. KOPIUJ GOTOWY POST NA FB (SEKCJA 2)</strong> — wklejasz jako treść głównego posta razem z ankietą (opcje kopiujesz z prawej kolumny).</li>
-            <li><strong>📋 2. KOPIUJ KOMENTARZ 1 — WEEKEND (SEKCJA 4)</strong> — wklejasz w pierwszym komentarzu pod postem (wszystkie wydarzenia weekendu z linkami).</li>
-            <li><strong>📋 3. KOPIUJ KOMENTARZ 2 — PRZYSZŁOŚĆ (SEKCJA 5)</strong> — wklejasz w drugim komentarzu (wszystkie zapowiedzi na kolejne tygodnie i festiwale).</li>
-          </ol>
-        </div>
-
-        <div class="tip-box">
-          <strong>💡 Wskazówka:</strong> Przycisk <strong>🔄 Wczytaj Bazę</strong> odświeża formularz kalendarza po lewej stronie na podstawie pliku <code>assets/data/events.json</code>.
-        </div>
-      </div>
-
-      <!-- MOBILE WARNING MODAL -->
-      <div id="mobile-warning-modal" class="modal-glass">
-        <div class="glass-content">
-          <h2>📱 Wersja Desktopowa</h2>
-          <p>Cześć! Wygląda na to, że korzystasz z telefonu.</p>
-          <p>Ze względu na specyfikę Generatora (kopiowanie, edycja, skrypty), został on zaprojektowany
-            <strong>wyłącznie do użytku na komputerach</strong>.
-          </p>
-          <p>Możesz spróbować używać go na telefonie, ale wygoda i działanie niektórych funkcji mogą być ograniczone.
-          </p>
-          <button id="mobile-warning-close" type="button" class="glass-btn">Rozumiem, chcę tylko popatrzeć</button>
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <footer class="app-footer">

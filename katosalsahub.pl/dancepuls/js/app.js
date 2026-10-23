@@ -223,7 +223,16 @@ document.addEventListener('DOMContentLoaded', function () {
 	function updateEventCounter() {
 		const count = document.querySelectorAll('.event-container .toggle-checkbox:checked').length
 		const counterEl = document.getElementById('event-counter')
-		if (counterEl) counterEl.textContent = `Liczba wgranych wydarzeń: ${count}`
+		if (!counterEl) return
+		if (count > 0) {
+			counterEl.textContent = `Liczba wgranych wydarzeń: ${count}`
+		} else if (window.latestPollText) {
+			const pollCount = window.latestPollText
+				.trim()
+				.split('\n')
+				.filter(l => l.trim()).length
+			counterEl.textContent = `Liczba wgranych wydarzeń: ${pollCount}`
+		}
 	}
 
 	function buildDayBlock(dzienObj) {
@@ -256,6 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function ensureDayBlock(ymdStr) {
+		if (!form) return null
 		const existing = Array.from(form.querySelectorAll('.day-block')).find(b => b.dataset.date === ymdStr)
 		if (existing) return existing
 
@@ -283,16 +293,20 @@ document.addEventListener('DOMContentLoaded', function () {
 		return newBlock
 	}
 
-	dni.forEach(dzienObj => {
-		form.appendChild(buildDayBlock(dzienObj))
-	})
-
-	generujPost()
+	if (form) {
+		dni.forEach(dzienObj => {
+			form.appendChild(buildDayBlock(dzienObj))
+		})
+		generujPost()
+	}
 
 	const filterSelect = document.getElementById('filter-select')
-	filterSelect.addEventListener('change', applyFilter)
+	if (filterSelect) {
+		filterSelect.addEventListener('change', applyFilter)
+	}
 
 	function applyFilter() {
+		if (!filterSelect) return
 		const value = filterSelect.value
 		const blocks = document.querySelectorAll('.day-block')
 
@@ -600,16 +614,58 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 	}
 
+	const btnRunScrapers = document.getElementById('run-scrapers-btn')
+	if (btnRunScrapers) {
+		btnRunScrapers.addEventListener('click', async () => {
+			const originalLabel = btnRunScrapers.textContent
+			btnRunScrapers.disabled = true
+			btnRunScrapers.textContent = '⏳ Uruchamianie scraperów...'
+			try {
+				try {
+					const scraperRes = await fetch('tools/fb_scraper.js?v=' + Date.now())
+					if (scraperRes.ok) {
+						const scriptText = await scraperRes.text()
+						window.scraperScriptCache = scriptText
+						await navigator.clipboard.writeText(scriptText).catch(() => null)
+					}
+				} catch {
+					/* ignore clipboard error */
+				}
+
+				const apiRes = await fetch('/dancepuls/api/run-scrapers', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+				}).catch(() => null)
+
+				await zaladujZPlikuJSON()
+				await zaladujRaportKSH(true)
+
+				if (apiRes && apiRes.ok) {
+					alert('✅ Wszystkie scrapery zostały uruchomione, baza odświeżona, a skrypt FB skopiowany do schowka!')
+				} else {
+					alert('✅ Skrypt skrapera FB skopiowany do schowka i odświeżono bazę wydarzeń!')
+				}
+			} catch (err) {
+				console.error('Błąd uruchamiania scraperów:', err)
+				alert('⚠️ Wystąpił problem podczas odświeżania scraperów: ' + err.message)
+			} finally {
+				btnRunScrapers.disabled = false
+				btnRunScrapers.textContent = originalLabel
+			}
+		})
+	}
+
 	function nasluchujZmian() {
 		const formContainer = document.getElementById('form')
+		if (formContainer) {
+			formContainer.addEventListener('input', () => {
+				zapiszStan()
+			})
 
-		formContainer.addEventListener('input', () => {
-			zapiszStan()
-		})
-
-		formContainer.addEventListener('change', () => {
-			zapiszStan()
-		})
+			formContainer.addEventListener('change', () => {
+				zapiszStan()
+			})
+		}
 
 		const hashInput = document.getElementById('hashtagi')
 		if (hashInput) {
@@ -618,10 +674,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	nasluchujZmian()
-	zaladujZPlikuJSON().then(() => {
-		generujPost()
-		zaladujRaportKSH(true)
-	})
+	zaladujRaportKSH(true)
+	if (form) {
+		zaladujZPlikuJSON().then(() => {
+			generujPost()
+			zaladujRaportKSH(true)
+		})
+	}
 
 	window.scraperScriptCache = ''
 	fetch('tools/fb_scraper.js')

@@ -588,8 +588,36 @@ function handleLocalContactApi(req, res) {
   });
 }
 
+function handleRunScrapersApi(req, res) {
+  const { execFile } = require('node:child_process');
+  const syncEnginePath = path.join(ROOT_DIR, 'scripts', 'sync_engine.js');
+  execFile(
+    process.execPath,
+    [syncEnginePath, '--check-remote'],
+    { env: { ...process.env, SKIP_REMOTE_SYNC: '1' }, timeout: 90000 },
+    (err, stdout, stderr) => {
+      res.writeHead(err ? 500 : 200, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        ...SECURITY_HEADERS,
+      });
+      res.end(
+        JSON.stringify({
+          success: !err,
+          message: err ? err.message : 'Scrapery zakończyły działanie.',
+          output: String(stdout || '').slice(-1500),
+          stderr: String(stderr || '').slice(-500),
+        })
+      );
+    }
+  );
+}
+
 const server = http.createServer((req, res) => {
   const cleanUrlPath = String(req.url || '/').split('?')[0];
+  if ((cleanUrlPath === '/dancepuls/api/run-scrapers' || cleanUrlPath === '/api/run-scrapers') && req.method === 'POST') {
+    return handleRunScrapersApi(req, res);
+  }
   if (cleanUrlPath === '/assets/php/wiki.php' && (req.method === 'POST' || String(req.url).includes('action='))) {
     return handleLocalWikiApi(req, res);
   }
