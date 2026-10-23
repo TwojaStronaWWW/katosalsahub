@@ -63,7 +63,7 @@ Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 
 const FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
 
-☕ PS1: Podoba Ci się to, co robimy? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub`;
+☕ PS1: Podoba Ci się to, co robimy? Jeśli chcesz, możesz postawić nam wirtualną kawę – to daje nam mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub`;
 
 function toBoldUnicode(text) {
     const chars = {

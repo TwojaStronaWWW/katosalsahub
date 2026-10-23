@@ -18,7 +18,7 @@ import {
 	kopiujWynik,
 	kopiujKomentarz2,
 	kopiujCalaAnkiete,
-} from './post-generator.js?v=20261023_v5'
+} from './post-generator.js?v=20261023_v6'
 
 function getDragAfterElement(container, y) {
 	const draggableElements = [...container.querySelectorAll('.event-container:not(.dragging)')]
