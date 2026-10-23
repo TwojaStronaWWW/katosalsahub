@@ -119,12 +119,16 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.doesNotMatch(report, /🔗\s*[FO]:[A-Za-z0-9_-]+/, 'W raporcie pozostały nierozwinięte skróty F:ID lub O:ID');
 
       const parts = report.split(/\r?\n---\r?\n+(?=##\s+[1-6]\.)/);
+      const sec2Part = parts.find(p => p.trim().startsWith('## 2.'));
+      assert.ok(sec2Part, 'Brak wyodrębnionej Sekcji 2 po podziale raportu');
+      assert.match(sec2Part, /🌴 SALSA KATOWICE – KATO SALSA HUB 🌴/);
+      assert.match(sec2Part, /https:\/\/katosalsahub\.pl\/grafik\.html/);
+      assert.match(sec2Part, /#SalsaKatowice #KatoSalsaHub #SalsaCubana/);
+
       const sec4Part = parts.find(p => p.trim().startsWith('## 4.'));
       assert.ok(sec4Part, 'Brak wyodrębnionej Sekcji 4 po podziale raportu');
       assert.match(sec4Part, /☕ PS1: Podoba Ci się to, co robię\?/);
-      assert.match(sec4Part, /🌴 SALSA KATOWICE – KATO SALSA HUB 🌴/);
-      assert.match(sec4Part, /https:\/\/katosalsahub\.pl\/grafik\.html/);
-      assert.match(sec4Part, /#SalsaKatowice #KatoSalsaHub #SalsaCubana/);
+      assert.doesNotMatch(sec4Part, /🌴 SALSA KATOWICE – KATO SALSA HUB 🌴/);
     });
 
     it('funkcja deduplicateEvents powinna łączyć duplikaty wydarzeń z wielu źródeł (#17)', () => {

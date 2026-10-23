@@ -198,12 +198,26 @@ export function toBoldUnicode(text) {
 		.join('')
 }
 
+const MAIN_POST_SEO_FOOTER = `---
+🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
+Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
+📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
+👉 https://katosalsahub.pl/
+📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
+👉 https://katosalsahub.pl/grafik.html
+
+#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie`
+
 export function formatMainPostBoldings(rawText) {
 	if (!rawText) return ''
-	return rawText
+	let formatted = rawText
 		.replace(/🎉\s*(Gdzie tańczymy w ten weekend\?[^\n]*)/g, (_, phrase) => `🎉 ${toBoldUnicode(phrase.trim())}`)
 		.replace(/(Gdzie tańczymy w danym dniu[^\n:]*)/gi, (_, phrase) => toBoldUnicode(phrase))
 		.replace(/^🗓️\s*(PIĄTEK|SOBOTA|NIEDZIELA)\b/gm, (_, day) => `🗓️ ${toBoldUnicode(day)}`)
+	if (!formatted.includes('🌴 SALSA KATOWICE – KATO SALSA HUB 🌴')) {
+		formatted = `${formatted.trimEnd()}\n\n${MAIN_POST_SEO_FOOTER}`
+	}
+	return formatted
 }
 
 export function getWeekNumber(d) {
@@ -460,18 +474,7 @@ ${opisNd}`)
 
 	wynik += '@wszyscy Do zobaczenia na parkiecie! 💃🕺\n\n'
 	wynik +=
-		'☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub\n\n'
-	wynik += '---\n'
-	wynik += '🌴 SALSA KATOWICE – KATO SALSA HUB 🌴\n'
-	wynik += 'Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?\n'
-	wynik +=
-		'📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:\n'
-	wynik += '👉 https://katosalsahub.pl/\n'
-	wynik +=
-		'📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:\n'
-	wynik += '👉 https://katosalsahub.pl/grafik.html\n\n'
-	wynik +=
-		'#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie'
+		'☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub'
 
 	const wynikElem = document.getElementById('wynik')
 	if (wynikElem) {
@@ -486,17 +489,7 @@ ${opisNd}`)
 
 const CANONICAL_COMMENT_FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
 
-☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
-
----
-🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
-Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
-📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
-👉 https://katosalsahub.pl/
-📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
-👉 https://katosalsahub.pl/grafik.html
-
-#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie`
+☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub`
 
 export function ensureFullCommentFooter(rawComment) {
 	if (!rawComment) return ''
@@ -504,10 +497,7 @@ export function ensureFullCommentFooter(rawComment) {
 	if (idx !== -1) {
 		return rawComment.slice(0, idx).trimEnd() + '\n\n' + CANONICAL_COMMENT_FOOTER
 	}
-	if (!rawComment.includes('🌴 SALSA KATOWICE – KATO SALSA HUB 🌴')) {
-		return rawComment.trimEnd() + '\n\n' + CANONICAL_COMMENT_FOOTER
-	}
-	return rawComment
+	return rawComment.trimEnd() + '\n\n' + CANONICAL_COMMENT_FOOTER
 }
 
 export async function zaladujRaportKSH(silent = true) {

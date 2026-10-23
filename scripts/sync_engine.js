@@ -51,11 +51,7 @@ const REPORT_PATH = path.join(DATA_DIR, 'latest_report.md');
 
 const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sI3oU5dNLhWsK0vcct069MENk-o-XuUh9UQ7k-O7Um8/export?format=csv&gid=1833510316';
 
-const FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
-
-☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
-
----
+const MAIN_POST_FOOTER = `---
 🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
 Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
@@ -64,6 +60,10 @@ Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 👉 https://katosalsahub.pl/grafik.html
 
 #SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie`;
+
+const FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
+
+☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub`;
 
 function toBoldUnicode(text) {
     const chars = {
@@ -489,7 +489,9 @@ ${ptText}
 ${sbText}
 
 🗓️ ${toBoldUnicode('NIEDZIELA')}
-${ndText}`;
+${ndText}
+
+${MAIN_POST_FOOTER}`;
 
     const sec3Lines = [];
     fridayEvents.forEach(e => {

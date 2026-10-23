@@ -56,6 +56,16 @@ W Katowicach w Mil Pasos czekają dwa duże wydarzenia: popołudniowe Mil Pasos 
 W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub – Salsa Habana Picante vol. 68 w lokalu Wolni Ludzie przy Mariackiej 2 w Katowicach (15:00–18:00)! Wieczorem w Siewierzu potańczycie na Kizomba Sunday w Belezie, a w Krakowie na Bachata at Teatro Cubano.
 
 ---
+🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
+Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
+📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
+👉 https://katosalsahub.pl/
+📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
+👉 https://katosalsahub.pl/grafik.html
+
+#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie
+
+---
 
 ## 3. ANKIETA
 PIĄTEK (23.10): Świętochłowice - Stylowa Willa (Salsa/Bachata/Kizomba)  
@@ -112,16 +122,6 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
 ☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
-
----
-🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
-Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
-📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
-👉 https://katosalsahub.pl/
-📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
-👉 https://katosalsahub.pl/grafik.html
-
-#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie
 
 ---
 
@@ -309,16 +309,6 @@ Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
 ☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
-
----
-🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
-Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
-📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
-👉 https://katosalsahub.pl/
-📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
-👉 https://katosalsahub.pl/grafik.html
-
-#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie
 
 ---
 
