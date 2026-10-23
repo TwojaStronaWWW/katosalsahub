@@ -4,10 +4,10 @@ import {
 	style,
 	dniTygodnia,
 	FB_QUICK_LINKS,
-} from './config.js?v=20261020_v3'
-import { formatujDatePL, generujDniOdJutra } from './utils.js?v=20261020_v3'
-import { initWeather } from './weather.js?v=20261020_v3'
-import { importujZFacebooka } from './parser.js?v=20261020_v3'
+} from './config.js?v=20261023_v2'
+import { formatujDatePL, generujDniOdJutra } from './utils.js?v=20261023_v2'
+import { initWeather } from './weather.js?v=20261023_v2'
+import { importujZFacebooka } from './parser.js?v=20261023_v2'
 import {
 	initInbox,
 	updateTitle,
@@ -18,7 +18,7 @@ import {
 	kopiujWynik,
 	kopiujKomentarz2,
 	kopiujCalaAnkiete,
-} from './post-generator.js?v=20261020_v3'
+} from './post-generator.js?v=20261023_v2'
 
 function getDragAfterElement(container, y) {
 	const draggableElements = [...container.querySelectorAll('.event-container:not(.dragging)')]

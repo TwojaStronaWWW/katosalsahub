@@ -484,6 +484,32 @@ ${opisNd}`)
 	renderPollButtons(wynikAnkieta)
 }
 
+const CANONICAL_COMMENT_FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
+
+☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub
+
+---
+🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
+Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
+📍 Interaktywna mapa miejscówek i darmowych parkingów (Wolni Ludzie ul. Mariacka 2, Dolina Trzech Stawów, NOSPR), słownik ponad 200 figur Salsopedia oraz kubańskie radio 24/7 bez reklam czekają na naszej oficjalnej stronie:
+👉 https://katosalsahub.pl/
+📅 Aktualny rozkład wszystkich kursów, porównanie cenników szkół tańca (kalkulator karnetów i kart sportowych) oraz kalendarz imprez tanecznych na Śląsku:
+👉 https://katosalsahub.pl/grafik.html
+
+#SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie`
+
+export function ensureFullCommentFooter(rawComment) {
+	if (!rawComment) return ''
+	const idx = rawComment.indexOf('@wszyscy')
+	if (idx !== -1) {
+		return rawComment.slice(0, idx).trimEnd() + '\n\n' + CANONICAL_COMMENT_FOOTER
+	}
+	if (!rawComment.includes('🌴 SALSA KATOWICE – KATO SALSA HUB 🌴')) {
+		return rawComment.trimEnd() + '\n\n' + CANONICAL_COMMENT_FOOTER
+	}
+	return rawComment
+}
+
 export async function zaladujRaportKSH(silent = true) {
 	try {
 		const ts = Date.now()
@@ -496,7 +522,7 @@ export async function zaladujRaportKSH(silent = true) {
 		if (!md) return
 
 		window.latestFullReportMd = md
-		const parts = md.split(/\n---\n/)
+		const parts = md.split(/\r?\n---\r?\n+(?=##\s+[1-6]\.)/)
 		const findSection = prefix => {
 			const found = parts.find(p => p.trim().startsWith(prefix))
 			if (!found) return ''
@@ -529,11 +555,11 @@ export async function zaladujRaportKSH(silent = true) {
 		}
 		if (sec4) {
 			const wynikEl = document.getElementById('wynik')
-			if (wynikEl) wynikEl.value = sec4
+			if (wynikEl) wynikEl.value = ensureFullCommentFooter(sec4)
 		}
 		if (sec5) {
 			const przyszleEl = document.getElementById('wynik-przyszle')
-			if (przyszleEl) przyszleEl.value = sec5
+			if (przyszleEl) przyszleEl.value = ensureFullCommentFooter(sec5)
 		}
 		if (sec3) {
 			window.latestPollText = sec3
