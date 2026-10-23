@@ -474,7 +474,7 @@ ${opisNd}`)
 
 	wynik += '@wszyscy Do zobaczenia na parkiecie! 💃🕺\n\n'
 	wynik +=
-		'☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub'
+		'☕ PS1: Podoba Ci się to, co robimy? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub'
 
 	const wynikElem = document.getElementById('wynik')
 	if (wynikElem) {
@@ -489,7 +489,7 @@ ${opisNd}`)
 
 const CANONICAL_COMMENT_FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
 
-☕ PS1: Podoba Ci się to, co robię? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub`
+☕ PS1: Podoba Ci się to, co robimy? Jeśli chcesz, możesz postawić mi wirtualną kawę – to daje mi mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub`
 
 export function ensureFullCommentFooter(rawComment) {
 	if (!rawComment) return ''

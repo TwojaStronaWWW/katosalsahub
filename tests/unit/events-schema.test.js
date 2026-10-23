@@ -127,7 +127,7 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
 
       const sec4Part = parts.find(p => p.trim().startsWith('## 4.'));
       assert.ok(sec4Part, 'Brak wyodrębnionej Sekcji 4 po podziale raportu');
-      assert.match(sec4Part, /☕ PS1: Podoba Ci się to, co robię\?/);
+      assert.match(sec4Part, /☕ PS1: Podoba Ci się to, co robimy\?/);
       assert.doesNotMatch(sec4Part, /🌴 SALSA KATOWICE – KATO SALSA HUB 🌴/);
     });
 
