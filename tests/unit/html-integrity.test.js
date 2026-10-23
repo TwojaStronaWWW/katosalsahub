@@ -342,7 +342,6 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /<meta\s+name="robots"\s+content="noindex,\s*nofollow">/i, 'Roboczy generator DancePuls musi posiadać noindex, nofollow');
       assert.match(html, /<meta\s+name="description"\s+content="[^"]+"/i);
       assert.match(html, /<link\s+rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/grafik\.html">/i, 'Canonical generatora DancePuls musi wskazywać na publiczny kalendarz https://katosalsahub.pl/grafik.html');
-      assert.match(html, /id="run-scrapers-btn"/i);
       assert.match(html, /id="load-report-btn"/i);
       assert.match(html, /id="post-opis"/i);
       assert.match(html, /id="wynik"/i);

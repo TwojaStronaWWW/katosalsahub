@@ -659,13 +659,13 @@ button:active {
     align-items: center;
     gap: 16px;
     width: 100%;
-    max-width: 720px;
+    max-width: 420px;
     margin: 0 auto 4px auto;
 }
 
 .btn-scraper-green {
-    flex: 1.2;
-    padding: 14px 20px;
+    width: 100%;
+    padding: 14px 24px;
     font-size: 0.95em;
     font-weight: 800;
     background: linear-gradient(135deg, #66bb6a, #43a047);

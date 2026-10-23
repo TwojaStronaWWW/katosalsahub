@@ -609,17 +609,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	const btnLoadReport = document.getElementById('load-report-btn')
 	if (btnLoadReport) {
-		btnLoadReport.addEventListener('click', () => {
-			zaladujRaportKSH(false)
-		})
-	}
-
-	const btnRunScrapers = document.getElementById('run-scrapers-btn')
-	if (btnRunScrapers) {
-		btnRunScrapers.addEventListener('click', async () => {
-			const originalLabel = btnRunScrapers.textContent
-			btnRunScrapers.disabled = true
-			btnRunScrapers.textContent = '⏳ Uruchamianie scraperów...'
+		btnLoadReport.addEventListener('click', async () => {
+			const originalLabel = btnLoadReport.textContent
+			btnLoadReport.disabled = true
+			btnLoadReport.textContent = '⏳ Odświeżanie zestawienia...'
 			try {
 				try {
 					const scraperRes = await fetch('tools/fb_scraper.js?v=' + Date.now())
@@ -632,25 +625,19 @@ document.addEventListener('DOMContentLoaded', function () {
 					/* ignore clipboard error */
 				}
 
-				const apiRes = await fetch('/dancepuls/api/run-scrapers', {
+				await fetch('/dancepuls/api/run-scrapers', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 				}).catch(() => null)
 
 				await zaladujZPlikuJSON()
-				await zaladujRaportKSH(true)
-
-				if (apiRes && apiRes.ok) {
-					alert('✅ Wszystkie scrapery zostały uruchomione, baza odświeżona, a skrypt FB skopiowany do schowka!')
-				} else {
-					alert('✅ Skrypt skrapera FB skopiowany do schowka i odświeżono bazę wydarzeń!')
-				}
+				await zaladujRaportKSH(false)
 			} catch (err) {
-				console.error('Błąd uruchamiania scraperów:', err)
-				alert('⚠️ Wystąpił problem podczas odświeżania scraperów: ' + err.message)
+				console.error('Błąd odświeżania zestawienia:', err)
+				alert('⚠️ Wystąpił problem podczas odświeżania: ' + err.message)
 			} finally {
-				btnRunScrapers.disabled = false
-				btnRunScrapers.textContent = originalLabel
+				btnLoadReport.disabled = false
+				btnLoadReport.textContent = originalLabel
 			}
 		})
 	}
