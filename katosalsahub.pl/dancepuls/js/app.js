@@ -18,7 +18,8 @@ import {
 	kopiujWynik,
 	kopiujKomentarz2,
 	kopiujCalaAnkiete,
-} from './post-generator.js?v=20261023_v6'
+	flashCopiedButton,
+} from './post-generator.js?v=20261023_v7'
 
 function getDragAfterElement(container, y) {
 	const draggableElements = [...container.querySelectorAll('.event-container:not(.dragging)')]
@@ -610,7 +611,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	const btnLoadReport = document.getElementById('load-report-btn')
 	if (btnLoadReport) {
 		btnLoadReport.addEventListener('click', async () => {
-			const originalLabel = btnLoadReport.textContent
 			btnLoadReport.disabled = true
 			btnLoadReport.textContent = '⏳ Odświeżanie zestawienia...'
 			try {
@@ -631,13 +631,13 @@ document.addEventListener('DOMContentLoaded', function () {
 				}).catch(() => null)
 
 				await zaladujZPlikuJSON()
-				await zaladujRaportKSH(false)
+				await zaladujRaportKSH(true)
+				btnLoadReport.disabled = false
+				flashCopiedButton(btnLoadReport, '✅ Odśwież zestawienie', '✅ Odświeżono!')
 			} catch (err) {
 				console.error('Błąd odświeżania zestawienia:', err)
-				alert('⚠️ Wystąpił problem podczas odświeżania: ' + err.message)
-			} finally {
 				btnLoadReport.disabled = false
-				btnLoadReport.textContent = originalLabel
+				btnLoadReport.textContent = '🔄 Odśwież zestawienie'
 			}
 		})
 	}

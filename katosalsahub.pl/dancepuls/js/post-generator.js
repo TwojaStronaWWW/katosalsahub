@@ -256,6 +256,15 @@ export function updateTitle() {
 	if (titleInput) titleInput.value = title
 }
 
+export function flashCopiedButton(btn, finalLabel, tempLabel = '✅ Skopiowano!') {
+	if (!btn) return
+	btn.textContent = tempLabel
+	btn.classList.add('clicked-poll')
+	setTimeout(() => {
+		btn.textContent = finalLabel
+	}, 1000)
+}
+
 export function kopiujTytul() {
 	const titleVal = getTitleString()
 	const hashtagi = document.getElementById('hashtagi')?.value || ''
@@ -274,7 +283,8 @@ linki w komentarzu
 ${hashtagi}`
 
 	navigator.clipboard.writeText(titleVal + extraText)
-	alert('Szkielet zestawienia skopiowany!')
+	const btn = document.getElementById('copy-skeleton-btn')
+	flashCopiedButton(btn, '✅ Kopiuj sam pusty szkielet')
 }
 
 export function renderPollButtons(pollText) {
@@ -567,55 +577,48 @@ export async function zaladujRaportKSH(silent = true) {
 		}
 
 		if (!silent) {
-			alert('✅ Odświeżono bazę i raport KSH z latest_report.md!')
+			const loadBtn = document.getElementById('load-report-btn')
+			flashCopiedButton(loadBtn, '✅ Odśwież zestawienie', '✅ Odświeżono!')
 		}
 	} catch (e) {
 		console.warn('Nie udało się wczytać data/latest_report.md:', e)
-		if (!silent) {
-			alert('⚠️ Nie udało się wczytać raportu KSH: ' + e.message)
-		}
 	}
 }
 
 export function kopiujGotowyPost() {
 	const postOpisElem = document.getElementById('post-opis')
 	const tekst = postOpisElem ? postOpisElem.value : ''
-	if (!tekst) {
-		alert('Brak wygenerowanego opisu posta!')
-		return
-	}
+	if (!tekst) return
+	const btn = document.getElementById('copy-post-btn')
 	navigator.clipboard.writeText(tekst).then(() => {
-		alert('✅ Skopiowano gotowy post na FB (Sekcja 2) do schowka!')
+		flashCopiedButton(btn, '✅ 1. KOPIUJ GŁÓWNY POST NA FB')
 	})
 }
 
 export function kopiujWynik() {
 	const text = document.getElementById('wynik')?.value || ''
 	if (!text) return
+	const btn = document.getElementById('copy-comment1-btn')
 	navigator.clipboard.writeText(text).then(() => {
-		alert('✅ Skopiowano Komentarz 1 — Weekend (Sekcja 4) do schowka!')
+		flashCopiedButton(btn, '✅ 2. KOPIUJ KOMENTARZE (TEN WEEKEND)')
 	})
 }
 
 export function kopiujKomentarz2() {
 	const text = document.getElementById('wynik-przyszle')?.value || ''
-	if (!text) {
-		alert('Brak treści Komentarza 2 (kliknij najpierw "Wczytaj Raport KSH")!')
-		return
-	}
+	if (!text) return
+	const btn = document.getElementById('copy-comment2-btn')
 	navigator.clipboard.writeText(text).then(() => {
-		alert('✅ Skopiowano Komentarz 2 — Kolejne tygodnie (Sekcja 5) do schowka!')
+		flashCopiedButton(btn, '✅ 3. KOPIUJ KOMENTARZ 2 — PRZYSZŁOŚĆ (SEKCJA 5)')
 	})
 }
 
 export function kopiujCalaAnkiete() {
 	const text = window.latestPollText || ''
-	if (!text) {
-		alert('Brak opcji ankiety do skopiowania!')
-		return
-	}
+	if (!text) return
+	const btn = document.getElementById('copy-all-poll-btn')
 	navigator.clipboard.writeText(text).then(() => {
-		alert('✅ Skopiowano całą ankietę (Sekcja 3) do schowka!')
+		flashCopiedButton(btn, '✅ Kopiuj całą ankietę (wszystkie linie)')
 	})
 }
 

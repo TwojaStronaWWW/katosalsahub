@@ -321,30 +321,34 @@ button:active {
     background: var(--cuban-teal);
 }
 
-/* Poll Buttons (Right Column) */
+/* Poll Buttons */
 #kopiuj-ankiete-container button {
     display: block;
     width: 100%;
     margin-bottom: 8px;
+    padding: 12px 16px;
+    border-radius: 12px;
     text-align: left;
-    background: white;
+    background: #F8FAFC;
     color: var(--text-primary);
-    border: 1px solid #E0E0E0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #CFD8DC;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
     text-transform: none;
     font-weight: 600;
+    font-size: 0.92em;
+    line-height: 1.4;
 }
 
 #kopiuj-ankiete-container button:hover {
-    border-color: var(--cuban-blue);
-    color: var(--cuban-blue);
-    background: #E1F5FE;
+    border-color: var(--cuban-teal);
+    color: var(--cuban-teal);
+    background: #E0F2F1;
 }
 
 .clicked-poll {
     background: #DCEDC8 !important;
     color: #33691E !important;
-    border-color: #AED581 !important;
+    border: 1px solid #AED581 !important;
     box-shadow: none !important;
     transform: none !important;
     opacity: 1;
@@ -736,94 +740,99 @@ button:active {
 }
 
 .copy-actions-stack {
-    margin-bottom: 12px;
+    margin-bottom: 18px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .btn-copy-post {
     width: 100%;
-    padding: 10px;
+    padding: 13px 18px;
     font-weight: 700;
-    background: #2e7d32;
+    background: linear-gradient(135deg, var(--cuban-teal), var(--cuban-blue));
     color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.88em;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 0.92em;
+    box-shadow: 0 4px 12px rgba(0, 150, 136, 0.25);
 }
 
 .btn-copy-skeleton {
     width: 100%;
-    padding: 5px;
-    font-size: 0.75em;
+    padding: 8px;
+    font-size: 0.8em;
     background: #f0f0f0;
     color: #555;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 12px;
     box-shadow: none;
 }
 
 .section-subtitle {
-    font-size: 0.92em;
-    margin-bottom: 4px;
-    margin-top: 8px;
-}
-
-.textarea-post {
-    width: 100%;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.88em;
-    padding: 8px;
-    box-sizing: border-box;
+    font-size: 1.05em;
     margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background: #fff;
+    margin-top: 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--cuban-yellow);
+    color: var(--cuban-teal);
 }
 
+.textarea-post,
 .textarea-code {
     width: 100%;
     font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 0.84em;
+    font-size: 0.92em;
+    line-height: 1.5;
     white-space: pre-wrap;
-    margin-bottom: 6px;
-    background: #263238;
-    color: #ECEFF1;
-    border: none;
-    line-height: 1.4;
+    padding: 14px 16px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+.textarea-post:focus,
+.textarea-code:focus {
+    background: #1e293b;
+    color: #ffffff;
+    border-color: var(--cuban-teal);
+    box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
 }
 
 .event-counter {
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     text-align: right;
-    color: #d32f2f;
-    font-size: 0.85em;
+    color: var(--cuban-teal);
+    font-size: 0.88em;
 }
 
 .btn-copy-comment1 {
     width: 100%;
-    margin-bottom: 14px;
-    padding: 10px;
+    margin-bottom: 18px;
+    padding: 13px 18px;
     font-weight: 700;
-    background: #1976d2;
+    background: linear-gradient(135deg, var(--cuban-blue), var(--cuban-teal));
     color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.88em;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 0.92em;
+    box-shadow: 0 4px 12px rgba(2, 136, 209, 0.25);
 }
 
 .btn-copy-comment2 {
     width: 100%;
     margin-bottom: 14px;
-    padding: 10px;
+    padding: 13px 18px;
     font-weight: 700;
-    background: #00796b;
+    background: linear-gradient(135deg, var(--cuban-teal), var(--cuban-blue));
     color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.88em;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 0.92em;
 }
 
 .hashtag-box {
