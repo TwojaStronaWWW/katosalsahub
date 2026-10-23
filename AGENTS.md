@@ -126,7 +126,9 @@ katosalsahub/
    | Założenie / Teza | Źródło błędu / Ryzyko | Stopień pewności (Niski/Średni/Wysoki) | Mitygacja / Lepszy model |
    |---|---|---|---|
    ```
-3. **Weryfikacja jakościowa:** Po każdej zmianie kodu uruchom `npm run check` i upewnij się, że 100% testów przechodzi pomyślnie.
+3. **Weryfikacja jakościowa i kontrola CI/CD po każdym `git push`:**
+   - Po każdej zmianie kodu uruchom lokalnie `npm run check` i upewnij się, że 100% testów przechodzi pomyślnie.
+   - **Bezwzględny obowiązek po wypchnięciu zmian (`git push`):** ZAWSZE monitoruj potok GitHub Actions (`gh run list` / `gh run watch`) aż do pełnego zakończenia zarówno `CI & Quality Gate` (w tym skanera Gitleaks, testów dymnych Playwright i Lighthouse CI), jak i `CD — Deploy to LH` ze statusem `success`. Nigdy nie kończ zadania bez potwierdzenia zielonego statusu wdrożenia na GitHub Actions.
 4. **Format commitów:** Zawsze stosuj konwencję Conventional Commits (`feat:`, `fix:`, `docs:`, `test:`, `ci:`, `chore:`).
 5. **Architektura Dwurepozytoryjna (Publiczny Kod + Prywatne Issues i Sprinty):**
    - **Publiczne repozytorium kodu:** `TwojaStronaWWW/katosalsahub` (zakładka publicznych Issues jest wyłączona ze względów bezpieczeństwa i poufności).

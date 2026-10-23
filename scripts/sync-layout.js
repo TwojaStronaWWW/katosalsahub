@@ -89,7 +89,6 @@ function buildFooter(pageFile) {
         <a href="https://www.facebook.com/KatoSalsaHub" target="_blank" rel="noopener noreferrer">Facebook</a>
         <a href="https://www.instagram.com/katosalsahub/" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="privacy.html" data-i18n="footer.privacy">Polityka Prywatności</a>
-        <a href="https://katosalsahub.pl/dancepuls/" target="_blank" rel="nofollow noopener noreferrer">DancePuls Generator</a>
       </div>
     </div>
     <div class="footer-bottom">

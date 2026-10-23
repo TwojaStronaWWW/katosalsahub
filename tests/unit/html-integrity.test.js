@@ -348,6 +348,16 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(html, /id="wynik-przyszle"/i);
       assert.match(html, /id="copy-comment2-btn"/i);
       assert.match(html, /id="kopiuj-ankiete-container"/i);
+      assert.doesNotMatch(html, /Skraper|scrapery/i, 'Widok dancepuls/index.html nie powinien zawierać słowa "Skraper" / "scrapery" w treści HTML');
+
+      for (const publicPage of [KSH_HTML, GRAFIK_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
+        const publicHtml = fs.readFileSync(publicPage, 'utf-8');
+        assert.doesNotMatch(
+          publicHtml,
+          /DancePuls Generator|href="https:\/\/katosalsahub\.pl\/dancepuls\/"/i,
+          `Publiczny widok ${path.basename(publicPage)} nie powinien eksponować linku do roboczego generatora /dancepuls/ w stopce`
+        );
+      }
 
       const dpHtaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'dancepuls', '.htaccess'), 'utf-8');
       assert.match(dpHtaccess, /dancepuls\\\.katosalsahub\\\.pl/, 'Brak reguły przekierowania 301 dla starej subdomeny dancepuls.katosalsahub.pl w katosalsahub.pl/dancepuls/.htaccess');
