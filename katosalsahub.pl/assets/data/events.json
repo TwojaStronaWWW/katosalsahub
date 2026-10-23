@@ -224,6 +224,29 @@
         "style": [
           "Cubana"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tychy",
+        "miastoInne": "",
+        "miejsce": "Mohito",
+        "miejsceInne": "Mohito (al. Jana Pawła II 14)",
+        "adres": "al. Jana Pawła II 14",
+        "lat": 50.1121,
+        "lng": 18.9876,
+        "tytul": "Social Flow Party – BACHATA | SALSA | KIZOMBA na 3 sale w Mohito Tychy",
+        "opis": "Social Flow Party – BACHATA | SALSA | KIZOMBA na 3 sale w Mohito Tychy - 21:00; Mohito; AirDancia; nowe w bazie 23.10",
+        "opisPubliczny": "Social Flow Party – BACHATA | SALSA | KIZOMBA na 3 sale w Mohito Tychy",
+        "dateLabel": "SOBOTA (24.10.2026)",
+        "endDate": "2026-10-24",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/social-flow-party-bachata-salsa-kizomba-na-3-sale-w-mohito-tychy-tychy/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
       }
     ]
   },
@@ -301,6 +324,27 @@
       {
         "checked": true,
         "promote": false,
+        "miasto": "Gliwice",
+        "miastoInne": "",
+        "miejsce": "BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących",
+        "miejsceInne": "BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących",
+        "adres": "",
+        "lat": 50.2945,
+        "lng": 18.6714,
+        "tytul": "BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących",
+        "opis": "BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących - 19:15; BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących; AirDancia; nowe w bazie 23.10",
+        "opisPubliczny": "BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących",
+        "dateLabel": "PONIEDZIAŁEK (26.10.2026)",
+        "endDate": "2026-10-26",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachata-leading-following-zajecia-dla-tanczacych-gliwice/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
         "miasto": "Katowice",
         "miastoInne": "",
         "miejsce": "La Clave",
@@ -309,12 +353,12 @@
         "lat": 50.266,
         "lng": 19.0188,
         "tytul": "🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min)",
-        "opis": "🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min) - 16:15; La Clave; nowe w bazie 22.10",
+        "opis": "🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min) - 16:15; La Clave; nowe w bazie 23.10",
         "opisPubliczny": "🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min)",
         "dateLabel": "PONIEDZIAŁEK (26.10.2026)",
         "endDate": "2026-10-26",
         "soldOut": false,
-        "link": "https://krajownik.pl/katowice/wydarzenia/bachata-od-zera-z-claudio-start-12102026-godz-1715-3x45min-426679",
+        "link": "https://www.facebook.com/events/1422806175853218/",
         "style": [
           "Bachata"
         ]
@@ -330,12 +374,12 @@
         "lat": 50.2945,
         "lng": 18.6714,
         "tytul": "Bachata Solo Footwork & Styling z Klaudią Lalewicz",
-        "opis": "Bachata Solo Footwork & Styling z Klaudią Lalewicz - 16:45; ul. Zwycięstwa 52A; nowe w bazie 22.10",
+        "opis": "Bachata Solo Footwork & Styling z Klaudią Lalewicz - 16:45; ul. Zwycięstwa 52A; nowe w bazie 23.10",
         "opisPubliczny": "Bachata Solo Footwork & Styling z Klaudią Lalewicz",
         "dateLabel": "PONIEDZIAŁEK (26.10.2026)",
         "endDate": "2026-10-26",
         "soldOut": false,
-        "link": "https://krajownik.pl/gliwice/wydarzenia/bachata-solo-footwork-styling-z-klaudia-lalewicz-426313",
+        "link": "https://www.facebook.com/events/1555940559881687/",
         "style": [
           "Bachata"
         ]
@@ -356,7 +400,7 @@
         "lat": 50.0389,
         "lng": 19.9412,
         "tytul": "💚 KIZ FUSION OPEN | PATRYK & MAGDA",
-        "opis": "💚 KIZ FUSION OPEN | PATRYK & MAGDA - 18:00; Salsa House; nowe w bazie 22.10",
+        "opis": "💚 KIZ FUSION OPEN | PATRYK & MAGDA - 18:00; Salsa House; nowe w bazie 23.10",
         "opisPubliczny": "💚 KIZ FUSION OPEN | PATRYK & MAGDA",
         "dateLabel": "WTOREK (27.10.2026)",
         "endDate": "2026-10-27",
@@ -389,6 +433,27 @@
         "endDate": "2026-10-28",
         "soldOut": false,
         "link": "https://www.facebook.com/events/1614897007098369/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "BACHATA VIRAL MOVES by Michał&Nicki",
+        "opis": "BACHATA VIRAL MOVES by Michał&Nicki - 17:00; LOFToDANCE Łukasz Raś; nowe w bazie 23.10",
+        "opisPubliczny": "BACHATA VIRAL MOVES by Michał&Nicki",
+        "dateLabel": "ŚRODA (28.10.2026)",
+        "endDate": "2026-10-28",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1431636645073748/",
         "style": [
           "Bachata"
         ]
@@ -683,6 +748,32 @@
     ]
   },
   {
+    "date": "2026-11-04",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55!",
+        "miejsceInne": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55!",
+        "adres": "",
+        "lat": 50.2649,
+        "lng": 19.0238,
+        "tytul": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55!",
+        "opis": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55! - 18:00; NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55!; AirDancia; nowe w bazie 23.10",
+        "opisPubliczny": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55!",
+        "dateLabel": "ŚRODA (04.11.2026)",
+        "endDate": "2026-11-04",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/nowe-zajecia-regularne-bachata-moderna-praktis-z-instruktorami-4-11-26-sroda-18-00-20-55-katowice/",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-11-06",
     "events": [
       {
@@ -717,12 +808,12 @@
         "lat": 50.7951,
         "lng": 19.042,
         "tytul": "Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA",
-        "opis": "Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA - 20:30; Częstotańcz; nowe w bazie 22.10",
+        "opis": "Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA - 20:30; Częstotańcz; nowe w bazie 23.10",
         "opisPubliczny": "Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA",
         "dateLabel": "PIĄTEK (06.11.2026)",
         "endDate": "2026-11-06",
         "soldOut": false,
-        "link": "https://krajownik.pl/czestochowa/wydarzenia/piatkowa-potancowka-czestochowa-cultura-latina-tradycyjne-mambo-salsa-bachata-z-lekcja-tanca-427022",
+        "link": "https://www.facebook.com/events/2311106856407049/",
         "style": [
           "Salsa On2",
           "Bachata"
@@ -1110,12 +1201,12 @@
         "lat": 50.0528,
         "lng": 19.9482,
         "tytul": "NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11",
-        "opis": "NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20 - 18:30; Zaraz Wracam Tu; nowe w bazie 22.10",
+        "opis": "NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20 - 18:30; Zaraz Wracam Tu; nowe w bazie 23.10",
         "opisPubliczny": "NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20",
         "dateLabel": "WTOREK (17.11.2026)",
         "endDate": "2026-11-17",
         "soldOut": false,
-        "link": "https://krajownik.pl/krakow/wydarzenia/nowy-kurs-salsy-kubanskiej-w-parach-od-podstaw-start-1711-wtorki-2h-1930-2120-425370",
+        "link": "https://www.facebook.com/events/1103229839073572/",
         "style": [
           "Cubana"
         ]
@@ -1203,7 +1294,7 @@
         "lat": 50.0736,
         "lng": 19.9412,
         "tytul": "Bachata Footwork od podstaw!",
-        "opis": "Bachata Footwork od podstaw! - LOFToDANCE Kraków; nowe w bazie 22.10",
+        "opis": "Bachata Footwork od podstaw! - LOFToDANCE Kraków; nowe w bazie 23.10",
         "opisPubliczny": "Bachata Footwork od podstaw!",
         "dateLabel": "SOBOTA (21.11.2026)",
         "endDate": "2026-11-21",
@@ -1350,7 +1441,7 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
-        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 22.10",
+        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 23.10",
         "opisPubliczny": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
         "dateLabel": "ŚRODA (02.12.2026)",
         "endDate": "2026-12-02",
@@ -1657,6 +1748,34 @@
         "link": "https://www.facebook.com/events/1632915284664193/",
         "style": [
           "Salsa On2"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-01-16",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bytom",
+        "miastoInne": "",
+        "miejsce": "Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy",
+        "miejsceInne": "Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy",
+        "adres": "",
+        "lat": 50.3484,
+        "lng": 18.9157,
+        "tytul": "Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy",
+        "opis": "Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy - 19:00; Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy; AirDancia; nowe w bazie 23.10",
+        "opisPubliczny": "Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy",
+        "dateLabel": "SOBOTA (16.01.2027)",
+        "endDate": "2027-01-16",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/karnawal-w-bytomiu-16-stycznia-2027-bal-maskowy-bytom/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
         ]
       }
     ]
