@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 20.10.2026
-- **Stan zestawienia na weekend 23–25.10.2026:** **13 pozycji** (3 pt + 7 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **59 pozycji** (pełny horyzont do 2027 r.).
+- **Stan zestawienia na weekend 23–25.10.2026:** **14 pozycji** (3 pt + 8 sb + 3 nd).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **70 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (20.10 — 35 pozycji, data publikacji nieustalona):**
   - **Kizomba w Piątym Domu – SH#75** | 20.10.2026 | Katowice, Piąty Dom | Kizomba | https://www.facebook.com/events/1410619787718525/
@@ -78,6 +78,7 @@ SOBOTA (24.10): Kraków - Salsa House (Cubana/Rueda)
 SOBOTA (24.10): Kraków - Forum Tańca, Halloween w Forum Tańca – Hogwarts Edition (Salsa/Bachata)  
 SOBOTA (24.10): Kraków - Forum Tańca, Halloween Party – Hogwarts Edition (Salsa/Bachata)  
 SOBOTA (24.10): Kraków - Teatro Cubano (Cubana)  
+SOBOTA (24.10): Tychy - Mohito (Salsa/Bachata/Kizomba)  
 NIEDZIELA (25.10): Katowice - Wolni Ludzie (Cubana)  
 NIEDZIELA (25.10): Siewierz - Beleza (Kizomba)  
 NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)  
@@ -110,6 +111,8 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🔗 https://www.facebook.com/events/1061231330083326/  
 ➡️ Kraków: Teatro Cubano (Cubana)  
 🔗 https://www.facebook.com/events/1294624072278735/  
+➡️ Tychy: Mohito (Salsa/Bachata/Kizomba)  
+🔗 https://airdancia.com/event/social-flow-party-bachata-salsa-kizomba-na-3-sale-w-mohito-tychy-tychy/  
 
 🗓️ NIEDZIELA (25.10):  
 ⭐ Katowice: Wolni Ludzie (Cubana)  
@@ -128,9 +131,24 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 ## 5. KOMENTARZ 2 — PRZYSZŁOŚĆ
 🎉 Zaplanowane wydarzenia — kolejne tygodnie
 
+🗓️ PONIEDZIAŁEK (26.10.2026)  
+➡️ Gliwice: BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących, BACHATA LEADING & FOLLOWING – Zajęcia dla tańczących (Bachata)  
+🔗 https://airdancia.com/event/bachata-leading-following-zajecia-dla-tanczacych-gliwice/  
+🗓️ PONIEDZIAŁEK (26.10.2026)  
+➡️ Gliwice: ul. Zwycięstwa 52A, Bachata Solo Footwork & Styling z Klaudią Lalewicz (Bachata)  
+🔗 https://www.facebook.com/events/1555940559881687/  
+🗓️ PONIEDZIAŁEK (26.10.2026)  
+➡️ Katowice: La Clave, 🔥 BACHATA OD ZERA Z CLAUDIO! 🔥 START 12.10.2026 godz. 17:15 (3x45min) (Bachata)  
+🔗 https://www.facebook.com/events/1422806175853218/  
+🗓️ WTOREK (27.10.2026)  
+➡️ Kraków: Salsa House, 💚 KIZ FUSION OPEN | PATRYK & MAGDA (Salsa/Kizomba)  
+🔗 https://www.facebook.com/events/898491509777899/  
 🗓️ ŚRODA (28.10.2026)  
 ➡️ Katowice: Mil Pasos, Upiorna nagrywka z Izabelą,zajęcia specjalne (Bachata)  
 🔗 https://www.facebook.com/events/1614897007098369/  
+🗓️ ŚRODA (28.10.2026)  
+➡️ Kraków: LOFToDANCE, BACHATA VIRAL MOVES by Michał&Nicki (Bachata)  
+🔗 https://www.facebook.com/events/1431636645073748/  
 🗓️ CZWARTEK (29.10.2026)  
 ➡️ Kraków: Forum Tańca, Urodzinowy Praktis Bachatowy Justyny w Forum Tańca (Bachata)  
 🔗 https://www.facebook.com/events/2137456803520320/  
@@ -167,9 +185,15 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (03.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1083906274387790/  
+🗓️ ŚRODA (04.11.2026)  
+➡️ Katowice: NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55!, NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 – ŚRODA 18:00-20:55! (Bachata)  
+🔗 https://airdancia.com/event/nowe-zajecia-regularne-bachata-moderna-praktis-z-instruktorami-4-11-26-sroda-18-00-20-55-katowice/  
 🗓️ PIĄTEK (06.11.2026)  
 ➡️ Kraków: Panorama Forum, Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia (Bachata)  
 🔗 https://onlydanceapp.com/event/cEgGXQdo6UgY6u5z5CyB  
+🗓️ PIĄTEK (06.11.2026)  
+➡️ Częstochowa: Częstotańcz, Piątkowa POTAŃCÓWKA Częstochowa 🍀 CULTURA LATINA 💝💕 Tradycyjne MAMBO-SALSA-BACHATA z LEKCJĄ TAŃCA (Salsa On2/Bachata)  
+🔗 https://www.facebook.com/events/2311106856407049/  
 🗓️ SOBOTA (07.11.2026)  
 ➡️ Katowice: Mil Pasos, B Experience,zajęcia specjalne i praktis (Bachata)  
 🔗 https://www.facebook.com/events/3128955417294577/  
@@ -218,6 +242,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (17.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/2970730173282777/  
+🗓️ WTOREK (17.11.2026)  
+➡️ Kraków: Zaraz Wracam Tu, NOWY kurs SALSY KUBAŃSKIEJ w parach od podstaw - start 17.11, wtorki 2h 19:30-21:20 (Cubana)  
+🔗 https://www.facebook.com/events/1103229839073572/  
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Mil Pasos, Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty (Cubana/Rumba/Timba)  
 🔗 https://www.facebook.com/events/1580872416500736/  
@@ -227,6 +254,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)  
 🔗 https://www.facebook.com/events/1368901197951496/  
+🗓️ SOBOTA (21.11.2026)  
+➡️ Kraków: LOFToDANCE, Bachata Footwork od podstaw! (Bachata)  
+🔗 https://sklep.loftodance.pl/wydarzenie/bachata-footwork-od-podstaw,1293  
 🗓️ NIEDZIELA (22.11.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  
@@ -242,6 +272,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (01.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1249676614905478/  
+🗓️ ŚRODA (02.12.2026)  
+➡️ Katowice: Mil Pasos, ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ CZWARTEK–NIEDZIELA (03–06.12.2026)  
 ➡️ Hucisko: Orle Gniazdo, FeelTheFlow (Bachata)  
 🔗 https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/  
@@ -278,6 +311,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (09.01.2027)  
 ➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)  
 🔗 https://www.facebook.com/events/1632915284664193/  
+🗓️ SOBOTA (16.01.2027)  
+➡️ Bytom: Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy, Karnawał w Bytomiu -16 stycznia 2027 | Bal maskowy (Salsa/Bachata/Kizomba)  
+🔗 https://airdancia.com/event/karnawal-w-bytomiu-16-stycznia-2027-bal-maskowy-bytom/  
 🗓️ PIĄTEK–NIEDZIELA (29–31.01.2027)  
 ➡️ Kraków: Forum Tańca, Cracovia Rueda Festival (Cubana/Rueda)  
 🔗 https://www.facebook.com/events/1430429125397912/  
