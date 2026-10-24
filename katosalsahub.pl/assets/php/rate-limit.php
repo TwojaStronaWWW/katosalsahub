@@ -16,7 +16,7 @@ function rate_limit(string $key, int $limit, int $seconds): bool {
         }
     }
 
-    // Hashujemy klucz (np. zanonimizowane IP + akcja), aby nie przechowywać adresów IP w nazwach plików (RODO)
+    // Hashujemy klucz (np. zanonimizowane IP + akcja), aby uniknąć kolizji oktetów IPv4 i nie przechowywać IP w nazwach plików (RODO)
     $sanitizedKey = preg_replace('/[^a-zA-Z0-9_]/', '', substr($key, 0, 24)) . '_' . substr(hash('sha256', $key), 0, 16);
     $file = $dir . '/rate_' . $sanitizedKey . '.json';
 

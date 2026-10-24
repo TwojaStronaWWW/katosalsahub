@@ -515,6 +515,17 @@ a:focus-visible:not(.btn) {
    AI ASSISTANT WIDGET (.tsw-ai-*)
    Extracted from ai-widget.js for strict SoC compliance
    ===================================================== */
+#tsw-ai-widget-root {
+    --tsw-ai-primary: var(--red, #e63946);
+    --tsw-ai-accent: var(--orange, #f4a261);
+    --tsw-ai-highlight: var(--yellow, #fbbf24);
+    --tsw-ai-bg: var(--bg, #0f172a);
+    --tsw-ai-surface: var(--card, #1e293b);
+    --tsw-ai-text: #f8fafc;
+    --tsw-ai-muted: #cbd5e1;
+    --tsw-ai-on-primary: #ffffff;
+}
+
 .tsw-ai-btn {
     position: fixed;
     bottom: 24px;
@@ -522,9 +533,9 @@ a:focus-visible:not(.btn) {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--red, #d90429) 0%, var(--orange, #fb5607) 100%);
-    color: #ffffff;
-    box-shadow: 0 8px 24px rgba(217, 4, 41, 0.45);
+    background: linear-gradient(135deg, var(--tsw-ai-primary) 0%, var(--tsw-ai-accent) 100%);
+    color: var(--tsw-ai-on-primary, #ffffff);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     border: 2px solid rgba(255, 255, 255, 0.35);
     cursor: pointer;
     display: flex;
@@ -537,8 +548,8 @@ a:focus-visible:not(.btn) {
 .tsw-ai-btn:hover,
 .tsw-ai-btn:focus-visible {
     transform: scale(1.08);
-    box-shadow: 0 12px 30px rgba(251, 86, 7, 0.6);
-    outline: 3px solid var(--yellow, #ffbe0b);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    outline: 3px solid var(--tsw-ai-highlight);
     outline-offset: 2px;
 }
 
@@ -546,6 +557,22 @@ a:focus-visible:not(.btn) {
     width: 28px;
     height: 28px;
     fill: currentColor;
+}
+
+.tsw-ai-btn-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background: #10b981;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 5px;
+    border-radius: 999px;
+    border: 2px solid var(--tsw-ai-bg, #0f172a);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    pointer-events: none;
 }
 
 .fab-add,
@@ -558,19 +585,19 @@ a:focus-visible:not(.btn) {
     position: fixed;
     bottom: 96px;
     right: 24px;
-    width: 395px;
+    width: 390px;
     max-width: calc(100vw - 32px);
     height: 550px;
     max-height: calc(100vh - 120px);
-    background: var(--bg-dark, #0f172a);
-    border: 1px solid rgba(255, 190, 11, 0.28);
+    background: var(--tsw-ai-bg);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 18px;
     box-shadow: 0 22px 48px rgba(0, 0, 0, 0.78);
     z-index: 999999;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: inherit;
     transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
     opacity: 0;
     transform: translateY(16px) scale(0.96);
@@ -611,31 +638,35 @@ a:focus-visible:not(.btn) {
 }
 
 .tsw-ai-header {
-    background: linear-gradient(135deg, #1a1118 0%, #0f172a 100%);
+    background: linear-gradient(135deg, var(--tsw-ai-surface) 0%, var(--tsw-ai-bg) 100%);
     padding: 14px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 190, 11, 0.18);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+.tsw-ai-header-title,
 .tsw-ai-title {
-    color: #f8fafc;
+    color: var(--tsw-ai-text);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 14.5px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
+.tsw-ai-status-dot,
 .tsw-ai-dot {
     width: 9px;
     height: 9px;
     background: #10b981;
     border-radius: 50%;
     box-shadow: 0 0 10px #10b981;
+    flex-shrink: 0;
 }
 
+.tsw-ai-header-actions,
 .tsw-ai-actions {
     display: flex;
     align-items: center;
@@ -644,9 +675,9 @@ a:focus-visible:not(.btn) {
 
 .tsw-ai-icon-btn {
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
-    color: #cbd5e1;
+    color: var(--tsw-ai-muted);
     cursor: pointer;
     font-size: 13px;
     line-height: 1;
@@ -656,7 +687,7 @@ a:focus-visible:not(.btn) {
 
 .tsw-ai-icon-btn:hover {
     background: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
+    color: var(--tsw-ai-text);
 }
 
 .tsw-ai-messages {
@@ -665,64 +696,67 @@ a:focus-visible:not(.btn) {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    background: #0a0a0f;
+    gap: 14px;
+    background: var(--tsw-ai-bg);
 }
 
 .tsw-ai-msg {
     max-width: 88%;
-    padding: 11px 14px;
+    padding: 11px 15px;
     border-radius: 14px;
-    font-size: 13.5px;
-    line-height: 1.55;
+    font-size: 14px;
+    line-height: 1.58;
     word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
+.tsw-ai-list,
 .tsw-ai-msg ul {
-    margin: 6px 0 4px 18px;
+    margin: 8px 0 8px 18px;
     padding: 0;
 }
 
+.tsw-ai-list li,
 .tsw-ai-msg li {
-    margin-bottom: 4px;
+    margin-bottom: 5px;
 }
 
 .tsw-ai-msg strong {
-    color: var(--yellow, #ffbe0b);
+    color: var(--tsw-ai-highlight);
     font-weight: 700;
 }
 
 .tsw-ai-link {
-    color: var(--yellow, #ffbe0b);
+    color: var(--tsw-ai-highlight);
     text-decoration: underline;
     font-weight: 600;
 }
 
 .tsw-ai-msg-bot {
-    background: #181822;
-    color: #f1f5f9;
+    background: var(--tsw-ai-surface);
+    color: var(--tsw-ai-text);
     align-self: flex-start;
     border-bottom-left-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tsw-ai-msg-user {
-    background: linear-gradient(135deg, var(--red, #d90429) 0%, var(--orange, #fb5607) 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--tsw-ai-primary) 0%, var(--tsw-ai-accent) 100%);
+    color: var(--tsw-ai-on-primary, #ffffff);
     align-self: flex-end;
     border-bottom-right-radius: 4px;
 }
 
 .tsw-ai-msg-user strong {
-    color: #ffffff;
+    color: var(--tsw-ai-on-primary, #ffffff);
 }
 
 .tsw-ai-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    padding: 4px 16px 10px;
-    background: #0a0a0f;
+    gap: 7px;
+    padding: 6px 16px 12px;
+    background: var(--tsw-ai-bg);
 }
 
 .tsw-ai-chips.tsw-hidden {
@@ -730,48 +764,52 @@ a:focus-visible:not(.btn) {
 }
 
 .tsw-ai-chip {
-    background: rgba(255, 190, 11, 0.1);
-    color: #fde68a;
-    border: 1px solid rgba(255, 190, 11, 0.32);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--tsw-ai-text);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 999px;
-    padding: 6px 11px;
-    font-size: 11.5px;
+    padding: 6px 12px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.15s, transform 0.15s;
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
 }
 
 .tsw-ai-chip:hover {
-    background: rgba(255, 190, 11, 0.22);
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--tsw-ai-highlight);
     transform: translateY(-1px);
 }
 
+.tsw-ai-input-bar,
 .tsw-ai-form {
     display: flex;
+    align-items: center;
     padding: 12px;
-    background: #14141d;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--tsw-ai-surface);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     gap: 8px;
 }
 
 .tsw-ai-input {
     flex: 1;
-    background: #0a0a0f;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    min-width: 0;
+    background: var(--tsw-ai-bg);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 10px;
     padding: 10px 12px;
-    color: #f8fafc;
-    font-size: 13.5px;
+    color: var(--tsw-ai-text);
+    font-size: 14px;
     outline: none;
 }
 
 .tsw-ai-input:focus {
-    border-color: var(--yellow, #ffbe0b);
+    border-color: var(--tsw-ai-highlight);
 }
 
 .tsw-ai-input.tsw-input-listening {
-    border-color: var(--red, #d90429);
-    box-shadow: 0 0 0 2px rgba(217, 4, 41, 0.25);
+    border-color: var(--tsw-ai-primary);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
 .tsw-ai-voice-btn {
@@ -781,7 +819,7 @@ a:focus-visible:not(.btn) {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.07);
     border: 1px solid rgba(255, 255, 255, 0.16);
-    color: #cbd5e1;
+    color: var(--tsw-ai-muted);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -793,9 +831,9 @@ a:focus-visible:not(.btn) {
 
 .tsw-ai-voice-btn:hover,
 .tsw-ai-voice-btn:focus-visible {
-    background: rgba(255, 190, 11, 0.14);
-    border-color: var(--yellow, #ffbe0b);
-    color: var(--yellow, #ffbe0b);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--tsw-ai-highlight);
+    color: var(--tsw-ai-highlight);
     outline: none;
 }
 
@@ -807,26 +845,29 @@ a:focus-visible:not(.btn) {
 }
 
 .tsw-ai-voice-btn.tsw-listening {
-    background: linear-gradient(135deg, var(--red, #d90429) 0%, var(--orange, #fb5607) 100%);
+    background: linear-gradient(135deg, var(--tsw-ai-primary) 0%, var(--tsw-ai-accent) 100%);
     border-color: rgba(255, 255, 255, 0.5);
-    color: #ffffff;
+    color: var(--tsw-ai-on-primary, #ffffff);
     animation: tswVoicePulse 1.3s infinite ease-in-out;
 }
 
 @keyframes tswVoicePulse {
-    0% { box-shadow: 0 0 0 0 rgba(217, 4, 41, 0.65); }
-    70% { box-shadow: 0 0 0 8px rgba(217, 4, 41, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(217, 4, 41, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.45); }
+    70% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
 .tsw-ai-send {
-    background: linear-gradient(135deg, var(--red, #d90429) 0%, var(--orange, #fb5607) 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--tsw-ai-primary) 0%, var(--tsw-ai-accent) 100%);
+    color: var(--tsw-ai-on-primary, #ffffff);
     border: none;
     border-radius: 10px;
+    height: 40px;
     padding: 0 16px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 13.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
     cursor: pointer;
     transition: opacity 0.15s;
 }
@@ -838,7 +879,7 @@ a:focus-visible:not(.btn) {
 
 .tsw-ai-typing {
     font-size: 12px;
-    color: #94a3b8;
+    color: var(--tsw-ai-muted);
     font-style: italic;
 }
 

@@ -133,6 +133,7 @@ function sanitize_http_url($url): string {
  * (ten sam kanał co formularz kontaktowy). Błąd nie blokuje zapisu zgłoszenia w kolejce.
  */
 function notify_osticket(array $entry): bool {
+    @session_write_close();
     $apiKey = get_env_secret('OSTICKET_API_KEY');
     if (empty($apiKey) || !function_exists('curl_init')) return false;
     $apiUrl = get_env_secret('OSTICKET_API_URL', 'http://hd.twojastronawww.pl:8080/ticket_hook.php');
@@ -157,24 +158,44 @@ function notify_osticket(array $entry): bool {
         'message' => $message,
         'topicId' => 12,
         'source' => 'Web',
+        'autorespond' => false,
+        'send_email' => false,
     ];
 
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['X-API-Key: ' . $apiKey, 'Content-Type: application/json', 'Expect:']);
-    curl_setopt($ch, CURLOPT_RESOLVE, ['hd.twojastronawww.pl:8080:127.0.0.1']);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.0');
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData, JSON_UNESCAPED_UNICODE));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 6);
-    $res = curl_exec($ch);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    $endpoints = [
+        ['url' => $apiUrl, 'resolve' => ['hd.twojastronawww.pl:8080:127.0.0.1']],
+        ['url' => 'https://hd.twojastronawww.pl/ticket_hook.php', 'resolve' => []],
+    ];
 
-    $arr = json_decode((string)$res, true);
-    $ok = ($code === 201 && !empty($arr['success']));
-    error_log('[KatoWiki] osTicket ' . ($ok ? 'TICKET CREATED' : "FAILED (Code $code)"));
-    return $ok;
+    foreach ($endpoints as $ep) {
+        $ch = curl_init($ep['url']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['X-API-Key: ' . $apiKey, 'Content-Type: application/json', 'Expect:']);
+        if (!empty($ep['resolve']) && strpos($ep['url'], ':8080') !== false) {
+            curl_setopt($ch, CURLOPT_RESOLVE, $ep['resolve']);
+        }
+        curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.0');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 0);
+        if (defined('CURLPROTO_HTTPS') && defined('CURLPROTO_HTTP')) {
+            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
+        }
+        $res = @curl_exec($ch);
+        $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $arr = json_decode((string)$res, true);
+        if ($code === 201 && !empty($arr['success'])) {
+            error_log('[KatoWiki] osTicket TICKET CREATED');
+            return true;
+        }
+    }
+    error_log('[KatoWiki] osTicket FAILED on all endpoints');
+    return false;
 }
 
 function read_json_file(string $file): array {

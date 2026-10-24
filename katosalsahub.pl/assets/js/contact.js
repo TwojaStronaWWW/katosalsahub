@@ -2,7 +2,21 @@
 (function () {
 'use strict';
 
-const pageLoadedAt = Date.now();
+function isStrictFiniteNumber(val) {
+    if (typeof val === 'boolean' || val === null || val === '') return false;
+    const num = Number(val);
+    return Number.isFinite(num);
+}
+
+function getMonotonicMs() {
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+        const t = performance.now();
+        if (isStrictFiniteNumber(t)) return t;
+    }
+    return Date.now();
+}
+
+const pageLoadedAt = getMonotonicMs();
 const DRAFT_KEY = 'ksh_contact_draft_v1';
 let inFlightContactSubmit = false;
 let hideMessageTimer = null;
@@ -107,8 +121,9 @@ document.addEventListener('submit', async function (e) {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        // Anti-bot time and JS validation (safe against fast browser autofill)
-        const elapsedSec = Math.max(2.6, (Date.now() - pageLoadedAt) / 1000).toFixed(2);
+        // Anti-bot time and JS validation (safe against fast browser autofill, monotonic clock)
+        const rawElapsed = (getMonotonicMs() - pageLoadedAt) / 1000;
+        const elapsedSec = Math.max(2.6, isStrictFiniteNumber(rawElapsed) && rawElapsed >= 0 ? rawElapsed : 0).toFixed(2);
         formData.append('submission_seconds', elapsedSec);
         formData.append('js_check', 'passed');
 
