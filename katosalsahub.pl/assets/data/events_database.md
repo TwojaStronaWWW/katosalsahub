@@ -1,9 +1,9 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 20.10.2026 (Wtorek)
+Ostatnia aktualizacja: 24.10.2026 (Sobota)
 
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach piątkowy wieczór jeszcze bez potwierdzonych imprez (w La Clave w ten weekend trwają tylko regularne kursy, a ekipa Good Mood wyjechała na obóz taneczny w górach), ale tuż obok w Świętochłowicach czeka mieszana impreza z warsztatami w Stylowej Willi, natomiast w Krakowie możecie wyskoczyć na salsę cubana do Teatro Cubano (Ritmo de la Habana z DJ Chavą) lub na piątkowy praktis Urban Kiz & Kizomba do Salsa House.
-SOBOTA|W Katowicach w Mil Pasos czekają dwa duże wydarzenia: popołudniowe Mil Pasos K Experience (zajęcia specjalne + praktis Kizomba, 16:00–22:00) oraz nocna impreza Early Vibes & Goodnights Dance Party – Pumpkin Edition (Bachata/Kizomba, 20:00–02:00). W Krakowie Sabrosa startuje z weekendowymi warsztatami mambo z Marco Faravellim, Salsa House zaprasza na warsztaty Rueda Dynamica z Kleszką, Forum Tańca organizuje dzienne warsztaty i wieczorną imprezę Halloween Hogwarts Edition, a Teatro Cubano gra Live Show Saturdays.
+SOBOTA|W Katowicach w Mil Pasos czekają dwa duże wydarzenia: popołudniowe Mil Pasos K Experience (zajęcia specjalne + praktis Kizomba, 16:00–22:00) oraz nocna impreza Early Vibes & Goodnights Dance Party – Pumpkin Edition (Bachata/Kizomba, 20:00–02:00), a w regionie potańczycie na Social Flow Party na 3 sale (Salsa, Bachata, Kizomba) w Mohito Tychy. W Krakowie Sabrosa startuje z weekendowymi warsztatami mambo z Marco Faravellim, Salsa House zaprasza na warsztaty Rueda Dynamica z Kleszką, Forum Tańca organizuje dzienne warsztaty i wieczorną imprezę Halloween Hogwarts Edition, a Teatro Cubano gra Live Show Saturdays.
 NIEDZIELA|W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub – Salsa Habana Picante vol. 68 w lokalu Wolni Ludzie przy Mariackiej 2 w Katowicach (15:00–18:00)! Wieczorem w Siewierzu potańczycie na Kizomba Sunday w Belezie, a w Krakowie na Bachata at Teatro Cubano.
 
 ## BIEŻĄCY WEEKEND (23–25.10.2026)
@@ -13,6 +13,7 @@ NIEDZIELA|W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub –
 24–25.10|SA|HE IS BACK – Marco Faravelli w Krakowie,warsztaty weekendowe|Mambo/Salsa On2|F:2401867006965560|11:00; Sabrosa Dance Studio; oficjalne wydarzenie FB uzupełnione 20.10
 24.10|MP|Mil Pasos K Experience – Integracja środowiska, zajęcia specjalne + praktis|Kizomba|F:1040992492288985|16:00–22:00; Mil Pasos / Michał Rozewski (Kamienna 4)
 24.10|MP|Early Vibes & Goodnights Dance Party – Pumpkin Edition|Bachata/Kizomba|F:28458661560422914|20:00–02:00; Mil Pasos (Kamienna 4); nowe osobne wydarzenie FB 20.10
+24.10|Tychy,Mohito,al.Jana PawłaII14|Social Flow Party – Bachata, Salsa, Kizomba na 3 sale|Salsa/Bachata/Kizomba|F:1483869330228956|21:00; Szkoła Tańca Mohito Tychy; nowe w bazie 24.10
 24.10|Kraków,Salsa House,Jana Zamoyskiego79A/3|warsztaty Rueda Dynamica con Paseos z Kleszką|Cubana/Rueda|F:1604154314424412|11:00; Salsa House Kraków; nowe w bazie 20.10
 24.10|FT|Halloween w Forum Tańca – Hogwarts Edition,zajęcia weekendowe|Salsa/Bachata|F:1911733243127487|11:45; Forum Tańca Kraków; nowe w bazie 20.10
 24.10|FT|Halloween Party – Hogwarts Edition|Salsa/Bachata|F:1061231330083326|21:30; Forum Tańca Kraków
@@ -22,8 +23,8 @@ NIEDZIELA|W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub –
 25.10|MY,Teatro Cubano,Jagiellońska10|Bachata at Teatro Cubano|Bachata|O:bUBcJYprLm1Iak6fHe3B|Mykhailo Burdeinyi
 
 ## PN–CZ BIEŻĄCEGO TYGODNIA
-20.10|Katowice,Piąty Dom,Matejki2|Kizomba w Piątym Domu – SH#75|Kizomba|F:1410619787718525|20:30; Piąty Dom Katowice; nowe w bazie 20.10
-20.10|ZW|Salsunia|Cubana|F:1968496233786036|VivaSalsa
+20.10|Katowice,Piąty Dom,Matejki2|Kizomba w Piątym Domu – SH#75|Kizomba|F:1410619787718525|20:30; Piąty Dom Katowice; dzień miniony
+20.10|ZW|Salsunia|Cubana|F:1968496233786036|VivaSalsa; dzień miniony
 
 ## DALSZE TERMINY (KOLEJNE TYGODNIE)
 28.10|MP|Upiorna nagrywka z Izabelą,zajęcia specjalne|Bachata|F:1614897007098369|18:00–20:00; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10
@@ -31,6 +32,7 @@ NIEDZIELA|W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub –
 30.10|Tychy,Mohito,al.Jana PawłaII14|Wielka Biba Halloween+Urodziny Zuzi|Salsa/Bachata/Kizomba|F:1483662706943298|Mohito Tychy; 21:00; uzupełniono bezpośredni link FB 20.10
 30.10|DL|Koszmarrrrrna Domówka|Salsa/Bachata|F:1451317200146085|FB odczytany; pomiń godzinę: nagłówek 21:00 vs plakat 21:30
 30.10|SA|Halloween Party Salsa & Bachata|Salsa/Bachata|F:2878397095879856|21:30; Sabrosa; uzupełniono bezpośredni link FB 20.10
+30.10|Kraków,Teatro Cubano,Jagiellońska10|RITMO DE LA HABANA – DJ Chava|Cubana|https://krajownik.pl/krakow/wydarzenia/ritmo-de-la-habana-start-2000-dj-chava-345738|20:00; Teatro Cubano Kraków; nowe w bazie 24.10
 31.10|LC|Halloween Salsa Party – Día de los Muertos (2 sale: Cuba + Kizomba/Bachata)|Cubana/Timba/Rueda/Kizomba/Bachata|https://allevents.in/katowice/halloween-salsa-party-d%C3%8Da-de-los-muertos/200030785993244|22:00; La Clave Chorzowska 11; wspólny bilet z imprezą w Gravitacji; nowe w bazie 20.10
 31.10|Katowice,Gravitacja,Gliwicka44|Halloween Bachata Party–Día de los Muertos|Bachata|F:1662179081913529|La Clave; 21:30; wspólny bilet z imprezą w La Clave; uzupełniono bezpośredni link FB 20.10
 31.10|Gliwice,Mohito,Zwycięstwa52A|Strasznie Dobra Impreza – Oficjalne Gliwickie Halloween|Salsa/Bachata/Kizomba|F:1110470741478692|21:00; Szkoła Tańca Mohito Gliwice; nowe w bazie 20.10
@@ -39,12 +41,13 @@ NIEDZIELA|W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub –
 31.10|LO|Party w Trupa2026|Bachata|F:1388506849611167|22–03, 100% Bachata; LOFToDANCE; uzupełniono bezpośredni link FB 20.10
 31.10|Kraków,Party House,Szewska21|Kraków Latino Festival|Salsa/Bachata/Kizomba|F:1570212034748706|Party House Kraków; nowe w bazie 20.10
 03.11|ZW|Salsunia|Cubana|F:1083906274387790|VivaSalsa
+06.11|Częstochowa,Częstotańcz,Spółdzielczości4|Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca|Salsa On2/Bachata|F:2311106856407049|20:30; Częstotańcz Częstochowa; nowe w bazie 24.10
 06.11|MY,Panorama Forum,Konopnickiej28|Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia|Bachata|O:cEgGXQdo6UgY6u5z5CyB|Mykhailo Burdeinyi; nowe w bazie 20.10
 07.11|MP|B Experience,zajęcia specjalne i praktis|Bachata|F:3128955417294577|16:00 zajęcia, 20:00 praktis; Mil Pasos; uzupełniono bezpośredni link FB 20.10
 07.11|Katowice,Euforma (Fabryka FloU),Bocheńskiego69|Urodziny Pedro x Otwarcie Fabryki FloU|Bachata|O:9544a56c401b4cceb541|21:00; Fabryka FloU Katowice; nowe w bazie 20.10
 07.11|FT|Overpower Dancers Edition vol.19|Bachata|O:91178caf3b1c456e8cc8|21:30–02:30 z opisu; 15.10 OnlyDance, opis Konopnickiej 29 ma pierwszeństwo nad mapą 31; FB nieodnaleziony; nowe w bazie 15.10
 07.11|SA|Twilight Salsa Party|Salsa|O:e0aa4af524964e668357|Sabrosa Dance Studio; nowe w bazie 20.10
-07.11|LO|warsztaty Salsa On1 (od zera oraz dla tańczących)|Salsa On1|https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287|LOFToDANCE; warsztaty dzienne przed imprezą; nowe w bazie 20.10
+07.11|LO|warsztaty Salsa On1 (od zera oraz dla tańczących)|Salsa On1|F:2235284663712015|18:00; LOFToDANCE; uzupełniono bezpośredni link FB 24.10
 07.11|LO|warsztaty Men Styling – Bachata Solo dla facetów|Bachata|https://sklep.loftodance.pl/wydarzenie/men-styling-bachata-solo-dla-facetow,1290|LOFToDANCE; nowe w bazie 20.10
 07.11|LO|¡A bailar salsa!,impreza i wcześniejsze warsztaty|Salsa On1/Salsa On2|F:1103289608857781|impreza 20–24, warsztaty godzina TBA; LOFToDANCE; uzupełniono bezpośredni link FB 20.10
 07.11|Częstochowa,Częstotańcz,Spółdzielczości4|warsztaty Mambo New York Style On2|Salsa On2|F:1328664779481954|Częstotańcz; nowe w bazie 20.10
@@ -58,6 +61,7 @@ NIEDZIELA|W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub –
 17.11|ZW|Salsunia|Cubana|F:2970730173282777|VivaSalsa
 21.11|MP|Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty|Cubana/Rumba/Timba|F:1580872416500736|16:00–19:00; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10
 21.11|SA|warsztaty Musicality & Dance with Anichi Perez (5h)|Salsa/Mambo/Cubana|F:1636457378133646|Sabrosa Dance Studio; nowe w bazie 20.10
+21.11|LO|warsztaty Bachata Footwork od podstaw!|Bachata|https://sklep.loftodance.pl/wydarzenie/bachata-footwork-od-podstaw,1293|LOFToDANCE Kraków; nowe w bazie 24.10
 21.11|GR|Dance++ Kizomba Fusion Party|Kizomba|F:1368901197951496|20–03; FB odczytany; save the date, program jeszcze nieogłoszony
 22.11|KL|KIZLAB SUNDAYS|Kizomba|F:1617716113426642|KIZLAB; kolejna ogłoszona edycja, program TBA
 22.11|Sosnowiec|Warsztaty z bachaty w parach|Bachata|https://airdancia.com/event/warsztaty-z-bachaty-w-parach-sosnowiec/|16:00; Sosnowiec; nowe w bazie 20.10
@@ -74,8 +78,9 @@ NIEDZIELA|W niedzielę zapraszamy na naszą własną imprezę Kato Salsa Hub –
 27.12|Bielsko-Biała,AllDance,1Maja20|Zakończenie roku|Salsa/Bachata/Kizomba|O:icJdCgoBSSeEDjiUbFNd|AllDance
 31.12|Świętochłowice,Stylowa Willa,Dworcowa8|Sylwester 2026/2027 w Willi Styl|Salsa/Bachata/Kizomba|https://airdancia.com/event/sylwester-2026-2027-w-willi-styl-swietochlowice/|21:00; Stylowa Willa Świętochłowice; nowe w bazie 20.10
 31.12|LO|Sylwester|Bachata/Sensual Impro|F:1580412003488974|LOFToDANCE; uzupełniono bezpośredni link FB 20.10
-31.12|FT|Sylwester|Salsa/Bachata|O:d657e4d472494187a483|Forum Tańca
+31.12|FT|Sylwester|Salsa/Bachata|F:28088603620764646|20:00; Forum Tańca; uzupełniono bezpośredni link FB 24.10
 09.01.2027|Częstochowa,Częstotańcz,Spółdzielczości4|warsztaty Mambo New York Style On2|Salsa On2|F:1632915284664193|Częstotańcz; nowe w bazie 20.10
+16.01.2027|Bytom,Restauracja W Starym Kinie,Alojzjanów27|Karnawał w Bytomiu – Bal maskowy (Danses Team)|Salsa/Bachata/Kizomba|https://airdancia.com/event/karnawal-w-bytomiu-16-stycznia-2027-bal-maskowy-bytom/|19:00; Restauracja W Starym Kinie Bytom; nowe w bazie 24.10
 29–31.01.2027|FT|Cracovia Rueda Festival|Cubana/Rueda|F:1430429125397912|lista oczekujących, nie twierdź całkowicie wyprzedane; oferty wyjazdów na festiwal to duplikaty
 20.02.2027|Tarnowskie Góry|Warsztaty Kizomby z Isabelle & Felicien|Kizomba/Bachata/Salsa|https://airdancia.com/event/warsztaty-kizomby-z-isabelle-felicien-nr-1-w-swiecie-kizomby-tarnowskie-gory/|09:00; Tarnowskie Góry; nowe w bazie 20.10
 27.02.2027|TK|Katowice Tarraxo Meetup Party vol. IV z Desmo_Punk i DJ Cubito|Kizomba/Tarraxo|O:91e9016d241e4dc58dc6|Taneczna Kompania Katowice; nowe w bazie 20.10

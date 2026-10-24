@@ -568,8 +568,8 @@ ${uncertainLines.length > 0 ? uncertainLines.join('\n') : '  - Brak niepewnych t
   - **Poza zakresem geograficznym/stylowym (pominięte):** Integracja Mohito 06–08.11 (Poronin — poza woj. śląskim i Krakowem), wydarzenia z Opola, Murzasichla i Bartkowej oraz czysty Zouk/WCS.
 - **Kolejne konkretne kroki przy następnym sprawdzeniu:**
   1. Rotacja regionalna: Częstochowa, Zagłębie (Sosnowiec, Dąbrowa Górnicza, Będzin, Czeladź) oraz świeże komunikaty na publicznej stronie FB Kato Salsa Hub.
-  2. Celowane wyszukanie konkretnej karty OnlyDance dla **SabroFest (16–18.10)** oraz ustalenie lokalizacji i zakresu dat dla tropu **BailaMe 2027**.
-  3. Nie odczytywać ponownie 16 potwierdzonych wydarzeń bieżącego weekendu (16–18.10).`;
+  2. Weryfikacja dokładnej sali/adresu dla wstrzymanego tropu **REPARTO z Leidel Portuondo (07.11 w Bielsku-Białej)** oraz godzin warsztatów przed imprezą **¡A bailar salsa! (07.11 w LOFToDANCE)**.
+  3. Nie odczytywać ponownie ${weekendEvents.length} potwierdzonych wydarzeń bieżącego weekendu (${weekendShortStr}).`;
 
     const fullReport = `${sec1}
 

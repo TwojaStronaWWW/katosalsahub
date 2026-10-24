@@ -480,7 +480,7 @@ function parseKrajownikEventsHtml(html = '', defaultCity = 'Katowice') {
     };
 
     const danceRegex = /\b(sals[ayę]|bachat[ayę]|kizomb[ayę]|cuban[ay]?|timbeando|timb[ay]|rueda|son\s+cubano|urbankiz|urban\s*kiz|sensual\s+impro|habana|la\s+clave|mil\s+pasos|good\s*mood|gravitacja|sabrosa|forum\s+ta[nń]ca|loftodance|danceloveit|alldance|pachanguero|havana\s+dance|kizlab|teatro\s+cubano)\b/i;
-    const excludeRegex = /\b(salsation|zumba\s+kids|zouk\s+solo|west\s+coast\s+swing|kurs\s+regularny|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
+    const excludeRegex = /\b(salsation|zumba\s+kids|zouk\s+solo|west\s+coast\s+swing|kurs\s+regularny|kursy?\s+ta[nń]ca\s+od\s+zera|od\s+zera\s+z\s+|3x45min|w\s+parach\s+od\s+podstaw|solo\s+footwork\s*&\s*styling\s+z\s+klaudi|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
 
     const matches = [...src.matchAll(/href=["']([^"']*\/wydarzenia\/[a-z0-9-]+-\d+)["'][^>]*>([\s\S]*?)<\/a>/gi)];
     const results = [];
@@ -608,7 +608,7 @@ function parseSabakiEventsHtml(html = '', defaultCity = 'Katowice') {
 
     const results = [];
     const seenUrls = new Set();
-    const regularClassRegex = /\b(wtorki|środy|srody|czwartki|piątki|piatki|poniedziałki|poniedzialki|niedziele|kurs\s+od\s+zera|od\s+zera|od\s+podstaw|kurs\s+regularny|nab[oó]r\s+do\s+grupy|dla\s+ta[nń]cz[aą]cych|3x45min|leading\s*&\s*following|salsation|zumba|west\s+coast\s+swing|lambada\s+w\s+parach|zouk\s+od\s+zera|kizup|lady\s+styling\s+w\s+krakowie|solo\s+footwork\s*&\s*styling|crash\s+course\s+krak[oó]w)\b/i;
+    const regularClassRegex = /\b(wtorki|środy|srody|czwartki|piątki|piatki|poniedziałki|poniedzialki|niedziele|kurs\s+od\s+zera|od\s+zera|od\s+podstaw|kurs\s+regularny|nab[oó]r\s+do\s+grupy|dla\s+ta[nń]cz[aą]cych|3x45min|leading\s*&\s*following|salsation|zumba|west\s+coast\s+swing|lambada\s+w\s+parach|zouk\s+od\s+zera|kizup|kiz\s+fusion\s+open|viral\s+moves|lady\s+styling\s+w\s+krakowie|solo\s+footwork\s*&\s*styling|crash\s+course\s+krak[oó]w)\b/i;
     const specialEventOverrideRegex = /\b(party|imprez[ay]|praktis|practice|festival|festiwal|social\s+club|warsztaty\s+weekendowe|zaj[eę]cia\s+specjalne|experience|dom[oó]wka|biba|sylwester|integracja|halloween)\b/i;
 
     const ldScripts = [...src.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
@@ -785,9 +785,13 @@ function parseAirdanciaEventsHtml(html = '', defaultCity = 'Katowice') {
         const dateInfo = parseEventDateInfo(rawDate, year);
 
         const rawTitle = decodeHtmlEntities(titleRaw.replace(/<[^>]+>/g, '').trim());
+        if (/\b(zaj[eę]cia\s+regularne|leading\s*&\s*following\s*[–-]\s*zaj[eę]cia\s+dla\s+ta[nń]cz[aą]cych)\b/i.test(rawTitle)) {
+            continue;
+        }
         const resolvedCity = decodeHtmlEntities((cityRaw || defaultCity).replace(/<[^>]+>/g, '').trim()) || defaultCity;
         const startTime = decodeHtmlEntities((whenRaw || '').replace(/<[^>]+>/g, '').trim());
-        const loc = normalizeLocation(`${resolvedCity},${rawTitle}`);
+        const knownInTitle = KNOWN_VENUES_GEO.find(k => k.match.test(rawTitle));
+        const loc = normalizeLocation(knownInTitle ? `${resolvedCity},${knownInTitle.venue}` : resolvedCity);
         const styles = inferEventStyles(`${rawTitle} ${families.replace(/-dance/g, '')}`);
 
         results.push({
