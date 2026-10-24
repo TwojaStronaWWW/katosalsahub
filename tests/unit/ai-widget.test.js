@@ -28,7 +28,7 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     assert.ok(withLinks.includes('href="salsopedia.html"'));
     assert.ok(withLinks.includes('href="mailto:kontakt@katosalsahub.pl"'));
     assert.ok(withLinks.includes('href="#kontakt"'));
-    assert.ok(withLinks.includes('<ul><li>Punkt 1</li><li>Punkt 2</li></ul>'));
+    assert.ok(withLinks.includes('<ul class="tsw-ai-list"><li>Punkt 1</li><li>Punkt 2</li></ul>'));
   });
 
   it('czerpie wiedzę z pełnej bazy Salsopedii (salsopedia.json) oraz odpowiada na pytania o portal, radio i DancePuls', () => {
@@ -283,5 +283,35 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     assert.equal(api.voiceBtn.classList.contains('tsw-listening'), false);
     assert.equal(api.chatInput.value, 'Co to jest Dile Que No');
     assert.equal(api.getHistory().length, 0, 'Tryb bezpieczny nie może wysłać wiadomości automatycznie bez kliknięcia Wyślij');
+  });
+
+  it('Fail-Closed Cache Invalidation oraz strażnik sieci NETWORK_FORBIDDEN chronią przed uszkodzonym localStorage i wyciekiem zapytań', async () => {
+    const { document, window } = setupMockDom(
+      '<script src="assets/js/ai-widget.js" data-site-id="katosalsahub"></script>'
+    );
+
+    await assert.rejects(
+      () => window.fetch('https://example.com/unmocked'),
+      /NETWORK_FORBIDDEN/
+    );
+
+    window.localStorage.setItem(
+      'tsw_ai_cache_katosalsahub',
+      JSON.stringify({
+        kbVersion: 'kb_v0_empty',
+        entries: {
+          'co to jest casino': { answer: '', ts: -100 },
+          'dile que no': { answer: 'Poprawna odpowiedź', ts: Date.now() + 99999999 }
+        }
+      })
+    );
+
+    const api = initAiWidget(document, window, {
+      siteId: 'katosalsahub',
+      skipInitialFetch: true
+    });
+
+    assert.equal(api.getCachedAnswer('co to jest casino'), null);
+    assert.equal(api.getCachedAnswer('dile que no'), null);
   });
 });

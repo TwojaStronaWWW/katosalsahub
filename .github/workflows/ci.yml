@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       # 1. Sprawdź pliki wejściowe obu portali
       - name: 1.2 Sprawdzenie plików wejściowych (Kato Salsa Hub & DancePuls)
@@ -101,6 +102,8 @@ jobs:
     steps:
       - name: 2.1 Pobranie kodu repozytorium
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: 2.2 Konfiguracja środowiska Node.js
         uses: actions/setup-node@v7
