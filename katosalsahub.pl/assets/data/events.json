@@ -1215,6 +1215,32 @@
     ]
   },
   {
+    "date": "2026-12-02",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
+        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 24.10",
+        "opisPubliczny": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
+        "dateLabel": "ŚRODA (02.12.2026)",
+        "endDate": "2026-12-02",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-12-03",
     "events": [
       {
@@ -1775,6 +1801,32 @@
         "link": "https://onlydanceapp.com/event/bDNi3yyIAnYKvujNV0fq",
         "style": [
           "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-12-31",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "SYLWESTER w Forum Tańca! 2026/2027",
+        "opis": "SYLWESTER w Forum Tańca! 2026/2027 - Forum Tańca; OnlyDance; nowe w bazie 24.10",
+        "opisPubliczny": "SYLWESTER w Forum Tańca! 2026/2027",
+        "dateLabel": "PIĄTEK (31.12.2027)",
+        "endDate": "2027-12-31",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/d657e4d472494187a483",
+        "style": [
+          "Salsa"
         ]
       }
     ]

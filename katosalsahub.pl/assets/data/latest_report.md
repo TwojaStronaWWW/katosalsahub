@@ -1,13 +1,15 @@
 ## 1. PRYWATNIE — raport na 24.10.2026
 - **Stan zestawienia na weekend 23–25.10.2026:** **14 pozycji** (3 pt + 8 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **63 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **65 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (24.10 — 5 pozycji, data publikacji nieustalona):**
+- **Nowości w bazie z ostatniego sprawdzenia (24.10 — 7 pozycji, data publikacji nieustalona):**
   - **Social Flow Party – Bachata, Salsa, Kizomba na 3 sale** | 24.10.2026 | Tychy, Mohito | Salsa/Bachata/Kizomba | https://www.facebook.com/events/1483869330228956/
   - **RITMO DE LA HABANA – DJ Chava** | 30.10.2026 | Kraków, Teatro Cubano | Cubana | https://krajownik.pl/krakow/wydarzenia/ritmo-de-la-habana-start-2000-dj-chava-345738
   - **Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca** | 06.11.2026 | Częstochowa, Częstotańcz | Salsa On2/Bachata | https://www.facebook.com/events/2311106856407049/
   - **warsztaty Bachata Footwork od podstaw!** | 21.11.2026 | Kraków, LOFToDANCE | Bachata | https://sklep.loftodance.pl/wydarzenie/bachata-footwork-od-podstaw,1293
+  - **ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!** | 02.12.2026 | Katowice, Mil Pasos | Bachata | https://www.milpasoskatowice.pl/?page=wydarzenia
   - **Karnawał w Bytomiu – Bal maskowy (Danses Team)** | 16.01.2027 | Bytom, Restauracja W Starym Kinie | Salsa/Bachata/Kizomba | https://airdancia.com/event/karnawal-w-bytomiu-16-stycznia-2027-bal-maskowy-bytom/
+  - **SYLWESTER w Forum Tańca! 2026/2027** | 31.12.2027 | Kraków, Forum Tańca | Salsa | https://onlydanceapp.com/event/d657e4d472494187a483
 - **Zgłoszenia z formularza Google KSH (CSV):** https://www.facebook.com/events/770886418668167/, https://zabrze.com.pl/artykuly/artykul/latino-pod-chmurka-w-zabrzu-w-piatek-odbedzie-sie-potancowka-na-placu-teatralnym?fbclid=IwdGRjcAUZF1ljbGNrBRkXUHBkb2YBZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMzUwNjg1NTMxNzI4AAEewv8xg3R1jnmM1CmuULeuhVIip33CaeCUMLX2mMW6CVHmyeo-RtPSo4x5ZBA_aem_eszY5TPvflkGax4IlgY3Ew.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
@@ -224,6 +226,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (01.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1249676614905478/  
+🗓️ ŚRODA (02.12.2026)  
+➡️ Katowice: Mil Pasos, ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ CZWARTEK–NIEDZIELA (03–06.12.2026)  
 ➡️ Hucisko: Orle Gniazdo, FeelTheFlow (Bachata)  
 🔗 https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/  
@@ -290,6 +295,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ CZWARTEK (OD 16.09.2027)  
 ➡️ Kraków: Hotel Galaxy, Kizz Ryders 10-lecie (Kizomba)  
 🔗 https://onlydanceapp.com/event/bDNi3yyIAnYKvujNV0fq  
+🗓️ PIĄTEK (31.12.2027)  
+➡️ Kraków: Forum Tańca, SYLWESTER w Forum Tańca! 2026/2027 (Salsa)  
+🔗 https://onlydanceapp.com/event/d657e4d472494187a483  
 
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
