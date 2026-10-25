@@ -8,7 +8,7 @@
   - **Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca** | 06.11.2026 | Częstochowa, Częstotańcz | Salsa On2/Bachata | https://www.facebook.com/events/2311106856407049/
   - **warsztaty Bachata Footwork od podstaw!** | 21.11.2026 | Kraków, LOFToDANCE | Bachata | https://sklep.loftodance.pl/wydarzenie/bachata-footwork-od-podstaw,1293
   - **Karnawał w Bytomiu – Bal maskowy (Danses Team)** | 16.01.2027 | Bytom, Restauracja W Starym Kinie | Salsa/Bachata/Kizomba | https://airdancia.com/event/karnawal-w-bytomiu-16-stycznia-2027-bal-maskowy-bytom/
-- **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
+- **Zgłoszenia z formularza Google KSH (CSV):** https://www.facebook.com/events/770886418668167/, https://zabrze.com.pl/artykuly/artykul/latino-pod-chmurka-w-zabrzu-w-piatek-odbedzie-sie-potancowka-na-placu-teatralnym?fbclid=IwdGRjcAUZF1ljbGNrBRkXUHBkb2YBZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMzUwNjg1NTMxNzI4AAEewv8xg3R1jnmM1CmuULeuhVIip33CaeCUMLX2mMW6CVHmyeo-RtPSo4x5ZBA_aem_eszY5TPvflkGax4IlgY3Ew.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
 ---
