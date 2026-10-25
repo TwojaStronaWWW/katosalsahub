@@ -23,159 +23,6 @@
           "Mambo",
           "Salsa On2"
         ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Mil Pasos",
-        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
-        "adres": "ul. Kamienna 4",
-        "lat": 50.2569,
-        "lng": 19.0121,
-        "tytul": "Mil Pasos K Experience – Integracja środowiska",
-        "opis": "Mil Pasos K Experience – Integracja środowiska, zajęcia specjalne + praktis - 16:00–22:00; Mil Pasos / Michał Rozewski (Kamienna 4)",
-        "opisPubliczny": "Mil Pasos K Experience – Integracja środowiska, zajęcia specjalne + praktis",
-        "dateLabel": "SOBOTA (24.10.2026)",
-        "endDate": "2026-10-24",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1040992492288985/",
-        "style": [
-          "Kizomba"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Mil Pasos",
-        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
-        "adres": "ul. Kamienna 4",
-        "lat": 50.2569,
-        "lng": 19.0121,
-        "tytul": "Early Vibes & Goodnights Dance Party – Pumpkin Edition",
-        "opis": "Early Vibes & Goodnights Dance Party – Pumpkin Edition - 20:00–02:00; Mil Pasos (Kamienna 4); nowe osobne wydarzenie FB 20.10",
-        "opisPubliczny": "Early Vibes & Goodnights Dance Party – Pumpkin Edition",
-        "dateLabel": "SOBOTA (24.10.2026)",
-        "endDate": "2026-10-24",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/28458661560422914/",
-        "style": [
-          "Bachata",
-          "Kizomba"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Tychy",
-        "miastoInne": "",
-        "miejsce": "Mohito",
-        "miejsceInne": "Mohito (al.Jana PawłaII 14)",
-        "adres": "al.Jana PawłaII 14",
-        "lat": 50.1121,
-        "lng": 18.9876,
-        "tytul": "Social Flow Party – Bachata",
-        "opis": "Social Flow Party – Bachata, Salsa, Kizomba na 3 sale - 21:00; Szkoła Tańca Mohito Tychy; nowe w bazie 24.10",
-        "opisPubliczny": "Social Flow Party – Bachata, Salsa, Kizomba na 3 sale",
-        "dateLabel": "SOBOTA (24.10.2026)",
-        "endDate": "2026-10-24",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1483869330228956/",
-        "style": [
-          "Salsa",
-          "Bachata",
-          "Kizomba"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Salsa House",
-        "miejsceInne": "Salsa House (Jana Zamoyskiego 79A/3)",
-        "adres": "Jana Zamoyskiego 79A/3",
-        "lat": 50.0389,
-        "lng": 19.9412,
-        "tytul": "warsztaty Rueda Dynamica con Paseos z Kleszką",
-        "opis": "warsztaty Rueda Dynamica con Paseos z Kleszką - 11:00; Salsa House Kraków; nowe w bazie 20.10",
-        "opisPubliczny": "warsztaty Rueda Dynamica con Paseos z Kleszką",
-        "dateLabel": "SOBOTA (24.10.2026)",
-        "endDate": "2026-10-24",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1604154314424412/",
-        "style": [
-          "Cubana",
-          "Rueda"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Forum Tańca",
-        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
-        "adres": "ul. Konopnickiej 29",
-        "lat": 50.0442,
-        "lng": 19.9348,
-        "tytul": "Halloween w Forum Tańca – Hogwarts Edition",
-        "opis": "Halloween w Forum Tańca – Hogwarts Edition,zajęcia weekendowe - 11:45; Forum Tańca Kraków; nowe w bazie 20.10",
-        "opisPubliczny": "Halloween w Forum Tańca – Hogwarts Edition, zajęcia weekendowe",
-        "dateLabel": "SOBOTA (24.10.2026)",
-        "endDate": "2026-10-24",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1911733243127487/",
-        "style": [
-          "Salsa",
-          "Bachata"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Forum Tańca",
-        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
-        "adres": "ul. Konopnickiej 29",
-        "lat": 50.0442,
-        "lng": 19.9348,
-        "tytul": "Halloween Party – Hogwarts Edition",
-        "opis": "Halloween Party – Hogwarts Edition - 21:30; Forum Tańca Kraków",
-        "opisPubliczny": "Halloween Party – Hogwarts Edition",
-        "dateLabel": "SOBOTA (24.10.2026)",
-        "endDate": "2026-10-24",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1061231330083326/",
-        "style": [
-          "Salsa",
-          "Bachata"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Teatro Cubano",
-        "miejsceInne": "Teatro Cubano (Jagiellońska 10)",
-        "adres": "Jagiellońska 10",
-        "lat": 50.0628,
-        "lng": 19.9352,
-        "tytul": "LIVE SHOW SATURDAYS – Alain Nc Afro",
-        "opis": "LIVE SHOW SATURDAYS – Alain Nc Afro - 20:00; Teatro Cubano Kraków; nowe w bazie 20.10",
-        "opisPubliczny": "LIVE SHOW SATURDAYS – Alain Nc Afro",
-        "dateLabel": "SOBOTA (24.10.2026)",
-        "endDate": "2026-10-24",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1294624072278735/",
-        "style": [
-          "Cubana"
-        ]
       }
     ]
   },
@@ -1001,6 +848,32 @@
     ]
   },
   {
+    "date": "2026-11-20",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Sabrosa Dance Studio",
+        "miejsceInne": "Sabrosa Dance Studio (rondo Mogilskie 1)",
+        "adres": "rondo Mogilskie 1",
+        "lat": 50.0658,
+        "lng": 19.9595,
+        "tytul": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition",
+        "opis": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition - Kamil Frączek; OnlyDance; nowe w bazie 25.10",
+        "opisPubliczny": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition",
+        "dateLabel": "PIĄTEK (20.11.2026)",
+        "endDate": "2026-11-20",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/1IxV1niQxq3245xiTu4H",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-11-21",
     "events": [
       {
@@ -1228,7 +1101,7 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
-        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 24.10",
+        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 25.10",
         "opisPubliczny": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
         "dateLabel": "ŚRODA (02.12.2026)",
         "endDate": "2026-12-02",
@@ -1819,7 +1692,7 @@
         "lat": 50.0442,
         "lng": 19.9348,
         "tytul": "SYLWESTER w Forum Tańca! 2026/2027",
-        "opis": "SYLWESTER w Forum Tańca! 2026/2027 - Forum Tańca; OnlyDance; nowe w bazie 24.10",
+        "opis": "SYLWESTER w Forum Tańca! 2026/2027 - Forum Tańca; OnlyDance; nowe w bazie 25.10",
         "opisPubliczny": "SYLWESTER w Forum Tańca! 2026/2027",
         "dateLabel": "PIĄTEK (31.12.2027)",
         "endDate": "2027-12-31",
