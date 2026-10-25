@@ -8,3 +8,5 @@
    - **Zegary i walidacja typów:** Pomiar czasu trwania interakcji musi opierać się o zegar monotoniczny (`performance.now()` / `getMonotonicMs()`), a walidatory liczbowe muszą odrzucać `boolean`, `NaN` oraz `±Infinity` (`isStrictFiniteNumber`).
    - **Testy jednostkowe (`node:test`):** Domyślny `fetch` w `setupMockDom()` blokuje ruch sieciowy (`NETWORK_FORBIDDEN`) — każdy test wymagający sieci musi jawnie zamockować `fetch`.
    - **SEO & AI Search:** Plik `/.well-known/security.txt` musi posiadać aktywną datę `Expires:`, kontener `#tsw-ai-widget-root` musi posiadać `data-nosnippet`, a `/llms.txt` musi być spójny z bazą wiedzy RAG.
+4. **Wykluczenia fałszywych alarmów dla Google Jules Suggestions (Zero-Bloat PHP):**
+   - Lokalny plikowy zapis/odczyt (`flock(LOCK_EX)`), probabilistyczny Garbage Collector (`mt_rand`) oraz sekwencyjne wywołania cURL po zamknięciu sesji (`@session_write_close()` / `fastcgi_finish_request()`) są celowymi wzorcami architektury **Platform-First / Zero-Bloat** i nie powinny być zgłaszane jako błędy wydajnościowe.
