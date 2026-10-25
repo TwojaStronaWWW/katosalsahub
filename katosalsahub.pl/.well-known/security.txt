@@ -1,0 +1,7 @@
+# Polityka Zgłaszania Podatności (RFC 9116 / ISO/IEC 27001) — Kato Salsa Hub
+# [REF-06] Standard: https://securitytxt.org/ (RFC 9116)
+
+Contact: mailto:kontakt@katosalsahub.pl
+Expires: 2027-12-31T23:59:00.000Z
+Preferred-Languages: pl, en
+Canonical: https://katosalsahub.pl/.well-known/security.txt

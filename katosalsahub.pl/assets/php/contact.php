@@ -77,6 +77,18 @@ function mask_ip($ip): string {
     return '0.0.0.0';
 }
 
+// Wczesne zwolnienie sesji PHP (jeśli aktywna), aby nie blokować równoległych żądań podczas cURL i zapisu plikowego
+if (session_status() === PHP_SESSION_ACTIVE) {
+    @session_write_close();
+}
+
+// [REF-05] Zabezpieczenie OWASP Fetch Metadata (Sec-Fetch-Site) przed żądaniami Cross-Site
+if (isset($_SERVER['HTTP_SEC_FETCH_SITE']) && strtolower(trim((string)$_SERVER['HTTP_SEC_FETCH_SITE'])) === 'cross-site') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Niedozwolone żądanie międzywitrynowe (Cross-Site Request Blocked).']);
+    exit;
+}
+
 // Obsługa wejścia (JSON lub POST/FormData)
 $input = json_decode((string)file_get_contents("php://input"), true);
 if (!is_array($input)) {
