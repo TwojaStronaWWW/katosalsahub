@@ -280,11 +280,17 @@ function setupMockDom(html = '') {
     body.innerHTML = html;
   }
 
+  const defaultForbiddenFetch = async (url) => {
+    throw new Error(`NETWORK_FORBIDDEN: Zablokowano niezamockowane wywołanie sieciowe fetch(${String(url)}) w teście jednostkowym`);
+  };
+
   const window = {
     document,
     location: { hostname: 'localhost', pathname: '/' },
     localStorage: createStorage(),
     sessionStorage: createStorage(),
+    performance: { now: () => Date.now() },
+    fetch: defaultForbiddenFetch,
     addEventListener(type, fn) {
       if (!winListeners[type]) winListeners[type] = [];
       winListeners[type].push(fn);
@@ -294,6 +300,8 @@ function setupMockDom(html = '') {
       list.forEach((fn) => fn(evt));
     }
   };
+
+  globalThis.fetch = defaultForbiddenFetch;
 
   return { document, window };
 }

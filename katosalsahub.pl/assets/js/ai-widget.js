@@ -1,92 +1,152 @@
+(function () {
+"use strict";
 /**
- * Uniwersalny Widget Asystenta AI — Kato Salsa Hub & Platform Standard v3.0
+ * TwojaStronaWWW — Uniwersalny Moduł Asystenta AI (Single Source of Truth v4.0)
  *
- * Skumulowane najlepsze praktyki z ekosystemu TwojaStronaWWW, Fuego Lingua oraz Kato Salsa Hub:
- * - Zero-Bloat Vanilla JS ES6+ (brak zewnętrznych zależności, 0 kluczy API na frontendzie)
+ * Architektura Platform-First & Zero-Bloat (Vanilla ES6+, ISO 27001, WCAG 2.1 AA):
+ * - Jedno Źródło Prawdy (Single Source of Truth): wspólna geometria, szerokości, odstępy,
+ *   klikalność, dostępność (ARIA), dyktowanie głosowe (Web Speech API), Response Cache i analityka
+ * - Warstwa Kolorów oparta o CSS Custom Properties (--tsw-ai-*), dziedzicząca z lokalnego CSS strony,
+ *   presetów per site_id lub atrybutów HTML (data-primary, data-accent, data-bg, data-surface)
+ * - Komunikacja z centralnym routerem AI na VPS (https://ai.twojastronawww.pl/chat-router.php)
  * - Obsługa 11-modelowej kaskady High-Availability (6 dostawców API) po stronie VPS
  * - Priorytetowe przekazywanie leadów kontaktowych (telefon / e-mail omija cache i wyzwala Ntfy 1-Klik)
- * - Dynamic Knowledge Base (live RAG z bazy JSON/Wiki, np. Salsopedii `salsopedia.json` / `wiki.php`)
- * - Inteligentny Response Cache (Query Cache) w localStorage/sessionStorage:
- *   dwukrotne zadanie tego samego pytania zwraca odpowiedź natychmiast (0 ms) bez odpytywania AI
- * - Automatyczna inwalidacja cache i odświeżanie zapisanych odpowiedzi przy zmianie bazy wiedzy
- *   (nasłuchiwanie zdarzenia `salsopedia:updated`, `storage` oraz kontrola sumy kontrolnej `kbVersion`)
- * - Multi-Turn Memory (pamięć ostatnich 8 wiadomości w `sessionStorage`)
- * - Bezpieczny parser Markdown z pełnym escapowaniem HTML (ochrona XSS / OWASP)
- * - Zero-Downtime Local Fallback (pełna odpowiedź merytoryczna nawet przy braku sieci)
- * - Pełna dostępność WCAG 2.1 AA (ARIA, obsługa klawiatury, Escape, RWD 100dvh)
+ * - Dynamiczne Centrum Wiedzy ze strony i bazy JSON/Wiki (np. Salsopedia) z wyszukiwaniem fleksyjnym
+ * - Dwupoziomowy Response Cache z automatyczną inwalidacją po zmianie wersji wiedzy (kbVersion)
+ * - Bezpieczny mikro-parser Markdown (100% odporny na XSS) z obsługą list i linków wewnętrznych
+ * - Automatyczne zamykanie okna czatu po kliknięciu w kotwicę (#kontakt) lub poza oknem czatu
  */
 
-(function () {
-'use strict';
+const QUICK_PROMPTS_MAP = {
+  twojastronawww: [
+    'Ile kosztuje strona WWW?',
+    'Dlaczego kod zamiast WordPressa?',
+    'Wdrożenie czatbota AI (RAG)',
+    'Jak wygląda współpraca?'
+  ],
+  fuegolingua: [
+    'Bezpłatna lekcja próbna',
+    'Ile kosztuje kurs hiszpańskiego?',
+    'Zajęcia indywidualne czy grupowe?',
+    'Hiszpański w biznesie / branżowy'
+  ],
+  katosalsahub: [
+    'Co dzieje się w Wolnych Ludziach w niedzielę (15:00–18:00)?',
+    'Gdzie tańczymy w Katowicach i gdzie za darmo zaparkować?',
+    'Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?',
+    'Wyjaśnij figury: Dile Que No, Enchufla i Setenta'
+  ],
+  raricart: [
+    'Ile kosztują stacje Live Food (Lody, Pancakes, Sery)?',
+    'Jak działają pakiety łączone 2 i 3 stanowisk z rabatem?',
+    'Jak wygląda dojazd i montaż stacji na weselu lub evencie?',
+    'Jak sprawdzić wolny termin i zarezerwować datę?'
+  ],
+  dancepuls: [
+    'Czym jest aplikacja DancePuls?',
+    'Jakie style tańca obsługuje DancePuls?',
+    'Jak działa trening rytmu i clave?',
+    'Czy DancePuls jest darmowy?'
+  ],
+  'radar-p1': [
+    'Co zrobić w gabinecie lub aptece, gdy nie działa e-Recepta (P1)?',
+    'Jak odróżnić awarię centralną P1/NFZ od problemu z lokalnym łączem?',
+    'Co zrobić w rejestracji, gdy nie działa eWUŚ?',
+    'Jak działa tryb awaryjny i offline24 w KSeF oraz ZUS e-ZLA?'
+  ]
+};
 
-const CATEGORY_LABELS = {
+const THEME_PRESETS = {
+  twojastronawww: {
+    primary: 'var(--color-primary, #2563eb)',
+    accent: 'var(--color-primary-hover, #7c3aed)',
+    highlight: '#60a5fa',
+    bg: 'var(--color-bg, #0f172a)',
+    surface: 'var(--color-surface, #1e293b)',
+    text: 'var(--color-text, #f8fafc)',
+    muted: 'var(--color-text-muted, #94a3b8)',
+    onPrimary: '#ffffff'
+  },
+  fuegolingua: {
+    primary: '#c92a2a',
+    accent: '#e8590c',
+    highlight: '#ffd43b',
+    bg: '#0f172a',
+    surface: '#1e293b',
+    text: '#f8fafc',
+    muted: '#cbd5e1',
+    onPrimary: '#ffffff'
+  },
+  katosalsahub: {
+    primary: 'var(--red, #e63946)',
+    accent: 'var(--orange, #f4a261)',
+    highlight: 'var(--yellow, #fbbf24)',
+    bg: 'var(--bg, #0f172a)',
+    surface: 'var(--card, #1e293b)',
+    text: '#f8fafc',
+    muted: '#cbd5e1',
+    onPrimary: '#ffffff'
+  },
+  raricart: {
+    primary: 'var(--color-text-dark, #3d4a3a)',
+    accent: 'var(--color-accent-dark, #6b7d63)',
+    highlight: 'var(--color-gold, #d4af37)',
+    bg: '#1c241b',
+    surface: '#283326',
+    text: '#f5f1eb',
+    muted: '#c2cbbd',
+    onPrimary: '#ffffff'
+  },
+  dancepuls: {
+    primary: '#e11d48',
+    accent: '#7c3aed',
+    highlight: '#38bdf8',
+    bg: '#0f172a',
+    surface: '#1e293b',
+    text: '#f8fafc',
+    muted: '#94a3b8',
+    onPrimary: '#ffffff'
+  },
+  'radar-p1': {
+    primary: 'var(--accent, #2563eb)',
+    accent: '#0284c7',
+    highlight: '#38bdf8',
+    bg: 'var(--bg, #0f172a)',
+    surface: 'var(--surface, #1e293b)',
+    text: 'var(--text, #f8fafc)',
+    muted: 'var(--text-muted, #94a3b8)',
+    onPrimary: '#ffffff'
+  }
+};
+
+const CATEGORY_LABELS_PL = {
   steps: 'Kroki (Podstawy)',
   figures: 'Figury (Casino / Rueda)',
   dance: 'Taniec',
   styles: 'Style Tańca',
   music: 'Muzyka',
   instruments: 'Instrumenty',
+  bands: 'Zespoły i Artyści',
   history: 'Historia',
   gods: 'Bogowie (Orishas)',
-  bands: 'Zespoły i Artyści',
   instructors: 'Instruktorzy',
   schools: 'Szkoły Tańca'
 };
 
-/**
- * Bezpieczne formatowanie podstawowego Markdownu z ochroną przed XSS.
- * @param {string} text
- * @returns {string}
- */
-function formatMarkdown(text) {
-  if (!text) return '';
-  let safe = String(text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-
-  // Pogrubienia **tekst**
-  safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-  // Kursywa *tekst*
-  safe = safe.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
-
-  // Wypunktowania (- element lub * element)
-  safe = safe.replace(/^\s*[-*]\s+(.+)$/gm, '<li>$1</li>');
-  safe = safe.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
-  safe = safe.replace(/<\/ul>\s*<ul>/g, '');
-
-  // Klikalne adresy URL (https://...), e-mail oraz linki wewnętrzne (#kontakt, salsopedia.html)
-  safe = safe.replace(
-    /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="tsw-ai-link">$1</a>'
-  );
-  safe = safe.replace(
-    /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
-    '<a href="mailto:$1" class="tsw-ai-link">$1</a>'
-  );
-  safe = safe.replace(
-    /(^|\s)(#[a-zA-Z0-9_-]+)\b/g,
-    '$1<a href="$2" class="tsw-ai-link">$2</a>'
-  );
-  safe = safe.replace(
-    /(^|[\s(])((?:salsopedia|grafik)\.html(?:#[a-zA-Z0-9_-]+)?)/g,
-    '$1<a href="$2" class="tsw-ai-link">$2</a>'
-  );
-
-  // Podział na akapity i nowe linie
-  safe = safe.replace(/\n\n+/g, '<br><br>').replace(/\n/g, '<br>');
-  safe = safe.replace(/<\/li><br>/g, '</li>').replace(/<\/ul><br>/g, '</ul>');
-
-  return safe;
-}
+const KSH_CORE_CONTEXT = [
+  'PODSTAWOWE INFORMACJE O DZIAŁALNOŚCI KATO SALSA HUB (SALSA KATOWICE):',
+  '- Kim jesteśmy (WAŻNE — TYLKO SALSA): Jesteśmy niezależną społecznością i Fundacją Kato Salsa Hub (https://katosalsahub.pl/) łączącą miłośników Salsy (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino, Sonu Kubańskiego, Rumby oraz Salsy Liniowej) w Katowicach i na całym Śląsku ponad podziałami szkolnymi. Nasza społeczność i fundacja skupia się wyłącznie na Salsie i kulturze kubańskiej (nie zajmujemy się bachatą ani kizombą).',
+  '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy Salsę w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
+  '- PLENERY TANECZNE W KATOWICACH (WIOSNA–LATO I CIEPŁE DNI): 1) Kamienny Krąg w Dolinie Trzech Stawów (ul. Trzech Stawów 22, obok przystani i La Cantina) — w razie deszczu tańczymy pod zadaszoną wiatą przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10); na mapie zaznaczyliśmy 3 toalety (w tym przy AMO Pizza) oraz 13-minutową trasę pieszą z darmowego Parkingu Rekomendowanego (Południe / Rolkostrada). 2) Amfiteatr pod NOSPR-em w Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony NOSPR przy fontannach) z darmowym w weekendy parkingiem od ul. Olimpijskiej.',
+  '- WSPÓLNY GRAFIK I PORÓWNYWARKA CENNIKÓW SZKÓŁ TAŃCA W KATOWICACH (https://katosalsahub.pl/grafik.html): Tworzymy i prowadzimy ujednolicony, wspólny grafik katowickich szkół tańca (130 kursów tygodniowo: La Clave, Good Mood, Mil Pasos, Evolution) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH (P0 Od zera, P1 Podstawowy, P2 Podstawowy+, S1 Średniozaawansowany/Zaawansowany, OPEN), kalkulatorem opłacalności cenników (La Clave: 45 min, karnety BEZTERMINOWE 4x 109 zł / 8x 189 zł / 10x 219 zł / Open 300 zł, dopłaty w blokach +15 zł i +10 zł lub 3. jednostka gratis przy 2 skreśleniach; Good Mood: 60 min, ważność 28 dni, 4h 100 zł [student 90 zł] / 8h 170 zł [student 160 zł] / Open 260 zł; Mil Pasos: 55 min, ważność 4 tyg., 4h 119 zł / 8h 199 zł / 12h 249 zł / 16h 299 zł / Open 399 zł, -10% dla studentów), kalendarzem wydarzeń i mapą szkół.',
+  '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Tworzymy otwartą, społecznościową encyklopedię ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem Salsopedia Studio.',
+  '- RADIO TIMBA NATION 24/7 (ODTWARZACZ NA STRONIE): Timba Nation Radio to niezależna internetowa stacja radiowa z Zurychu (Szwajcaria), założona i prowadzona przez DJ Maikiu na platformie Zeno.FM (https://zeno.fm/radio/timba-nation-radio/). To NIE jest radio tworzone ani finansowane przez Kato Salsa Hub — nasza społeczność udostępnia na stronie głównej dedykowany odtwarzacz tego strumienia (z podglądem granego utworu na żywo, obsługą ekranu blokady telefonu MediaSession oraz wyłącznikiem czasowym Sleep Timer: 15, 30, 60 min). Stacja gra 24/7 współczesną kubańską Timbę i Salsę Cubana (w tym autorskie sety DJ Maikiu - Cuban Salsa Mix) bez komercyjnych bloków reklamowych, ponieważ jest autorskim, pasjonackim projektem muzycznym DJ Maikiu promującym kubańską muzykę.',
+  '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Tworzymy cotygodniowy radar i agregator imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
+  '- INTEGRACJE, SPOTKANIA COMIESIĘCZNE I WYJAZDY: Organizujemy comiesięczne spotkania grupowe społeczności z systemem opasek (Leaders/Followers), grupy zniżkowe KSH na festiwale oraz wielki wiosenny Wyjazd Integracyjny Kato Salsa Hub (9–11 kwietnia, do 100 osób).'
+].join('\n');
 
 /**
- * Normalizuje treść zapytania na potrzeby klucza pamięci podręcznej (Query Cache).
- * Dzięki temu zapytania "Co to jest Enchufla?" i "co to jest enchufla ?!" mają ten sam klucz
- * i drugie identyczne pytanie nie odpytuje ponownie modelu AI.
+ * Normalizuje tekst zapytania do klucza pamięci podręcznej (Response Cache)
  * @param {string} text
  * @returns {string}
  */
@@ -103,18 +163,26 @@ function normalizeCacheQuery(text) {
 }
 
 /**
- * Normalizuje tekst do wyszukiwania pełnotekstowego w bazie wiedzy (usuwanie diakrytyków PL/ES).
+ * Usuwa znaki diakrytyczne (PL / ES) i upraszcza tekst do wyszukiwania pełnotekstowego
  * @param {string} text
  * @returns {string}
  */
 function normalizeSearchText(text) {
-  return normalizeCacheQuery(text);
+  if (!text) return '';
+  const map = {
+    ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z',
+    á: 'a', é: 'e', í: 'i', ú: 'u', ü: 'u', ñ: 'n'
+  };
+  return String(text)
+    .toLowerCase()
+    .replace(/[ąćęłńóśźżáéíúüñ]/g, (ch) => map[ch] || ch)
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
- * Wylicza deterministyczny skrót (FNV-1a 32-bit) reprezentujący wersję dynamicznej bazy wiedzy.
- * Każda zmiana w Salsopedii (dodanie hasła, zmiana definicji, weryfikacja, usunięcie)
- * natychmiast generuje nowy identyfikator wersji wiedzy.
+ * Szybki, deterministyczny skrót wersji bazy wiedzy (FNV-1a 32-bit + rozmiar bazy).
  * @param {Array<Object>} entries
  * @returns {string}
  */
@@ -137,7 +205,6 @@ function computeKnowledgeVersion(entries) {
 
 /**
  * Przeszukuje dynamiczną bazę wiedzy (np. Salsopedię) pod kątem zapytania użytkownika.
- * Obsługuje odmianę fleksyjną (rdzenie słów), nazwy pojęć, definicje, kategorie i źródła.
  * @param {string} question
  * @param {Array<Object>} entries
  * @param {number} limit
@@ -168,13 +235,13 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
     steps: ['krok', 'kroki', 'podstaw', 'basico', 'guapea'],
     figures: ['figur', 'rueda', 'ruedzie', 'komend', 'casino', 'wystep'],
     styles: ['styl', 'odmian', 'gatun', 'rodzaj'],
-    music: ['muzyk', 'rytm', 'clave', 'utwor', 'piosen', 'radio', 'timba nation', 'maikiu', 'zeno'],
-    instruments: ['instrument', 'beben', 'bebny', 'perkuj', 'perkus', 'conga', 'timbales', 'bongo', 'campana', 'guiro', 'guira', 'marakas', 'tres', 'bata', 'cajon', 'chekere', 'requinto', 'clave'],
+    music: ['muzyk', 'rytm', 'clave', 'utwor', 'piosen'],
+    instruments: ['instrument', 'beben', 'bebny', 'perkuj', 'conga', 'timbales', 'clave'],
     bands: ['zespol', 'orkiestr', 'artyst', 'kapel', 'spiewa', 'muzykant', 'van', 'havana'],
     history: ['histori', 'korzen', 'pochodz', 'tradycj', 'kuba'],
     gods: ['orish', 'orisza', 'bog', 'bostw', 'santeri', 'yorub', 'afro', 'chango', 'eleggua', 'yemaya', 'oshun'],
     instructors: ['instruktor', 'nauczyciel', 'prowadz', 'trener', 'uczy'],
-    schools: ['szkol', 'kurs', 'zajec', 'lekcj', 'gdzie uczyc', 'good mood']
+    schools: ['szkol', 'kurs', 'zajec', 'lekcj', 'gdzie uczyc']
   };
 
   const matchedCategories = new Set();
@@ -196,7 +263,6 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
 
     let score = 0;
 
-    // 1. Dokładne lub bezpośrednie wystąpienie nazwy hasła w pytaniu
     if (termNorm && qNorm === termNorm) {
       score += 120;
     } else if (termClean && termClean.length >= 3 && qNorm.includes(termClean)) {
@@ -205,7 +271,6 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
       score += 80;
     }
 
-    // 2. Dopasowanie poszczególnych słów i rdzeni (stemming) w nazwie hasła
     for (const token of rawTokens) {
       if (termNorm.split(' ').includes(token)) {
         score += 45;
@@ -226,7 +291,6 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
       }
     }
 
-    // 3. Dopasowanie po kategorii
     for (const cat of cats) {
       if (matchedCategories.has(cat)) {
         score += 14;
@@ -239,68 +303,155 @@ function searchKnowledgeEntries(question, entries, limit = 5) {
   }
 
   scored.sort((a, b) => b.score - a.score || String(a.entry.term).localeCompare(String(b.entry.term), 'pl'));
-  return scored.slice(0, limit).map((s) => s.entry);
+  return scored.slice(0, limit).map((item) => item.entry);
 }
 
-const KSH_CORE_CONTEXT = [
-  'PODSTAWOWE INFORMACJE O DZIAŁALNOŚCI KATO SALSA HUB (SALSA KATOWICE):',
-  '- Kim jesteśmy (WAŻNE — TYLKO SALSA): Jesteśmy niezależną społecznością i Fundacją Kato Salsa Hub (https://katosalsahub.pl/) łączącą miłośników Salsy (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino, Sonu Kubańskiego, Rumby oraz Salsy Liniowej) w Katowicach i na całym Śląsku ponad podziałami szkolnymi. Nasza społeczność i fundacja skupia się wyłącznie na Salsie i kulturze kubańskiej (nie zajmujemy się bachatą ani kizombą).',
-  '- NIEDZIELNE POTAŃCÓWKI W WOLNYCH LUDZIACH (POD DACHEM): W KAŻDĄ NIEDZIELĘ w godz. 15:00–18:00 spotykamy się i tańczymy Salsę w lokalu Wolni Ludzie (ul. Mariacka 2, Katowice — róg ul. Mielęckiego). Wstęp otwarty dla każdego poziomu (od początkujących po zaawansowanych), nie trzeba mieć własnej pary! W niedziele oraz po godz. 17:00 wszystkie ulice wokół (Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są DARMOWE, a jako główny Parking Rekomendowany polecamy ogromny, bezpłatny w niedzielę parking pod NOSPR-em (12 min wyznaczoną trasą pieszą przez kładkę).',
-  '- PLENERY TANECZNE W KATOWICACH (WIOSNA–LATO I CIEPŁE DNI): 1) Kamienny Krąg w Dolinie Trzech Stawów (ul. Trzech Stawów 22, obok przystani i La Cantina) — w razie deszczu tańczymy pod zadaszoną wiatą przy przystani kajakowej UKS 4 / SUP Tomi (ul. Trzech Stawów 10); na mapie zaznaczyliśmy 3 toalety (w tym przy AMO Pizza) oraz 13-minutową trasę pieszą z darmowego Parkingu Rekomendowanego (Południe / Rolkostrada). 2) Amfiteatr pod NOSPR-em w Strefie Kultury (pl. Wojciecha Kilara 1, od wschodniej strony NOSPR przy fontannach) z darmowym w weekendy parkingiem od ul. Olimpijskiej.',
-  '- WSPÓLNY GRAFIK I PORÓWNYWARKA CENNIKÓW SZKÓŁ TAŃCA W KATOWICACH (https://katosalsahub.pl/grafik.html): Tworzymy i prowadzimy ujednolicony, wspólny grafik katowickich szkół tańca (128 kursów tygodniowo: La Clave, Good Mood, Mil Pasos) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH (P0 Od zera, P1 Podstawowy, P2 Podstawowy+, S1 Średniozaawansowany/Zaawansowany, OPEN), kalkulatorem opłacalności cenników (La Clave: 45 min, karnety BEZTERMINOWE 4x 109 zł / 8x 189 zł / 10x 219 zł / Open 300 zł, dopłaty w blokach +15 zł i +10 zł lub 3. jednostka gratis przy 2 skreśleniach; Good Mood: 60 min, ważność 28 dni, 4h 100 zł [student 90 zł] / 8h 170 zł [student 160 zł] / Open 260 zł; Mil Pasos: 55 min, ważność 4 tyg., 4h 119 zł / 8h 199 zł / 12h 249 zł / 16h 299 zł / Open 399 zł, -10% dla studentów), kalendarzem wydarzeń i mapą szkół.',
-  '- SALSOPEDIA (https://katosalsahub.pl/salsopedia.html): Tworzymy otwartą, społecznościową encyklopedię ponad 200 haseł (figury Casino, komendy Rueda de Casino, rytmy, instrumenty, historia, bóstwa Orishas, zespoły, instruktorzy i śląskie szkoły tańca) z edytorem Salsopedia Studio.',
-  '- RADIO TIMBA NATION 24/7 (ODTWARZACZ NA STRONIE): Timba Nation Radio to niezależna internetowa stacja radiowa z Zurychu (Szwajcaria), założona i prowadzona przez DJ Maikiu na platformie Zeno.FM (https://zeno.fm/radio/timba-nation-radio/). To NIE jest radio tworzone ani finansowane przez Kato Salsa Hub — nasza społeczność udostępnia na stronie głównej dedykowany odtwarzacz tego strumienia (z podglądem granego utworu na żywo, obsługą ekranu blokady telefonu MediaSession oraz wyłącznikiem czasowym Sleep Timer: 15, 30, 60 min). Stacja gra 24/7 współczesną kubańską Timbę i Salsę Cubana (w tym autorskie sety DJ Maikiu - Cuban Salsa Mix) bez komercyjnych bloków reklamowych, ponieważ jest autorskim, pasjonackim projektem muzycznym DJ Maikiu promującym kubańską muzykę.',
-  '- DANCEPULS (https://dancepuls.katosalsahub.pl/): Tworzymy cotygodniowy radar i agregator imprez tanecznych, warsztatów i festiwali na Śląsku i w Krakowie, publikowany co tydzień z ankietą na naszej grupie FB (https://www.facebook.com/groups/519446499987373), fanpage\'u FB (https://www.facebook.com/KatoSalsaHub) oraz Instagramie (https://www.instagram.com/katosalsahub/). Formularz zgłaszania imprez: https://tiny.pl/2bc8z7649.',
-  '- INTEGRACJE, SPOTKANIA COMIESIĘCZNE I WYJAZDY: Organizujemy comiesięczne spotkania grupowe społeczności z systemem opasek (Leaders/Followers), grupy zniżkowe KSH na festiwale oraz wielki wiosenny Wyjazd Integracyjny Kato Salsa Hub (9–11 kwietnia, do 100 osób).'
-].join('\n');
-
 /**
- * Buduje zwięzły kontekst dynamiczny (RAG) z pasujących haseł Salsopedii / bazy wiedzy
- * oraz stałej karty działalności Kato Salsa Hub do przekazania routerowi AI.
+ * Buduje zwięzły kontekst RAG z dynamicznej bazy wiedzy (np. Salsopedii) do przesłania do routera AI
  * @param {string} question
  * @param {Array<Object>} entries
  * @returns {string}
  */
 function buildDynamicContext(question, entries) {
   const safeEntries = Array.isArray(entries) ? entries : [];
-  const matches = searchKnowledgeEntries(question, safeEntries, 6);
+  const matched = searchKnowledgeEntries(question, safeEntries, 6);
 
-  const lines = matches.map((item) => {
-    const cats = Array.isArray(item.category)
-      ? item.category.map((c) => CATEGORY_LABELS[c] || c).join(', ')
-      : (CATEGORY_LABELS[item.category] || item.category || 'Ogólne');
-    const verifiedBadge = item.status === 'verified' ? ' [Zweryfikowane]' : '';
-    return `- ${item.term} (${cats})${verifiedBadge}: ${item.definition}`;
+  const lines = matched.map((m) => {
+    const catsLabel = (Array.isArray(m.category) ? m.category : [m.category])
+      .filter(Boolean)
+      .map((c) => CATEGORY_LABELS_PL[c] || c)
+      .join(', ');
+    const verifiedBadge = m.status === 'verified' ? ' [Zweryfikowane]' : '';
+    return `- **${m.term}** [Kategoria: ${catsLabel || 'Ogólne'}]${verifiedBadge}: ${m.definition}`;
   });
 
-  if (lines.length === 0) {
+  if (safeEntries.length === 0 && lines.length === 0) {
     return KSH_CORE_CONTEXT;
+  }
+
+  const versionTag = computeKnowledgeVersion(safeEntries);
+  if (lines.length === 0) {
+    return `${KSH_CORE_CONTEXT}\n\n[AKTUALNY STAN BAZY SALSOPEDII (${versionTag})]: Łącznie ${safeEntries.length} haseł.`;
   }
 
   return (
     `${KSH_CORE_CONTEXT}\n\n` +
-    `Aktualne powiązane hasła z Salsopedii (${safeEntries.length} pojęć w bazie):\n` +
+    `[AKTUALNY STAN BAZY SALSOPEDII (${versionTag})]: Łącznie ${safeEntries.length} haseł.\n` +
+    `Najbardziej pasujące hasła z Salsopedii na stronie:\n` +
     lines.join('\n')
   );
 }
 
 /**
- * Zwraca lokalną odpowiedź awaryjną (Zero-Downtime Fallback) dopasowaną do branży witryny
- * oraz dynamicznej bazy wiedzy (np. Salsopedii).
+ * Bezpieczny mikro-parser Markdown (100% odporny na XSS)
+ * @param {string} rawText
+ * @returns {string}
+ */
+function formatMarkdown(rawText) {
+  if (!rawText) return '';
+  let safe = String(rawText)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+  // Pogrubienia **tekst**
+  safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // Kursywa *tekst*
+  safe = safe.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+
+  // Klikalne adresy URL (https://...)
+  safe = safe.replace(
+    /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="tsw-ai-link">$1</a>'
+  );
+
+  // Klikalne adresy e-mail oraz linki wewnętrzne (#kontakt, salsopedia.html, grafik.html, cennik.html, /pakiety)
+  safe = safe.replace(
+    /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+    '<a href="mailto:$1" class="tsw-ai-link">$1</a>'
+  );
+  safe = safe.replace(
+    /(^|\s)(#[a-zA-Z0-9_-]+)\b/g,
+    '$1<a href="$2" class="tsw-ai-link">$2</a>'
+  );
+  safe = safe.replace(
+    /(^|[\s(])((?:salsopedia|grafik|cennik|jak-pracuje)\.html(?:#[a-zA-Z0-9_-]+)?)/g,
+    '$1<a href="$2" class="tsw-ai-link">$2</a>'
+  );
+
+  const lines = safe.split(/\r?\n/);
+  let html = '';
+  let inList = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    const bulletMatch = line.match(/^[-*•]\s+(.+)$/);
+    if (bulletMatch) {
+      if (!inList) {
+        html += '<ul class="tsw-ai-list">';
+        inList = true;
+      }
+      html += '<li>' + bulletMatch[1] + '</li>';
+    } else {
+      if (inList) {
+        html += '</ul>';
+        inList = false;
+      }
+      if (line !== '') {
+        html += (html && !html.endsWith('</ul>') ? '<br>' : '') + line;
+      } else if (html && !html.endsWith('<br>') && !html.endsWith('</ul>')) {
+        html += '<br>';
+      }
+    }
+  }
+  if (inList) {
+    html += '</ul>';
+  }
+  return html;
+}
+
+/**
+ * Pomocnicze rozpoznawanie siteId, gdy nie podano go jawnie w wywołaniu funkcji
+ * @param {string} [explicitSiteId]
+ * @returns {string}
+ */
+function resolveSiteIdContext(explicitSiteId) {
+  if (explicitSiteId && typeof explicitSiteId === 'string') {
+    return explicitSiteId.toLowerCase();
+  }
+  try {
+    const doc = typeof document !== 'undefined' ? document : globalThis.document;
+    const scriptEl =
+      doc?.currentScript ||
+      doc?.querySelector?.('script[data-site-id]') ||
+      doc?.querySelector?.('script[src*="ai-widget.js"]') ||
+      doc?.querySelector?.('script[src*="widget.js"]');
+    const fromAttr = scriptEl?.getAttribute?.('data-site-id');
+    if (fromAttr) return fromAttr.toLowerCase();
+  } catch (_) {}
+  return 'twojastronawww';
+}
+
+/**
+ * Lokalna odpowiedź awaryjna (Zero-Downtime Fallback) dopasowana do projektu
+ * oraz dynamicznej bazy wiedzy ze strony (np. Salsopedii).
  * @param {string} question
- * @param {string} siteId
+ * @param {string} [siteId]
  * @param {Array<Object>} [knowledgeEntries=[]]
  * @returns {string}
  */
-function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntries = []) {
+function getLocalFallbackAnswer(question, siteId, knowledgeEntries = []) {
+  const resolvedSiteId = resolveSiteIdContext(siteId);
   const q = String(question || '').toLowerCase();
   const qNorm = normalizeSearchText(question);
 
   // ===========================================================================
-  // 1. KATO SALSA HUB & SALSOPEDIA (Główne centrum wiedzy + wiedza o portalu)
+  // 1. KATO SALSA HUB & SALSOPEDIA
   // ===========================================================================
-  if (siteId === 'katosalsahub') {
-    // 1a-0. Priorytetowe pytania o Wolnych Ludzi, niedziele 15:00-18:00, plenery, lokalizacje, parkingi oraz całą działalność KSH
+  if (resolvedSiteId === 'katosalsahub' || (Array.isArray(knowledgeEntries) && knowledgeEntries.length > 0)) {
     const isActivityOrEventScheduleQuestion =
       qNorm.includes('wolni ludzie') ||
       qNorm.includes('wolnych ludzi') ||
@@ -325,11 +476,10 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
         `Jesteśmy niezależną społecznością i fundacją łączącą miłośników **Salsy** (Salsy Kubańskiej / Casino, Timby, Ruedy de Casino oraz Sonu) w Katowicach i na całym Śląsku ponad podziałami szkolnymi:\n` +
         `- **🍹 Niedzielne potańcówki w Wolnych Ludziach (ul. Mariacka 2, Katowice):** W **każdą niedzielę w godz. 15:00–18:00** spotykamy się na otwartych potańcówkach i praktykach pod dachem (**Salsa Kubańska / Casino, Timba, Rueda de Casino, Son** — nie musisz mieć własnej pary!). W niedziele ulice wokół są darmowe, a jako główny **Parking Rekomendowany** polecamy bezpłatny w niedzielę **Parking pod NOSPR-em** (12 min spacerem przez kładkę).\n` +
         `- **💃 Darmowe plenery taneczne:** W sezonie wiosenno-letnim tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** — w razie deszczu pod wiatą **UKS 4 / SUP Tomi (ul. Trzech Stawów 10)** — oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**.\n` +
-        `- **🗓️ Wspólny Grafik Szkół Tańca (grafik.html), 📖 Salsopedia (salsopedia.html) i 📊 DancePuls:** Tworzymy ujednolicony **Wspólny Grafik Szkół Tańca w Katowicach** (128 kursów z ustandaryzowanymi poziomami P0–OPEN), społecznościową encyklopedię **Salsopedię** (ponad 200 haseł), agregator imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), udostępniamy odtwarzacz **Radia Timba Nation 24/7** (stacji DJ Maikiu z Zurychu na Zeno.FM) oraz organizujemy wyjazdy i spotkania integracyjne!`
+        `- **🗓️ Wspólny Grafik Szkół Tańca (grafik.html), 📖 Salsopedia (salsopedia.html) i 📊 DancePuls:** Tworzymy ujednolicony **Wspólny Grafik Szkół Tańca w Katowicach** (130 kursów z ustandaryzowanymi poziomami P0–OPEN), społecznościową encyklopedię **Salsopedię** (ponad 200 haseł), agregator imprez **DancePuls** (https://dancepuls.katosalsahub.pl/), udostępniamy odtwarzacz **Radia Timba Nation 24/7** (stacji DJ Maikiu z Zurychu na Zeno.FM) oraz organizujemy wyjazdy i spotkania integracyjne!`
       );
     }
 
-    // 1a-1. Priorytetowe pytania o Radio Timba Nation 24/7, DJ Maikiu, Zeno.FM, brak reklam i wyłącznik czasowy (Sleep Timer)
     const isRadioQuestion =
       qNorm.includes('radio') ||
       qNorm.includes('radia') ||
@@ -353,317 +503,213 @@ function getLocalFallbackAnswer(question, siteId = 'katosalsahub', knowledgeEntr
       );
     }
 
-    const matches = searchKnowledgeEntries(question, knowledgeEntries, 4);
-
-    // 1a. Pytania o konkretne hasła w Salsopedii (gdy znaleziono dopasowanie o wysokim priorytecie)
-    const isGeneralMetaQuestion =
-      (qNorm.includes('czym jest salsopedia') ||
-        qNorm.includes('co to jest salsopedia') ||
-        qNorm.includes('jak dziala salsopedia') ||
-        qNorm.includes('jak dodac haslo') ||
-        qNorm.includes('jak edytowac')) &&
-      matches.length === 0;
-
-    if (!isGeneralMetaQuestion && matches.length > 0) {
-      const top = matches[0];
-      const topNorm = normalizeSearchText(top.term);
-      const topClean = topNorm.replace(/\([^)]*\)/g, '').trim();
-      const directHit =
-        (topClean && qNorm.includes(topClean)) ||
-        matches.length >= 1;
-
-      if (directHit) {
-        if (matches.length === 1 || (topClean && qNorm === topClean)) {
-          const cats = Array.isArray(top.category)
-            ? top.category.map((c) => CATEGORY_LABELS[c] || c).join(', ')
-            : (CATEGORY_LABELS[top.category] || top.category || 'Salsopedia');
-          const statusInfo = top.status === 'verified'
-            ? `*(Hasło zweryfikowane merytorycznie — potwierdzenia: ${top.verification_count || 1})*`
-            : '*(Hasło społecznościowe w Salsopedii)*';
-          return (
-            `📖 **${top.term}** (${cats}):\n` +
-            `${top.definition}\n\n` +
-            `${statusInfo} Pełny słownik znajdziesz w zakładce salsopedia.html.`
-          );
-        }
-
-        const listItems = matches.slice(0, 3).map((item) => {
-          const cats = Array.isArray(item.category)
-            ? item.category.map((c) => CATEGORY_LABELS[c] || c).join(', ')
-            : (CATEGORY_LABELS[item.category] || item.category || 'Salsopedia');
-          return `- **${item.term}** (*${cats}*): ${item.definition}`;
-        });
-
-        return (
-          `W **Salsopedii** (aktualnie **${knowledgeEntries.length || 'ponad 200'} haseł**) znalazłem następujące informacje:\n` +
-          listItems.join('\n') +
-          `\n\nWszystkie pojęcia możesz przeglądać, filtrować i współtworzyć w widoku salsopedia.html.`
-        );
-      }
-    }
-
-    // 1b. Pytania o samą Salsopedię, jej działanie, moderację, weryfikację i kategorie
-    if (
-      qNorm.includes('salsoped') ||
-      qNorm.includes('wikiped') ||
-      qNorm.includes('encykloped') ||
-      qNorm.includes('slownik') ||
-      qNorm.includes('dodac haslo') ||
+    const isMetaSalsopediaQuestion =
+      qNorm.includes('czym jest salsopedia') ||
+      qNorm.includes('co to jest salsopedia') ||
+      qNorm.includes('jak dziala salsopedia') ||
+      qNorm.includes('dodac hasl') ||
+      qNorm.includes('zaproponowac hasl') ||
+      qNorm.includes('zglosic poprawk') ||
+      qNorm.includes('poprawic hasl') ||
       qNorm.includes('moderacj') ||
-      qNorm.includes('weryfikacj')
-    ) {
-      const totalCount = knowledgeEntries.length > 0 ? knowledgeEntries.length : 'ponad 200';
-      return (
-        `**Salsopedia** (salsopedia.html) to nasze główne, społecznościowe centrum wiedzy o kulturze kubańskiej i latynoskiej (obecnie liczy **${totalCount} haseł**):\n` +
-        `- **11 kategorii tematycznych:** Kroki, Figury (Casino / Rueda), Taniec, Style, Muzyka, Instrumenty, Historia, Bogowie (Orishas), Zespoły i Artyści, Instruktorzy oraz Szkoły Tańca.\n` +
-        `- **Salsopedia Studio & Live Diff:** Każdy tancerz może kliknąć **„+ Dodaj hasło”** lub zaproponować poprawkę z podglądem na żywo i porównywarką zmian.\n` +
-        `- **Społecznościowa weryfikacja:** Hasła są weryfikowane przez instruktorów i społeczność, a każda zmiana w Salsopedii natychmiast aktualizuje moją wiedzę!`
-      );
+      qNorm.includes('weryfikacj') ||
+      qNorm.includes('ile hasel');
+
+    const matchedEntries = searchKnowledgeEntries(question, knowledgeEntries, 3);
+
+    if (matchedEntries.length > 0 && !isMetaSalsopediaQuestion) {
+      const top = matchedEntries[0];
+      const cats = (Array.isArray(top.category) ? top.category : [top.category])
+        .filter(Boolean)
+        .map((c) => CATEGORY_LABELS_PL[c] || c)
+        .join(', ');
+
+      let response = `W **Salsopedii** znajdziesz dokładne wyjaśnienie hasła **${top.term}**${cats ? ` (${cats})` : ''}:\n- ${top.definition}`;
+      if (matchedEntries.length > 1) {
+        const related = matchedEntries
+          .slice(1)
+          .map((e) => `**${e.term}** (${e.definition})`)
+          .join('\n- ');
+        response += `\nPowiązane pojęcia w Salsopedii:\n- ${related}`;
+      }
+      response += `\nPełny katalog haseł z wyszukiwarką i linkowaniem znajdziesz w zakładce salsopedia.html`;
+      return response;
     }
 
-    // 1c. Pytania o muzykę kubańską (gdy nie padło słowo radio)
-    if (qNorm.includes('muzyk')) {
-      return (
-        `📻 **Muzyka kubańska i Radio Timba Nation 24/7 na naszej stronie:**\n` +
-        `- Na stronie głównej udostępniamy odtwarzacz **Timba Nation Radio** — niezależnej stacji kubańskiej z **Zurychu (Szwajcaria)** prowadzonej przez **DJ Maikiu** na platformie **Zeno.FM**, grającej 24/7 wyselekcjonowaną **Timbę, Salsę Cubana i Son** bez reklam.\n` +
-        `- Nasz odtwarzacz wyświetla aktualnie grany utwór, działa przy zablokowanym ekranie telefonu (MediaSession) oraz posiada **wyłącznik czasowy (Sleep Timer: 15, 30 lub 60 min)**!`
-      );
-    }
-
-    // 1c-bis. Pytania o cenniki, karnety i opłacalność szkół tańca w Katowicach (La Clave, Good Mood, Mil Pasos)
     if (
-      !qNorm.includes('od podstaw') &&
-      !qNorm.includes('p0') &&
-      (qNorm.includes('cennik') ||
-        qNorm.includes('karnet') ||
-        qNorm.includes('ile kosztuj') ||
-        qNorm.includes('cena') ||
-        qNorm.includes('ceny') ||
-        qNorm.includes('oplaca'))
+      isMetaSalsopediaQuestion ||
+      qNorm.includes('salsoped') ||
+      qNorm.includes('encykloped') ||
+      qNorm.includes('wikiped')
     ) {
+      const countInfo = Array.isArray(knowledgeEntries) && knowledgeEntries.length > 0
+        ? `obecnie **${knowledgeEntries.length} haseł**`
+        : 'ponad **200 haseł**';
       return (
-        `💰 **Porównanie cenników 3 szkół tańca w Katowicach (kalkulator na grafik.html):**\n` +
-        `- **🔴 La Clave (ul. Chorzowska 11):** jednostka **45 min**, karnety ilościowe są **BEZTERMINOWE** (Start 4x: **109 zł**, Eko 8x: **189 zł**, Pro 10x: **219 zł**, Open 4 tyg.: **300 zł**, jednorazowe: **30 zł**). W blokach 2–3x45 min: dopłata do 2. jednostki **+15 zł**, do 3. **+10 zł** (lub przy 2 skreśleniach z karnetu 3. jednostka **gratis**!).\n` +
-        `- **🟡 Good Mood (ul. Paderewskiego 35 / Gliwicka 44):** jednostka **55–60 min**, ważność **28 dni** (4h: **100 zł** [student **90 zł**], 8h: **170 zł** [student **160 zł**], najtańszy **Open: 260 zł**, jednorazowe 1h: **35 zł**, 2h: **55 zł**).\n` +
-        `- **🔵 Mil Pasos (ul. Kamienna 4):** jednostka **55 min**, ważność **4 tygodnie**, **-10% dla studentów** (4h: **119 zł**, 8h: **199 zł**, 12h: **249 zł**, 16h: **299 zł** [~18,69 zł/jedn.], Open: **399 zł**, Day Pass: **90 zł**).\n` +
-        `- **💳 Karty sportowe:** Wszystkie 3 szkoły honorują karty **Multisport**, **Medicover Sport**, **FitProfit** oraz **PZU Sport**.\n` +
-        `Pełny interaktywny kalkulator przeliczający koszt **60 minut tańca** znajdziesz w zakładce **Cenniki Szkół** na stronie grafik.html!`
+        `**Salsopedia** (salsopedia.html) to nasza otwarta encyklopedia salsy kubańskiej i kultury afro-kubańskiej (zawiera ${countInfo} w 11 kategoriach: Kroki, Figury Casino/Rueda, Taniec, Style, Muzyka, Instrumenty, Zespoły, Historia, Bogowie Orishas, Instruktorzy i Szkoły Tańca):\n` +
+        `- **Wyszukiwanie i linki**: wpisz frazę w wyszukiwarce lub klikaj podświetlone pojęcia bezpośrednio w definicjach\n` +
+        `- **Dodawanie i edycja (Salsopedia Studio)**: kliknij **„Zaproponuj hasło”** lub **„Zgłoś poprawkę”** przy karcie — zobaczysz podgląd na żywo oraz porównanie zmian *Przed vs Po (Diff)*\n` +
+        `- **Weryfikacja merytoryczna**: zgłoszenia trafiają do kolejki moderacji i są oznaczane statusem potwierdzenia instruktorskiego.`
       );
     }
 
-    // 1d. Pytania o Wspólny Grafik Szkół, DancePuls, imprezy, sociale, warsztaty i kalendarz wydarzeń
-    if (
-      qNorm.includes('grafik') ||
-      qNorm.includes('rozklad') ||
-      qNorm.includes('dancepuls') ||
-      qNorm.includes('imprez') ||
-      qNorm.includes('potancow') ||
-      qNorm.includes('social') ||
-      qNorm.includes('wydarzen') ||
-      qNorm.includes('kalendarz') ||
-      qNorm.includes('weekend') ||
-      qNorm.includes('festiwal')
-    ) {
+    if (qNorm.includes('dancepuls') || qNorm.includes('imprez') || qNorm.includes('wydarzen') || qNorm.includes('event') || qNorm.includes('weekend') || qNorm.includes('warsztat') || qNorm.includes('social') || qNorm.includes('grafik')) {
       return (
-        `🔥 **Wspólny Grafik Szkół Tańca i imprezy Kato Salsa Hub:**\n` +
-        `- **🗓️ Wspólny Grafik Szkół w Katowicach (grafik.html):** Zintegrowany rozkład 128 kursów tygodniowo (La Clave, Good Mood, Mil Pasos) z ujednoliconą skalą poziomów (**P0, P1, P2, S1, OPEN**) oraz mapą szkół.\n` +
-        `- **🍹 W każdą niedzielę od 15:00 do 18:00 — Wolni Ludzie (ul. Mariacka 2, Katowice):** Nasze regularne potańcówki i praktyki salsy pod dachem (Salsa Cubana / Casino, Timba, Rueda de Casino, Son).\n` +
-        `- **💃 Plenery w Katowicach & 📊 DancePuls:** W ciepłe dni tańczymy na **Kamiennym Kręgu w Dolinie Trzech Stawów (ul. Trzech Stawów 22)** oraz pod **Amfiteatrem NOSPR (pl. Wojciecha Kilara 1)**, a pełne zestawienie imprez na Śląsku znajdziesz na **https://dancepuls.katosalsahub.pl/**.`
+        `Aktualne imprezy taneczne (sociale), kursy i warsztaty sprawdzisz w trzech miejscach:\n` +
+        `- **Wspólny Grafik Szkół Tańca** (grafik.html) — 130 kursów tygodniowo w Katowicach z kalkulatorem cenników\n` +
+        `- **DancePuls** (https://dancepuls.katosalsahub.pl/) — nasz automatyczny kalendarz i zestawienie imprez na Śląsku i w Krakowie\n` +
+        `- **Grupa Facebook Kato Salsa Hub** (https://www.facebook.com/groups/519446499987373) — bieżące umawianie się na potańcówki plenerowe i niedzielne praktyki w **Wolnych Ludziach (ul. Mariacka 2, 15:00–18:00)**.`
       );
     }
 
-    // 1e. Pytania o lokalizacje, gdzie tańczymy, Wolnych Ludzi, parkingi, NOSPR, Dolinę Trzech Stawów i Katowice
-    if (
-      qNorm.includes('gdzie') ||
-      qNorm.includes('lokalizac') ||
-      qNorm.includes('katowic') ||
-      qNorm.includes('trzech staw') ||
-      qNorm.includes('3 staw') ||
-      qNorm.includes('kamienn') ||
-      qNorm.includes('pod dachem') ||
-      qNorm.includes('wiat') ||
-      qNorm.includes('toalet') ||
-      qNorm.includes('nospr') ||
-      qNorm.includes('parking') ||
-      qNorm.includes('zaparkow') ||
-      qNorm.includes('dojazd') ||
-      qNorm.includes('slask') ||
-      qNorm.includes('adres') ||
-      qNorm.includes('mapa')
-    ) {
+    if (qNorm.includes('gdzie') || qNorm.includes('lokalizacj') || qNorm.includes('lokacj') || qNorm.includes('dolin') || qNorm.includes('trzech staw') || qNorm.includes('adres') || qNorm.includes('mapa') || qNorm.includes('katowic') || qNorm.includes('parking')) {
       return (
-        `📍 **Gdzie tańczymy i jak zaparkować w Katowicach?**\n` +
-        `- **🍹 Wolni Ludzie – Pod dachem (ul. Mariacka 2, róg ul. Mielęckiego):** Spotykamy się tu **w każdą niedzielę w godz. 15:00–18:00**! W niedziele oraz po godz. 17:00 wszystkie parkingi miejskie wokół (ul. Warszawska, Tylna Mariacka, Dworcowa, Wojewódzka, pl. Szramka) są **DARMOWE**, a jako **Parking Rekomendowany** z ogromną liczbą miejsc polecamy darmowy w niedzielę **Parking pod NOSPR-em** (12 min wyznaczoną trasą pieszą przez kładkę nad al. Roździeńskiego).\n` +
-        `- **💃 Kamienny Krąg (Dolina Trzech Stawów):** Główny parkiet plenerowy (ul. Trzech Stawów 22). W razie deszczu przenosimy się pod **zadaszoną wiatę przy przystani kajakowej** (UKS 4 / SUP Tomi, ul. Trzech Stawów 10). Na mapie zaznaczyliśmy 3 toalety oraz prostą 13-minutową trasę pieszą z darmowego **Parkingu Rekomendowanego (Południe / Rolkostrada)**.\n` +
-        `- **🏛️ Amfiteatr pod NOSPR-em i Szkoły Partnerskie:** Plenerowy parkiet od wschodniej strony NOSPR (pl. Wojciecha Kilara 1) oraz szkoły tańca w centrum Katowic (m.in. La Clave, Mil Pasos, Good Mood, Evolution Dance Studio, KIZLAB, VAMULA.pl, Gravitacja / Dance++). Pełną mapę i plik KML znajdziesz w sekcji **#mapa** oraz w salsopedia.html!`
+        `📍 **Gdzie tańczymy w Katowicach?**\n` +
+        `- **Wolni Ludzie (ul. Mariacka 2):** w każdą niedzielę w godz. **15:00–18:00** (darmowy w niedzielę Parking Rekomendowany pod NOSPR-em)\n` +
+        `- **Dolina Trzech Stawów (Kamienny Krąg, ul. Trzech Stawów 22):** plenerowe spotkania wiosną i latem (w razie deszczu wiata UKS 4, ul. Trzech Stawów 10) — sprawdź mapę w sekcji **#mapa**\n` +
+        `- **Szkoły Tańca w Katowicach:** m.in. La Clave, Good Mood, Mil Pasos, Evolution (pełny wykaz w salsopedia.html i grafik.html).`
       );
     }
 
-    // 1f. Pytania o kursy od podstaw (P0), cennik, Multisport, strój i zapisy
-    if (
-      qNorm.includes('cena') ||
-      qNorm.includes('cennik') ||
-      qNorm.includes('koszt') ||
-      qNorm.includes('karnet') ||
-      qNorm.includes('multisport') ||
-      qNorm.includes('medicover') ||
-      qNorm.includes('fitprofit') ||
-      qNorm.includes('od podstaw') ||
-      qNorm.includes('p0') ||
-      qNorm.includes('poczatkuj') ||
-      qNorm.includes('par') ||
-      qNorm.includes('ubrac') ||
-      qNorm.includes('but')
-    ) {
+    if (qNorm.includes('cen') || qNorm.includes('koszt') || qNorm.includes('karnet') || qNorm.includes('multisport') || qNorm.includes('medicover') || qNorm.includes('fitprofit') || qNorm.includes('od podstaw') || qNorm.includes('p0') || qNorm.includes('poczatkuj') || qNorm.includes('ubrac') || qNorm.includes('buty') || qNorm.includes('par')) {
       return (
-        `💃 **Jak zacząć tańczyć w Katowicach (Kursy P0 i informacje praktyczne):**\n` +
-        `- **Poziom P0 (od zupełnych podstaw):** Nie potrzebujesz pary ani doświadczenia — na zajęciach i na naszych niedzielnych praktykach w **Wolnych Ludziach (ul. Mariacka 2, 15:00–18:00)** rotujemy w parach w luźnej, wspierającej atmosferze.\n` +
-        `- **Karty sportowe i karnety:** Katowickie szkoły (La Clave, Good Mood, Mil Pasos) honorują karty **Multisport**, **Medicover Sport**, **FitProfit** oraz **PZU Sport** (pojedyncze wejście to **30–35 PLN**, karnet 4 wejść **90–119 PLN**, w La Clave karnety ilościowe są **bezterminowe**, a pełny kalkulator cen znajdziesz w zakładce **Cenniki Szkół** na grafik.html).\n` +
-        `- **Jak się ubrać:** Wygodny strój i zmienne obuwie na gładkiej, czystej podeszwie (np. sneakersy).`
+        `Praktyczne informacje dla osób zaczynających przygodę z salsą w Katowicach:\n` +
+        `- **Poziom P0 (od podstaw)**: nie potrzebujesz własnej pary ani wcześniejszego doświadczenia (w grupie rotujemy w parach)\n` +
+        `- **Ceny i karty sportowe**: w katowickich szkołach tańca (La Clave, Good Mood, Mil Pasos) pojedyncze wejście kosztuje **30–35 PLN**, karnet 4 wejść **90–119 PLN**, a wszystkie szkoły akceptują karty **Multisport, Medicover Sport, FitProfit i PZU Sport**\n` +
+        `- **Jak się ubrać**: wygodny strój niekrępujący ruchów oraz zmienne obuwie na płaskiej podeszwie.`
       );
     }
 
-    // 1g. Pytania o style tańca (Salsa Cubana / Casino, Rueda, Timba, Son, Rumba, Afro)
-    if (
-      qNorm.includes('styl') ||
-      qNorm.includes('rued') ||
-      qNorm.includes('casino') ||
-      qNorm.includes('timb') ||
-      qNorm.includes('rumb') ||
-      qNorm.includes('son')
-    ) {
+    if (qNorm.includes('styl') || qNorm.includes('co tancz') || qNorm.includes('cubana') || qNorm.includes('rued') || qNorm.includes('son') || qNorm.includes('rumb') || qNorm.includes('afro')) {
       return (
-        `🎶 **Style tańca w społeczności Kato Salsa Hub:**\n` +
-        `- **Salsa Kubańska (Casino) & Timba:** Energetyczny taniec po kole i improwizacja do współczesnej muzyki kubańskiej.\n` +
-        `- **Rueda de Casino:** Spektakularny taniec wielu par w kole na komendę lidera (*Cantante* — figury takie jak *Dile Que No*, *Enchufla*, *Dame*, *Setenta*).\n` +
-        `- **Son Cubano, Rumba (Guaguancó, Yambú, Columbia), Afro Cubano i Salsa Liniowa:** Od tradycyjnych korzeni kubańskich po taniec liniowy. Zapytaj mnie o dowolną figurę z **Salsopedii** lub sprawdź kursy we **Wspólnym Grafiku Szkół** (grafik.html)!`
+        `W społeczności **Kato Salsa Hub** królują kubańskie rytmy:\n` +
+        `- **Salsa Cubana (Casino)**, **Timba** oraz zespołowa **Rueda de Casino**\n` +
+        `- Tradycyjny **Son Cubano**, **Rumba Cubana** (Guaguancó, Yambú, Columbia), **Afro Cubano (Orishas)** oraz **Salsa Liniowa**\n` +
+        `Każdy z tych stylów i jego figury znajdziesz dokładnie opisane w naszej **Salsopedii** (salsopedia.html)!`
       );
     }
 
-    // 1h. Domyślna odpowiedź Kato Salsa Hub
+    if (qNorm.includes('kontakt') || qNorm.includes('napisz') || qNorm.includes('wiadomosc') || qNorm.includes('formularz') || qNorm.includes('facebook') || qNorm.includes('mail')) {
+      return (
+        `Skontaktujesz się z nami bezpośrednio przez:\n` +
+        `- **Formularz kontaktowy** w sekcji **#kontakt** na dole strony głównej (dbamy o RODO — wystarczy podać imię lub pseudonim)\n` +
+        `- **Grupę na Facebooku**: https://www.facebook.com/groups/519446499987373\n` +
+        `- **E-mail**: kontakt@katosalsahub.pl`
+      );
+    }
+
+    if (resolvedSiteId === 'katosalsahub') {
+      const kbCount = Array.isArray(knowledgeEntries) && knowledgeEntries.length > 0 ? knowledgeEntries.length : 200;
+      return `Cześć! 💃🕺 Jestem asystentem **Kato Salsa Hub & Salsopedii**. Czerpię wiedzę na żywo z naszej **Salsopedii (${kbCount} haseł)** oraz całego portalu.\nZapytaj mnie o dowolną **figurę (np. Enchufla, Dile Que No, Setenta)**, **niedzielne potańcówki w Wolnych Ludziach (15:00–18:00)**, **Radio Timba Nation**, **Wspólny Grafik Szkół (grafik.html)** lub **gdzie tańczymy w Katowicach**!`;
+    }
+  }
+
+  // ===========================================================================
+  // 2. RARICART (Mobilne Live Food Stations na wesela i eventy)
+  // ===========================================================================
+  if (resolvedSiteId === 'raricart') {
+    if (q.includes('pakiet') || q.includes('rabat') || q.includes('łącz') || q.includes('lacz') || q.includes('2 ') || q.includes('3 ') || q.includes('kompleks')) {
+      return (
+        `Oferujemy **pakiety łączone z rabatem** (logistyka i dojazd do 50 km liczone tylko raz):\n` +
+        `- **2 stanowiska (rabat -5%)**: np. *Mini Pancakes + Lody Włoskie*: 50 os. **6 250 zł** | 100 os. **8 720 zł** | 150 os. **11 240 zł** | 200 os. **13 710 zł**\n` +
+        `- **Pakiet Kompleksowy — 3 stanowiska (rabat -10%, Pancakes + Lody + Deska Serów)**: 50 os. **8 870 zł** | 100 os. **12 560 zł** | 150 os. **16 340 zł** | 200 os. **20 030 zł**\n` +
+        `Pełny konfigurator znajdziesz na https://raricart.pl/pakiety lub w sekcji **#kontakt**!`
+      );
+    }
+    if (q.includes('cen') || q.includes('koszt') || q.includes('ile ') || q.includes('lody') || q.includes('pancake') || q.includes('ser')) {
+      return (
+        `Cennik pojedynczych mobilnych stacji **Raricart Live Food Station** (pełna aranżacja + obsługa na żywo):\n` +
+        `- **Lody Włoskie Live Station**: do 50 os. **3 000 zł** | do 100 os. **4 250 zł** | do 150 os. **5 550 zł**\n` +
+        `- **Mini Pancakes Live Station**: do 50 os. **3 150 zł** | do 100 os. **4 500 zł** | do 150 os. **5 850 zł**\n` +
+        `- **Deska Serów Live Station (12 włoskich serów i wędlin)**: do 50 os. **3 250 zł** | do 100 os. **4 750 zł** | do 150 os. **6 300 zł**\n` +
+        `Sprawdź dostępne terminy w formularzu **#kontakt** lub zadzwoń: **+48 883 392 688**.`
+      );
+    }
+    if (q.includes('dojazd') || q.includes('montaż') || q.includes('montaz') || q.includes('prąd') || q.includes('prad') || q.includes('wymaga') || q.includes('gdzie')) {
+      return (
+        `Logistyka i montaż stanowisk **Raricart** są po naszej stronie:\n` +
+        `- **Dojazd do 50 km w cenie pakietu** (powyżej 50 km dopłata wynosi tylko **+2 zł/km**)\n` +
+        `- **Wymagania na miejscu**: standardowe gniazdko **230V** i kawałek miejsca na sali lub w plenerze pod zadaszeniem\n` +
+        `- Przyjeżdżamy odpowiednio wcześniej, rozkładamy stację i po serwisie zostawiamy idealny porządek.`
+      );
+    }
     return (
-      `Cześć! 💃🕺 Jestem Asystentem **Kato Salsa Hub**. Chętnie odpowiem na każde pytanie o naszą działalność i salsę w Katowicach:\n` +
-      `- **🍹 Niedzielne potańcówki w Wolnych Ludziach (ul. Mariacka 2):** w **każdą niedzielę od 15:00 do 18:00** + darmowe parkingi,\n` +
-      `- **💃 Plenery taneczne:** Kamienny Krąg w **Dolinie Trzech Stawów** (z wiatą w razie deszczu) oraz **Amfiteatr NOSPR**,\n` +
-      `- **🗓️ Wspólny Grafik Szkół Tańca (grafik.html), 📖 Salsopedia (ponad 200 haseł), 📻 Radio Timba Nation 24/7, 📊 DancePuls** oraz nasze wyjazdy i spotkania integracyjne.\n` +
-      `O co chcesz zapytać?`
+      `Cześć! 🥞🍦🧀 Jestem wirtualnym doradcą **Raricart Live Food Station**. Tworzymy mobilne stacje kulinarne na żywo na wesela i eventy (**Lody Włoskie, Mini Pancakes, Deski Serów**).\n` +
+      `Zapytaj mnie o cennik na 50–200 gości, pakiety łączone lub zostaw datę przyjęcia i numer telefonu — potwierdzimy dostępność terminu (tel. **+48 883 392 688**, kontakt@raricart.pl)!`
     );
   }
 
   // ===========================================================================
-  // 2. FUEGO LINGUA (Szkoła języka hiszpańskiego)
+  // 3. FUEGO LINGUA (Szkoła języka hiszpańskiego)
   // ===========================================================================
-  if (siteId === 'fuegolingua') {
-    if (q.includes('cen') || q.includes('koszt') || q.includes('ile') || q.includes('pakiet')) {
-      return (
-        'Oferujemy elastyczne pakiety dopasowane do Twoich potrzeb:\n' +
-        '- **Lekcja próbna (30 min):** **0 zł** (weryfikacja poziomu i celów)\n' +
-        '- **Zajęcia indywidualne 1-na-1 (60 min):** od **99 zł** (w pakiecie 10 lekcji: **890 zł**)\n' +
-        '- **Kurs w mini-grupie (2-4 osoby):** od **49 zł** / 60 min\n' +
-        '- **Hiszpański w parze (Duo):** **69 zł** / os. za 60 min\n' +
-        'Napisz do nas przez formularz **#kontakt** lub na **kontakt@fuegolingua.pl**, aby odebrać darmową lekcję!'
-      );
+  if (resolvedSiteId === 'fuegolingua') {
+    if (q.includes('próbn') || q.includes('probn') || q.includes('darmow') || q.includes('bezpłatn') || q.includes('bezplatn') || q.includes('konsultacj')) {
+      return 'Pierwsza **konsultacja wstępna online jest całkowicie bezpłatna**! To krótkie spotkanie, podczas którego poznajemy się, określamy Twój poziom i ustalamy plan nauki.\n- Zapisz się przez formularz na dole strony\n- Napisz na: kontakt@fuegolingua.pl\n- Zadzwoń: **796-868-967**';
     }
-    if (q.includes('próbn') || q.includes('probn') || q.includes('darmow') || q.includes('bezpłatn') || q.includes('bezplatn') || q.includes('zacząć')) {
-      return (
-        '**Bezpłatna lekcja próbna trwa 30 minut** i jest całkowicie niezobowiązująca! ' +
-        'Poznajemy się, sprawdzamy Twój poziom, rozmawiamy po hiszpańsku i ustalamy plan nauki. ' +
-        'Zapisz się przez formularz w sekcji **#kontakt** lub napisz na **kontakt@fuegolingua.pl**.'
-      );
+    if (q.includes('biznes') || q.includes('firm') || q.includes('stolar') || q.includes('budow') || q.includes('turyst') || q.includes('branż') || q.includes('specjalist')) {
+      return 'Prowadzimy dedykowane **kursy specjalistyczne** (cena maleje o **5 zł** za każdą dodatkową osobę, do 6 osób):\n- **Hiszpański w Biznesie**: od **130 zł** (60 min) / **160 zł** (90 min)\n- **Hiszpański w Stolarce i Budownictwie**: od **150 zł** (60 min) / **170 zł** (90 min)\n- **Hiszpański w Turystyce**: od **100 zł** (60 min) / **120 zł** (90 min)\nPełny wykaz znajdziesz w zakładce https://fuegolingua.pl/cennik.html';
     }
-    return (
-      '¡Hola! 🇪🇸 W **Fuego Lingua** uczymy żywego języka hiszpańskiego online i stacjonarnie (od podstaw A1 do C1, w tym konwersacje, DELE/SIELE oraz hiszpański biznesowy). ' +
-      'Pierwsza **lekcja próbna (30 min) jest bezpłatna (0 zł)**! Zostaw wiadomość w sekcji **#kontakt** lub napisz na **kontakt@fuegolingua.pl**.'
-    );
+    if (q.includes('cen') || q.includes('koszt') || q.includes('ile ') || q.includes('pakiet') || q.includes('płaci')) {
+      return 'Oto nasz cennik dla **Ogólnych Poziomów (A1–B2)**:\n- **Lekcje indywidualne (1:1)**: 60 min – **95 zł** | 90 min – **135 zł**\n- **Lekcje w parze (2 osoby)**: 60 min – **85 zł/os.** | 90 min – **115 zł/os.**\n- **Grupy (3–6 osób)**: 60 min – **75 zł/os.** | 90 min – **95 zł/os.**\n- **Poziom Extreme (C1–C2)**: 1:1 od **140 zł** (60 min), w parze **120 zł/os.**, w grupie **100 zł/os.**\nPierwsza konsultacja jest **bezpłatna**!';
+    }
+    if (q.includes('indywidualn') || q.includes('grupow') || q.includes('parze') || q.includes('form') || q.includes('wygląda')) {
+      return 'Zajęcia odbywają się w **100% online na żywo**, a **80% lekcji to żywa rozmowa**:\n- **Indywidualnie (1:1)**: 100% uwagi lektora i tempo dopasowane do Ciebie (**95 zł** / 60 min na poz. A1–B2)\n- **W parze (2 os.)**: wspólna nauka ze znajomym lub partnerem (**85 zł/os.** / 60 min)\n- **Kameralne grupy (3–6 os.)**: duża dawka interakcji i wzajemnej motywacji (**75 zł/os.** / 60 min)';
+    }
+    if (q.includes('kontakt') || q.includes('telefon') || q.includes('mail') || q.includes('zapis')) {
+      return 'Skontaktuj się ze mną wygodnie:\n- E-mail: kontakt@fuegolingua.pl\n- Telefon: **796-868-967**\n- Instagram: **@fuegolingua_sin_limites**\nMożesz też wypełnić formularz kontaktowy na dole strony głównej!';
+    }
+    if (q.includes('tłumacz') || q.includes('tlumacz') || q.includes('delegacj') || q.includes('przysięgł') || q.includes('przysiegl')) {
+      return 'Główna działalność Fuego Lingua to **nauka hiszpańskiego**, a tłumaczenia nie są standardową usługą. Prowadząca jest w trakcie uzyskiwania uprawnień tłumacza przysięgłego, więc **na dziś nie wykonuje tłumaczeń przysięgłych**.\nW sprawie wyjazdu lub delegacji napisz na kontakt@fuegolingua.pl albo zadzwoń: **796-868-967**. Opisz termin i rodzaj zadania, a dostaniesz indywidualną odpowiedź.';
+    }
+    return 'Jestem wirtualnym doradcą **Fuego Lingua**. Zapytaj o bezpłatną konsultację, cennik zajęć indywidualnych i grupowych lub kursy specjalistyczne (kontakt@fuegolingua.pl, tel. **796-868-967**).';
   }
 
   // ===========================================================================
-  // 3. TWOJASTRONAWWW / DOMYŚLNY SZABLON B2B
+  // 4. TWOJASTRONAWWW & SZABLON BAZOWY (Domyślny)
   // ===========================================================================
-  if (q.includes('cen') || q.includes('koszt') || q.includes('ile') || q.includes('wycen') || q.includes('pakiet') || q.includes('abonament')) {
-    return (
-      'Oferujemy przejrzyste pakiety dopasowane do etapu rozwoju firmy:\n' +
-      '- **Strona One-Page / Landing Page:** od **1 900 PLN netto** (lub **199 PLN / mies.**)\n' +
-      '- **Strona Firmowa Multi-Page (3-7 podstron):** od **3 500 PLN netto** (lub **299 PLN / mies.**)\n' +
-      '- **Dedykowana Platforma + Asystent AI RAG:** od **5 900 PLN netto** (lub **449 PLN / mies.**)\n' +
-      'Każda wycena i konsultacja jest bezpłatna — napisz na **kontakt@twojastronawww.pl** lub przejdź do sekcji **#kontakt**!'
-    );
+  if (q.includes('wordpress') || q.includes('wtyczk') || q.includes('kod') || q.includes('sql') || q.includes('szybk')) {
+    return 'Tworzymy strony w **czystym kodzie (architektura Flat-File)** zamiast ciężkiego WordPressa z dziesiątkami wtyczek:\n- **Waga poniżej 100 KB** i ładowanie **< 0.6s** (Google PageSpeed **95–100/100**)\n- **Brak bazy SQL** = zero ryzyka ataków SQL Injection i awarii po aktualizacjach\n- **100% kodu na własność** w repozytorium Git i brak ukrytych abonamentów.';
   }
 
-  if (q.includes('wordpress') || q.includes('szybk') || q.includes('wydajn') || q.includes('lighthouse') || q.includes('technolog')) {
-    return (
-      'Rezygnujemy z ciężkich kreatorów i przeładowanego WordPressa na rzecz czystej architektury **Platform-First (HTML5, CSS3, Vanilla JS ES6+)** oraz globalnej sieci **Cloudflare CDN**. ' +
-      'Dzięki temu nasze strony ładują się w **poniżej 0,8 sekundy**, osiągają **95-100/100 pkt w Google Lighthouse** i są odporne na typowe luki wtyczek.'
-    );
+  if (q.includes('ai') || q.includes('czat') || q.includes('bot') || q.includes('asystent') || q.includes('rag')) {
+    return 'Wdrażamy dedykowanych **Asystentów AI z bazą wiedzy firmy (RAG)** zintegrowanych z centralną bramką kaskadową (11 modeli LLM, pamięć podręczna zapytań `< 5 ms`):\n- Koszt wdrożenia: **od 900 PLN netto** (jednorazowa konfiguracja)\n- Działa **24/7**, odpowiada w ułamku sekundy z pamięci podręcznej i korzysta z darmowych pul API\n- Automatycznie przesyła powiadomienia na telefon (z numerem telefonu i e-mailem na samej górze wiadomości), gdy klient zostawi namiar kontaktowy.';
   }
 
-  if (q.includes('proces') || q.includes('współprac') || q.includes('wspolprac') || q.includes('krok') || q.includes('czas') || q.includes('jak długo') || q.includes('etap')) {
-    return (
-      'Współpraca przebiega w **4 prostych krokach** i trwa zazwyczaj **od 5 do 14 dni roboczych**:\n' +
-      '- **1. Konsultacja i strategia** (1-2 dni) — poznajemy cele biznesowe i grupę docelową\n' +
-      '- **2. Projekt UX/UI i copywriting** (2-4 dni) — tworzymy układ nastawiony na konwersję\n' +
-      '- **3. Kodowanie, testy i integracja AI** (3-5 dni) — budujemy ultraszybką stronę z wynikami 95-100/100\n' +
-      '- **4. Wdrożenie produkcyjne i opieka** — konfigurujemy domenę, SSL, Cloudflare i analitykę.'
-    );
+  if (q.includes('współprac') || q.includes('wspolprac') || q.includes('krok') || q.includes('proces') || q.includes('etap') || q.includes('czas') || q.includes('ile trwa') || q.includes('jak wygląda')) {
+    return 'Współpraca przebiega w **3 prostych krokach** (pełne wdrożenie w **7–14 dni roboczych**):\n- **Krok 1**: Bezpłatna konsultacja, analiza potrzeb i stała wycena w 24h\n- **Krok 2**: Projekt UX/UI, programowanie w czystym kodzie oraz podgląd na żywo przez szyfrowany link testowy\n- **Krok 3**: Testy jakościowe PageSpeed 95+, wdrożenie na domenie i **30 dni gwarancji**.';
   }
 
-  if (q.includes('ai') || q.includes('asystent') || q.includes('czat') || q.includes('bot') || q.includes('rag')) {
-    return (
-      'Wdrażamy **inteligentnych Asystentów AI (RAG)** wytrenowanych wyłącznie na bazie wiedzy Twojej firmy i Salsopedii. ' +
-      'Asystent posiada pamięć podręczną zapytań (**Response Cache**), automatycznie aktualizuje odpowiedzi po zmianie bazy wiedzy i działa 24/7. ' +
-      'Skontaktuj się z nami przez **#kontakt**, aby przetestować demo dla Twojej branży!'
-    );
+  if (q.includes('cen') || q.includes('koszt') || q.includes('ile ') || q.includes('pakiet') || q.includes('wycen')) {
+    return 'Każdy projekt wyceniamy przejrzyście przed startem prac (pakiety bazowe w **TwojaStronaWWW.pl**):\n- **Wizytówka / Landing Page**: **2 499 PLN netto** (czysty kod RWD, SEO, formularz z ochroną anty-spam)\n- **Strona Firmowa**: **5 499 PLN netto** (do 10 podstron, autorski CMS Flat-File bez SQL, PageSpeed 90+)\n- **Wdrożenie Czatbota AI (RAG)**: **od 900 PLN netto**\nNapisz przez formularz kontaktowy na dole strony – przygotujemy **bezpłatną wycenę w 24h**!';
   }
 
-  return (
-    'Dziękuję za wiadomość! Chętnie pomożemy dopasować rozwiązanie do Twoich potrzeb. ' +
-    'Skorzystaj z formularza w sekcji **#kontakt** lub napisz bezpośrednio na **kontakt@twojastronawww.pl** — odpowiadamy zazwyczaj w ciągu kilku godzin.'
-  );
+  if (q.includes('realizacj') || q.includes('portfolio') || q.includes('przykład') || q.includes('projekt')) {
+    return 'Przykładowe wdrożenia z wynikami **Google PageSpeed 98–100/100**:\n- **Raricart.pl** (branża eventowa) – ładowanie skrócone z 4.2s do **0.6s** i automatyzacja rezerwacji\n- **KatoSalsaHub.pl** & **DancePuls** – portal społecznościowy z Salsopedią i automatycznym agregatorem wydarzeń\n- **FuegoLingua.pl** – ultra-lekka strona (45 KB) bez bazy SQL z wirtualnym doradcą AI.';
+  }
+
+  if (q.includes('kontakt') || q.includes('telefon') || q.includes('mail') || q.includes('oddzwon') || q.includes('wiadomo')) {
+    return 'Najwygodniej skontaktować się bezpośrednio przez **formularz kontaktowy na dole strony** lub napisać na kontakt@twojastronawww.pl – odpowiadamy i przygotowujemy bezpłatną wycenę w ciągu **24h**!';
+  }
+
+  return `Jestem wirtualnym doradcą serwisu **${resolvedSiteId}**. Chętnie odpowiem na pytania o ofertę, wycenę, wdrożenie asystenta AI lub przebieg współpracy. Możesz też zostawić wiadomość w formularzu kontaktowym na dole strony!`;
 }
 
 /**
- * Szybkie podpowiedzi (Quick Prompts) dopasowane do identyfikatora witryny.
+ * Inicjalizuje widget czatu AI w drzewie DOM
+ * @param {Document} doc
+ * @param {Window} win
+ * @param {Object} options
  */
-const QUICK_PROMPTS_MAP = {
-  twojastronawww: [
-    'Ile kosztuje strona WWW?',
-    'Jak wygląda proces współpracy?',
-    'Dlaczego kod zamiast WordPressa?',
-    'Jak działa asystent AI na stronie?'
-  ],
-  fuegolingua: [
-    'Bezpłatna lekcja próbna',
-    'Ile kosztuje kurs hiszpańskiego?',
-    'Zajęcia indywidualne czy grupowe?',
-    'Hiszpański w biznesie / branżowy'
-  ],
-  katosalsahub: [
-    'Co dzieje się w Wolnych Ludziach w niedzielę (15:00–18:00)?',
-    'Gdzie tańczymy w Katowicach i gdzie za darmo zaparkować?',
-    'Czym zajmuje się społeczność i Fundacja Kato Salsa Hub?',
-    'Wyjaśnij figury: Dile Que No, Enchufla i Setenta'
-  ]
-};
-
-/**
- * Inicjalizuje widget czatu AI w drzewie DOM.
- * @param {Document} [doc=document]
- * @param {Window} [win=window]
- * @param {Object} [options={}]
- */
-function initAiWidget(doc = globalThis.document, win = globalThis.window, options = {}) {
+function initAiWidget(doc = document, win = globalThis.window, options = {}) {
   if (!doc || !doc.body) return null;
-
-  // Zapobieganie wielokrotnej inicjalizacji
   const existingRoot = doc.getElementById('tsw-ai-widget-root');
-  if (existingRoot && !options.forceReinit) {
-    return null;
-  }
-  if (existingRoot && options.forceReinit) {
-    existingRoot.remove?.();
+  if (existingRoot && !options.forceReinit) return null;
+  if (existingRoot && options.forceReinit && existingRoot.parentNode) {
+    existingRoot.parentNode.removeChild(existingRoot);
   }
 
   const scriptEl =
+    doc.currentScript ||
     doc.querySelector('script[data-site-id]') ||
     doc.querySelector('script[src*="ai-widget.js"]') ||
     doc.querySelector('script[src*="widget.js"]');
@@ -671,7 +717,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   const siteId = (
     options.siteId ||
     scriptEl?.getAttribute('data-site-id') ||
-    'katosalsahub'
+    'twojastronawww'
   ).toLowerCase();
 
   const isLocalhost =
@@ -682,9 +728,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   const routerUrl =
     options.routerUrl || scriptEl?.getAttribute('data-router-url') || defaultRouterUrl;
   const title =
-    options.title ||
-    scriptEl?.getAttribute('data-title') ||
-    (siteId === 'katosalsahub' ? 'Asystent Kato Salsa Hub' : 'Asystent AI');
+    options.title || scriptEl?.getAttribute('data-title') || 'Asystent AI';
   const kbUrl =
     options.kbUrl ||
     scriptEl?.getAttribute('data-kb-url') ||
@@ -694,12 +738,25 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     scriptEl?.getAttribute('data-kb-api') ||
     (siteId === 'katosalsahub' ? 'assets/php/wiki.php?action=list' : '');
 
-  const storageKey = 'tsw_ai_history_' + siteId;
-  const cacheStorageKey = 'tsw_ai_cache_v42_' + siteId;
-  const cacheTtlMs = Number(options.cacheTtlMs) || 24 * 60 * 60 * 1000;
-  const quickPrompts = QUICK_PROMPTS_MAP[siteId] || QUICK_PROMPTS_MAP.katosalsahub;
+  // Konfiguracja kolorów: atrybuty HTML data-* -> opcje JS -> THEME_PRESETS[siteId] -> zmienne CSS strony
+  const preset = THEME_PRESETS[siteId] || THEME_PRESETS.twojastronawww;
+  const themePrimary = options.primaryColor || scriptEl?.getAttribute('data-primary') || preset.primary;
+  const themeAccent = options.accentColor || scriptEl?.getAttribute('data-accent') || preset.accent;
+  const themeHighlight = options.highlightColor || scriptEl?.getAttribute('data-highlight') || preset.highlight;
+  const themeBg = options.bgColor || scriptEl?.getAttribute('data-bg') || preset.bg;
+  const themeSurface = options.surfaceColor || scriptEl?.getAttribute('data-surface') || preset.surface;
+  const themeText = options.textColor || scriptEl?.getAttribute('data-text') || preset.text;
+  const themeMuted = options.mutedColor || scriptEl?.getAttribute('data-muted') || preset.muted;
+  const themeOnPrimary = options.onPrimaryColor || scriptEl?.getAttribute('data-on-primary') || preset.onPrimary;
 
-  // Stan dynamicznej bazy wiedzy (np. Salsopedii) i wersji wiedzy
+  // Automatyczne wykrycie, czy na stronie jest pływający przycisk CTA (np. #floatingCta na Raricart)
+  const hasFloatingCta = Boolean(doc.getElementById('floatingCta') || doc.querySelector('.floating-cta'));
+
+  const storageKey = 'tsw_ai_history_' + siteId;
+  const cacheStorageKey = 'tsw_ai_cache_' + siteId;
+  const cacheTtlMs = Number(options.cacheTtlMs) || 24 * 60 * 60 * 1000;
+  const quickPrompts = QUICK_PROMPTS_MAP[siteId] || QUICK_PROMPTS_MAP.twojastronawww;
+
   const existingGlobalTerms = Array.isArray(win?.__SALSOPEDIA_TERMS__) && win.__SALSOPEDIA_TERMS__.length > 0
     ? win.__SALSOPEDIA_TERMS__
     : (Array.isArray(win?.AppState?.terms) && win.AppState.terms.length > 0 ? win.AppState.terms : []);
@@ -708,9 +765,21 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     : [...existingGlobalTerms];
   let kbVersion = computeKnowledgeVersion(knowledgeEntries);
 
-  // Pamięć podręczna odpowiedzi (Response Cache): zapobiega ponownemu odpytywaniu AI przy tym samym pytaniu,
-  // oraz automatycznie inwaliduje wpisy, gdy zmieni się kbVersion (np. po aktualizacji Salsopedii).
   let responseCache = { kbVersion, entries: {} };
+
+  function getMonotonicTimeMs() {
+    const perf = win?.performance || globalThis.performance;
+    if (perf && typeof perf.now === 'function') {
+      const t = perf.now();
+      if (Number.isFinite(t)) return t;
+    }
+    return Date.now();
+  }
+
+  function invalidateResponseCache() {
+    responseCache = { kbVersion, entries: {} };
+    saveResponseCache();
+  }
 
   function loadResponseCache() {
     try {
@@ -718,20 +787,28 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
       const raw = storage?.getItem(cacheStorageKey);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed.entries) {
+        if (
+          parsed &&
+          typeof parsed === 'object' &&
+          !Array.isArray(parsed) &&
+          parsed.entries &&
+          typeof parsed.entries === 'object' &&
+          !Array.isArray(parsed.entries)
+        ) {
           if (knowledgeEntries.length > 0 && parsed.kbVersion !== kbVersion) {
-            responseCache = { kbVersion, entries: {} };
-            saveResponseCache();
+            invalidateResponseCache();
           } else {
             responseCache = {
               kbVersion: parsed.kbVersion || kbVersion,
-              entries: parsed.entries || {}
+              entries: parsed.entries
             };
           }
+        } else {
+          invalidateResponseCache();
         }
       }
     } catch (_) {
-      responseCache = { kbVersion, entries: {} };
+      invalidateResponseCache();
     }
   }
 
@@ -753,17 +830,33 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     const normQ = normalizeCacheQuery(question);
     if (!normQ || hasContactPii(question)) return null;
 
-    if (knowledgeEntries.length > 0 && responseCache.kbVersion !== kbVersion) {
-      responseCache = { kbVersion, entries: {} };
-      saveResponseCache();
+    if (
+      !responseCache ||
+      typeof responseCache.entries !== 'object' ||
+      Array.isArray(responseCache.entries) ||
+      (knowledgeEntries.length > 0 && responseCache.kbVersion !== kbVersion)
+    ) {
+      invalidateResponseCache();
       return null;
     }
 
     const item = responseCache.entries?.[normQ];
-    if (!item || !item.answer) return null;
+    if (!item || typeof item !== 'object') return null;
+
+    if (
+      typeof item.answer !== 'string' ||
+      item.answer.trim() === '' ||
+      typeof item.ts !== 'number' ||
+      !Number.isFinite(item.ts) ||
+      item.ts <= 0
+    ) {
+      delete responseCache.entries[normQ];
+      saveResponseCache();
+      return null;
+    }
 
     const now = Date.now();
-    if (item.ts && now - item.ts > cacheTtlMs) {
+    if (now - item.ts > cacheTtlMs || item.ts > now + 60000) {
       delete responseCache.entries[normQ];
       saveResponseCache();
       return null;
@@ -780,8 +873,8 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
 
   function setCachedAnswer(question, answer, source = 'ai') {
     const normQ = normalizeCacheQuery(question);
-    if (!normQ || !answer || hasContactPii(question)) return;
-    if (!responseCache.entries || responseCache.kbVersion !== kbVersion) {
+    if (!normQ || typeof answer !== 'string' || answer.trim() === '' || hasContactPii(question)) return;
+    if (!responseCache.entries || typeof responseCache.entries !== 'object' || Array.isArray(responseCache.entries) || responseCache.kbVersion !== kbVersion) {
       responseCache = { kbVersion, entries: {} };
     }
     responseCache.kbVersion = kbVersion;
@@ -789,34 +882,52 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
       answer: String(answer),
       kbVersion,
       source,
-      ts: Date.now()
+      ts: Date.now(),
+      monotonicMs: getMonotonicTimeMs()
     };
     saveResponseCache();
   }
+
+  
+  const placeholderText =
+    siteId === 'katosalsahub'
+      ? 'Zapytaj o hasło z Salsopedii, style, radio lub eventy...'
+      : siteId === 'fuegolingua'
+      ? 'Napisz pytanie o kurs lub cennik...'
+      : siteId === 'raricart'
+      ? 'Zapytaj o stacje Live Food, pakiety lub wolny termin...'
+      : 'Napisz pytanie o ofertę lub wycenę...';
 
   const root = doc.createElement('div');
   root.id = 'tsw-ai-widget-root';
   root.setAttribute('data-nosnippet', '');
   root.innerHTML = `
-    <button class="tsw-ai-btn" id="tswAiToggleBtn" type="button" aria-label="Otwórz czat z asystentem AI" aria-expanded="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+    <button type="button" class="tsw-ai-btn" id="tswAiToggleBtn" aria-label="Otwórz czat z asystentem AI" aria-expanded="false" aria-controls="tswAiWindow">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+      <span class="tsw-ai-btn-badge" aria-hidden="true">AI</span>
     </button>
+
     <div class="tsw-ai-window" id="tswAiWindow" role="dialog" aria-label="${title}">
       <div class="tsw-ai-header">
-        <div class="tsw-ai-title"><span class="tsw-ai-dot"></span> ${title}</div>
-        <div class="tsw-ai-actions">
-          <button class="tsw-ai-icon-btn" id="tswAiClearBtn" type="button" title="Nowa rozmowa" aria-label="Wyczyść historię rozmowy">&#x21bb;</button>
-          <button class="tsw-ai-icon-btn" id="tswAiCloseBtn" type="button" title="Zamknij" aria-label="Zamknij okno czatu">&times;</button>
+        <div class="tsw-ai-header-title tsw-ai-title">
+          <span class="tsw-ai-status-dot tsw-ai-dot" aria-hidden="true"></span>
+          <span>${title}</span>
+        </div>
+        <div class="tsw-ai-header-actions tsw-ai-actions">
+          <button type="button" class="tsw-ai-icon-btn" id="tswAiClearBtn" title="Nowa rozmowa" aria-label="Nowa rozmowa">&#x21bb;</button>
+          <button type="button" class="tsw-ai-icon-btn" id="tswAiCloseBtn" title="Zamknij czat" aria-label="Zamknij czat">&times;</button>
         </div>
       </div>
+
       <div class="tsw-ai-messages" id="tswAiMessages" aria-live="polite"></div>
       <div class="tsw-ai-chips" id="tswAiChips"></div>
-      <form class="tsw-ai-form" id="tswAiForm">
-        <input type="text" class="tsw-ai-input" id="tswAiInput" placeholder="Zadaj pytanie (np. o Salsopedię)..." maxlength="500" autocomplete="off" required />
+
+      <form class="tsw-ai-input-bar tsw-ai-form" id="tswAiForm">
+        <input type="text" class="tsw-ai-input" id="tswAiInput" placeholder="${placeholderText}" aria-label="Zadaj pytanie asystentowi" maxlength="500" required autocomplete="off" />
         <button type="button" class="tsw-ai-voice-btn" id="tswAiVoiceBtn" title="Zadaj pytanie głosem (mikrofon)" aria-label="Zadaj pytanie głosem" aria-pressed="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
         </button>
-        <button type="submit" class="tsw-ai-send" id="tswAiSend">Wyślij</button>
+        <button type="submit" class="tsw-ai-send" id="tswAiSendBtn">Wyślij</button>
       </form>
     </div>
   `;
@@ -831,10 +942,10 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
   const voiceBtn = doc.getElementById('tswAiVoiceBtn');
   const messagesContainer = doc.getElementById('tswAiMessages');
   const chipsContainer = doc.getElementById('tswAiChips');
-  const sendBtn = doc.getElementById('tswAiSend');
+  const sendBtn = doc.getElementById('tswAiSendBtn');
 
-  // Obsługa dyktowania głosowego (Web Speech API — Tryb Bezpieczny: tekst trafia na żywo do pola tekstowego)
-  const defaultPlaceholder = chatInput?.getAttribute('placeholder') || 'Zadaj pytanie (np. o Salsopedię)...';
+  // Obsługa dyktowania głosowego (Web Speech API — Tryb Bezpieczny)
+  const defaultPlaceholder = chatInput?.getAttribute('placeholder') || placeholderText;
   const SpeechRecognitionCtor = win?.SpeechRecognition || win?.webkitSpeechRecognition || null;
   let recognition = null;
   let isListening = false;
@@ -957,12 +1068,11 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
 
   voiceBtn?.addEventListener('click', toggleVoiceRecognition);
 
-  // Pamięć rozmowy (Multi-Turn History w sessionStorage)
   let conversationHistory = [];
   try {
-    const raw = win?.sessionStorage?.getItem(storageKey);
-    if (raw) {
-      const parsed = JSON.parse(raw);
+    const saved = win?.sessionStorage?.getItem(storageKey);
+    if (saved) {
+      const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) conversationHistory = parsed.slice(-8);
     }
   } catch (_) {}
@@ -975,61 +1085,43 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     } catch (_) {}
   }
 
-  /**
-   * Aktualizuje pamięć podręczną i historię po zmianie bazy wiedzy (np. edycji hasła w Salsopedii).
-   * Nawet jeśli klient zadał pytanie wcześniej (i jest ono zapisane w cache lub w bieżącej rozmowie),
-   * funkcja natychmiast inwaliduje stary cache i aktualizuje zapisane odpowiedzi na podstawie nowej wiedzy!
-   * @param {Array<Object>} newEntries
-   * @returns {boolean} true jeśli wersja bazy wiedzy uległa zmianie
-   */
   function updateKnowledgeEntries(newEntries) {
-    if (!Array.isArray(newEntries)) return false;
-    const nextVersion = computeKnowledgeVersion(newEntries);
-    const hasChanged = nextVersion !== kbVersion;
-
+    if (!Array.isArray(newEntries)) return kbVersion;
+    const prevVersion = kbVersion;
     knowledgeEntries = [...newEntries];
-    kbVersion = nextVersion;
+    kbVersion = computeKnowledgeVersion(knowledgeEntries);
 
-    if (hasChanged) {
-      // 1. Natychmiastowa inwalidacja wcześniej zapisanych odpowiedzi w Response Cache
-      responseCache = { kbVersion: nextVersion, entries: {} };
+    if (prevVersion !== kbVersion) {
+      responseCache = { kbVersion, entries: {} };
       saveResponseCache();
 
-      // 2. Aktualizacja zapisanych w sesji (conversationHistory) odpowiedzi na pytania dotyczące zmienionych haseł
       let historyUpdated = false;
       for (let i = 0; i < conversationHistory.length - 1; i++) {
-        if (conversationHistory[i].role === 'user' && conversationHistory[i + 1].role === 'model') {
+        if (conversationHistory[i].role === 'user' && conversationHistory[i + 1]?.role === 'model') {
           const userQ = conversationHistory[i].text;
-          const matchingTerms = searchKnowledgeEntries(userQ, knowledgeEntries, 3);
-          if (matchingTerms.length > 0) {
+          const matched = searchKnowledgeEntries(userQ, knowledgeEntries, 1);
+          if (matched.length > 0) {
             const refreshedAnswer = getLocalFallbackAnswer(userQ, siteId, knowledgeEntries);
-            if (refreshedAnswer && refreshedAnswer !== conversationHistory[i + 1].text) {
+            if (conversationHistory[i + 1].text !== refreshedAnswer) {
               conversationHistory[i + 1].text = refreshedAnswer;
-              setCachedAnswer(userQ, refreshedAnswer, 'kb-live-refresh');
+              setCachedAnswer(userQ, refreshedAnswer, 'kb_live_sync');
               historyUpdated = true;
             }
           }
         }
       }
-
       if (historyUpdated) {
         saveHistory();
         renderInitialView();
       }
     }
-
-    return hasChanged;
+    return kbVersion;
   }
 
-  /**
-   * Pobiera najnowszą bazę wiedzy z API (`wiki.php?action=list`) lub statycznego pliku JSON (`salsopedia.json`).
-   * @returns {Promise<string>} aktualny identyfikator kbVersion
-   */
   async function refreshKnowledge() {
     const fetchFn = win?.fetch || globalThis.fetch;
     if (typeof fetchFn !== 'function') return kbVersion;
 
-    // Jeżeli na stronie działa już załadowany stan Salsopedii (wiki.js __SALSOPEDIA_TERMS__ / AppState.terms), zsynchronizuj go
     const liveTerms = win?.__SALSOPEDIA_TERMS__ || win?.AppState?.terms;
     if (Array.isArray(liveTerms) && liveTerms.length > 0) {
       updateKnowledgeEntries(liveTerms);
@@ -1046,9 +1138,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
             break;
           }
         }
-      } catch (_) {
-        // Cichy fallback do kolejnego źródła lub stanu lokalnego
-      }
+      } catch (_) {}
     }
     return kbVersion;
   }
@@ -1069,7 +1159,43 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
 
   function setChipsVisible(visible) {
     if (!chipsContainer) return;
-    chipsContainer.classList.toggle('tsw-hidden', !visible);
+    chipsContainer.classList?.toggle('tsw-hidden', !visible);
+  }
+
+  const analyticsUrl = routerUrl.replace(/\/chat-router\.php.*$/, '/analytics');
+
+  function sendAnalyticsBeacon(extra) {
+    try {
+      const nav = win?.navigator || (typeof navigator !== 'undefined' ? navigator : null);
+      const loc = win?.location || {};
+      const params = new URLSearchParams(loc.search || '');
+      const rawPath = (loc.pathname || '/') + (loc.hash || '');
+      const payload = Object.assign({
+        site_id: siteId,
+        type: 'pageview',
+        path: rawPath || '/',
+        referrer: doc?.referrer || '',
+        utm_source: params.get('utm_source') || '',
+        utm_term: params.get('utm_term') || params.get('q') || ''
+      }, extra || {});
+      const body = JSON.stringify(payload);
+      let sent = false;
+      if (nav && typeof nav.sendBeacon === 'function') {
+        try {
+          sent = nav.sendBeacon(analyticsUrl, body);
+        } catch (_) {}
+      }
+      const fetchFn = win?.fetch || globalThis.fetch;
+      if (!sent && typeof fetchFn === 'function') {
+        fetchFn(analyticsUrl, {
+          method: 'POST',
+          body,
+          keepalive: true,
+          mode: 'cors',
+          credentials: 'omit'
+        }).catch(() => {});
+      }
+    } catch (_) {}
   }
 
   function renderChips() {
@@ -1086,6 +1212,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
       chip.className = 'tsw-ai-chip';
       chip.textContent = promptText;
       chip.addEventListener('click', () => {
+        sendAnalyticsBeacon({ type: 'event', event: 'quick_prompt_click' });
         sendQuestion(promptText);
       });
       chipsContainer.appendChild(chip);
@@ -1097,7 +1224,11 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     messagesContainer.innerHTML = '';
     const welcomeText =
       siteId === 'katosalsahub'
-        ? `Cześć! 💃🕺 Jestem wirtualnym asystentem **${title}**. Moim głównym centrum wiedzy jest **Salsopedia**, ale odpowiem też na wszystkie pytania o nasze potańcówki salsy w Katowicach, **Wspólny Grafik Szkół Tańca (grafik.html)**, **Radio Timba Nation** i **DancePuls**. O co chcesz zapytać?`
+        ? `Cześć! 💃🕺 Jestem wirtualnym asystentem **${title}**. Moim głównym centrum wiedzy jest **Salsopedia**, ale odpowiem też na wszystkie pytania o nasze potańcówki w Katowicach, style tańca, **Radio Timba Nation** i **DancePuls**. O co chcesz zapytać?`
+        : siteId === 'fuegolingua'
+        ? '¡Hola! 💃 Jestem wirtualnym doradcą **Fuego Lingua**. W czym mogę Ci pomóc? Zapytaj o bezpłatną lekcję próbną, cennik lub kursy hiszpańskiego!'
+        : siteId === 'raricart'
+        ? 'Cześć! 🥞🍦🧀 Jestem wirtualnym doradcą **Raricart Live Food Station**. Zapytaj o cennik stacji na żywo (Lody Włoskie, Mini Pancakes, Deska Serów), pakiety łączone lub dostępność terminu na Twoje wesele czy event!'
         : `Cześć! 👋 Jestem wirtualnym doradcą **${title}**. W czym mogę Ci pomóc? Zapytaj o ofertę, wycenę lub współpracę!`;
 
     appendMessageElement('model', welcomeText);
@@ -1113,6 +1244,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     toggleBtn.setAttribute('aria-expanded', String(isOpen));
     if (isOpen) {
       chatInput?.focus?.();
+      sendAnalyticsBeacon({ type: 'event', event: 'chat_open' });
       if (kbUrl || kbApiUrl) {
         refreshKnowledge();
       }
@@ -1138,13 +1270,23 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     renderInitialView();
   });
 
+  // Automatyczne zamykanie czatu po kliknięciu w link kotwicowy (#kontakt, #mapa) wewnątrz odpowiedzi
+  messagesContainer?.addEventListener?.('click', (e) => {
+    const target = e?.target;
+    const link = target?.closest ? target.closest('a[href]') : (target?.tagName === 'A' ? target : null);
+    if (!link) return;
+    const href = String(link.getAttribute('href') || '');
+    if (href.startsWith('#') && href.length > 1) {
+      closeChat();
+    }
+  });
+
   doc.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && chatWindow?.classList.contains('tsw-open')) {
       closeChat();
     }
   });
 
-  // Nasłuchiwanie na żywo na zmiany w Salsopedii / bazie wiedzy na stronie (w tej samej karcie oraz między kartami)
   const handleKnowledgeEvent = (e) => {
     const terms = e?.detail?.terms || win?.__SALSOPEDIA_TERMS__ || win?.AppState?.terms;
     if (Array.isArray(terms)) {
@@ -1167,7 +1309,6 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
 
     stopVoiceRecognition();
 
-    // Synchronizuj stan wiedzy z globalnym __SALSOPEDIA_TERMS__ / AppState.terms (jeśli użytkownik/moderator właśnie edytował Salsopedię)
     const liveGlobalTerms = win?.__SALSOPEDIA_TERMS__ || win?.AppState?.terms;
     if (Array.isArray(liveGlobalTerms) && liveGlobalTerms.length > 0) {
       updateKnowledgeEntries(liveGlobalTerms);
@@ -1177,8 +1318,6 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     appendMessageElement('user', trimmed);
     if (chatInput) chatInput.value = '';
 
-    // 1. Sprawdź Response Cache: jeśli klient pyta po raz drugi o to samo, a baza wiedzy (Salsopedia)
-    //    nie zmieniła się od ostatniego razu -> zwróć odpowiedź natychmiast BEZ odpytywania AI!
     const cachedAnswer = getCachedAnswer(trimmed);
     if (cachedAnswer) {
       appendMessageElement('model', cachedAnswer);
@@ -1208,7 +1347,7 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
       const res = await fetchFn(routerUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        signal: controller?.signal,
+        ...(controller ? { signal: controller.signal } : {}),
         body: JSON.stringify({
           site_id: siteId,
           question: trimmed,
@@ -1263,7 +1402,61 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
 
   renderInitialView();
 
-  // Automatyczne załadowanie dynamicznej bazy wiedzy w tle (jeśli skonfigurowano kbUrl/kbApiUrl i nie podano initialKnowledge)
+  if (win && !win.__TSW_ANALYTICS_ACTIVE__ && (typeof win.navigator?.sendBeacon === 'function' || typeof win.fetch === 'function')) {
+    win.__TSW_ANALYTICS_ACTIVE__ = true;
+    let lcpMeasured = 0;
+    try {
+      if (typeof PerformanceObserver !== 'undefined') {
+        const po = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          if (entries && entries.length > 0) {
+            lcpMeasured = Math.round(entries[entries.length - 1].startTime || 0);
+          }
+        });
+        po.observe({ type: 'largest-contentful-paint', buffered: true });
+      }
+    } catch (_) {}
+
+    setTimeout(() => {
+      sendAnalyticsBeacon(lcpMeasured > 0 ? { type: 'pageview', lcp_ms: lcpMeasured } : { type: 'pageview' });
+    }, 600);
+
+    win.addEventListener?.('hashchange', () => {
+      sendAnalyticsBeacon({ type: 'pageview' });
+    });
+
+    setTimeout(() => {
+      if (doc.visibilityState !== 'hidden') {
+        sendAnalyticsBeacon({ type: 'engaged' });
+      }
+    }, 15000);
+
+    doc.addEventListener?.('click', (e) => {
+      const target = e?.target?.closest ? e.target : null;
+      if (!target) return;
+      const link = target.closest('a[href]');
+      if (link) {
+        const href = String(link.getAttribute('href') || '');
+        if (href.startsWith('tel:')) {
+          sendAnalyticsBeacon({ type: 'event', event: 'cta_phone_click' });
+        } else if (href.startsWith('mailto:')) {
+          sendAnalyticsBeacon({ type: 'event', event: 'cta_email_click' });
+        }
+      }
+      const radioBtn = target.closest('#radio-toggle, .radio-toggle, [data-radio-toggle], #radioPlayBtn');
+      if (radioBtn) {
+        sendAnalyticsBeacon({ type: 'event', event: 'radio_play' });
+      }
+    });
+
+    doc.addEventListener?.('submit', (e) => {
+      const form = e?.target;
+      if (form && form.id !== 'tsw-ai-form' && (form.id === 'contactForm' || form.classList?.contains?.('contact-form'))) {
+        sendAnalyticsBeacon({ type: 'event', event: 'contact_form_submit' });
+      }
+    });
+  }
+
   if ((kbUrl || kbApiUrl) && knowledgeEntries.length === 0 && !options.skipInitialFetch) {
     refreshKnowledge();
   }
@@ -1292,9 +1485,9 @@ function initAiWidget(doc = globalThis.document, win = globalThis.window, option
     updateKnowledgeEntries,
     refreshKnowledge,
     getCachedAnswer,
+    invalidateResponseCache,
     clearCache: () => {
-      responseCache = { kbVersion, entries: {} };
-      saveResponseCache();
+      invalidateResponseCache();
     }
   };
 }
@@ -1319,22 +1512,25 @@ if (typeof document !== 'undefined') {
   }
 }
 
-if (typeof window !== 'undefined') {
-  window.initAiWidget = initAiWidget;
-  window.formatMarkdown = formatMarkdown;
-  window.getLocalFallbackAnswer = getLocalFallbackAnswer;
+const __tswExports = {
+  QUICK_PROMPTS_MAP,
+  THEME_PRESETS,
+  normalizeCacheQuery,
+  normalizeSearchText,
+  computeKnowledgeVersion,
+  searchKnowledgeEntries,
+  buildDynamicContext,
+  formatMarkdown,
+  getLocalFallbackAnswer,
+  initAiWidget
+};
+if (typeof globalThis !== "undefined") {
+  Object.assign(globalThis, __tswExports);
 }
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    formatMarkdown,
-    normalizeCacheQuery,
-    normalizeSearchText,
-    computeKnowledgeVersion,
-    searchKnowledgeEntries,
-    buildDynamicContext,
-    getLocalFallbackAnswer,
-    initAiWidget
-  };
+if (typeof window !== "undefined") {
+  Object.assign(window, __tswExports);
+}
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = __tswExports;
 }
 })();

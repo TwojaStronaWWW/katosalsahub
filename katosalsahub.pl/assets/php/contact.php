@@ -10,6 +10,7 @@ ini_set('log_errors', '1');
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/rate-limit.php';
+require_once __DIR__ . '/leads-store.php';
 
 function debug_log(string $message): void {
     error_log('[KatoContact] ' . $message);
@@ -18,39 +19,41 @@ function debug_log(string $message): void {
 /**
  * Pobiera zmienną środowiskową z getenv(), $_ENV lub lokalnego pliku .env poza webrootem
  */
-function get_env_secret(string $key, string $default = ''): string {
-    $val = getenv($key);
-    if ($val !== false && $val !== '') {
-        return (string)$val;
-    }
-    if (!empty($_ENV[$key])) {
-        return (string)$_ENV[$key];
-    }
-    $envPaths = [
-        __DIR__ . '/../../../../.env',
-        __DIR__ . '/../../../.env',
-        __DIR__ . '/../../.env',
-        __DIR__ . '/../.env',
-        __DIR__ . '/.env',
-    ];
-    foreach ($envPaths as $envPath) {
-        if (@is_readable($envPath)) {
-            $lines = @file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            if (is_array($lines)) {
-                foreach ($lines as $line) {
-                    $line = trim($line);
-                    if ($line === '' || strpos($line, '#') === 0 || strpos($line, '=') === false) {
-                        continue;
-                    }
-                    list($k, $v) = explode('=', $line, 2);
-                    if (trim($k) === $key) {
-                        return trim($v, " \t\n\r\0\x0B\"'");
+if (!function_exists('get_env_secret')) {
+    function get_env_secret(string $key, string $default = ''): string {
+        $val = getenv($key);
+        if ($val !== false && $val !== '') {
+            return (string)$val;
+        }
+        if (!empty($_ENV[$key])) {
+            return (string)$_ENV[$key];
+        }
+        $envPaths = [
+            __DIR__ . '/../../../../.env',
+            __DIR__ . '/../../../.env',
+            __DIR__ . '/../../.env',
+            __DIR__ . '/../.env',
+            __DIR__ . '/.env',
+        ];
+        foreach ($envPaths as $envPath) {
+            if (@is_readable($envPath)) {
+                $lines = @file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                if (is_array($lines)) {
+                    foreach ($lines as $line) {
+                        $line = trim($line);
+                        if ($line === '' || strpos($line, '#') === 0 || strpos($line, '=') === false) {
+                            continue;
+                        }
+                        list($k, $v) = explode('=', $line, 2);
+                        if (trim($k) === $key) {
+                            return trim($v, " \t\n\r\0\x0B\"'");
+                        }
                     }
                 }
             }
         }
+        return $default;
     }
-    return $default;
 }
 
 /**
@@ -113,7 +116,9 @@ if (empty($input['js_check'])) {
     exit;
 }
 
-if (!isset($input['submission_seconds']) || (float)$input['submission_seconds'] < 1.2) {
+$rawSubSec = $input['submission_seconds'] ?? null;
+$subSecFloat = (is_numeric($rawSubSec) && !is_bool($rawSubSec)) ? (float)$rawSubSec : 0.0;
+if (!is_finite($subSecFloat) || $subSecFloat < 1.2) {
     debug_log("BOT BLOCKED: Form submitted too quickly or missing submission_seconds");
     echo json_encode(['success' => true, 'message' => 'Wiadomość wysłana pomyślnie!']);
     exit;
@@ -156,6 +161,20 @@ if (preg_match_all('/https?:\/\//i', $message) > 6) {
     echo json_encode(['success' => true, 'message' => 'Wiadomość wysłana pomyślnie!']);
     exit;
 }
+
+@session_write_close();
+
+// 4b. Zapis leada do lokalnej bazy CSV pod blokadą wyłączną flock(LOCK_EX) (Zero-Data-Loss Backup)
+save_lead([
+    date('Y-m-d'),
+    date('H:i:s'),
+    $name,
+    $email,
+    $message,
+    hash('sha256', $maskedIp),
+    '-',
+    'NIE'
+], false);
 
 // 5. Utworzenie zgłoszenia w osTicket przez klucz ze zmiennej środowiskowej (Issue #2)
 $osTicketApiKey = get_env_secret('OSTICKET_API_KEY');
@@ -202,8 +221,16 @@ if (!empty($osTicketApiKey) && function_exists('curl_init')) {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 6);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 0);
+        if (defined('CURLPROTO_HTTPS') && defined('CURLPROTO_HTTP')) {
+            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
+        }
 
         $apiResponse = @curl_exec($ch);
+        if (is_string($apiResponse) && strlen($apiResponse) > 65536) {
+            $apiResponse = substr($apiResponse, 0, 65536);
+        }
         $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
@@ -262,11 +289,26 @@ if ($ntfyTopic !== '' && function_exists('curl_init')) {
         CURLOPT_HTTPHEADER     => $ntfyHeaders,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 3,
-        CURLOPT_CONNECTTIMEOUT => 2
+        CURLOPT_CONNECTTIMEOUT => 2,
+        CURLOPT_FOLLOWLOCATION => false,
+        CURLOPT_MAXREDIRS      => 0
     ]);
+    if (defined('CURLPROTO_HTTPS')) {
+        curl_setopt($chNtfy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+    }
     @curl_exec($chNtfy);
     curl_close($chNtfy);
 }
+
+// 8. Autoresponder dla nadawcy wiadomości (z numerem zgłoszenia #$ticketNum)
+$autoSubject = "Potwierdzenie otrzymania wiadomości — Kato Salsa Hub";
+$autoBody  = "Cześć $name!\n\n";
+$autoBody .= "Dziękujemy za wiadomość wysłaną przez formularz Kato Salsa Hub.\n";
+$autoBody .= "Twoje zgłoszenie dotarło do nas bezpiecznie" . ($ticketCreated ? " (numer zgłoszenia: #$ticketNum)" : "") . ".\n\n";
+$autoBody .= "Treść Twojej wiadomości:\n-----------------------------------------\n$message\n-----------------------------------------\n\n";
+$autoBody .= "Do zobaczenia na parkiecie!\nZespół Kato Salsa Hub\nhttps://katosalsahub.pl\n";
+$autoHeaders = "From: Kato Salsa Hub <$from_email>\r\nReply-To: $from_email\r\nContent-Type: text/plain; charset=UTF-8\r\n";
+@mail($email, $autoSubject, $autoBody, $autoHeaders, "-f$from_email");
 
 echo json_encode([
     'success' => true,
