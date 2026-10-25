@@ -5,10 +5,15 @@ on:
     types: [opened, synchronize]
     paths:
       - 'api/**'
+      - '**/php/**'
+      - 'src/**'
+      - 'GalAnonim/**'
+      - 'scripts/**'
+      - 'config/**'
       - '.htaccess'
       - '.well-known/security.txt'
       - 'sw.js'
-      - 'assets/js/ai-widget.js'
+      - '**/ai-widget.js'
       - '.github/workflows/**'
   issue_comment:
     types: [created]
