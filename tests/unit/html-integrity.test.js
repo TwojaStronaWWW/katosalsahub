@@ -97,7 +97,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /href\s*=\s*["']#["']/i, 'Wykryto pusty odnośnik href="#" w index.html');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w index.html');
       assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w index.html');
-      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w index.html');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["'](?:application\/ld\+json|speculationrules)["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w index.html');
       assert.match(html, /rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/"/i);
       assert.match(html, /property="og:title"/i);
       assert.match(html, /type="application\/ld\+json"/i);
@@ -171,7 +171,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
 
     it('nie powinna zawierać bloków <style>, wykonywalnych bloków inline <script>, stylów inline ani linku moderacji w stopce (#5, SoC) oraz powinna ładować Asystenta AI', () => {
       assert.doesNotMatch(html, /<style[\s>]/i);
-      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w privacy.html');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["'](?:application\/ld\+json|speculationrules)["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w privacy.html');
       assert.doesNotMatch(html, /\s+style\s*=/i);
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
       assert.match(html, /rel="canonical"\s+href="https:\/\/katosalsahub\.pl\/privacy\.html"/i);
@@ -212,7 +212,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       const html = fs.readFileSync(SALSOPEDIA_HTML, 'utf-8');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w salsopedia.html naruszający SoC');
       assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w salsopedia.html naruszający SoC');
-      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w salsopedia.html');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["'](?:application\/ld\+json|speculationrules)["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w salsopedia.html');
       assert.doesNotMatch(html, /\[Panel Moderacji Salsopedii\]/i);
     });
   });
@@ -242,7 +242,7 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /id="kontakt"/i, 'Widok grafik.html nie powinien zawierać sekcji #kontakt pod spodem');
       assert.doesNotMatch(html, /\s+style\s*=/i, 'Wykryto atrybut style="..." w grafik.html naruszający SoC');
       assert.doesNotMatch(html, /\s+on(click|submit|mouseover|mouseout|load|error)\s*=/i, 'Wykryto inline event handler w grafik.html naruszający SoC');
-      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["']application\/ld\+json["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w grafik.html');
+      assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["'](?:application\/ld\+json|speculationrules)["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w grafik.html');
       assert.match(html, /src="assets\/js\/schedule\.js(\?[^"]*)?"/i);
       assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
 

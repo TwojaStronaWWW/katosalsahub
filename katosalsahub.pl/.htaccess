@@ -14,6 +14,7 @@ AddType 'text/css; charset=UTF-8' css
 AddType 'application/javascript; charset=UTF-8' js
 AddType 'application/json; charset=UTF-8' json
 AddType 'application/manifest+json; charset=UTF-8' webmanifest
+AddType 'text/markdown; charset=UTF-8' md
 AddType 'application/vnd.google-earth.kml+xml; charset=UTF-8' kml
 AddType 'image/webp' webp
 
@@ -22,6 +23,8 @@ AddType 'image/webp' webp
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+  Header always set Cross-Origin-Resource-Policy "same-site"
   Header always set Permissions-Policy "geolocation=(), microphone=(self), camera=()"
 </IfModule>
 
