@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 24.10.2026
 - **Stan zestawienia na weekend 23–25.10.2026:** **14 pozycji** (3 pt + 8 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **67 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **71 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (24.10 — 5 pozycji, data publikacji nieustalona):**
   - **Social Flow Party – Bachata, Salsa, Kizomba na 3 sale** | 24.10.2026 | Tychy, Mohito | Salsa/Bachata/Kizomba | https://www.facebook.com/events/1483869330228956/
@@ -110,6 +110,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ CZWARTEK (29.10.2026)  
 ➡️ Kraków: Forum Tańca, Urodzinowy Praktis Bachatowy Justyny w Forum Tańca (Bachata)  
 🔗 https://www.facebook.com/events/2137456803520320/  
+🗓️ CZWARTEK (29.10.2026)  
+➡️ Tychy: Inne, Bachata Sensual Bodymovement & Footwork (Bachata)  
+🔗 https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/  
 🗓️ PIĄTEK (30.10.2026)  
 ➡️ Tychy: Mohito, Wielka Biba Halloween+Urodziny Zuzi (Salsa/Bachata/Kizomba)  
 🔗 https://www.facebook.com/events/1483662706943298/  
@@ -146,6 +149,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (03.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1083906274387790/  
+🗓️ ŚRODA (04.11.2026)  
+➡️ Katowice: Mil Pasos, NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55! (Bachata)  
+🔗 https://www.facebook.com/events/1795418848397794/  
 🗓️ PIĄTEK (06.11.2026)  
 ➡️ Częstochowa: Częstotańcz, Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca (Salsa On2/Bachata)  
 🔗 https://www.facebook.com/events/2311106856407049/  
@@ -215,6 +221,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Katowice: Gravitacja, Dance++ Kizomba Fusion Party (Kizomba)  
 🔗 https://www.facebook.com/events/1368901197951496/  
+🗓️ SOBOTA (21.11.2026)  
+➡️ Katowice: Mil Pasos, SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA (Salsa/Bachata/Kizomba)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ NIEDZIELA (22.11.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  
@@ -281,6 +290,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (27.02.2027)  
 ➡️ Katowice: Taneczna Kompania, Katowice Tarraxo Meetup Party vol. IV z Desmo_Punk i DJ Cubito (Kizomba/Tarraxo)  
 🔗 https://onlydanceapp.com/event/91e9016d241e4dc58dc6  
+🗓️ SOBOTA (06.03.2027)  
+➡️ Kraków: LOFToDANCE, Krakow Bachazouk Weekend by LOFToDANCE (Bachata)  
+🔗 https://onlydanceapp.com/event/323703c89e6c4e9099c7  
 🗓️ PIĄTEK–NIEDZIELA (19–21.03.2027)  
 ➡️ Kraków: Forum Tańca, Bachazouk Masters Bachata Bootcamp (Otko & Vika) (Bachata)  
 🔗 https://onlydanceapp.com/event/d1J8Y9ogLEjkoHEVPOkz  

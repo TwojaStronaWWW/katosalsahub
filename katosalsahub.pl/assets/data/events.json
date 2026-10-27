@@ -34,7 +34,7 @@
         "lat": 50.3484,
         "lng": 18.9157,
         "tytul": "✨ BACHATA OD ZERA – NOWA GRUPA W BYTOMIU! ✨",
-        "opis": "✨ BACHATA OD ZERA – NOWA GRUPA W BYTOMIU! ✨ - 17:45; Inne; AirDancia; nowe w bazie 26.10",
+        "opis": "✨ BACHATA OD ZERA – NOWA GRUPA W BYTOMIU! ✨ - 17:45; Inne; AirDancia; nowe w bazie 27.10",
         "opisPubliczny": "✨ BACHATA OD ZERA – NOWA GRUPA W BYTOMIU! ✨",
         "dateLabel": "ŚRODA (28.10.2026)",
         "endDate": "2026-10-28",
@@ -66,6 +66,27 @@
         "endDate": "2026-10-29",
         "soldOut": false,
         "link": "https://www.facebook.com/events/2137456803520320/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tychy",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.1275,
+        "lng": 18.9912,
+        "tytul": "Bachata Sensual Bodymovement & Footwork",
+        "opis": "Bachata Sensual Bodymovement & Footwork - 18:30; Inne; AirDancia; nowe w bazie 27.10",
+        "opisPubliczny": "Bachata Sensual Bodymovement & Footwork",
+        "dateLabel": "CZWARTEK (29.10.2026)",
+        "endDate": "2026-10-29",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/",
         "style": [
           "Bachata"
         ]
@@ -350,6 +371,32 @@
         "link": "https://www.facebook.com/events/1083906274387790/",
         "style": [
           "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-04",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55!",
+        "opis": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55! - 17:00; Szkoła Tańca Mil Pasos; nowe w bazie 27.10",
+        "opisPubliczny": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55!",
+        "dateLabel": "ŚRODA (04.11.2026)",
+        "endDate": "2026-11-04",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1795418848397794/",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -787,7 +834,7 @@
         "lat": 50.0658,
         "lng": 19.9595,
         "tytul": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition",
-        "opis": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition - Kamil Frączek; OnlyDance; nowe w bazie 26.10",
+        "opis": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition - Kamil Frączek; OnlyDance; nowe w bazie 27.10",
         "opisPubliczny": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition",
         "dateLabel": "PIĄTEK (20.11.2026)",
         "endDate": "2026-11-20",
@@ -887,6 +934,29 @@
         "soldOut": false,
         "link": "https://www.facebook.com/events/1368901197951496/",
         "style": [
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA",
+        "opis": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA - 13:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 27.10",
+        "opisPubliczny": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA",
+        "dateLabel": "SOBOTA (21.11.2026)",
+        "endDate": "2026-11-21",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Salsa",
+          "Bachata",
           "Kizomba"
         ]
       }
@@ -1027,7 +1097,7 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
-        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 26.10",
+        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 27.10",
         "opisPubliczny": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
         "dateLabel": "ŚRODA (02.12.2026)",
         "endDate": "2026-12-02",
@@ -1449,6 +1519,32 @@
     ]
   },
   {
+    "date": "2027-03-06",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Krakow Bachazouk Weekend by LOFToDANCE",
+        "opis": "Krakow Bachazouk Weekend by LOFToDANCE - LOFToDANCE Łukasz Raś; OnlyDance; nowe w bazie 27.10",
+        "opisPubliczny": "Krakow Bachazouk Weekend by LOFToDANCE",
+        "dateLabel": "SOBOTA (06.03.2027)",
+        "endDate": "2027-03-06",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/323703c89e6c4e9099c7",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2027-03-19",
     "events": [
       {
@@ -1618,7 +1714,7 @@
         "lat": 50.0442,
         "lng": 19.9348,
         "tytul": "SYLWESTER w Forum Tańca! 2026/2027",
-        "opis": "SYLWESTER w Forum Tańca! 2026/2027 - Forum Tańca; OnlyDance; nowe w bazie 26.10",
+        "opis": "SYLWESTER w Forum Tańca! 2026/2027 - Forum Tańca; OnlyDance; nowe w bazie 27.10",
         "opisPubliczny": "SYLWESTER w Forum Tańca! 2026/2027",
         "dateLabel": "PIĄTEK (31.12.2027)",
         "endDate": "2027-12-31",
