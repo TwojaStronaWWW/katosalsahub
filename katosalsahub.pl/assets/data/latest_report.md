@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 24.10.2026
 - **Stan zestawienia na weekend 23–25.10.2026:** **14 pozycji** (3 pt + 8 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **71 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **72 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (24.10 — 5 pozycji, data publikacji nieustalona):**
   - **Social Flow Party – Bachata, Salsa, Kizomba na 3 sale** | 24.10.2026 | Tychy, Mohito | Salsa/Bachata/Kizomba | https://www.facebook.com/events/1483869330228956/
@@ -149,6 +149,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ WTOREK (03.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1083906274387790/  
+🗓️ WTOREK (03.11.2026)  
+➡️ Kraków: Salsa House, 🔥 Salsa Ladies Styling z Olą — dołącz do nas! (Salsa)  
+🔗 https://www.facebook.com/events/1167416399188344/  
 🗓️ ŚRODA (04.11.2026)  
 ➡️ Katowice: Mil Pasos, NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55! (Bachata)  
 🔗 https://www.facebook.com/events/1795418848397794/  
