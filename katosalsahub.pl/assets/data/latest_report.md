@@ -1,6 +1,6 @@
 ## 1. PRYWATNIE — raport na 24.10.2026
 - **Stan zestawienia na weekend 23–25.10.2026:** **14 pozycji** (3 pt + 8 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **71 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **76 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (24.10 — 5 pozycji, data publikacji nieustalona):**
   - **Social Flow Party – Bachata, Salsa, Kizomba na 3 sale** | 24.10.2026 | Tychy, Mohito | Salsa/Bachata/Kizomba | https://www.facebook.com/events/1483869330228956/
@@ -182,6 +182,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (07.11.2026)  
 ➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)  
 🔗 https://www.facebook.com/events/1328664779481954/  
+🗓️ SOBOTA (07.11.2026)  
+➡️ Bielsko-Biała: Hotel i Restauracja Sahara Hotel i Restauracja Sahara, Taneczna SOBOTA -  start 20:00 &lt;3 (Hotel SAHARA, Bielsko-Biała) (Kizomba)  
+🔗 https://onlydanceapp.com/event/8a02904e0bb149ff82b2  
 🗓️ NIEDZIELA (08.11.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  
@@ -194,6 +197,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ PIĄTEK–NIEDZIELA (13–15.11.2026)  
 ➡️ Kraków: LOFToDANCE, Sensual Impro Festival (Bachata/Sensual Impro)  
 🔗 https://www.facebook.com/events/1288385083316354/  
+🗓️ PIĄTEK–WTOREK (13–10.11.2026)  
+➡️ Katowice: ulica Mikołowska 13A ulica Mikołowska 13A, LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA (Salsa/Bachata/Kizomba)  
+🔗 https://onlydanceapp.com/event/39e11c37b4df4dc1bc7b  
 🗓️ SOBOTA (14.11.2026)  
 ➡️ Katowice: Mil Pasos, LVL UP z Mają Modliszewską,warsztaty (Bachata)  
 🔗 https://www.facebook.com/events/1388826706219080/  
@@ -203,6 +209,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (14.11.2026)  
 ➡️ Kraków: Frenzy (ul. Borowickiej 1), FrenzyShot Urban Kiz Party (Urban Kiz/Kizomba)  
 🔗 https://onlydanceapp.com/event/pF0Xk4mNPfROoMs5LcL7  
+🗓️ NIEDZIELA (15.11.2026)  
+➡️ Katowice: Mil Pasos, BACHATA – DARMOWE ZAJĘCIA POKAZOWE DLA SINGLI I PAR (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ WTOREK (17.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/2970730173282777/  
@@ -236,6 +245,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (28.11.2026)  
 ➡️ Kraków: LOFToDANCE, DobraNocka Party (Bachata)  
 🔗 https://sklep.loftodance.pl/wydarzenie/dobranocka-party,1291  
+🗓️ SOBOTA (28.11.2026)  
+➡️ Kraków: ul. Falista 13 ul. Falista 13, Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku! (Salsa)  
+🔗 https://onlydanceapp.com/event/043c87008bf840fda026  
 🗓️ WTOREK (01.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1249676614905478/  
@@ -254,6 +266,9 @@ NIEDZIELA (25.10): Kraków - Teatro Cubano (Bachata)
 🗓️ SOBOTA (05.12.2026)  
 ➡️ Częstochowa: Częstotańcz, warsztaty Mambo New York Style On2 (Salsa On2)  
 🔗 https://www.facebook.com/events/1718027052710083/  
+🗓️ SOBOTA (05.12.2026)  
+➡️ Kraków: Love Catering Sp z o O Love Catering Sp z o O, IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12 (Salsa)  
+🔗 https://onlydanceapp.com/event/0842578e9fb546dcbcd5  
 🗓️ NIEDZIELA (06.12.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS–Mikołajki (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  

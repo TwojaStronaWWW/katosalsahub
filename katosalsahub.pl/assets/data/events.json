@@ -594,6 +594,27 @@
         "style": [
           "Salsa On2"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "Hotel i Restauracja Sahara Hotel i Restauracja Sahara",
+        "miejsceInne": "Hotel i Restauracja Sahara Hotel i Restauracja Sahara",
+        "adres": "",
+        "lat": 49.8224,
+        "lng": 19.0584,
+        "tytul": "Taneczna SOBOTA - start 20:00 &lt;3 (Hotel SAHARA",
+        "opis": "Taneczna SOBOTA -  start 20:00 &lt;3 (Hotel SAHARA, Bielsko-Biała) - PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 29.10",
+        "opisPubliczny": "Taneczna SOBOTA -  start 20:00 &lt;3 (Hotel SAHARA, Bielsko-Biała)",
+        "dateLabel": "SOBOTA (07.11.2026)",
+        "endDate": "2026-11-07",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/8a02904e0bb149ff82b2",
+        "style": [
+          "Kizomba"
+        ]
       }
     ]
   },
@@ -696,6 +717,29 @@
           "Bachata",
           "Sensual Impro"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "ulica Mikołowska 13A ulica Mikołowska 13A",
+        "miejsceInne": "ulica Mikołowska 13A ulica Mikołowska 13A",
+        "adres": "",
+        "lat": 50.2649,
+        "lng": 19.0238,
+        "tytul": "LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA",
+        "opis": "LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA - Szkoła Tańca Mil Pasos; OnlyDance; nowe w bazie 29.10",
+        "opisPubliczny": "LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA",
+        "dateLabel": "PIĄTEK–WTOREK (13–10.11.2026)",
+        "endDate": "2026-11-10",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/39e11c37b4df4dc1bc7b",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
       }
     ]
   },
@@ -764,6 +808,32 @@
         "style": [
           "Urban Kiz",
           "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-15",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "BACHATA – DARMOWE ZAJĘCIA POKAZOWE DLA SINGLI I PAR",
+        "opis": "BACHATA – DARMOWE ZAJĘCIA POKAZOWE DLA SINGLI I PAR - 17:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 29.10",
+        "opisPubliczny": "BACHATA – DARMOWE ZAJĘCIA POKAZOWE DLA SINGLI I PAR",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -1028,6 +1098,27 @@
         "style": [
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "ul. Falista 13 ul. Falista 13",
+        "miejsceInne": "ul. Falista 13 ul. Falista 13",
+        "adres": "",
+        "lat": 50.0647,
+        "lng": 19.945,
+        "tytul": "Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku!",
+        "opis": "Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku! - PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 29.10",
+        "opisPubliczny": "Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku!",
+        "dateLabel": "SOBOTA (28.11.2026)",
+        "endDate": "2026-11-28",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/043c87008bf840fda026",
+        "style": [
+          "Salsa"
+        ]
       }
     ]
   },
@@ -1174,6 +1265,27 @@
         "link": "https://www.facebook.com/events/1718027052710083/",
         "style": [
           "Salsa On2"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Love Catering Sp z o O Love Catering Sp z o O",
+        "miejsceInne": "Love Catering Sp z o O Love Catering Sp z o O",
+        "adres": "",
+        "lat": 50.0647,
+        "lng": 19.945,
+        "tytul": "IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12",
+        "opis": "IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12 - Forum Tańca; OnlyDance; nowe w bazie 29.10",
+        "opisPubliczny": "IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12",
+        "dateLabel": "SOBOTA (05.12.2026)",
+        "endDate": "2026-12-05",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/0842578e9fb546dcbcd5",
+        "style": [
+          "Salsa"
         ]
       }
     ]
