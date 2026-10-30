@@ -233,10 +233,38 @@ export function repairPostLineBreaks(rawText) {
 		.replace(/(https?:\/\/[^\s#]+)(#[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż0-9_]+)/gu, '$1\n\n$2')
 }
 
+function escapeHtmlForClipboard(str) {
+	return String(str || '')
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+}
+
 export function normalizeTextForFacebookClipboard(rawText) {
 	if (!rawText) return ''
-	const repaired = repairPostLineBreaks(rawText)
-	return repaired.replace(/\r?\n/g, '\r\n')
+	const repaired = repairPostLineBreaks(rawText).replace(/^---$/gm, '───')
+	return repaired
+		.split('\n')
+		.map(line => {
+			const trimmed = line.replace(/[\u2800\u200B]+/g, '').trim()
+			if (!trimmed) return '\u2800'
+			return `${trimmed} `
+		})
+		.join('\n')
+}
+
+export function buildFacebookClipboardHtml(rawText) {
+	if (!rawText) return ''
+	const repaired = repairPostLineBreaks(rawText).replace(/^---$/gm, '───')
+	return repaired
+		.split('\n')
+		.map(line => {
+			const trimmed = line.replace(/[\u2800\u200B]+/g, '').trim()
+			if (!trimmed) return '<p>\u2800</p>'
+			return `<p>${escapeHtmlForClipboard(trimmed)} </p>`
+		})
+		.join('')
 }
 
 export function formatMainPostBoldings(rawText) {
@@ -617,14 +645,18 @@ export async function zaladujRaportKSH(silent = true) {
 }
 
 export function copyPlainTextForFacebook(rawText) {
-	const normalized = normalizeTextForFacebookClipboard(rawText)
-	if (!normalized) return Promise.resolve(false)
+	const normalizedPlain = normalizeTextForFacebookClipboard(rawText)
+	const normalizedHtml = buildFacebookClipboardHtml(rawText)
+	if (!normalizedPlain) return Promise.resolve(false)
 
-	const fallbackCopy = () => {
+	const execCommandCopyWithHtml = () => {
 		const onCopy = e => {
 			if (e.clipboardData) {
 				e.preventDefault()
-				e.clipboardData.setData('text/plain', normalized)
+				e.clipboardData.setData('text/plain', normalizedPlain)
+				if (normalizedHtml) {
+					e.clipboardData.setData('text/html', normalizedHtml)
+				}
 			}
 		}
 		document.addEventListener('copy', onCopy, { once: true })
@@ -638,13 +670,37 @@ export function copyPlainTextForFacebook(rawText) {
 		}
 	}
 
+	if (
+		navigator.clipboard &&
+		typeof navigator.clipboard.write === 'function' &&
+		typeof window !== 'undefined' &&
+		typeof window.ClipboardItem === 'function'
+	) {
+		try {
+			const item = new window.ClipboardItem({
+				'text/plain': new Blob([normalizedPlain], { type: 'text/plain' }),
+				'text/html': new Blob([normalizedHtml], { type: 'text/html' }),
+			})
+			return navigator.clipboard
+				.write([item])
+				.then(() => true)
+				.catch(() => execCommandCopyWithHtml())
+		} catch {
+			/* fallback below */
+		}
+	}
+
+	if (execCommandCopyWithHtml()) {
+		return Promise.resolve(true)
+	}
+
 	if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
 		return navigator.clipboard
-			.writeText(normalized)
+			.writeText(normalizedPlain)
 			.then(() => true)
-			.catch(() => fallbackCopy())
+			.catch(() => false)
 	}
-	return Promise.resolve(fallbackCopy())
+	return Promise.resolve(false)
 }
 
 export function kopiujGotowyPost() {
