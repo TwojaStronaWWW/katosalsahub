@@ -455,10 +455,11 @@ export function generujPost() {
 
 	let weekendRangeLabel = ''
 	if (ptKey && ndKey) {
-		const ptDateMatch = ptKey.match(/\((\d{2})\.\d{2}\)/)
-		const ndDateMatch = ndKey.match(/\((\d{2}\.\d{2})\)/)
+		const ptDateMatch = ptKey.match(/\((\d{2})\.(\d{2})\)/)
+		const ndDateMatch = ndKey.match(/\((\d{2})\.(\d{2})\)/)
 		if (ptDateMatch && ndDateMatch) {
-			weekendRangeLabel = ` (${ptDateMatch[1]}-${ndDateMatch[1]})`
+			const ptPrefix = ptDateMatch[2] === ndDateMatch[2] ? ptDateMatch[1] : `${ptDateMatch[1]}.${ptDateMatch[2]}`
+			weekendRangeLabel = ` (${ptPrefix}-${ndDateMatch[1]}.${ndDateMatch[2]})`
 		}
 	}
 

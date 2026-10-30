@@ -68,6 +68,7 @@ jobs:
                 put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/schedule.json;
                 put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/events.json;
                 put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/latest_report.md;
+                put -O /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/ ./katosalsahub.pl/assets/data/events_database.md;
                 quit
               "
 

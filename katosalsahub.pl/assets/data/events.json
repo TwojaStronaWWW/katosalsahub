@@ -1,52 +1,5 @@
 [
   {
-    "date": "2026-10-29",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Forum Tańca",
-        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
-        "adres": "ul. Konopnickiej 29",
-        "lat": 50.0442,
-        "lng": 19.9348,
-        "tytul": "Urodzinowy Praktis Bachatowy Justyny w Forum Tańca",
-        "opis": "Urodzinowy Praktis Bachatowy Justyny w Forum Tańca - 22:35; Forum Tańca Kraków; nowe w bazie 20.10",
-        "opisPubliczny": "Urodzinowy Praktis Bachatowy Justyny w Forum Tańca",
-        "dateLabel": "CZWARTEK (29.10.2026)",
-        "endDate": "2026-10-29",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/2137456803520320/",
-        "style": [
-          "Bachata"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Tychy",
-        "miastoInne": "",
-        "miejsce": "Inne",
-        "miejsceInne": "Inne",
-        "adres": "",
-        "lat": 50.1275,
-        "lng": 18.9912,
-        "tytul": "Bachata Sensual Bodymovement & Footwork",
-        "opis": "Bachata Sensual Bodymovement & Footwork - 18:30; Inne; AirDancia; nowe w bazie 29.10",
-        "opisPubliczny": "Bachata Sensual Bodymovement & Footwork",
-        "dateLabel": "CZWARTEK (29.10.2026)",
-        "endDate": "2026-10-29",
-        "soldOut": false,
-        "link": "https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/",
-        "style": [
-          "Bachata"
-        ]
-      }
-    ]
-  },
-  {
     "date": "2026-10-30",
     "events": [
       {
@@ -173,8 +126,8 @@
         "miasto": "Katowice",
         "miastoInne": "",
         "miejsce": "Gravitacja",
-        "miejsceInne": "Gravitacja (Gliwicka 44)",
-        "adres": "Gliwicka 44",
+        "miejsceInne": "Gravitacja (ul. Gliwicka 44)",
+        "adres": "ul. Gliwicka 44",
         "lat": 50.2625,
         "lng": 19.006,
         "tytul": "Halloween Bachata Party–Día de los Muertos",
@@ -337,7 +290,7 @@
         "lat": 50.0389,
         "lng": 19.9412,
         "tytul": "🔥 Salsa Ladies Styling z Olą — dołącz do nas!",
-        "opis": "🔥 Salsa Ladies Styling z Olą — dołącz do nas! - 17:00; Salsa House; nowe w bazie 29.10",
+        "opis": "🔥 Salsa Ladies Styling z Olą — dołącz do nas! - 17:00; Salsa House; nowe w bazie 30.10",
         "opisPubliczny": "🔥 Salsa Ladies Styling z Olą — dołącz do nas!",
         "dateLabel": "WTOREK (03.11.2026)",
         "endDate": "2026-11-03",
@@ -345,32 +298,6 @@
         "link": "https://www.facebook.com/events/1167416399188344/",
         "style": [
           "Salsa"
-        ]
-      }
-    ]
-  },
-  {
-    "date": "2026-11-04",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Mil Pasos",
-        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
-        "adres": "ul. Kamienna 4",
-        "lat": 50.2569,
-        "lng": 19.0121,
-        "tytul": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55!",
-        "opis": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55! - 17:00; Szkoła Tańca Mil Pasos; nowe w bazie 29.10",
-        "opisPubliczny": "NOWE ZAJĘCIA REGULARNE – BACHATA MODERNA + PRAKTIS Z INSTRUKTORAMI! 4.11.26 - ŚRODA 18:00-20:55!",
-        "dateLabel": "ŚRODA (04.11.2026)",
-        "endDate": "2026-11-04",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1795418848397794/",
-        "style": [
-          "Bachata"
         ]
       }
     ]
@@ -600,14 +527,14 @@
         "promote": false,
         "miasto": "Bielsko-Biała",
         "miastoInne": "",
-        "miejsce": "Hotel i Restauracja Sahara Hotel i Restauracja Sahara",
-        "miejsceInne": "Hotel i Restauracja Sahara Hotel i Restauracja Sahara",
-        "adres": "",
-        "lat": 49.8224,
-        "lng": 19.0584,
-        "tytul": "Taneczna SOBOTA - start 20:00 &lt;3 (Hotel SAHARA",
-        "opis": "Taneczna SOBOTA -  start 20:00 &lt;3 (Hotel SAHARA, Bielsko-Biała) - PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 29.10",
-        "opisPubliczny": "Taneczna SOBOTA -  start 20:00 &lt;3 (Hotel SAHARA, Bielsko-Biała)",
+        "miejsce": "Hotel Sahara",
+        "miejsceInne": "Hotel Sahara (ul. Falista 13)",
+        "adres": "ul. Falista 13",
+        "lat": 49.7895,
+        "lng": 19.0185,
+        "tytul": "Taneczna SOBOTA - start 20:00 <3 (Hotel SAHARA",
+        "opis": "Taneczna SOBOTA - start 20:00 <3 (Hotel SAHARA, Bielsko-Biała) - PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 30.10",
+        "opisPubliczny": "Taneczna SOBOTA - start 20:00 <3 (Hotel SAHARA, Bielsko-Biała)",
         "dateLabel": "SOBOTA (07.11.2026)",
         "endDate": "2026-11-07",
         "soldOut": false,
@@ -717,29 +644,6 @@
           "Bachata",
           "Sensual Impro"
         ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "ulica Mikołowska 13A ulica Mikołowska 13A",
-        "miejsceInne": "ulica Mikołowska 13A ulica Mikołowska 13A",
-        "adres": "",
-        "lat": 50.2649,
-        "lng": 19.0238,
-        "tytul": "LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA",
-        "opis": "LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA - Szkoła Tańca Mil Pasos; OnlyDance; nowe w bazie 29.10",
-        "opisPubliczny": "LATINO SOCIAL PARTY vol. 13 - 10.11.2026 WTOREK! SALSA - BACHATA - KIZOMBA",
-        "dateLabel": "PIĄTEK–WTOREK (13–10.11.2026)",
-        "endDate": "2026-11-10",
-        "soldOut": false,
-        "link": "https://onlydanceapp.com/event/39e11c37b4df4dc1bc7b",
-        "style": [
-          "Salsa",
-          "Bachata",
-          "Kizomba"
-        ]
       }
     ]
   },
@@ -809,31 +713,26 @@
           "Urban Kiz",
           "Kizomba"
         ]
-      }
-    ]
-  },
-  {
-    "date": "2026-11-15",
-    "events": [
+      },
       {
         "checked": true,
         "promote": false,
-        "miasto": "Katowice",
+        "miasto": "Kraków",
         "miastoInne": "",
-        "miejsce": "Mil Pasos",
-        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
-        "adres": "ul. Kamienna 4",
-        "lat": 50.2569,
-        "lng": 19.0121,
-        "tytul": "BACHATA – DARMOWE ZAJĘCIA POKAZOWE DLA SINGLI I PAR",
-        "opis": "BACHATA – DARMOWE ZAJĘCIA POKAZOWE DLA SINGLI I PAR - 17:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 29.10",
-        "opisPubliczny": "BACHATA – DARMOWE ZAJĘCIA POKAZOWE DLA SINGLI I PAR",
-        "dateLabel": "NIEDZIELA (15.11.2026)",
-        "endDate": "2026-11-15",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (ul. Jana Zamoyskiego 79A/3)",
+        "adres": "ul. Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "NIKT NIE PYTAŁ",
+        "opis": "NIKT NIE PYTAŁ, KAŻDY POTRZEBOWAŁ – edycja II 🔥 - 10:00; Salsa House; nowe w bazie 30.10",
+        "opisPubliczny": "NIKT NIE PYTAŁ, KAŻDY POTRZEBOWAŁ – edycja II 🔥",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
         "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "link": "https://www.facebook.com/events/1429729902635413/",
         "style": [
-          "Bachata"
+          "Salsa"
         ]
       }
     ]
@@ -878,7 +777,7 @@
         "lat": 50.0658,
         "lng": 19.9595,
         "tytul": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition",
-        "opis": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition - Kamil Frączek; OnlyDance; nowe w bazie 29.10",
+        "opis": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition - Kamil Frączek; OnlyDance; nowe w bazie 30.10",
         "opisPubliczny": "🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition",
         "dateLabel": "PIĄTEK (20.11.2026)",
         "endDate": "2026-11-20",
@@ -992,7 +891,7 @@
         "lat": 50.2569,
         "lng": 19.0121,
         "tytul": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA",
-        "opis": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA - 13:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 29.10",
+        "opis": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA - 13:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 30.10",
         "opisPubliczny": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA",
         "dateLabel": "SOBOTA (21.11.2026)",
         "endDate": "2026-11-21",
@@ -1102,15 +1001,15 @@
       {
         "checked": true,
         "promote": false,
-        "miasto": "Kraków",
+        "miasto": "Bielsko-Biała",
         "miastoInne": "",
-        "miejsce": "ul. Falista 13 ul. Falista 13",
-        "miejsceInne": "ul. Falista 13 ul. Falista 13",
-        "adres": "",
-        "lat": 50.0647,
-        "lng": 19.945,
+        "miejsce": "Hotel Sahara",
+        "miejsceInne": "Hotel Sahara (ul. Falista 13)",
+        "adres": "ul. Falista 13",
+        "lat": 49.7895,
+        "lng": 19.0185,
         "tytul": "Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku!",
-        "opis": "Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku! - PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 29.10",
+        "opis": "Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku! - PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 30.10",
         "opisPubliczny": "Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku!",
         "dateLabel": "SOBOTA (28.11.2026)",
         "endDate": "2026-11-28",
@@ -1144,32 +1043,6 @@
         "link": "https://www.facebook.com/events/1249676614905478/",
         "style": [
           "Cubana"
-        ]
-      }
-    ]
-  },
-  {
-    "date": "2026-12-02",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Mil Pasos",
-        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
-        "adres": "ul. Kamienna 4",
-        "lat": 50.2569,
-        "lng": 19.0121,
-        "tytul": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
-        "opis": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026! - 20:00–21:55; Mil Pasos Kamienna 4; nowe w bazie 29.10",
-        "opisPubliczny": "ZAPISY NA kurs tańca dla SINGLI i PAR - BACHATA - kurs od zera! ŚRODY 20:00-21:55 od 2.12.2026!",
-        "dateLabel": "ŚRODA (02.12.2026)",
-        "endDate": "2026-12-02",
-        "soldOut": false,
-        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
-        "style": [
-          "Bachata"
         ]
       }
     ]
@@ -1272,13 +1145,13 @@
         "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
-        "miejsce": "Love Catering Sp z o O Love Catering Sp z o O",
-        "miejsceInne": "Love Catering Sp z o O Love Catering Sp z o O",
-        "adres": "",
-        "lat": 50.0647,
-        "lng": 19.945,
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
         "tytul": "IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12",
-        "opis": "IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12 - Forum Tańca; OnlyDance; nowe w bazie 29.10",
+        "opis": "IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12 - Forum Tańca; OnlyDance; nowe w bazie 30.10",
         "opisPubliczny": "IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12",
         "dateLabel": "SOBOTA (05.12.2026)",
         "endDate": "2026-12-05",
@@ -1312,6 +1185,32 @@
         "link": "https://www.facebook.com/events/1617716113426642/",
         "style": [
           "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-12",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN",
+        "opis": "BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN - 16:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 30.10",
+        "opisPubliczny": "BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN",
+        "dateLabel": "SOBOTA (12.12.2026)",
+        "endDate": "2026-12-12",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -1618,7 +1517,7 @@
         "lat": 50.0736,
         "lng": 19.9412,
         "tytul": "Krakow Bachazouk Weekend by LOFToDANCE",
-        "opis": "Krakow Bachazouk Weekend by LOFToDANCE - LOFToDANCE Łukasz Raś; OnlyDance; nowe w bazie 29.10",
+        "opis": "Krakow Bachazouk Weekend by LOFToDANCE - LOFToDANCE Łukasz Raś; OnlyDance; nowe w bazie 30.10",
         "opisPubliczny": "Krakow Bachazouk Weekend by LOFToDANCE",
         "dateLabel": "SOBOTA (06.03.2027)",
         "endDate": "2027-03-06",
@@ -1782,32 +1681,6 @@
         "link": "https://onlydanceapp.com/event/bDNi3yyIAnYKvujNV0fq",
         "style": [
           "Kizomba"
-        ]
-      }
-    ]
-  },
-  {
-    "date": "2027-12-31",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Forum Tańca",
-        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
-        "adres": "ul. Konopnickiej 29",
-        "lat": 50.0442,
-        "lng": 19.9348,
-        "tytul": "SYLWESTER w Forum Tańca! 2026/2027",
-        "opis": "SYLWESTER w Forum Tańca! 2026/2027 - Forum Tańca; OnlyDance; nowe w bazie 29.10",
-        "opisPubliczny": "SYLWESTER w Forum Tańca! 2026/2027",
-        "dateLabel": "PIĄTEK (31.12.2027)",
-        "endDate": "2027-12-31",
-        "soldOut": false,
-        "link": "https://onlydanceapp.com/event/d657e4d472494187a483",
-        "style": [
-          "Salsa"
         ]
       }
     ]

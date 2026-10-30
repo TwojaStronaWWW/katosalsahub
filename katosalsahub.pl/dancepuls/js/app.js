@@ -337,21 +337,29 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
 		if (value === 'weekend') {
-			let firstFridayIndex = null
-			let fridayCount = 0
+			const today = new Date()
+			today.setHours(0, 0, 0, 0)
+			const dayIndexFromMonday = (today.getDay() + 6) % 7
+			const monday = new Date(today)
+			monday.setDate(today.getDate() - dayIndexFromMonday)
 
-			dni.forEach((d, i) => {
-				if (d.dzienTygIndex === 5) {
-					fridayCount++
-					if (fridayCount === 1) firstFridayIndex = i
-				}
-			})
+			const toLocalYmd = dt => {
+				const yy = dt.getFullYear()
+				const mm = String(dt.getMonth() + 1).padStart(2, '0')
+				const dd = String(dt.getDate()).padStart(2, '0')
+				return `${yy}-${mm}-${dd}`
+			}
 
-			blocks.forEach((block, index) => {
-				let show = false
-				if (firstFridayIndex !== null) {
-					show = [firstFridayIndex, firstFridayIndex + 1, firstFridayIndex + 2].includes(index)
-				}
+			const fri = new Date(monday)
+			fri.setDate(monday.getDate() + 4)
+			const sat = new Date(monday)
+			sat.setDate(monday.getDate() + 5)
+			const sun = new Date(monday)
+			sun.setDate(monday.getDate() + 6)
+			const weekendYmds = new Set([toLocalYmd(fri), toLocalYmd(sat), toLocalYmd(sun)])
+
+			blocks.forEach(block => {
+				const show = weekendYmds.has(block.dataset.date)
 				block.classList.toggle('is-hidden', !show)
 			})
 		}
@@ -491,6 +499,20 @@ document.addEventListener('DOMContentLoaded', function () {
 		try {
 			const stan = JSON.parse(saved)
 
+			if (customStan) {
+				document.querySelectorAll('.day-block .event-container').forEach(container => {
+					const cb = container.querySelector('.toggle-checkbox')
+					if (cb) cb.checked = false
+					const prom = container.querySelector('.promowane')
+					if (prom) {
+						prom.checked = false
+						prom.parentElement?.classList.add('is-hidden')
+					}
+					container.querySelector('.checkboxes')?.classList.add('is-hidden')
+					container.querySelector('.event-block')?.classList.add('is-hidden')
+				})
+			}
+
 			stan.forEach(dayData => {
 				const targetBlock = ensureDayBlock(dayData.date)
 				if (!targetBlock) return
@@ -571,6 +593,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				})
 			})
 
+			applyFilter()
 			generujPost()
 			updateEventCounter()
 		} catch (e) {

@@ -8,6 +8,10 @@ const {
   expandSourceUrl,
   parseEventDateInfo,
   buildVenueAndStyleLabel,
+  computeWeekWindow,
+  rolloverSectionsByDate,
+  serializeDatabase,
+  parseDatabase,
   inferEventStyles,
   parseMilPasosEventsHtml,
   parseLoftodanceEventsHtml,
@@ -154,6 +158,60 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(deduped.length, 1);
       assert.match(deduped[0].styles, /Salsa/);
       assert.match(deduped[0].styles, /Bachata/);
+    });
+
+    it('funkcje computeWeekWindow, rolloverSectionsByDate oraz serializeDatabase powinny automatycznie rolować tydzień i weekend względem dzisiejszej daty', () => {
+      const week = computeWeekWindow('2026-10-30');
+      assert.strictEqual(week.mondayIso, '2026-10-26');
+      assert.strictEqual(week.thursdayIso, '2026-10-29');
+      assert.strictEqual(week.fridayIso, '2026-10-30');
+      assert.strictEqual(week.saturdayIso, '2026-10-31');
+      assert.strictEqual(week.sundayIso, '2026-11-01');
+      assert.strictEqual(week.weekendRange, '30.10–01.11.2026');
+      assert.strictEqual(week.weekendShort, '30.10-01.11');
+
+      const sampleMd = [
+        '# Baza Wydarzeń Kato Salsa Hub & DancePuls',
+        'Ostatnia aktualizacja: 24.10.2026 (Sobota)',
+        '',
+        '## OPIS POSTA (SEKCJA 2)',
+        'PIĄTEK|Stary opis piątku 23.10',
+        'SOBOTA|Stary opis soboty 24.10',
+        'NIEDZIELA|Stary opis niedzieli 25.10',
+        '',
+        '## BIEŻĄCY WEEKEND (23–25.10.2026)',
+        '25.10|WL|Salsa Habana Picante vol. 68|Cubana|F:891329324066083|KATO SALSA HUB; ⭐ własne wydarzenie',
+        '',
+        '## PN–CZ BIEŻĄCEGO TYGODNIA',
+        '20.10|ZW|Salsunia|Cubana|F:1968496233786036|VivaSalsa; dzień miniony',
+        '',
+        '## DALSZE TERMINY (KOLEJNE TYGODNIE)',
+        '28.10|MP|Upiorna nagrywka z Izabelą|Bachata|F:1614897007098369|Mil Pasos',
+        '31.10|LC|Halloween Salsa Party – Día de los Muertos|Cubana/Timba/Rueda/Kizomba/Bachata|F:1662179081913529|La Clave',
+        '07.11|MP|B Experience|Bachata|F:3128955417294577|Mil Pasos',
+        ''
+      ].join('\n');
+
+      const parsed = parseDatabase(sampleMd);
+      rolloverSectionsByDate(parsed, '2026-10-30');
+
+      assert.strictEqual(parsed.meta.weekendRange, '30.10–01.11.2026');
+      assert.strictEqual(parsed.meta.weekendShort, '30.10-01.11');
+      assert.strictEqual(parsed.archive.length, 2, 'Miniony tydzień (20.10 i 25.10) powinien trafić do archiwum');
+      assert.strictEqual(parsed.thisWeekMid.length, 1, 'Środa 28.10 powinna trafić do PN–CZ bieżącego tygodnia');
+      assert.strictEqual(parsed.thisWeekMid[0].rawDate, '28.10');
+      assert.match(parsed.thisWeekMid[0].notes, /dzień miniony/);
+      assert.strictEqual(parsed.currentWeekend.length, 1, 'Sobota 31.10 powinna awansować do BIEŻĄCEGO WEEKENDU');
+      assert.strictEqual(parsed.currentWeekend[0].rawDate, '31.10');
+      assert.strictEqual(parsed.future.length, 1, 'Sobota 07.11 powinna pozostać w DALSZYCH TERMINACH');
+      assert.doesNotMatch(parsed.postNarrative.SOBOTA, /Stary opis soboty 24\.10/, 'Stary opis narracyjny powinien zostać zastąpiony opisem nowego weekendu');
+      assert.match(parsed.postNarrative.SOBOTA, /La Clave/);
+
+      const serialized = serializeDatabase(parsed);
+      assert.match(serialized, /## BIEŻĄCY WEEKEND \(30\.10–01\.11\.2026\)/);
+      const reparsed = parseDatabase(serialized);
+      assert.strictEqual(reparsed.meta.weekendShort, '30.10-01.11');
+      assert.strictEqual(reparsed.currentWeekend.length, 1);
     });
   });
 

@@ -98,15 +98,15 @@ function buildVenueAndStyleLabel(event, sameDayVenueCount = 1) {
 }
 
 // 1. Fetch & Check Google Form Submissions
-async function checkFormSubmissions(existingDatabaseText) {
+async function checkFormSubmissions(existingDatabaseText, todayIso = getTodayIsoDate()) {
     console.log('🔍 [1/5] Sprawdzanie zgłoszeń z formularza Google (CSV)...');
     try {
         const csv = await fetchUrl(GOOGLE_SHEET_URL);
-        const lines = csv.split('\n').map(l => l.trim()).filter(l => l);
+        const lines = csv.split(/\r?\n/).map(l => l.trim()).filter(l => l);
         const submissions = [];
 
         for (let i = 1; i < lines.length; i++) {
-            const cols = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(',');
+            const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             const clean = cols.map(c => c.replace(/^"|"$/g, '').trim());
             if (clean.length >= 2) {
                 const timestamp = clean[0];
@@ -116,6 +116,12 @@ async function checkFormSubmissions(existingDatabaseText) {
 
                 if (!/^https?:\/\//i.test(link)) continue;
                 if (/202[0-5]|^\d{1,2}\.0[1-9]\.2026/.test(timestamp) || /202[0-5]|^\d{1,2}\.0[1-9]\.2026/.test(date)) {
+                    continue;
+                }
+                if (todayIso && /^\d{4}-\d{2}-\d{2}$/.test(date) && date < todayIso) {
+                    continue;
+                }
+                if (todayIso && /^\d{4}-\d{2}-\d{2}/.test(timestamp) && !date && timestamp.slice(0, 10) < todayIso) {
                     continue;
                 }
 
@@ -132,6 +138,85 @@ async function checkFormSubmissions(existingDatabaseText) {
         console.warn('   ⚠️ Nie udało się pobrać arkusza CSV:', e.message);
         return { submissions: [], newSubmissions: [] };
     }
+}
+
+const WEEKDAY_NAMES_TITLE = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+
+/**
+ * Wylicza okno czasowe bieżącego tygodnia (poniedziałek–niedziela) względem todayIso (YYYY-MM-DD).
+ * Od poniedziałku do niedzieli aktywnym weekendem jest piątek–niedziela tego samego tygodnia ISO.
+ */
+function computeWeekWindow(todayIso = getTodayIsoDate()) {
+    const [yStr, mStr, dStr] = String(todayIso || getTodayIsoDate()).split('-');
+    const y = parseInt(yStr, 10) || 2026;
+    const m = parseInt(mStr, 10) || 10;
+    const d = parseInt(dStr, 10) || 30;
+
+    const todayUtc = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+    const dayIndexFromMonday = (todayUtc.getUTCDay() + 6) % 7; // 0 = Pn ... 4 = Pt, 5 = Sb, 6 = Nd
+
+    const addDaysUtc = (base, delta) => {
+        const dt = new Date(base.getTime());
+        dt.setUTCDate(dt.getUTCDate() + delta);
+        return dt;
+    };
+    const toIso = (dt) => {
+        const yy = dt.getUTCFullYear();
+        const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
+        const dd = String(dt.getUTCDate()).padStart(2, '0');
+        return `${yy}-${mm}-${dd}`;
+    };
+    const toDM = (dt) => {
+        const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
+        const dd = String(dt.getUTCDate()).padStart(2, '0');
+        return `${dd}.${mm}`;
+    };
+
+    const mondayUtc = addDaysUtc(todayUtc, -dayIndexFromMonday);
+    const thursdayUtc = addDaysUtc(mondayUtc, 3);
+    const fridayUtc = addDaysUtc(mondayUtc, 4);
+    const saturdayUtc = addDaysUtc(mondayUtc, 5);
+    const sundayUtc = addDaysUtc(mondayUtc, 6);
+
+    const friD = String(fridayUtc.getUTCDate()).padStart(2, '0');
+    const friM = String(fridayUtc.getUTCMonth() + 1).padStart(2, '0');
+    const friY = fridayUtc.getUTCFullYear();
+
+    const sunD = String(sundayUtc.getUTCDate()).padStart(2, '0');
+    const sunM = String(sundayUtc.getUTCMonth() + 1).padStart(2, '0');
+    const sunY = sundayUtc.getUTCFullYear();
+
+    let weekendRange = '';
+    let weekendShort = '';
+    if (friY !== sunY) {
+        weekendRange = `${friD}.${friM}.${friY}–${sunD}.${sunM}.${sunY}`;
+        weekendShort = `${friD}.${friM}-${sunD}.${sunM}`;
+    } else if (friM !== sunM) {
+        weekendRange = `${friD}.${friM}–${sunD}.${sunM}.${sunY}`;
+        weekendShort = `${friD}.${friM}-${sunD}.${sunM}`;
+    } else {
+        weekendRange = `${friD}–${sunD}.${sunM}.${sunY}`;
+        weekendShort = `${friD}-${sunD}.${sunM}`;
+    }
+
+    const reportDate = `${String(d).padStart(2, '0')}.${String(m).padStart(2, '0')}.${y}`;
+    const reportWeekdayFull = WEEKDAY_NAMES_TITLE[todayUtc.getUTCDay()];
+
+    return {
+        todayIso: toIso(todayUtc),
+        reportDate,
+        reportWeekdayFull,
+        mondayIso: toIso(mondayUtc),
+        thursdayIso: toIso(thursdayUtc),
+        fridayIso: toIso(fridayUtc),
+        saturdayIso: toIso(saturdayUtc),
+        sundayIso: toIso(sundayUtc),
+        fridayDayMonth: toDM(fridayUtc),
+        saturdayDayMonth: toDM(saturdayUtc),
+        sundayDayMonth: toDM(sundayUtc),
+        weekendRange,
+        weekendShort
+    };
 }
 
 // 2. Parse events_database.md
@@ -173,7 +258,7 @@ function parseDatabase(mdContent) {
             return;
         } else if (line.startsWith('## BIEŻĄCY WEEKEND')) {
             currentSection = 'currentWeekend';
-            const rangeMatch = line.match(/\((\d{2}[–-]\d{2}\.\d{2})(?:\.(\d{4}))?\)/);
+            const rangeMatch = line.match(/\((\d{2}(?:\.\d{2})?[–-]\d{2}\.\d{2})(?:\.(\d{4}))?\)/);
             if (rangeMatch) {
                 const yr = rangeMatch[2] || '2026';
                 sections.meta.weekendRange = `${rangeMatch[1].replace('-', '–')}.${yr}`;
@@ -353,6 +438,32 @@ function generateEventsJson(sections, options = {}) {
     return finalJson;
 }
 
+const CITY_LOCATIVE_MAP = {
+    'Katowice': 'w Katowicach',
+    'Tychy': 'w Tychach',
+    'Gliwice': 'w Gliwicach',
+    'Bielsko-Biała': 'w Bielsku-Białej',
+    'Świętochłowice': 'w Świętochłowicach',
+    'Częstochowa': 'w Częstochowie',
+    'Bytom': 'w Bytomiu',
+    'Chorzów': 'w Chorzowie',
+    'Rybnik': 'w Rybniku',
+    'Sosnowiec': 'w Sosnowcu',
+    'Dąbrowa Górnicza': 'w Dąbrowie Górniczej',
+    'Zabrze': 'w Zabrzu',
+    'Siewierz': 'w Siewierzu',
+    'Tarnowskie Góry': 'w Tarnowskich Górach',
+    'Piekary Śląskie': 'w Piekarach Śląskich',
+    'Hucisko': 'w Hucisku',
+    'Szczyrk': 'w Szczyrku',
+    'Wisła': 'w Wiśle',
+    'Kraków': 'w Krakowie'
+};
+
+function cityInLocative(city = '') {
+    return CITY_LOCATIVE_MAP[city] || `w ${city}`;
+}
+
 function buildNaturalDayNarrative(dayEvents, dayName) {
     if (!dayEvents || dayEvents.length === 0) {
         return 'Na razie brak potwierdzonych ogłoszeń.';
@@ -378,14 +489,14 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
     if (kato.length === 0) {
         const altParts = [];
         if (region.length > 0) {
-            altParts.push(region.map(r => `w ${r.city} ${formatItem(r)}`).join(', '));
+            altParts.push(region.map(r => `${cityInLocative(r.city)} na ${formatItem(r)}`).join(', '));
         }
         if (krakow.length > 0) {
-            altParts.push(`w Krakowie ${krakow.map(formatItem).join(' oraz ')}`);
+            altParts.push(`w Krakowie na ${krakow.map(formatItem).join(' oraz ')}`);
         }
-        sentences.push(`W Katowicach ${dayName.toLowerCase()} jeszcze bez potwierdzonych ogłoszeń, ale potańczycie ${altParts.join(', a ')}.`);
+        sentences.push(`W Katowicach w ${dayName.toLowerCase()} jeszcze bez potwierdzonych ogłoszeń, ale potańczycie ${altParts.join(', a ')}.`);
     } else {
-        const katoText = kato.map(formatItem).join(', ');
+        const katoText = kato.map(formatItem).join(' oraz ');
         sentences.push(`W Katowicach czekają ${katoText}.`);
 
         const katoHasCubana = kato.some(e => /cubana|timba|son|casino/i.test(e.styles) && !/warsztat|kurs/i.test(e.title));
@@ -421,6 +532,175 @@ function countVenuesInDay(dayEvents) {
     return (ev) => counts.get(`${ev.city.toLowerCase()}::${ev.venue.toLowerCase()}`) || 1;
 }
 
+function compactSourceUrl(url = '') {
+    const trimmed = String(url || '').trim();
+    if (!trimmed) return '';
+    const fbMatch = trimmed.match(/^https?:\/\/(?:www\.)?facebook\.com\/events\/(\d+)\/?$/i);
+    if (fbMatch) return `F:${fbMatch[1]}`;
+    const odMatch = trimmed.match(/^https?:\/\/onlydanceapp\.com\/event\/([A-Za-z0-9_-]+)\/?$/i);
+    if (odMatch) return `O:${odMatch[1]}`;
+    return trimmed;
+}
+
+function compactVenueCode(ev) {
+    if (ev.rawVenue && VENUE_MAP[ev.rawVenue]) return ev.rawVenue;
+    for (const [code, entry] of Object.entries(VENUE_MAP)) {
+        if (code === 'MY') continue;
+        if (
+            ev.city &&
+            ev.venue &&
+            entry.city.toLowerCase() === ev.city.toLowerCase() &&
+            entry.venue.toLowerCase() === ev.venue.toLowerCase()
+        ) {
+            return code;
+        }
+    }
+    return ev.rawVenue || `${ev.city || 'Katowice'},${ev.venue || 'Inne'}`;
+}
+
+/**
+ * Automatyczna rotacja sekcji bazy względem dzisiejszej daty (todayIso).
+ * Przenosi zakończone tygodnie do archiwum, awansuje bieżący tydzień (Pn–Cz oraz Pt–Nd) z sekcji DALSZE TERMINY
+ * i odświeża narrację Sekcji 2 przy zmianie weekendu.
+ */
+function rolloverSectionsByDate(sections, todayIso = getTodayIsoDate()) {
+    const week = computeWeekWindow(todayIso);
+    const prevWeekendShort = sections.meta?.weekendShort || '';
+    const isNewWeekend = prevWeekendShort && prevWeekendShort !== week.weekendShort;
+
+    sections.meta = {
+        ...sections.meta,
+        reportDate: week.reportDate,
+        reportWeekdayFull: week.reportWeekdayFull,
+        weekendRange: week.weekendRange,
+        weekendShort: week.weekendShort,
+        ptDayMonth: week.fridayDayMonth,
+        sbDayMonth: week.saturdayDayMonth,
+        ndDayMonth: week.sundayDayMonth,
+        mondayIso: week.mondayIso,
+        thursdayIso: week.thursdayIso,
+        fridayIso: week.fridayIso,
+        saturdayIso: week.saturdayIso,
+        sundayIso: week.sundayIso
+    };
+
+    if (isNewWeekend) {
+        sections.postNarrative = {
+            PIĄTEK: '',
+            SOBOTA: '',
+            NIEDZIELA: ''
+        };
+    }
+
+    const allEvents = [
+        ...(sections.archive || []),
+        ...(sections.thisWeekMid || []),
+        ...(sections.currentWeekend || []),
+        ...(sections.future || [])
+    ];
+
+    const nextArchive = [];
+    const nextMid = [];
+    const nextWeekend = [];
+    const nextFuture = [];
+
+    for (const ev of allEvents) {
+        if (!ev) continue;
+        const startIso = ev.isoStartDate || '';
+        const endIso = ev.isoEndDate || startIso;
+        if (!startIso) {
+            nextFuture.push(ev);
+            continue;
+        }
+
+        if (endIso < week.mondayIso) {
+            nextArchive.push(ev);
+        } else if (startIso >= week.mondayIso && endIso <= week.thursdayIso) {
+            if (endIso < todayIso && !/dzie[nń]\s+miniony/i.test(ev.notes || '')) {
+                ev.notes = ev.notes ? `${ev.notes}; dzień miniony` : 'dzień miniony';
+            }
+            nextMid.push(ev);
+        } else if (startIso <= week.sundayIso && endIso >= week.fridayIso) {
+            nextWeekend.push(ev);
+        } else {
+            nextFuture.push(ev);
+        }
+    }
+
+    const bySortTs = (a, b) => (a.sortTimestamp || 0) - (b.sortTimestamp || 0);
+    sections.archive = deduplicateEvents(nextArchive).sort(bySortTs);
+    sections.thisWeekMid = deduplicateEvents(nextMid).sort(bySortTs);
+    sections.currentWeekend = deduplicateEvents(nextWeekend).sort(bySortTs);
+    sections.future = deduplicateEvents(nextFuture).sort(bySortTs);
+    sections.uncertain = deduplicateEvents(
+        (sections.uncertain || []).filter(u => {
+            const endIso = u.isoEndDate || u.isoStartDate || '';
+            return !endIso || endIso >= todayIso;
+        })
+    ).sort(bySortTs);
+
+    const fridayEvents = sections.currentWeekend.filter(e => e.weekdayPL === 'PIĄTEK');
+    const saturdayEvents = sections.currentWeekend.filter(e => e.weekdayPL === 'SOBOTA');
+    const sundayEvents = sections.currentWeekend.filter(e => e.weekdayPL === 'NIEDZIELA');
+
+    if (!sections.postNarrative) {
+        sections.postNarrative = { PIĄTEK: '', SOBOTA: '', NIEDZIELA: '' };
+    }
+    if (!sections.postNarrative.PIĄTEK) {
+        sections.postNarrative.PIĄTEK = buildNaturalDayNarrative(fridayEvents, 'piątek');
+    }
+    if (!sections.postNarrative.SOBOTA) {
+        sections.postNarrative.SOBOTA = buildNaturalDayNarrative(saturdayEvents, 'sobota');
+    }
+    if (!sections.postNarrative.NIEDZIELA) {
+        sections.postNarrative.NIEDZIELA = buildNaturalDayNarrative(sundayEvents, 'niedziela');
+    }
+
+    return sections;
+}
+
+/**
+ * Serializuje strukturę sections z powrotem do pliku katosalsahub.pl/assets/data/events_database.md
+ */
+function serializeDatabase(sections) {
+    const meta = sections.meta || computeWeekWindow(getTodayIsoDate());
+    const weekdayLabel = meta.reportWeekdayFull ? ` (${meta.reportWeekdayFull})` : '';
+    const formatRow = (ev) => {
+        const venueField = compactVenueCode(ev);
+        const urlField = compactSourceUrl(ev.url);
+        const notesField = (ev.notes || '').trim();
+        return `${ev.rawDate}|${venueField}|${ev.title}|${ev.styles}|${urlField}|${notesField}`;
+    };
+
+    const lines = [
+        '# Baza Wydarzeń Kato Salsa Hub & DancePuls',
+        `Ostatnia aktualizacja: ${meta.reportDate}${weekdayLabel}`,
+        '',
+        '## OPIS POSTA (SEKCJA 2)',
+        `PIĄTEK|${sections.postNarrative?.PIĄTEK || 'Na razie brak potwierdzonych ogłoszeń.'}`,
+        `SOBOTA|${sections.postNarrative?.SOBOTA || 'Na razie brak potwierdzonych ogłoszeń.'}`,
+        `NIEDZIELA|${sections.postNarrative?.NIEDZIELA || 'Na razie brak potwierdzonych ogłoszeń.'}`,
+        '',
+        `## BIEŻĄCY WEEKEND (${meta.weekendRange})`,
+        ...(sections.currentWeekend || []).map(formatRow),
+        '',
+        '## PN–CZ BIEŻĄCEGO TYGODNIA',
+        ...(sections.thisWeekMid || []).map(formatRow),
+        '',
+        '## DALSZE TERMINY (KOLEJNE TYGODNIE)',
+        ...(sections.future || []).map(formatRow),
+        '',
+        '## NIEPEWNE TROPY (POZA PUBLIKACJĄ)',
+        ...(sections.uncertain || []).map(formatRow),
+        '',
+        '## ARCHIWUM MINIONE',
+        ...(sections.archive || []).map(formatRow),
+        ''
+    ];
+
+    return lines.join('\n');
+}
+
 // 4. Generate the 6-Section Weekly Report
 function generateWeeklyReport(sections, newSubmissions = []) {
     console.log('📝 [4/5] Generowanie pełnego 6-sekcyjnego raportu Kato Salsa Hub...');
@@ -448,9 +728,14 @@ function generateWeeklyReport(sections, newSubmissions = []) {
         });
     }
 
-    const ptDateLabel = fridayEvents[0]?.startDayMonth || weekendShortStr.split('-')[0] + '.' + weekendShortStr.split('.')[1];
-    const sbDateLabel = saturdayEvents[0]?.startDayMonth || '';
-    const ndDateLabel = sundayEvents[0]?.startDayMonth || weekendShortStr.split('-')[1];
+    const ptDateLabel =
+        fridayEvents[0]?.startDayMonth ||
+        meta.ptDayMonth ||
+        (weekendShortStr.split('-')[0].includes('.')
+            ? weekendShortStr.split('-')[0]
+            : weekendShortStr.split('-')[0] + '.' + weekendShortStr.split('.')[1]);
+    const sbDateLabel = saturdayEvents[0]?.startDayMonth || meta.sbDayMonth || '';
+    const ndDateLabel = sundayEvents[0]?.startDayMonth || meta.ndDayMonth || weekendShortStr.split('-')[1];
 
     const getPtVenueCount = countVenuesInDay(fridayEvents);
     const getSbVenueCount = countVenuesInDay(saturdayEvents);
@@ -635,8 +920,9 @@ async function main() {
     const args = process.argv.slice(2);
     const todayIso = getTodayIsoDate();
     const dbText = fs.readFileSync(DB_PATH, 'utf8');
-    const { newSubmissions } = await checkFormSubmissions(dbText);
+    const { newSubmissions } = await checkFormSubmissions(dbText, todayIso);
     const sections = parseDatabase(dbText);
+    rolloverSectionsByDate(sections, todayIso);
 
     const shouldScanRemote = !args.includes('--no-remote') && !process.env.CI;
     if (shouldScanRemote || args.includes('--check-remote') || args.includes('--fb')) {
@@ -715,7 +1001,7 @@ async function main() {
                 address: loc.address,
                 lat: loc.lat,
                 lng: loc.lng,
-                rawVenue: ev.venueCode || ev.venue,
+                rawVenue: compactVenueCode({ city: loc.city, venue: loc.venue, rawVenue: ev.venueCode || ev.venue }),
                 title: ev.title,
                 styles: ev.styles,
                 url: ev.url,
@@ -723,23 +1009,14 @@ async function main() {
                 isKSH: Boolean(ev.isKSH)
             };
 
-            const weekendDates = new Set(sections.currentWeekend.map(w => w.isoStartDate).filter(Boolean));
-            if (weekendDates.has(newEntry.isoStartDate)) {
-                sections.currentWeekend.push(newEntry);
-            } else {
-                const maxWeekendIso = Array.from(weekendDates).sort().pop() || '';
-                if (maxWeekendIso && newEntry.isoStartDate >= todayIso && newEntry.isoStartDate < maxWeekendIso && !['PIĄTEK', 'SOBOTA', 'NIEDZIELA'].includes(newEntry.weekdayPL)) {
-                    sections.thisWeekMid.push(newEntry);
-                } else {
-                    sections.future.push(newEntry);
-                }
-            }
+            sections.future.push(newEntry);
             allKnown.push(newEntry);
         }
-        sections.thisWeekMid = deduplicateEvents(sections.thisWeekMid);
-        sections.currentWeekend = deduplicateEvents(sections.currentWeekend);
-        sections.future = deduplicateEvents(sections.future).sort((a, b) => (a.sortTimestamp || 0) - (b.sortTimestamp || 0));
+        rolloverSectionsByDate(sections, todayIso);
     }
+
+    writeFileAtomically(DB_PATH, serializeDatabase(sections));
+    console.log(`   💾 Zaktualizowano bazę źródłową: ${DB_PATH}`);
 
     generateEventsJson(sections, { minDateIso: todayIso });
     generateWeeklyReport(sections, newSubmissions);
@@ -757,6 +1034,11 @@ if (require.main === module) {
 module.exports = {
     main,
     getTodayIsoDate,
+    computeWeekWindow,
+    rolloverSectionsByDate,
+    serializeDatabase,
+    compactSourceUrl,
+    compactVenueCode,
     parseDatabase,
     parseEventDateInfo,
     expandSourceUrl,

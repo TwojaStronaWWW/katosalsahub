@@ -228,6 +228,8 @@ function decodeHtmlEntities(str = '') {
             try { return String.fromCodePoint(parseInt(dec, 10)); } catch { return ''; }
         })
         .replace(/&amp;/gi, '&')
+        .replace(/&lt;/gi, '<')
+        .replace(/&gt;/gi, '>')
         .replace(/&quot;/gi, '"')
         .replace(/&#8211;|&ndash;/gi, '–')
         .replace(/&#8212;|&mdash;/gi, '—')
@@ -285,6 +287,9 @@ function parseMilPasosEventsHtml(html = '') {
         const startTime = rangeMatch[3];
         const endTime = rangeMatch[5] || '';
         const rawTitle = lines[i - 1] || 'Wydarzenie w Mil Pasos';
+        if (/\b(zaj[eę]cia\s+regularne|zapisy\s+na\s+kurs|kurs\s+od\s+zera|darmowe\s+zaj[eę]cia\s+pokazowe)\b/i.test(rawTitle)) {
+            continue;
+        }
         const cleanTitle = rawTitle
             .replace(/\s*(?:[-|–]|\b(?:sobota|piątek|niedziela|środa|czwartek|wtorek|poniedziałek))\s*(?:sobota|piątek|niedziela|środa|czwartek|wtorek|poniedziałek)?\s*\d{1,2}\.\d{1,2}(?:\.\d{2,4})?.*$/i, '')
             .replace(/\s*\|\s*.*$/, '')
@@ -480,7 +485,7 @@ function parseKrajownikEventsHtml(html = '', defaultCity = 'Katowice') {
     };
 
     const danceRegex = /\b(sals[ayę]|bachat[ayę]|kizomb[ayę]|cuban[ay]?|timbeando|timb[ay]|rueda|son\s+cubano|urbankiz|urban\s*kiz|sensual\s+impro|habana|la\s+clave|mil\s+pasos|good\s*mood|gravitacja|sabrosa|forum\s+ta[nń]ca|loftodance|danceloveit|alldance|pachanguero|havana\s+dance|kizlab|teatro\s+cubano)\b/i;
-    const excludeRegex = /\b(salsation|zumba\s+kids|zouk\s+solo|west\s+coast\s+swing|kurs\s+regularny|kursy?\s+ta[nń]ca\s+od\s+zera|od\s+zera\s+z\s+|3x45min|w\s+parach\s+od\s+podstaw|solo\s+footwork\s*&\s*styling\s+z\s+klaudi|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
+    const excludeRegex = /\b(salsation|zumba\s+kids|zouk\s+solo|west\s+coast\s+swing|zaj[eę]cia\s+regularne|kurs\s+regularny|kursy?\s+ta[nń]ca\s+od\s+zera|od\s+zera\s+z\s+|3x45min|w\s+parach\s+od\s+podstaw|solo\s+footwork\s*&\s*styling\s+z\s+klaudi|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
 
     const matches = [...src.matchAll(/href=["']([^"']*\/wydarzenia\/[a-z0-9-]+-\d+)["'][^>]*>([\s\S]*?)<\/a>/gi)];
     const results = [];
@@ -626,7 +631,9 @@ function parseSabakiEventsHtml(html = '', defaultCity = 'Katowice') {
                 const rawTitle = decodeHtmlEntities(String(ev.alternateName || ev.name || '').trim());
                 if (!rawTitle) continue;
 
-                const isRegularClass = regularClassRegex.test(rawTitle) && !specialEventOverrideRegex.test(rawTitle);
+                const isRegularClass =
+                    /\bzaj[eę]cia\s+regularne\b/i.test(rawTitle) ||
+                    (regularClassRegex.test(rawTitle) && !specialEventOverrideRegex.test(rawTitle));
                 if (isRegularClass) continue;
 
                 const startIsoMatch = String(ev.startDate || '').match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}:\d{2}))?/);
@@ -713,11 +720,16 @@ function parseOnlyDanceEventsHtml(html = '', defaultCity = 'Katowice') {
         seenUrls.add(url);
         const day = String(dayRaw).padStart(2, '0');
         const monthNum = parseInt(month, 10);
-        const year = /2027|'27\b/.test(combined) || monthNum <= 9 ? 2027 : 2026;
+        const hasExplicit2027 = /(?<!2026\s*\/\s*)\b2027\b|'27\b/.test(combined);
+        const year = hasExplicit2027 || monthNum <= 9 ? 2027 : 2026;
 
         let rawDate = year === 2026 ? `${day}.${month}` : `${day}.${month}.${year}`;
         const rangeInTitle = rawTitle.match(/\b(\d{1,2})\s*[\/–-]\s*(\d{1,2})\.(\d{2})(?:\.(\d{4}))?\b/);
-        if (rangeInTitle) {
+        if (
+            rangeInTitle &&
+            parseInt(rangeInTitle[1], 10) < parseInt(rangeInTitle[2], 10) &&
+            !/(?:vol\.?|#)\s*$/i.test(rawTitle.slice(0, rangeInTitle.index))
+        ) {
             const d1 = String(rangeInTitle[1]).padStart(2, '0');
             const d2 = String(rangeInTitle[2]).padStart(2, '0');
             const rm = rangeInTitle[3];
@@ -730,7 +742,7 @@ function parseOnlyDanceEventsHtml(html = '', defaultCity = 'Katowice') {
         else if (/feeltheflow/i.test(combined)) resolvedCity = 'Hucisko';
         else if (/\btychy\b|mohito\s+tychy/i.test(combined)) resolvedCity = 'Tychy';
         else if (/\bgliwice\b|gliwickie|mohito\s+gliwice/i.test(combined)) resolvedCity = 'Gliwice';
-        else if (/bielsko|alldance/i.test(combined)) resolvedCity = 'Bielsko-Biała';
+        else if (/bielsko|bielsku|alldance|sahar[ay]|danceloveit|corazon/i.test(combined)) resolvedCity = 'Bielsko-Biała';
         else if (/krak[oó]w|cracow|cracovia|forum\s+ta[nń]ca|sabrosa|loftodance|vivasalsa|teatro\s+cubano|panorama|frenzyshot/i.test(combined)) resolvedCity = 'Kraków';
 
         const orgPart = subtitle.split('·')[1]?.trim() || '';
