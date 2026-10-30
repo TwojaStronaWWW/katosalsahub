@@ -213,6 +213,25 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(reparsed.meta.weekendShort, '30.10-01.11');
       assert.strictEqual(reparsed.currentWeekend.length, 1);
     });
+
+    it('formatMainPostBoldings oraz normalizeTextForFacebookClipboard zachowują naturalną czcionkę, akapity i nie rozbijają par surogatowych emoji (📍📅👉)', async () => {
+      const postGenUrl = require('url').pathToFileURL(
+        path.join(__dirname, '..', '..', 'katosalsahub.pl', 'dancepuls', 'js', 'post-generator.js')
+      ).href;
+      const { formatMainPostBoldings, normalizeTextForFacebookClipboard } = await import(postGenUrl);
+
+      const sampleRaw = '🎉 𝐆𝐝𝐳𝐢𝐞 𝐭𝐚𝐧́𝐜𝐳𝐲𝐦𝐲 𝐰 𝐭𝐞𝐧 𝐰𝐞𝐞𝐤𝐞𝐧𝐝? (𝟑𝟎.𝟏𝟎-𝟎𝟏.𝟏𝟏)\n\n🗓️ 𝐏𝐈𝐀̨𝐓𝐄𝐊\nOpis piątku.\n\n🗓️ 𝐒𝐎𝐁𝐎𝐓𝐀\nOpis soboty.\n\n🗓️ 𝐍𝐈𝐄𝐃𝐙𝐈𝐄𝐋𝐀\nOpis niedzieli.';
+      const pass1 = formatMainPostBoldings(sampleRaw);
+      const pass2 = formatMainPostBoldings(pass1);
+      const clip = normalizeTextForFacebookClipboard(pass2);
+
+      assert.ok(clip.includes('🎉 Gdzie tańczymy w ten weekend? (30.10-01.11)'), 'Powinno przywrócić naturalną czcionkę w nagłówku');
+      assert.ok(clip.includes('🗓️ PIĄTEK\r\nOpis piątku.'), 'Powinno zachować naturalny nagłówek PIĄTEK i znak nowej linii CRLF');
+      assert.ok(clip.includes('📍 Interaktywna mapa miejscówek'), 'Emoji 📍 nie może zostać rozbite na znaki zastępcze');
+      assert.ok(clip.includes('📅 Aktualny rozkład wszystkich kursów'), 'Emoji 📅 nie może zostać rozbite na znaki zastępcze');
+      assert.ok(clip.includes('👉 https://katosalsahub.pl/'), 'Emoji 👉 nie może zostać rozbite na znaki zastępcze');
+      assert.ok(!clip.includes('\uFFFD'), 'Tekst nie może zawierać znaków zastępczych U+FFFD');
+    });
   });
 
   describe('Kato Salsa Hub - salsopedia.json', () => {

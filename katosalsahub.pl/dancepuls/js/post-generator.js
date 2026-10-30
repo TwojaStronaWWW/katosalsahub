@@ -220,13 +220,17 @@ export function repairPostLineBreaks(rawText) {
 	if (!rawText) return ''
 	return stripMathBoldUnicode(rawText)
 		.replace(/\r\n/g, '\n')
-		.replace(/([^\n])\s*(🗓️\s*(?:PIĄTEK|SOBOTA|NIEDZIELA))/g, '$1\n\n$2')
-		.replace(/(🗓️\s*(?:PIĄTEK|SOBOTA|NIEDZIELA)(?:\s*\([^)\n]+\))?:?)[ \t]*([^\n\s])/g, '$1\n$2')
-		.replace(/([^\n])\s*(---\s*\n?\s*🌴)/g, '$1\n\n$2')
-		.replace(/(---\s*)([^\n\s])/g, '---\n$2')
-		.replace(/(🌴\s*SALSA KATOWICE\s*[–-]\s*KATO SALSA HUB\s*🌴)[ \t]*([^\n])/g, '$1\n$2')
-		.replace(/([^\n])\s*([📍📅👉]\s)/g, '$1\n$2')
-		.replace(/(https?:\/\/[^\s#]+)(#[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż0-9_]+)/g, '$1\n\n$2')
+		.replace(/(?:[\uD800-\uDBFF\uFFFD]\n[\uDC00-\uDFFF\uFFFD])\s*(Interaktywna mapa)/gu, '📍 $1')
+		.replace(/(?:[\uD800-\uDBFF\uFFFD]\n[\uDC00-\uDFFF\uFFFD])\s*(Aktualny rozkład)/gu, '📅 $1')
+		.replace(/(?:[\uD800-\uDBFF\uFFFD]\n[\uDC00-\uDFFF\uFFFD])\s*(https?:\/\/)/gu, '👉 $1')
+		.replace(/([^\n])[ \t]*(🗓️[ \t]*(?:PIĄTEK|SOBOTA|NIEDZIELA))/gu, '$1\n\n$2')
+		.replace(/(🗓️[ \t]*(?:PIĄTEK|SOBOTA|NIEDZIELA)(?:[ \t]*\([^)\n]+\))?:?)[ \t]+([^\n])/gu, '$1\n$2')
+		.replace(/(🗓️[ \t]*(?:PIĄTEK|SOBOTA|NIEDZIELA))(?=[A-ZĄĆĘŁŃÓŚŹŻ])/gu, '$1\n')
+		.replace(/([^\n])[ \t]*(---[ \t]*\n?[ \t]*🌴)/gu, '$1\n\n$2')
+		.replace(/(---)[ \t]*([^\n\r-])/gu, '$1\n$2')
+		.replace(/(🌴[ \t]*SALSA KATOWICE[ \t]*[–-][ \t]*KATO SALSA HUB[ \t]*🌴)[ \t]*([^\n])/gu, '$1\n$2')
+		.replace(/([^\n])[ \t]*((?:📍|📅|👉)[ \t])/gu, '$1\n$2')
+		.replace(/(https?:\/\/[^\s#]+)(#[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż0-9_]+)/gu, '$1\n\n$2')
 }
 
 export function normalizeTextForFacebookClipboard(rawText) {

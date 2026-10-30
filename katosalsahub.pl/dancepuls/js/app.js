@@ -20,7 +20,7 @@ import {
 	kopiujCalaAnkiete,
 	flashCopiedButton,
 	normalizeTextForFacebookClipboard,
-} from './post-generator.js?v=20261030_v1'
+} from './post-generator.js?v=20261030_v2'
 
 function getDragAfterElement(container, y) {
 	const draggableElements = [...container.querySelectorAll('.event-container:not(.dragging)')]
