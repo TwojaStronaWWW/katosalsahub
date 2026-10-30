@@ -20,8 +20,7 @@ import {
 	kopiujCalaAnkiete,
 	flashCopiedButton,
 	normalizeTextForFacebookClipboard,
-	buildFacebookClipboardHtml,
-} from './post-generator.js?v=20261030_v3'
+} from './post-generator.js?v=20261030_v4'
 
 function getDragAfterElement(container, y) {
 	const draggableElements = [...container.querySelectorAll('.event-container:not(.dragging)')]
@@ -457,7 +456,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (!rawSelected) return
 			e.preventDefault()
 			e.clipboardData.setData('text/plain', normalizeTextForFacebookClipboard(rawSelected))
-			e.clipboardData.setData('text/html', buildFacebookClipboardHtml(rawSelected))
 		})
 	})
 

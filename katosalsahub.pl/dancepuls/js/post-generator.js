@@ -646,17 +646,13 @@ export async function zaladujRaportKSH(silent = true) {
 
 export function copyPlainTextForFacebook(rawText) {
 	const normalizedPlain = normalizeTextForFacebookClipboard(rawText)
-	const normalizedHtml = buildFacebookClipboardHtml(rawText)
 	if (!normalizedPlain) return Promise.resolve(false)
 
-	const execCommandCopyWithHtml = () => {
+	const execCommandCopyPlain = () => {
 		const onCopy = e => {
 			if (e.clipboardData) {
 				e.preventDefault()
 				e.clipboardData.setData('text/plain', normalizedPlain)
-				if (normalizedHtml) {
-					e.clipboardData.setData('text/html', normalizedHtml)
-				}
 			}
 		}
 		document.addEventListener('copy', onCopy, { once: true })
@@ -670,37 +666,13 @@ export function copyPlainTextForFacebook(rawText) {
 		}
 	}
 
-	if (
-		navigator.clipboard &&
-		typeof navigator.clipboard.write === 'function' &&
-		typeof window !== 'undefined' &&
-		typeof window.ClipboardItem === 'function'
-	) {
-		try {
-			const item = new window.ClipboardItem({
-				'text/plain': new Blob([normalizedPlain], { type: 'text/plain' }),
-				'text/html': new Blob([normalizedHtml], { type: 'text/html' }),
-			})
-			return navigator.clipboard
-				.write([item])
-				.then(() => true)
-				.catch(() => execCommandCopyWithHtml())
-		} catch {
-			/* fallback below */
-		}
-	}
-
-	if (execCommandCopyWithHtml()) {
-		return Promise.resolve(true)
-	}
-
 	if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
 		return navigator.clipboard
 			.writeText(normalizedPlain)
 			.then(() => true)
-			.catch(() => false)
+			.catch(() => execCommandCopyPlain())
 	}
-	return Promise.resolve(false)
+	return Promise.resolve(execCommandCopyPlain())
 }
 
 export function kopiujGotowyPost() {
