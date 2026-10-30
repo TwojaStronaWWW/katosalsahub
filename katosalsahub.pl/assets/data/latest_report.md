@@ -1,15 +1,17 @@
 ## 1. PRYWATNIE — raport na 30.10.2026
 - **Stan zestawienia na weekend 30.10–01.11.2026:** **11 pozycji** (4 pt + 7 sb + 0 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **59 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **61 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (30.10 — 9 pozycji, data publikacji nieustalona):**
+- **Nowości w bazie z ostatniego sprawdzenia (30.10 — 11 pozycji, data publikacji nieustalona):**
   - **🔥 Salsa Ladies Styling z Olą — dołącz do nas!** | 03.11.2026 | Kraków, Salsa House | Salsa | https://www.facebook.com/events/1167416399188344/
+  - **Bachata Sensual Bodymovement & Footwork** | 05.11.2026 | Tychy, Inne | Bachata | https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/
   - **Taneczna SOBOTA - start 20:00 <3 (Hotel SAHARA, Bielsko-Biała)** | 07.11.2026 | Bielsko-Biała, Hotel Sahara | Kizomba | https://onlydanceapp.com/event/8a02904e0bb149ff82b2
   - **NIKT NIE PYTAŁ, KAŻDY POTRZEBOWAŁ – edycja II 🔥** | 14.11.2026 | Kraków, Salsa House | Salsa | https://www.facebook.com/events/1429729902635413/
   - **🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition** | 20.11.2026 | Kraków, Sabrosa Dance Studio | Bachata | https://onlydanceapp.com/event/1IxV1niQxq3245xiTu4H
   - **SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA** | 21.11.2026 | Katowice, Mil Pasos | Salsa/Bachata/Kizomba | https://www.milpasoskatowice.pl/?page=wydarzenia
   - **Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku!** | 28.11.2026 | Bielsko-Biała, Hotel Sahara | Salsa | https://onlydanceapp.com/event/043c87008bf840fda026
   - **IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12** | 05.12.2026 | Kraków, Forum Tańca | Salsa | https://onlydanceapp.com/event/0842578e9fb546dcbcd5
+  - **ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną** | 05.12.2026 | Katowice, Mil Pasos | Bachata | https://www.milpasoskatowice.pl/?page=wydarzenia
   - **BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN** | 12.12.2026 | Katowice, Mil Pasos | Bachata | https://www.milpasoskatowice.pl/?page=wydarzenia
   - **Krakow Bachazouk Weekend by LOFToDANCE** | 06.03.2027 | Kraków, LOFToDANCE | Bachata | https://onlydanceapp.com/event/323703c89e6c4e9099c7
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
@@ -100,6 +102,9 @@ SOBOTA (31.10): Kraków - Party House (Salsa/Bachata/Kizomba)
 🗓️ WTOREK (03.11.2026)  
 ➡️ Kraków: Salsa House, 🔥 Salsa Ladies Styling z Olą — dołącz do nas! (Salsa)  
 🔗 https://www.facebook.com/events/1167416399188344/  
+🗓️ CZWARTEK (05.11.2026)  
+➡️ Tychy: Inne, Bachata Sensual Bodymovement & Footwork (Bachata)  
+🔗 https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/  
 🗓️ PIĄTEK (06.11.2026)  
 ➡️ Częstochowa: Częstotańcz, Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca (Salsa On2/Bachata)  
 🔗 https://www.facebook.com/events/2311106856407049/  
@@ -211,6 +216,9 @@ SOBOTA (31.10): Kraków - Party House (Salsa/Bachata/Kizomba)
 🗓️ SOBOTA (05.12.2026)  
 ➡️ Kraków: Forum Tańca, IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12 (Salsa)  
 🔗 https://onlydanceapp.com/event/0842578e9fb546dcbcd5  
+🗓️ SOBOTA (05.12.2026)  
+➡️ Katowice: Mil Pasos, ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ NIEDZIELA (06.12.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS–Mikołajki (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  

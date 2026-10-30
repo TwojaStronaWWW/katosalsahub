@@ -26,6 +26,7 @@ NIEDZIELA|W niedzielę (1 listopada – Wszystkich Świętych) szkoły tańca i 
 ## DALSZE TERMINY (KOLEJNE TYGODNIE)
 03.11|ZW|Salsunia|Cubana|F:1083906274387790|VivaSalsa
 03.11|Kraków,Salsa House|🔥 Salsa Ladies Styling z Olą — dołącz do nas!|Salsa|F:1167416399188344|17:00; Salsa House; nowe w bazie 30.10
+05.11|Tychy,Inne|Bachata Sensual Bodymovement & Footwork|Bachata|https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/|18:30; Inne; AirDancia; nowe w bazie 30.10
 06.11|Częstochowa,Częstotańcz,Spółdzielczości4|Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca|Salsa On2/Bachata|F:2311106856407049|20:30; Częstotańcz Częstochowa; nowe w bazie 24.10
 06.11|MY,Panorama Forum,Konopnickiej28|Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia|Bachata|O:cEgGXQdo6UgY6u5z5CyB|Mykhailo Burdeinyi; nowe w bazie 20.10
 07.11|MP|B Experience,zajęcia specjalne i praktis|Bachata|F:3128955417294577|16:00 zajęcia, 20:00 praktis; Mil Pasos; uzupełniono bezpośredni link FB 20.10
@@ -63,6 +64,7 @@ NIEDZIELA|W niedzielę (1 listopada – Wszystkich Świętych) szkoły tańca i 
 05–06.12|KL|Kiz Lab Bootcamp – Mikołajki|Urban Kiz/Kizomba|O:fa5EdCe9eacVuBpAlY8x|Koda_inc / KIZLAB Katowice; nowe w bazie 20.10
 05.12|Częstochowa,Częstotańcz,Spółdzielczości4|warsztaty Mambo New York Style On2|Salsa On2|F:1718027052710083|Częstotańcz; nowe w bazie 20.10
 05.12|FT|IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12|Salsa|O:0842578e9fb546dcbcd5|Forum Tańca; OnlyDance; nowe w bazie 30.10
+05.12|MP|ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|18:00–21:00; Mil Pasos Kamienna 4; nowe w bazie 30.10
 06.12|KL|KIZLAB SUNDAYS–Mikołajki|Kizomba|F:1617716113426642|KIZLAB; edycja mikołajkowa, program TBA
 12.12|MP|BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|16:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 30.10
 15.12|ZW|Salsunia|Cubana|F:1105058955723288|VivaSalsa

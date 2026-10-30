@@ -303,6 +303,32 @@
     ]
   },
   {
+    "date": "2026-11-05",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tychy",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.1275,
+        "lng": 18.9912,
+        "tytul": "Bachata Sensual Bodymovement & Footwork",
+        "opis": "Bachata Sensual Bodymovement & Footwork - 18:30; Inne; AirDancia; nowe w bazie 30.10",
+        "opisPubliczny": "Bachata Sensual Bodymovement & Footwork",
+        "dateLabel": "CZWARTEK (05.11.2026)",
+        "endDate": "2026-11-05",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-11-06",
     "events": [
       {
@@ -1159,6 +1185,27 @@
         "link": "https://onlydanceapp.com/event/0842578e9fb546dcbcd5",
         "style": [
           "Salsa"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną",
+        "opis": "ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną - 18:00–21:00; Mil Pasos Kamienna 4; nowe w bazie 30.10",
+        "opisPubliczny": "ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną",
+        "dateLabel": "SOBOTA (05.12.2026)",
+        "endDate": "2026-12-05",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
         ]
       }
     ]
