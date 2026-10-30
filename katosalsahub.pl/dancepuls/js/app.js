@@ -19,7 +19,8 @@ import {
 	kopiujKomentarz2,
 	kopiujCalaAnkiete,
 	flashCopiedButton,
-} from './post-generator.js?v=20261023_v7'
+	normalizeTextForFacebookClipboard,
+} from './post-generator.js?v=20261030_v1'
 
 function getDragAfterElement(container, y) {
 	const draggableElements = [...container.querySelectorAll('.event-container:not(.dragging)')]
@@ -440,6 +441,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	const btnCopyAllPoll = document.getElementById('copy-all-poll-btn')
 	if (btnCopyAllPoll) btnCopyAllPoll.addEventListener('click', kopiujCalaAnkiete)
+
+	;['post-opis', 'wynik', 'wynik-przyszle'].forEach(textareaId => {
+		const textareaEl = document.getElementById(textareaId)
+		if (!textareaEl) return
+		textareaEl.addEventListener('copy', e => {
+			if (!e.clipboardData) return
+			const start = textareaEl.selectionStart
+			const end = textareaEl.selectionEnd
+			const rawSelected =
+				typeof start === 'number' && typeof end === 'number' && start !== end
+					? textareaEl.value.slice(start, end)
+					: textareaEl.value
+			if (!rawSelected) return
+			e.preventDefault()
+			e.clipboardData.setData('text/plain', normalizeTextForFacebookClipboard(rawSelected))
+		})
+	})
 
 	applyFilter()
 

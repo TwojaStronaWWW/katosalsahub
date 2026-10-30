@@ -18,15 +18,15 @@
 ---
 
 ## 2. POST NA FB
-🎉 𝐆𝐝𝐳𝐢𝐞 𝐭𝐚𝐧́𝐜𝐳𝐲𝐦𝐲 𝐰 𝐭𝐞𝐧 𝐰𝐞𝐞𝐤𝐞𝐧𝐝? (𝟑𝟎.𝟏𝟎-𝟎𝟏.𝟏𝟏)
+🎉 Gdzie tańczymy w ten weekend? (30.10-01.11)
 
-🗓️ 𝐏𝐈𝐀̨𝐓𝐄𝐊
+🗓️ PIĄTEK
 W Katowicach piątkowy wieczór jeszcze bez ogłoszonej imprezy, ale w regionie czekają dwie duże zabawy halloweenowe: Wielka Biba Halloween + Urodziny Zuzi na 3 sale (Salsa/Bachata/Kizomba) w Mohito Tychy oraz Koszmarrrrrna Domówka (Salsa/Bachata) w DANCE#LOVEit & Corazon w Bielsku-Białej, natomiast w Krakowie potańczycie na Halloween Party Salsa & Bachata w Sabrosie lub na salsie cubana z DJ Chavą (Ritmo de la Habana) w Teatro Cubano.
 
-🗓️ 𝐒𝐎𝐁𝐎𝐓𝐀
+🗓️ SOBOTA
 W Katowicach wielkie świętowanie Día de los Muertos na wspólnym bilecie: w La Clave przy Chorzowskiej 11 rusza Halloween Salsa Party na 2 sale (Cubana/Timba/Rueda + Kizomba/Bachata), a równolegle w Gravitacji przy Gliwickiej 44 trwa Halloween Bachata Party. W regionie parkiety rozgrzewają Strasznie Dobra Impreza w Mohito Gliwice oraz Halloween Dance Party w AllDance w Bielsku-Białej (obie Salsa/Bachata/Kizomba), natomiast w Krakowie LOFToDANCE zaprasza na popołudniowe warsztaty Unlock Your Freestyle i nocne Party w Trupa2026 (100% Bachata), a Party House organizuje Kraków Latino Festival.
 
-🗓️ 𝐍𝐈𝐄𝐃𝐙𝐈𝐄𝐋𝐀
+🗓️ NIEDZIELA
 W niedzielę (1 listopada – Wszystkich Świętych) szkoły tańca i kluby robią chwilę oddechu – na ten dzień brak potwierdzonych ogłoszeń imprezowych.
 
 ---

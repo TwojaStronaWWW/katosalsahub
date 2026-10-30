@@ -65,20 +65,28 @@ const FOOTER = `@wszyscy Do zobaczenia na parkiecie! 💃🕺
 
 ☕ PS1: Podoba Ci się to, co robimy? Jeśli chcesz, możesz postawić nam wirtualną kawę – to daje nam mega kopa do dalszego działania dla Was! 👉 https://buycoffee.to/katosalsahub`;
 
+const MATH_BOLD_TO_PLAIN_PAIRS = [
+    ['𝐚\u0328', 'ą'], ['𝐜\u0301', 'ć'], ['𝐞\u0328', 'ę'], ['𝐧\u0301', 'ń'], ['𝐨\u0301', 'ó'], ['𝐬\u0301', 'ś'], ['𝐳\u0301', 'ź'], ['𝐳\u0307', 'ż'],
+    ['𝐀\u0328', 'Ą'], ['𝐂\u0301', 'Ć'], ['𝐄\u0328', 'Ę'], ['𝐍\u0301', 'Ń'], ['𝐎\u0301', 'Ó'], ['𝐒\u0301', 'Ś'], ['𝐙\u0301', 'Ź'], ['𝐙\u0307', 'Ż'],
+    ['𝐚', 'a'], ['𝐛', 'b'], ['𝐜', 'c'], ['𝐝', 'd'], ['𝐞', 'e'], ['𝐟', 'f'], ['𝐠', 'g'], ['𝐡', 'h'], ['𝐢', 'i'], ['𝐣', 'j'], ['𝐤', 'k'], ['𝐥', 'l'], ['𝐦', 'm'],
+    ['𝐧', 'n'], ['𝐨', 'o'], ['𝐩', 'p'], ['𝐪', 'q'], ['𝐫', 'r'], ['𝐬', 's'], ['𝐭', 't'], ['𝐮', 'u'], ['𝐯', 'v'], ['𝐰', 'w'], ['𝐱', 'x'], ['𝐲', 'y'], ['𝐳', 'z'],
+    ['𝐀', 'A'], ['𝐁', 'B'], ['𝐂', 'C'], ['𝐃', 'D'], ['𝐄', 'E'], ['𝐅', 'F'], ['𝐆', 'G'], ['𝐇', 'H'], ['𝐈', 'I'], ['𝐉', 'J'], ['𝐊', 'K'], ['𝐋', 'L'], ['𝐌', 'M'],
+    ['𝐍', 'N'], ['𝐎', 'O'], ['𝐏', 'P'], ['𝐐', 'Q'], ['𝐑', 'R'], ['𝐒', 'S'], ['𝐓', 'T'], ['𝐔', 'U'], ['𝐕', 'V'], ['𝐖', 'W'], ['𝐗', 'X'], ['𝐘', 'Y'], ['𝐙', 'Z'],
+    ['𝟎', '0'], ['𝟏', '1'], ['𝟐', '2'], ['𝟑', '3'], ['𝟒', '4'], ['𝟓', '5'], ['𝟔', '6'], ['𝟕', '7'], ['𝟖', '8'], ['𝟗', '9'],
+];
+
+function stripMathBoldUnicode(text) {
+    let out = String(text || '');
+    for (const [boldSeq, plainChar] of MATH_BOLD_TO_PLAIN_PAIRS) {
+        if (out.includes(boldSeq)) {
+            out = out.split(boldSeq).join(plainChar);
+        }
+    }
+    return out.normalize('NFC');
+}
+
 function toBoldUnicode(text) {
-    const chars = {
-        a: '𝐚', b: '𝐛', c: '𝐜', d: '𝐝', e: '𝐞', f: '𝐟', g: '𝐠', h: '𝐡', i: '𝐢', j: '𝐣', k: '𝐤', l: '𝐥', m: '𝐦',
-        n: '𝐧', o: '𝐨', p: '𝐩', q: '𝐪', r: '𝐫', s: '𝐬', t: '𝐭', u: '𝐮', v: '𝐯', w: '𝐰', x: '𝐱', y: '𝐲', z: '𝐳',
-        A: '𝐀', B: '𝐁', C: '𝐂', D: '𝐃', E: '𝐄', F: '𝐅', G: '𝐆', H: '𝐇', I: '𝐈', J: '𝐉', K: '𝐊', L: '𝐋', M: '𝐌',
-        N: '𝐍', O: '𝐎', P: '𝐏', Q: '𝐐', R: '𝐑', S: '𝐒', T: '𝐓', U: '𝐔', V: '𝐕', W: '𝐖', X: '𝐗', Y: '𝐘', Z: '𝐙',
-        0: '𝟎', 1: '𝟏', 2: '𝟐', 3: '𝟑', 4: '𝟒', 5: '𝟓', 6: '𝟔', 7: '𝟕', 8: '𝟖', 9: '𝟗',
-        ą: '𝐚̨', ć: '𝐜́', ę: '𝐞̨', ł: 'ł', ń: '𝐧́', ó: '𝐨́', ś: '𝐬́', ź: '𝐳́', ż: '𝐳̇',
-        Ą: '𝐀̨', Ć: '𝐂́', Ę: '𝐄̨', Ł: 'Ł', Ń: '𝐍́', Ó: '𝐎́', Ś: '𝐒́', Ź: '𝐙́', Ż: '𝐙̇',
-    };
-    return String(text || '')
-        .split('')
-        .map(c => chars[c] || c)
-        .join('');
+    return stripMathBoldUnicode(text);
 }
 
 /**
@@ -894,13 +902,16 @@ function syncToRemoteLH() {
         console.log('⏭️ [5/5] Pominięto bezpośredni transfer SSH (tryb CI/automatyczny).');
         return;
     }
-    console.log('🚀 [5/5] Synchronizacja z serwerem LH (katosalsahub.pl/assets/data)...');
+    console.log('🚀 [5/5] Synchronizacja z serwerem LH (katosalsahub.pl/assets/data oraz dancepuls/data)...');
     try {
-        execSync('ssh lh-katosalsa "mkdir -p /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data"');
+        execSync('ssh lh-katosalsa "mkdir -p /home/platne/serwer417204/public_html/katosalsahub.pl/assets/data /home/platne/serwer417204/public_html/katosalsahub.pl/dancepuls/data"');
         execSync(`scp "${JSON_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/events.json`);
         execSync(`scp "${REPORT_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/latest_report.md`);
         execSync(`scp "${DB_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/assets/data/events_database.md`);
-        console.log('   ✅ Pomyślnie zsynchronizowano bazę, JSON i raport w katosalsahub.pl/assets/data na serwerze LH.pl!');
+        execSync(`scp "${JSON_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/dancepuls/data/events.json`);
+        execSync(`scp "${REPORT_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/dancepuls/data/latest_report.md`);
+        execSync(`scp "${DB_PATH}" lh-katosalsa:/home/platne/serwer417204/public_html/katosalsahub.pl/dancepuls/data/events_database.md`);
+        console.log('   ✅ Pomyślnie zsynchronizowano bazę, JSON i raport w katosalsahub.pl/assets/data i dancepuls/data na serwerze LH.pl!');
     } catch (e) {
         console.warn('   ⚠️ Synchronizacja SSH nie powiodła się:', e.message);
     }

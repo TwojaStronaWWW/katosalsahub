@@ -182,20 +182,28 @@ export function initInbox() {
 
 // --- HELPERS TYTUŁOWE & GENERATOR POSTÓW ---
 
-export function toBoldUnicode(text) {
-	const chars = {
-		a: '𝐚', b: '𝐛', c: '𝐜', d: '𝐝', e: '𝐞', f: '𝐟', g: '𝐠', h: '𝐡', i: '𝐢', j: '𝐣', k: '𝐤', l: '𝐥', m: '𝐦',
-		n: '𝐧', o: '𝐨', p: '𝐩', q: '𝐪', r: '𝐫', s: '𝐬', t: '𝐭', u: '𝐮', v: '𝐯', w: '𝐰', x: '𝐱', y: '𝐲', z: '𝐳',
-		A: '𝐀', B: '𝐁', C: '𝐂', D: '𝐃', E: '𝐄', F: '𝐅', G: '𝐆', H: '𝐇', I: '𝐈', J: '𝐉', K: '𝐊', L: '𝐋', M: '𝐌',
-		N: '𝐍', O: '𝐎', P: '𝐏', Q: '𝐐', R: '𝐑', S: '𝐒', T: '𝐓', U: '𝐔', V: '𝐕', W: '𝐖', X: '𝐗', Y: '𝐘', Z: '𝐙',
-		0: '𝟎', 1: '𝟏', 2: '𝟐', 3: '𝟑', 4: '𝟒', 5: '𝟓', 6: '𝟔', 7: '𝟕', 8: '𝟖', 9: '𝟗',
-		ą: '𝐚̨', ć: '𝐜́', ę: '𝐞̨', ł: 'ł', ń: '𝐧́', ó: '𝐨́', ś: '𝐬́', ź: '𝐳́', ż: '𝐳̇',
-		Ą: '𝐀̨', Ć: '𝐂́', Ę: '𝐄̨', Ł: 'Ł', Ń: '𝐍́', Ó: '𝐎́', Ś: '𝐒́', Ź: '𝐙́', Ż: '𝐙̇',
+const MATH_BOLD_TO_PLAIN_PAIRS = [
+	['𝐚\u0328', 'ą'], ['𝐜\u0301', 'ć'], ['𝐞\u0328', 'ę'], ['𝐧\u0301', 'ń'], ['𝐨\u0301', 'ó'], ['𝐬\u0301', 'ś'], ['𝐳\u0301', 'ź'], ['𝐳\u0307', 'ż'],
+	['𝐀\u0328', 'Ą'], ['𝐂\u0301', 'Ć'], ['𝐄\u0328', 'Ę'], ['𝐍\u0301', 'Ń'], ['𝐎\u0301', 'Ó'], ['𝐒\u0301', 'Ś'], ['𝐙\u0301', 'Ź'], ['𝐙\u0307', 'Ż'],
+	['𝐚', 'a'], ['𝐛', 'b'], ['𝐜', 'c'], ['𝐝', 'd'], ['𝐞', 'e'], ['𝐟', 'f'], ['𝐠', 'g'], ['𝐡', 'h'], ['𝐢', 'i'], ['𝐣', 'j'], ['𝐤', 'k'], ['𝐥', 'l'], ['𝐦', 'm'],
+	['𝐧', 'n'], ['𝐨', 'o'], ['𝐩', 'p'], ['𝐪', 'q'], ['𝐫', 'r'], ['𝐬', 's'], ['𝐭', 't'], ['𝐮', 'u'], ['𝐯', 'v'], ['𝐰', 'w'], ['𝐱', 'x'], ['𝐲', 'y'], ['𝐳', 'z'],
+	['𝐀', 'A'], ['𝐁', 'B'], ['𝐂', 'C'], ['𝐃', 'D'], ['𝐄', 'E'], ['𝐅', 'F'], ['𝐆', 'G'], ['𝐇', 'H'], ['𝐈', 'I'], ['𝐉', 'J'], ['𝐊', 'K'], ['𝐋', 'L'], ['𝐌', 'M'],
+	['𝐍', 'N'], ['𝐎', 'O'], ['𝐏', 'P'], ['𝐐', 'Q'], ['𝐑', 'R'], ['𝐒', 'S'], ['𝐓', 'T'], ['𝐔', 'U'], ['𝐕', 'V'], ['𝐖', 'W'], ['𝐗', 'X'], ['𝐘', 'Y'], ['𝐙', 'Z'],
+	['𝟎', '0'], ['𝟏', '1'], ['𝟐', '2'], ['𝟑', '3'], ['𝟒', '4'], ['𝟓', '5'], ['𝟔', '6'], ['𝟕', '7'], ['𝟖', '8'], ['𝟗', '9'],
+]
+
+export function stripMathBoldUnicode(text) {
+	let out = String(text || '')
+	for (const [boldSeq, plainChar] of MATH_BOLD_TO_PLAIN_PAIRS) {
+		if (out.includes(boldSeq)) {
+			out = out.split(boldSeq).join(plainChar)
+		}
 	}
-	return String(text || '')
-		.split('')
-		.map(c => chars[c] || c)
-		.join('')
+	return out.normalize('NFC')
+}
+
+export function toBoldUnicode(text) {
+	return stripMathBoldUnicode(text)
 }
 
 const MAIN_POST_SEO_FOOTER = `---
@@ -208,12 +216,30 @@ Szukasz informacji, gdzie tańczyć salsę w Katowicach i na Śląsku?
 
 #SalsaKatowice #KatoSalsaHub #SalsaCubana #Katowice #TaniecKatowice #RuedaDeCasino #Timba #WolniLudzie`
 
+export function repairPostLineBreaks(rawText) {
+	if (!rawText) return ''
+	return stripMathBoldUnicode(rawText)
+		.replace(/\r\n/g, '\n')
+		.replace(/([^\n])\s*(🗓️\s*(?:PIĄTEK|SOBOTA|NIEDZIELA))/g, '$1\n\n$2')
+		.replace(/(🗓️\s*(?:PIĄTEK|SOBOTA|NIEDZIELA)(?:\s*\([^)\n]+\))?:?)[ \t]*([^\n\s])/g, '$1\n$2')
+		.replace(/([^\n])\s*(---\s*\n?\s*🌴)/g, '$1\n\n$2')
+		.replace(/(---\s*)([^\n\s])/g, '---\n$2')
+		.replace(/(🌴\s*SALSA KATOWICE\s*[–-]\s*KATO SALSA HUB\s*🌴)[ \t]*([^\n])/g, '$1\n$2')
+		.replace(/([^\n])\s*([📍📅👉]\s)/g, '$1\n$2')
+		.replace(/(https?:\/\/[^\s#]+)(#[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż0-9_]+)/g, '$1\n\n$2')
+}
+
+export function normalizeTextForFacebookClipboard(rawText) {
+	if (!rawText) return ''
+	const repaired = repairPostLineBreaks(rawText)
+	return repaired.replace(/\r?\n/g, '\r\n')
+}
+
 export function formatMainPostBoldings(rawText) {
 	if (!rawText) return ''
-	let formatted = rawText
-		.replace(/🎉\s*(Gdzie tańczymy w ten weekend\?[^\n]*)/g, (_, phrase) => `🎉 ${toBoldUnicode(phrase.trim())}`)
-		.replace(/(Gdzie tańczymy w danym dniu[^\n:]*)/gi, (_, phrase) => toBoldUnicode(phrase))
-		.replace(/^🗓️\s*(PIĄTEK|SOBOTA|NIEDZIELA)\b/gm, (_, day) => `🗓️ ${toBoldUnicode(day)}`)
+	let formatted = repairPostLineBreaks(rawText)
+		.replace(/🎉\s*(Gdzie tańczymy w ten weekend\?[^\n]*)/g, (_, phrase) => `🎉 ${phrase.trim()}`)
+		.replace(/^🗓️\s*(PIĄTEK|SOBOTA|NIEDZIELA)\b/gm, (_, day) => `🗓️ ${day}`)
 	if (!formatted.includes('🌴 SALSA KATOWICE – KATO SALSA HUB 🌴')) {
 		formatted = `${formatted.trimEnd()}\n\n${MAIN_POST_SEO_FOOTER}`
 	}
@@ -586,30 +612,75 @@ export async function zaladujRaportKSH(silent = true) {
 	}
 }
 
+export function copyPlainTextForFacebook(rawText) {
+	const normalized = normalizeTextForFacebookClipboard(rawText)
+	if (!normalized) return Promise.resolve(false)
+
+	const fallbackCopy = () => {
+		const onCopy = e => {
+			if (e.clipboardData) {
+				e.preventDefault()
+				e.clipboardData.setData('text/plain', normalized)
+			}
+		}
+		document.addEventListener('copy', onCopy, { once: true })
+		try {
+			const ok = document.execCommand('copy')
+			document.removeEventListener('copy', onCopy)
+			return ok
+		} catch {
+			document.removeEventListener('copy', onCopy)
+			return false
+		}
+	}
+
+	if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+		return navigator.clipboard
+			.writeText(normalized)
+			.then(() => true)
+			.catch(() => fallbackCopy())
+	}
+	return Promise.resolve(fallbackCopy())
+}
+
 export function kopiujGotowyPost() {
 	const postOpisElem = document.getElementById('post-opis')
-	const tekst = postOpisElem ? postOpisElem.value : ''
-	if (!tekst) return
+	const raw = postOpisElem ? postOpisElem.value : ''
+	if (!raw) return
+	const cleanedForDisplay = repairPostLineBreaks(raw)
+	if (postOpisElem && postOpisElem.value !== cleanedForDisplay) {
+		postOpisElem.value = cleanedForDisplay
+	}
 	const btn = document.getElementById('copy-post-btn')
-	navigator.clipboard.writeText(tekst).then(() => {
+	copyPlainTextForFacebook(cleanedForDisplay).then(() => {
 		flashCopiedButton(btn, '✅ 1. KOPIUJ GŁÓWNY POST NA FB')
 	})
 }
 
 export function kopiujWynik() {
-	const text = document.getElementById('wynik')?.value || ''
+	const wynikElem = document.getElementById('wynik')
+	const text = wynikElem?.value || ''
 	if (!text) return
+	const cleaned = stripMathBoldUnicode(text)
+	if (wynikElem && wynikElem.value !== cleaned) {
+		wynikElem.value = cleaned
+	}
 	const btn = document.getElementById('copy-comment1-btn')
-	navigator.clipboard.writeText(text).then(() => {
+	copyPlainTextForFacebook(cleaned).then(() => {
 		flashCopiedButton(btn, '✅ 2. KOPIUJ KOMENTARZE (TEN WEEKEND)')
 	})
 }
 
 export function kopiujKomentarz2() {
-	const text = document.getElementById('wynik-przyszle')?.value || ''
+	const przyszleElem = document.getElementById('wynik-przyszle')
+	const text = przyszleElem?.value || ''
 	if (!text) return
+	const cleaned = stripMathBoldUnicode(text)
+	if (przyszleElem && przyszleElem.value !== cleaned) {
+		przyszleElem.value = cleaned
+	}
 	const btn = document.getElementById('copy-comment2-btn')
-	navigator.clipboard.writeText(text).then(() => {
+	copyPlainTextForFacebook(cleaned).then(() => {
 		flashCopiedButton(btn, '✅ 3. KOPIUJ KOMENTARZ 2 — PRZYSZŁOŚĆ (SEKCJA 5)')
 	})
 }
@@ -618,7 +689,7 @@ export function kopiujCalaAnkiete() {
 	const text = window.latestPollText || ''
 	if (!text) return
 	const btn = document.getElementById('copy-all-poll-btn')
-	navigator.clipboard.writeText(text).then(() => {
+	copyPlainTextForFacebook(text).then(() => {
 		flashCopiedButton(btn, '✅ Kopiuj całą ankietę (wszystkie linie)')
 	})
 }
