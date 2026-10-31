@@ -1,5 +1,5 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 30.10.2026 (Piątek)
+Ostatnia aktualizacja: 31.10.2026 (Sobota)
 
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach piątkowy wieczór jeszcze bez ogłoszonej imprezy, ale w regionie czekają dwie duże zabawy halloweenowe: Wielka Biba Halloween + Urodziny Zuzi na 3 sale (Salsa/Bachata/Kizomba) w Mohito Tychy oraz Koszmarrrrrna Domówka (Salsa/Bachata) w DANCE#LOVEit & Corazon w Bielsku-Białej, natomiast w Krakowie potańczycie na Halloween Party Salsa & Bachata w Sabrosie lub na salsie cubana z DJ Chavą (Ritmo de la Habana) w Teatro Cubano.
