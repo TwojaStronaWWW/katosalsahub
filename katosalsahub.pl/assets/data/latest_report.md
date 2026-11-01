@@ -1,8 +1,8 @@
-## 1. PRYWATNIE — raport na 31.10.2026
+## 1. PRYWATNIE — raport na 01.11.2026
 - **Stan zestawienia na weekend 30.10–01.11.2026:** **11 pozycji** (4 pt + 7 sb + 0 nd).
 - **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **61 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (31.10 — 0 pozycji, data publikacji nieustalona):**
+- **Nowości w bazie z ostatniego sprawdzenia (01.11 — 0 pozycji, data publikacji nieustalona):**
   - Na dziś nie znalazłem nowych ogłoszeń (wszystkie pozycje w bazie zweryfikowane wcześniej).
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
