@@ -547,6 +547,29 @@
         "style": [
           "Salsa"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Demo Experience",
+        "opis": "Demo Experience - LOFToDANCE Kraków; nowe w bazie 02.11",
+        "opisPubliczny": "Demo Experience",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/demo-experience,1301",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
       }
     ]
   },

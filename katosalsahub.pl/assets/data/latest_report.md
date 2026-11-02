@@ -1,9 +1,10 @@
 ## 1. PRYWATNIE — raport na 02.11.2026
 - **Stan zestawienia na weekend 06–08.11.2026:** **14 pozycji** (2 pt + 9 sb + 3 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **48 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **49 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (02.11 — 3 pozycji, data publikacji nieustalona):**
+- **Nowości w bazie z ostatniego sprawdzenia (02.11 — 4 pozycji, data publikacji nieustalona):**
   - **Dołącz na zajęcia Kizomba & Semba !🔥** | 08.11.2026 | Kraków, ul. Berka Joselewicza 26 | Kizomba/Semba | https://www.facebook.com/events/945561961682067/
+  - **Demo Experience** | 14.11.2026 | Kraków, LOFToDANCE | Salsa/Bachata/Kizomba | https://sklep.loftodance.pl/wydarzenie/demo-experience,1301
   - **Świadome rozciąganie i mobilność w tańcu / La Clave Katowic** | 28.11.2026 | Katowice, La Clave | Salsa/Bachata/Kizomba | https://airdancia.com/event/swiadome-rozciaganie-i-mobilnosc-w-tancu-la-clave-katowic-katowice/
   - **🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅** | 06.12.2026 | Świętochłowice, Inne | Bachata | https://airdancia.com/event/mikolajkowe-warsztaty-bachata-ladies-swietochlowice/
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
@@ -120,6 +121,9 @@ NIEDZIELA (08.11): Kraków - ul. Berka Joselewicza 26 (Kizomba/Semba)
 🗓️ SOBOTA (14.11.2026)  
 ➡️ Kraków: Salsa House, NIKT NIE PYTAŁ, KAŻDY POTRZEBOWAŁ – edycja II 🔥 (Salsa)  
 🔗 https://www.facebook.com/events/1429729902635413/  
+🗓️ SOBOTA (14.11.2026)  
+➡️ Kraków: LOFToDANCE, Demo Experience (Salsa/Bachata/Kizomba)  
+🔗 https://sklep.loftodance.pl/wydarzenie/demo-experience,1301  
 🗓️ WTOREK (17.11.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/2970730173282777/  
