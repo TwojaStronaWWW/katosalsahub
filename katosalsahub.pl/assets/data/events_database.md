@@ -1,32 +1,12 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 01.11.2026 (Niedziela)
+Ostatnia aktualizacja: 02.11.2026 (Poniedziałek)
 
 ## OPIS POSTA (SEKCJA 2)
-PIĄTEK|W Katowicach piątkowy wieczór jeszcze bez ogłoszonej imprezy, ale w regionie czekają dwie duże zabawy halloweenowe: Wielka Biba Halloween + Urodziny Zuzi na 3 sale (Salsa/Bachata/Kizomba) w Mohito Tychy oraz Koszmarrrrrna Domówka (Salsa/Bachata) w DANCE#LOVEit & Corazon w Bielsku-Białej, natomiast w Krakowie potańczycie na Halloween Party Salsa & Bachata w Sabrosie lub na salsie cubana z DJ Chavą (Ritmo de la Habana) w Teatro Cubano.
-SOBOTA|W Katowicach wielkie świętowanie Día de los Muertos na wspólnym bilecie: w La Clave przy Chorzowskiej 11 rusza Halloween Salsa Party na 2 sale (Cubana/Timba/Rueda + Kizomba/Bachata), a równolegle w Gravitacji przy Gliwickiej 44 trwa Halloween Bachata Party. W regionie parkiety rozgrzewają Strasznie Dobra Impreza w Mohito Gliwice oraz Halloween Dance Party w AllDance w Bielsku-Białej (obie Salsa/Bachata/Kizomba), natomiast w Krakowie LOFToDANCE zaprasza na popołudniowe warsztaty Unlock Your Freestyle i nocne Party w Trupa2026 (100% Bachata), a Party House organizuje Kraków Latino Festival.
-NIEDZIELA|W niedzielę (1 listopada – Wszystkich Świętych) szkoły tańca i kluby robią chwilę oddechu – na ten dzień brak potwierdzonych ogłoszeń imprezowych.
+PIĄTEK|W Katowicach w piątek jeszcze bez potwierdzonych ogłoszeń, ale potańczycie w Częstochowie na Piątkowa Potańcówka Cultura Latina – Mambo w Częstotańcz (Salsa On2/Bachata), a w Krakowie na Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia w Panorama Forum (Bachata).
+SOBOTA|W Katowicach czekają warsztaty B Experience w Mil Pasos (Bachata) oraz Urodziny Pedro x Otwarcie Fabryki FloU w Euforma (Fabryka FloU) (Bachata). W regionie parkiety otwierają Częstotańcz (Częstochowa, Salsa On2), Hotel Sahara (Bielsko-Biała, Kizomba), natomiast w Krakowie czekają Overpower Dancers Edition vol.19 w Forum Tańca (Bachata) oraz Twilight Salsa Party w Sabrosa Dance Studio (Salsa) oraz warsztaty Salsa On1 (od zera oraz dla tańczących) w LOFToDANCE (Salsa On1) oraz warsztaty Men Styling – Bachata Solo dla facetów w LOFToDANCE (Bachata) oraz warsztaty ¡A bailar salsa! w LOFToDANCE (Salsa On1/Salsa On2).
+NIEDZIELA|W Katowicach czekają KIZLAB SUNDAYS w KIZLAB (Kizomba).
 
-## BIEŻĄCY WEEKEND (30.10–01.11.2026)
-30.10|Tychy,Mohito,al.Jana PawłaII14|Wielka Biba Halloween+Urodziny Zuzi|Salsa/Bachata/Kizomba|F:1483662706943298|Mohito Tychy; 21:00; uzupełniono bezpośredni link FB 20.10
-30.10|DL|Koszmarrrrrna Domówka|Salsa/Bachata|F:1451317200146085|FB odczytany; pomiń godzinę: nagłówek 21:00 vs plakat 21:30
-30.10|SA|Halloween Party Salsa & Bachata|Salsa/Bachata|F:2878397095879856|21:30; Sabrosa; uzupełniono bezpośredni link FB 20.10
-30.10|Kraków,Teatro Cubano,Jagiellońska10|RITMO DE LA HABANA – DJ Chava|Cubana|https://krajownik.pl/krakow/wydarzenia/ritmo-de-la-habana-start-2000-dj-chava-345738|20:00; Teatro Cubano Kraków; nowe w bazie 24.10
-31.10|LC|Halloween Salsa Party – Día de los Muertos (2 sale: Cuba + Kizomba/Bachata)|Cubana/Timba/Rueda/Kizomba/Bachata|https://allevents.in/katowice/halloween-salsa-party-d%C3%8Da-de-los-muertos/200030785993244|22:00; La Clave Chorzowska 11; wspólny bilet z imprezą w Gravitacji; nowe w bazie 20.10
-31.10|GR|Halloween Bachata Party–Día de los Muertos|Bachata|F:1662179081913529|La Clave; 21:30; wspólny bilet z imprezą w La Clave; uzupełniono bezpośredni link FB 20.10
-31.10|Gliwice,Mohito,Zwycięstwa52A|Strasznie Dobra Impreza – Oficjalne Gliwickie Halloween|Salsa/Bachata/Kizomba|F:1110470741478692|21:00; Szkoła Tańca Mohito Gliwice; nowe w bazie 20.10
-31.10|Bielsko-Biała,AllDance,1 Maja20|Halloween Dance Party,Praktis Bachata/Salsa/Kizomba|Salsa/Bachata/Kizomba|F:1602739471550950|21:00; Szkoła Tańca AllDance; nowe w bazie 20.10
-31.10|LO|warsztaty Unlock Your Freestyle–Level2|Bachata solo/Impro|F:28452173844411271|15–18; LOFToDANCE; uzupełniono bezpośredni link FB 20.10
-31.10|LO|Party w Trupa2026|Bachata|F:1388506849611167|22–03, 100% Bachata; LOFToDANCE; uzupełniono bezpośredni link FB 20.10
-31.10|Kraków,Party House,Szewska21|Kraków Latino Festival|Salsa/Bachata/Kizomba|F:1570212034748706|Party House Kraków; nowe w bazie 20.10
-
-## PN–CZ BIEŻĄCEGO TYGODNIA
-28.10|MP|Upiorna nagrywka z Izabelą,zajęcia specjalne|Bachata|F:1614897007098369|18:00–20:00; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10; dzień miniony
-29.10|FT|Urodzinowy Praktis Bachatowy Justyny w Forum Tańca|Bachata|F:2137456803520320|22:35; Forum Tańca Kraków; nowe w bazie 20.10; dzień miniony
-
-## DALSZE TERMINY (KOLEJNE TYGODNIE)
-03.11|ZW|Salsunia|Cubana|F:1083906274387790|VivaSalsa
-03.11|Kraków,Salsa House|🔥 Salsa Ladies Styling z Olą — dołącz do nas!|Salsa|F:1167416399188344|17:00; Salsa House; nowe w bazie 30.10
-05.11|Tychy,Inne|Bachata Sensual Bodymovement & Footwork|Bachata|https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/|18:30; Inne; AirDancia; nowe w bazie 30.10
+## BIEŻĄCY WEEKEND (06–08.11.2026)
 06.11|Częstochowa,Częstotańcz,Spółdzielczości4|Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca|Salsa On2/Bachata|F:2311106856407049|20:30; Częstotańcz Częstochowa; nowe w bazie 24.10
 06.11|MY,Panorama Forum,Konopnickiej28|Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia|Bachata|O:cEgGXQdo6UgY6u5z5CyB|Mykhailo Burdeinyi; nowe w bazie 20.10
 07.11|MP|B Experience,zajęcia specjalne i praktis|Bachata|F:3128955417294577|16:00 zajęcia, 20:00 praktis; Mil Pasos; uzupełniono bezpośredni link FB 20.10
@@ -39,6 +19,14 @@ NIEDZIELA|W niedzielę (1 listopada – Wszystkich Świętych) szkoły tańca i 
 07.11|Częstochowa,Częstotańcz,Spółdzielczości4|warsztaty Mambo New York Style On2|Salsa On2|F:1328664779481954|Częstotańcz; nowe w bazie 20.10
 07.11|Bielsko-Biała,Hotel Sahara|Taneczna SOBOTA - start 20:00 <3 (Hotel SAHARA, Bielsko-Biała)|Kizomba|O:8a02904e0bb149ff82b2|PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 30.10
 08.11|KL|KIZLAB SUNDAYS|Kizomba|F:1617716113426642|KIZLAB; kolejna ogłoszona edycja, program TBA
+08.11|Kraków,ul. Berka Joselewicza 26|Dołącz na zajęcia Kizomba & Semba !🔥|Kizomba/Semba|F:945561961682067|17:00; Szkoła Tańca SEMPRE; nowe w bazie 02.11
+
+## PN–CZ BIEŻĄCEGO TYGODNIA
+03.11|ZW|Salsunia|Cubana|F:1083906274387790|VivaSalsa
+03.11|Kraków,Salsa House|🔥 Salsa Ladies Styling z Olą — dołącz do nas!|Salsa|F:1167416399188344|17:00; Salsa House; nowe w bazie 30.10
+05.11|Tychy,Inne|Bachata Sensual Bodymovement & Footwork|Bachata|https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/|18:30; Inne; AirDancia; nowe w bazie 30.10
+
+## DALSZE TERMINY (KOLEJNE TYGODNIE)
 10.11|MP|Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)|Salsa/Bachata/Kizomba|F:2002548047123998|22:00; Mil Pasos Kamienna 4; nowe w bazie 20.10
 13.11|MP|LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty|Bachata|F:4591812061145684|18:00–20:55 z opisu; Mil Pasos; uzupełniono bezpośredni link FB 20.10
 13–15.11|LO|Sensual Impro Festival|Bachata/Sensual Impro|F:1288385083316354|01.10 oficjalne sklep.loftodance.pl/wydarzenie/sensual-impro-festival-2026,1215 potwierdza 13–15.11
@@ -66,6 +54,7 @@ NIEDZIELA|W niedzielę (1 listopada – Wszystkich Świętych) szkoły tańca i 
 05.12|FT|IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12|Salsa|O:0842578e9fb546dcbcd5|Forum Tańca; OnlyDance; nowe w bazie 30.10
 05.12|MP|ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|18:00–21:00; Mil Pasos Kamienna 4; nowe w bazie 30.10
 06.12|KL|KIZLAB SUNDAYS–Mikołajki|Kizomba|F:1617716113426642|KIZLAB; edycja mikołajkowa, program TBA
+06.12|Świętochłowice,Inne|🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅|Bachata|https://airdancia.com/event/mikolajkowe-warsztaty-bachata-ladies-swietochlowice/|16:00; Inne; AirDancia; nowe w bazie 02.11
 12.12|MP|BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|16:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 30.10
 15.12|ZW|Salsunia|Cubana|F:1105058955723288|VivaSalsa
 20.12|KL|KIZLAB SUNDAYS|Kizomba|F:1617716113426642|KIZLAB; kolejna ogłoszona edycja, program TBA
@@ -157,3 +146,16 @@ od 16.09.2027|Kraków,Hotel Galaxy,Gęsia22a|Kizz Ryders 10-lecie|Kizomba|O:bDNi
 25.10|WL|Salsa Habana Picante vol. 68|Cubana|F:891329324066083|KATO SALSA HUB; 15–18 CET; ⭐ własne wydarzenie
 25.10|Siewierz,Beleza,Rynek11|KIZOMBA SUNDAY – a tribute to music artists|Kizomba|F:1159064733216184|19:00; Beleza Studio Tańca i Ruchu; nowe w bazie 20.10
 25.10|MY,Teatro Cubano,Jagiellońska10|Bachata at Teatro Cubano|Bachata|O:bUBcJYprLm1Iak6fHe3B|Mykhailo Burdeinyi
+28.10|MP|Upiorna nagrywka z Izabelą,zajęcia specjalne|Bachata|F:1614897007098369|18:00–20:00; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10; dzień miniony
+29.10|FT|Urodzinowy Praktis Bachatowy Justyny w Forum Tańca|Bachata|F:2137456803520320|22:35; Forum Tańca Kraków; nowe w bazie 20.10; dzień miniony
+30.10|Tychy,Mohito,al.Jana PawłaII14|Wielka Biba Halloween+Urodziny Zuzi|Salsa/Bachata/Kizomba|F:1483662706943298|Mohito Tychy; 21:00; uzupełniono bezpośredni link FB 20.10
+30.10|DL|Koszmarrrrrna Domówka|Salsa/Bachata|F:1451317200146085|FB odczytany; pomiń godzinę: nagłówek 21:00 vs plakat 21:30
+30.10|SA|Halloween Party Salsa & Bachata|Salsa/Bachata|F:2878397095879856|21:30; Sabrosa; uzupełniono bezpośredni link FB 20.10
+30.10|Kraków,Teatro Cubano,Jagiellońska10|RITMO DE LA HABANA – DJ Chava|Cubana|https://krajownik.pl/krakow/wydarzenia/ritmo-de-la-habana-start-2000-dj-chava-345738|20:00; Teatro Cubano Kraków; nowe w bazie 24.10
+31.10|LC|Halloween Salsa Party – Día de los Muertos (2 sale: Cuba + Kizomba/Bachata)|Cubana/Timba/Rueda/Kizomba/Bachata|https://allevents.in/katowice/halloween-salsa-party-d%C3%8Da-de-los-muertos/200030785993244|22:00; La Clave Chorzowska 11; wspólny bilet z imprezą w Gravitacji; nowe w bazie 20.10
+31.10|GR|Halloween Bachata Party–Día de los Muertos|Bachata|F:1662179081913529|La Clave; 21:30; wspólny bilet z imprezą w La Clave; uzupełniono bezpośredni link FB 20.10
+31.10|Gliwice,Mohito,Zwycięstwa52A|Strasznie Dobra Impreza – Oficjalne Gliwickie Halloween|Salsa/Bachata/Kizomba|F:1110470741478692|21:00; Szkoła Tańca Mohito Gliwice; nowe w bazie 20.10
+31.10|Bielsko-Biała,AllDance,1 Maja20|Halloween Dance Party,Praktis Bachata/Salsa/Kizomba|Salsa/Bachata/Kizomba|F:1602739471550950|21:00; Szkoła Tańca AllDance; nowe w bazie 20.10
+31.10|LO|warsztaty Unlock Your Freestyle–Level2|Bachata solo/Impro|F:28452173844411271|15–18; LOFToDANCE; uzupełniono bezpośredni link FB 20.10
+31.10|LO|Party w Trupa2026|Bachata|F:1388506849611167|22–03, 100% Bachata; LOFToDANCE; uzupełniono bezpośredni link FB 20.10
+31.10|Kraków,Party House,Szewska21|Kraków Latino Festival|Salsa/Bachata/Kizomba|F:1570212034748706|Party House Kraków; nowe w bazie 20.10

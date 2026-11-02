@@ -338,6 +338,28 @@
         "style": [
           "Kizomba"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "ul. Berka Joselewicza 26",
+        "miejsceInne": "ul. Berka Joselewicza 26",
+        "adres": "",
+        "lat": 50.0647,
+        "lng": 19.945,
+        "tytul": "Dołącz na zajęcia Kizomba & Semba !🔥",
+        "opis": "Dołącz na zajęcia Kizomba & Semba !🔥 - 17:00; Szkoła Tańca SEMPRE; nowe w bazie 02.11",
+        "opisPubliczny": "Dołącz na zajęcia Kizomba & Semba !🔥",
+        "dateLabel": "NIEDZIELA (08.11.2026)",
+        "endDate": "2026-11-08",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/945561961682067/",
+        "style": [
+          "Kizomba",
+          "Semba"
+        ]
       }
     ]
   },
@@ -976,6 +998,27 @@
         "link": "https://www.facebook.com/events/1617716113426642/",
         "style": [
           "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Świętochłowice",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.292,
+        "lng": 18.9178,
+        "tytul": "🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅",
+        "opis": "🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅 - 16:00; Inne; AirDancia; nowe w bazie 02.11",
+        "opisPubliczny": "🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅",
+        "dateLabel": "NIEDZIELA (06.12.2026)",
+        "endDate": "2026-12-06",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/mikolajkowe-warsztaty-bachata-ladies-swietochlowice/",
+        "style": [
+          "Bachata"
         ]
       }
     ]
