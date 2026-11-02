@@ -81,8 +81,9 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(radioCss, /\.radio-sleep-timer\s+\.sleep-timer-cancel\.is-hidden[\s\S]*?visibility:\s*hidden\s*!important/, 'Brak visibility: hidden !important zapobiegającego skokom wysokości przy przełączaniu timera');
     });
 
-    it('powinien wykorzystywać format WebP oraz atrybut loading="lazy" dla grafiki Hero (#23)', () => {
+    it('powinien wykorzystywać format WebP, priorytet LCP fetchpriority="high" dla grafiki Hero oraz atrybut loading="lazy" dla mapy (#23)', () => {
       assert.match(html, /srcset="assets\/images\/hero\.webp"/i);
+      assert.match(html, /fetchpriority="high"/i);
       assert.match(html, /loading="lazy"/i);
     });
 
@@ -245,6 +246,18 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.doesNotMatch(html, /<script(?![^>]*(\bsrc\s*=|type\s*=\s*["'](?:application\/ld\+json|speculationrules)["']))[^>]*>/i, 'Wykryto wykonywalny blok inline <script> w grafik.html');
       assert.match(html, /src="assets\/js\/schedule\.js(\?[^"]*)?"/i);
       assert.match(html, /src="assets\/js\/ai-widget\.js(\?[^"]*)?"/i);
+
+      // Weryfikacja statycznego wsadu SEO (SSG) w grafik.html (SEO-01)
+      const staticClassMatches = html.match(/class="schedule-card\s+schedule-card--[a-z]+"[^>]*data-class-id="/g) || [];
+      assert.strictEqual(
+        staticClassMatches.length,
+        128,
+        `Kontener #scheduleClassesContainer w grafik.html musi zawierać statyczny wsad SEO 128 kursów (znaleziono: ${staticClassMatches.length})`
+      );
+      assert.match(html, /class="event-card-ksh/, 'Kontener #scheduleEventsContainer w grafik.html powinien zawierać statyczny wsad wydarzeń');
+      assert.match(html, /data-event-date="\d{4}-\d{2}-\d{2}"/, 'Brak sekcji dat wydarzeń data-event-date w grafik.html');
+      assert.match(html, /hreflang="x-default"/, 'Brak tagów hreflang w grafik.html (SEO-06)');
+      assert.match(html, /type="speculationrules"/, 'Brak Speculation Rules API w grafik.html (SEO-08)');
 
       // Weryfikacja Mapy Szkół (#scheduleMapView): 8 zakładek i wyświetlanie wyłącznie 1 aktywnej karty obok mapy
       const expectedZones = ['school-lc', 'school-gm', 'school-mp', 'school-tk', 'school-gr', 'wolni', 'stawy', 'nospr'];

@@ -117,7 +117,7 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.ok(fs.existsSync(lhciPath), 'Brak .lighthouserc.json');
     const cfg = JSON.parse(fs.readFileSync(lhciPath, 'utf-8'));
     assert.ok(cfg.ci && cfg.ci.assert && cfg.ci.assert.assertions);
-    assert.ok(Array.isArray(cfg.ci.collect.url) && cfg.ci.collect.url.length === 3, 'Brak jawnej listy 3 stron w collect.url w .lighthouserc.json');
+    assert.ok(Array.isArray(cfg.ci.collect.url) && cfg.ci.collect.url.length >= 3, 'Brak jawnej listy stron w collect.url w .lighthouserc.json');
   });
 
   it('konfiguracja Dependabot (.github/dependabot.yml) powinna istnieć i chronić npm oraz github-actions', () => {

@@ -320,6 +320,27 @@
     "events": [
       {
         "checked": true,
+        "promote": true,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Wolni Ludzie",
+        "miejsceInne": "Wolni Ludzie (ul. Mariacka 2)",
+        "adres": "ul. Mariacka 2",
+        "lat": 50.2577,
+        "lng": 19.0248,
+        "tytul": "Cuban Salsa Fiesta vol. 69",
+        "opis": "Cuban Salsa Fiesta vol. 69 - KATO SALSA HUB; 15–18 CET; DJ Loczek, motyw: kubański gadżet; ⭐ własne wydarzenie",
+        "opisPubliczny": "Cuban Salsa Fiesta vol. 69",
+        "dateLabel": "NIEDZIELA (08.11.2026)",
+        "endDate": "2026-11-08",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/2483727685486256/",
+        "style": [
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
         "promote": false,
         "miasto": "Katowice",
         "miastoInne": "",
@@ -809,6 +830,29 @@
         "link": "https://onlydanceapp.com/event/043c87008bf840fda026",
         "style": [
           "Salsa"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.266,
+        "lng": 19.0188,
+        "tytul": "Świadome rozciąganie i mobilność w tańcu / La Clave Katowic",
+        "opis": "Świadome rozciąganie i mobilność w tańcu / La Clave Katowic - 15:30; La Clave; AirDancia; nowe w bazie 02.11",
+        "opisPubliczny": "Świadome rozciąganie i mobilność w tańcu / La Clave Katowic",
+        "dateLabel": "SOBOTA (28.11.2026)",
+        "endDate": "2026-11-28",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/swiadome-rozciaganie-i-mobilnosc-w-tancu-la-clave-katowic-katowice/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
         ]
       }
     ]

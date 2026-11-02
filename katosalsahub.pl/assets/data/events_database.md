@@ -4,7 +4,7 @@ Ostatnia aktualizacja: 02.11.2026 (Poniedziałek)
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach w piątek jeszcze bez potwierdzonych ogłoszeń, ale potańczycie w Częstochowie na Piątkowa Potańcówka Cultura Latina – Mambo w Częstotańcz (Salsa On2/Bachata), a w Krakowie na Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia w Panorama Forum (Bachata).
 SOBOTA|W Katowicach czekają warsztaty B Experience w Mil Pasos (Bachata) oraz Urodziny Pedro x Otwarcie Fabryki FloU w Euforma (Fabryka FloU) (Bachata). W regionie parkiety otwierają Częstotańcz (Częstochowa, Salsa On2), Hotel Sahara (Bielsko-Biała, Kizomba), natomiast w Krakowie czekają Overpower Dancers Edition vol.19 w Forum Tańca (Bachata) oraz Twilight Salsa Party w Sabrosa Dance Studio (Salsa) oraz warsztaty Salsa On1 (od zera oraz dla tańczących) w LOFToDANCE (Salsa On1) oraz warsztaty Men Styling – Bachata Solo dla facetów w LOFToDANCE (Bachata) oraz warsztaty ¡A bailar salsa! w LOFToDANCE (Salsa On1/Salsa On2).
-NIEDZIELA|W Katowicach czekają KIZLAB SUNDAYS w KIZLAB (Kizomba).
+NIEDZIELA|W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne wydarzenie Cuban Salsa Fiesta vol. 69 (z DJ Loczkiem i motywem kubańskiego gadżetu!) w Wolnych Ludziach przy Mariackiej 2 (Cubana), wieczorem czekają KIZLAB SUNDAYS w KIZLAB (Kizomba), a w Krakowie warsztaty Kizomba & Semba w Szkole Tańca SEMPRE przy ul. Berka Joselewicza 26 (Kizomba/Semba).
 
 ## BIEŻĄCY WEEKEND (06–08.11.2026)
 06.11|Częstochowa,Częstotańcz,Spółdzielczości4|Piątkowa Potańcówka Cultura Latina – Mambo, Salsa, Bachata z lekcją tańca|Salsa On2/Bachata|F:2311106856407049|20:30; Częstotańcz Częstochowa; nowe w bazie 24.10
@@ -18,6 +18,7 @@ NIEDZIELA|W Katowicach czekają KIZLAB SUNDAYS w KIZLAB (Kizomba).
 07.11|LO|¡A bailar salsa!,impreza i wcześniejsze warsztaty|Salsa On1/Salsa On2|F:1103289608857781|impreza 20–24, warsztaty godzina TBA; LOFToDANCE; uzupełniono bezpośredni link FB 20.10
 07.11|Częstochowa,Częstotańcz,Spółdzielczości4|warsztaty Mambo New York Style On2|Salsa On2|F:1328664779481954|Częstotańcz; nowe w bazie 20.10
 07.11|Bielsko-Biała,Hotel Sahara|Taneczna SOBOTA - start 20:00 <3 (Hotel SAHARA, Bielsko-Biała)|Kizomba|O:8a02904e0bb149ff82b2|PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 30.10
+08.11|WL|Cuban Salsa Fiesta vol. 69|Cubana|F:2483727685486256|KATO SALSA HUB; 15–18 CET; DJ Loczek, motyw: kubański gadżet; ⭐ własne wydarzenie
 08.11|KL|KIZLAB SUNDAYS|Kizomba|F:1617716113426642|KIZLAB; kolejna ogłoszona edycja, program TBA
 08.11|Kraków,ul. Berka Joselewicza 26|Dołącz na zajęcia Kizomba & Semba !🔥|Kizomba/Semba|F:945561961682067|17:00; Szkoła Tańca SEMPRE; nowe w bazie 02.11
 
@@ -46,6 +47,7 @@ NIEDZIELA|W Katowicach czekają KIZLAB SUNDAYS w KIZLAB (Kizomba).
 28.11|MP|Zajęcia specjalne Tarraxo – Jakub & Agnieszka Sajko + praktis|Kizomba/Tarraxo|F:1105825208696965|16:00–19:00 warsztaty, 19:00–22:00 praktis; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10
 28.11|LO|DobraNocka Party|Bachata|https://sklep.loftodance.pl/wydarzenie/dobranocka-party,1291|LOFToDANCE Kraków; nowe w bazie 20.10
 28.11|Bielsko-Biała,Hotel Sahara|Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku!|Salsa|O:043c87008bf840fda026|PASJA - kursy tańca w Bielsku; OnlyDance; nowe w bazie 30.10
+28.11|LC|Świadome rozciąganie i mobilność w tańcu / La Clave Katowic|Salsa/Bachata/Kizomba|https://airdancia.com/event/swiadome-rozciaganie-i-mobilnosc-w-tancu-la-clave-katowic-katowice/|15:30; La Clave; AirDancia; nowe w bazie 02.11
 01.12|ZW|Salsunia|Cubana|F:1249676614905478|VivaSalsa
 03–06.12|Hucisko,Orle Gniazdo20,woj.śląskie|FeelTheFlow|Bachata|https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/|FeeltheSalsa/Damian Ratajczak
 05.12|MP|Ania Kurowska & Daniel Galas – muzyka na żywo! Live Music Interpretation|Cubana|F:1080166424340009|11:00–15:00; Mil Pasos Kamienna 4; nowe w bazie 20.10

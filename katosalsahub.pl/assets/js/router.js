@@ -133,6 +133,16 @@ async function loadPage(url) {
         if (doc.title) {
             document.title = doc.title;
         }
+        const newCanonical = doc.querySelector('link[rel="canonical"]');
+        const curCanonical = document.querySelector('link[rel="canonical"]');
+        if (newCanonical && curCanonical) {
+            curCanonical.setAttribute('href', newCanonical.getAttribute('href') || '');
+        }
+        const newDesc = doc.querySelector('meta[name="description"]');
+        const curDesc = document.querySelector('meta[name="description"]');
+        if (newDesc && curDesc) {
+            curDesc.setAttribute('content', newDesc.getAttribute('content') || '');
+        }
         appContent.innerHTML = newContent.innerHTML;
 
         // Router is now "Dumb" - Emits Event
