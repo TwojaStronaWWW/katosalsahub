@@ -570,6 +570,28 @@
           "Bachata",
           "Kizomba"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8294,
+        "lng": 19.0496,
+        "tytul": "Salsoteka | 14.11 | Cuban Weekend | Salsa • Casino • Timba • Son",
+        "opis": "Salsoteka | 14.11 | Cuban Weekend | Salsa • Casino • Timba • Son - 20:00; Szkoła Tańca Corazon; nowe w bazie 03.11",
+        "opisPubliczny": "Salsoteka | 14.11 | Cuban Weekend | Salsa • Casino • Timba • Son",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1746598119751839/",
+        "style": [
+          "Timba",
+          "Cubana"
+        ]
       }
     ]
   },

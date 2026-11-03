@@ -1,5 +1,5 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 02.11.2026 (Poniedziałek)
+Ostatnia aktualizacja: 03.11.2026 (Wtorek)
 
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach w piątek jeszcze bez potwierdzonych ogłoszeń, ale potańczycie w Częstochowie na Piątkowa Potańcówka Cultura Latina – Mambo w Częstotańcz (Salsa On2/Bachata), a w Krakowie na Bachata at Panorama #4 – El Arcoíris Bajo La Lluvia w Panorama Forum (Bachata).
@@ -36,6 +36,7 @@ NIEDZIELA|W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne 
 14.11|Kraków,Frenzy (ul. Borowickiej 1),Iwony Borowickiej1|FrenzyShot Urban Kiz Party|Urban Kiz/Kizomba|O:pF0Xk4mNPfROoMs5LcL7|19:00; Frenzy Kraków; nowe w bazie 20.10
 14.11|Kraków,Salsa House|NIKT NIE PYTAŁ, KAŻDY POTRZEBOWAŁ – edycja II 🔥|Salsa|F:1429729902635413|10:00; Salsa House; nowe w bazie 30.10
 14.11|LO|Demo Experience|Salsa/Bachata/Kizomba|https://sklep.loftodance.pl/wydarzenie/demo-experience,1301|LOFToDANCE Kraków; nowe w bazie 02.11
+14.11|DL|Salsoteka | 14.11 | Cuban Weekend | Salsa • Casino • Timba • Son|Timba/Cubana|F:1746598119751839|20:00; Szkoła Tańca Corazon; nowe w bazie 03.11
 17.11|ZW|Salsunia|Cubana|F:2970730173282777|VivaSalsa
 20.11|SA|🔥 BACHATA PARTY – FUEGO NIGHT 🔥 vol.1 Birthday Edition|Bachata|O:1IxV1niQxq3245xiTu4H|Kamil Frączek; OnlyDance; nowe w bazie 30.10
 21.11|MP|Cuban Ladies – Rumba Guaguancó, Oshun & Timba Ladies,warsztaty|Cubana/Rumba/Timba|F:1580872416500736|16:00–19:00; Mil Pasos Kamienna 4; uzupełniono bezpośredni link FB 20.10
