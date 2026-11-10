@@ -896,6 +896,72 @@ ${sec6}
     return fullReport;
 }
 
+/**
+ * Automatyczna synchronizacja bloku JSON-LD Schema.org DanceEvent w index.html i grafik.html
+ * na podstawie najbliższego własnego wydarzenia Kato Salsa Hub (isKSH / WL / TS).
+ */
+function syncDanceEventSchemaInHtml(sections, todayIso = '') {
+    const candidates = [
+        ...(sections.thisWeekMid || []),
+        ...(sections.currentWeekend || []),
+        ...(sections.future || []),
+    ]
+        .filter((ev) => {
+            if (!ev) return false;
+            const endIso = ev.isoEndDate || ev.isoStartDate || '';
+            if (todayIso && endIso && endIso < todayIso) return false;
+            return Boolean(ev.isKSH || ev.rawVenue === 'WL' || ev.rawVenue === 'TS');
+        })
+        .sort((a, b) => (a.sortTimestamp || 0) - (b.sortTimestamp || 0));
+
+    if (candidates.length === 0) return false;
+    const nextEv = candidates[0];
+    const dateIso = nextEv.isoStartDate;
+    if (!dateIso || !/^\d{4}-\d{2}-\d{2}$/.test(dateIso)) return false;
+
+    const hoursMatch = String(nextEv.notes || '').match(/(\d{1,2})(?::(\d{2}))?\s*[–-]\s*(\d{1,2})(?::(\d{2}))?/);
+    const startH = hoursMatch ? String(hoursMatch[1]).padStart(2, '0') : '15';
+    const startM = hoursMatch && hoursMatch[2] ? hoursMatch[2] : '00';
+    const endH = hoursMatch ? String(hoursMatch[3]).padStart(2, '0') : '18';
+    const endM = hoursMatch && hoursMatch[4] ? hoursMatch[4] : '00';
+
+    const monthNum = parseInt(dateIso.slice(5, 7), 10);
+    const isCest = /CEST/i.test(nextEv.notes || '') || (!/CET\b/i.test(nextEv.notes || '') && monthNum >= 4 && monthNum <= 10);
+    const tzOffset = isCest ? '+02:00' : '+01:00';
+
+    const startDateStr = `${dateIso}T${startH}:${startM}:00${tzOffset}`;
+    const endDateStr = `${dateIso}T${endH}:${endM}:00${tzOffset}`;
+    const cleanUrl = String(nextEv.url || 'https://www.facebook.com/KatoSalsaHub/events').replace(/\/+$/, '');
+    const isStawy = nextEv.rawVenue === 'TS' || /Staw|Kr[aą]g/i.test(nextEv.venue || '');
+    const venueLabel = isStawy ? 'Kamienny Krąg – Dolina Trzech Stawów' : 'Wolni Ludzie';
+    const fullName = /Wolni Ludzie|Staw/i.test(nextEv.title || '')
+        ? `${nextEv.title} (Salsa Katowice)`
+        : `${nextEv.title.replace(/\s+(vol\.\s*\d+)/i, ` – ${venueLabel} $1`)} (Salsa Katowice)`;
+
+    const htmlTargets = [
+        path.join(ROOT_DIR, 'katosalsahub.pl', 'index.html'),
+        path.join(ROOT_DIR, 'katosalsahub.pl', 'grafik.html'),
+    ];
+
+    let updatedCount = 0;
+    for (const htmlPath of htmlTargets) {
+        if (!fs.existsSync(htmlPath)) continue;
+        const original = fs.readFileSync(htmlPath, 'utf-8');
+        const updated = original.replace(
+            /("@type":\s*"DanceEvent",\s*"name":\s*")([^"]+)("[\s\S]*?"startDate":\s*")([^"]+)("[\s\S]*?"endDate":\s*")([^"]+)("[\s\S]*?"url":\s*")([^"]+)("[\s\S]*?"offers":\s*\{\s*"@type":\s*"Offer",\s*"url":\s*")([^"]+)(")/,
+            `$1${fullName}$3${startDateStr}$5${endDateStr}$7${cleanUrl}$9${cleanUrl}$11`
+        );
+        if (updated !== original) {
+            writeFileAtomically(htmlPath, updated);
+            updatedCount++;
+        }
+    }
+    if (updatedCount > 0) {
+        console.log(`   🔄 Zaktualizowano Schema.org DanceEvent (${fullName}) w ${updatedCount} plikach HTML.`);
+    }
+    return updatedCount > 0;
+}
+
 // 5. Deploy / Sync to LH Server via SSH
 function syncToRemoteLH() {
     if (process.env.CI || process.env.SKIP_REMOTE_SYNC === '1') {
@@ -1031,6 +1097,13 @@ async function main() {
 
     generateEventsJson(sections, { minDateIso: todayIso });
     generateWeeklyReport(sections, newSubmissions);
+    syncDanceEventSchemaInHtml(sections, todayIso);
+    try {
+        const { syncAllLayouts } = require('./sync-layout.js');
+        syncAllLayouts({ write: true });
+    } catch (layoutErr) {
+        console.warn('   ⚠️ Nie udało się zsynchronizować widoków HTML:', layoutErr.message);
+    }
     syncToRemoteLH();
 
     console.log('========================================================');
@@ -1057,6 +1130,7 @@ module.exports = {
     buildVenueAndStyleLabel,
     generateEventsJson,
     generateWeeklyReport,
+    syncDanceEventSchemaInHtml,
     normalizeLocation,
     normalizeStreetAddress,
     deduplicateEvents,

@@ -35,6 +35,7 @@ jobs:
         run: |
           node scripts/sync_engine.js --check-remote || node scripts/sync_engine.js
           node scripts/sync-schedules.js --check-remote || node scripts/sync-schedules.js
+          npm run sync:layout
 
       - name: Walidacja integralności wygenerowanych plików JSON przed commitem (Circuit Breaker)
         run: npm test
@@ -47,7 +48,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add katosalsahub.pl/assets/data/events.json katosalsahub.pl/assets/data/latest_report.md katosalsahub.pl/assets/data/schedule.json katosalsahub.pl/assets/data/events_database.md
+          git add katosalsahub.pl/assets/data/events.json katosalsahub.pl/assets/data/latest_report.md katosalsahub.pl/assets/data/schedule.json katosalsahub.pl/assets/data/events_database.md katosalsahub.pl/index.html katosalsahub.pl/grafik.html
           if git diff --cached --quiet; then
             echo "Brak zmian w danych wydarzeń, grafiku szkół i raporcie."
           else

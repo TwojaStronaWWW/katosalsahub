@@ -149,6 +149,206 @@ function buildScriptsBlock(_pageFile, version = ASSET_VERSION) {
   return scripts.join('\n');
 }
 
+const DAY_NAMES_PL = {
+  1: 'Poniedziałek',
+  2: 'Wtorek',
+  3: 'Środa',
+  4: 'Czwartek',
+  5: 'Piątek',
+  6: 'Sobota',
+  7: 'Niedziela',
+};
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatPlDateHeader(isoDate) {
+  if (!isoDate || !/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return isoDate || '';
+  const [y, m, d] = isoDate.split('-').map((n) => parseInt(n, 10));
+  const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+  const weekdays = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+  const dayName = weekdays[dt.getUTCDay()] || '';
+  return `${dayName} • ${String(d).padStart(2, '0')}.${String(m).padStart(2, '0')}.${y}`;
+}
+
+function getCleanEventDescription(ev) {
+  if (ev.opisPubliczny) return ev.opisPubliczny;
+  const raw = String(ev.opis || ev.tytul || '');
+  return raw.split(';')[0].replace(/\s*-\s*dzień miniony.*$/i, '').trim();
+}
+
+function buildStaticScheduleClassesBlock() {
+  const schedPath = path.join(KSH_DIR, 'assets', 'data', 'schedule.json');
+  if (!fs.existsSync(schedPath)) return null;
+  const sched = JSON.parse(fs.readFileSync(schedPath, 'utf-8'));
+  const schools = Array.isArray(sched.schools) ? sched.schools : [];
+  const classes = Array.isArray(sched.classes) ? sched.classes.slice() : [];
+  const schoolsMap = new Map(schools.map((s) => [s.id, s]));
+
+  classes.sort((a, b) => {
+    const dayDiff = (Number(a.dayOfWeek) || 0) - (Number(b.dayOfWeek) || 0);
+    if (dayDiff !== 0) return dayDiff;
+    return String(a.startTime || '').localeCompare(String(b.startTime || ''));
+  });
+
+  const byDay = new Map();
+  for (const cls of classes) {
+    const d = Number(cls.dayOfWeek) || 1;
+    if (!byDay.has(d)) byDay.set(d, []);
+    byDay.get(d).push(cls);
+  }
+
+  const sectionsHtml = [];
+  for (const [dayNum, dayClasses] of byDay.entries()) {
+    const dayName = DAY_NAMES_PL[dayNum] || `Dzień ${dayNum}`;
+    const badgeText = `${dayClasses.length} ${dayClasses.length === 1 ? 'zajęcia' : 'zajęć'}`;
+    const cardsHtml = dayClasses
+      .map((item) => {
+        const school = schoolsMap.get(item.schoolId) || {
+          id: item.schoolId,
+          name: item.schoolId,
+          badgeClass: 'school-badge--lc',
+          website: 'https://katosalsahub.pl/grafik.html',
+        };
+        const schoolLower = String(item.schoolId || 'lc').toLowerCase();
+        const levelLower = String(item.levelCode || 'open').toLowerCase();
+        const instructorsHtml = (item.instructors || [])
+          .map((inst) => {
+            const href = inst.termId
+              ? `salsopedia.html?term=${encodeURIComponent(inst.termId)}`
+              : 'salsopedia.html';
+            return `<a href="${href}" class="instructor-link-pill" title="Zobacz profil instruktora w Salsopedii"><i class="fas fa-user-graduate"></i> ${escapeHtml(inst.name)}</a>`;
+          })
+          .join('');
+
+        return `                  <article class="schedule-card schedule-card--${escapeHtml(schoolLower)}" data-class-id="${escapeHtml(item.id)}" data-school-id="${escapeHtml(item.schoolId)}">
+                    <div>
+                      <div class="schedule-card-top">
+                        <span class="schedule-time-box"><i class="far fa-clock"></i> ${escapeHtml(item.startTime)} – ${escapeHtml(item.endTime)}</span>
+                        <div class="schedule-badges-row">
+                          <span class="school-badge ${escapeHtml(school.badgeClass || `school-badge--${schoolLower}`)}">${escapeHtml(school.name)}</span>
+                          <span class="level-badge level-badge--${escapeHtml(levelLower)}">${escapeHtml(item.levelLabel || item.levelCode)}</span>
+                        </div>
+                      </div>
+                      <div class="schedule-card-style">${escapeHtml(item.styleLabel)} • ${escapeHtml(item.room)}</div>
+                      <h3 class="schedule-card-title">${escapeHtml(item.title)}</h3>
+                      <p class="schedule-card-notes">${escapeHtml(item.notes)}</p>
+                    </div>
+                    <div class="schedule-card-meta">
+                      <div class="schedule-meta-row">
+                        <div class="schedule-instructors">${instructorsHtml}</div>
+                      </div>
+                      <div class="schedule-card-actions">
+                        <button type="button" class="schedule-action-btn js-focus-school-map" data-school-id="${escapeHtml(item.schoolId)}" title="Pokaż szkołę ${escapeHtml(school.name)} na mapie">
+                          <i class="fas fa-map-marker-alt"></i> Pokaż na mapie
+                        </button>
+                        <a href="${escapeHtml(school.website || 'https://katosalsahub.pl/grafik.html')}" target="_blank" rel="noopener noreferrer" class="schedule-action-btn">
+                          <i class="fas fa-external-link-alt"></i> Strona szkoły
+                        </a>
+                      </div>
+                    </div>
+                  </article>`;
+      })
+      .join('\n');
+
+    sectionsHtml.push(`              <div class="schedule-day-section" data-day="${dayNum}">
+                <div class="schedule-day-heading">
+                  <h2><i class="far fa-calendar-check"></i> ${escapeHtml(dayName)}</h2>
+                  <span class="schedule-day-badge">${badgeText}</span>
+                </div>
+                <div class="schedule-cards-list">
+${cardsHtml}
+                </div>
+              </div>`);
+  }
+
+  return {
+    count: classes.length,
+    html: `<div id="scheduleClassesContainer">\n${sectionsHtml.join('\n')}\n            </div>`,
+  };
+}
+
+function buildStaticScheduleEventsBlock() {
+  const eventsPath = path.join(KSH_DIR, 'assets', 'data', 'events.json');
+  if (!fs.existsSync(eventsPath)) return null;
+  const days = JSON.parse(fs.readFileSync(eventsPath, 'utf-8'));
+  if (!Array.isArray(days)) return null;
+
+  let totalEvents = 0;
+  const sectionsHtml = [];
+
+  for (const dayEntry of days) {
+    if (!dayEntry || !Array.isArray(dayEntry.events) || dayEntry.events.length === 0) continue;
+    totalEvents += dayEntry.events.length;
+    const headerTitle = formatPlDateHeader(dayEntry.date);
+
+    const cardsHtml = dayEntry.events
+      .map((ev) => {
+        const isKato = String(ev.miasto || '').toLowerCase() === 'katowice';
+        const cityClass = isKato ? 'event-city-pill' : 'event-city-pill event-city-pill--other';
+        const promotedClass = ev.promote ? 'event-card-ksh event-card-ksh--promoted' : 'event-card-ksh';
+        const starBadge = ev.promote ? '<span class="event-ksh-star">⭐ Polecane KSH</span>' : '';
+        const cleanDesc = getCleanEventDescription(ev);
+        const stylesTags = (ev.style || [])
+          .map((st) => `<span class="event-style-tag">${escapeHtml(st)}</span>`)
+          .join('');
+        const gpsUrl =
+          typeof ev.lat === 'number' && typeof ev.lng === 'number'
+            ? `https://www.google.com/maps/dir/?api=1&destination=${ev.lat},${ev.lng}&travelmode=driving`
+            : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${ev.miejsce} ${ev.miasto}`)}`;
+
+        const externalLinkBtn = ev.link
+          ? `<a href="${escapeHtml(ev.link)}" target="_blank" rel="noopener noreferrer" class="schedule-action-btn"><i class="fas fa-external-link-alt"></i> Szczegóły wydarzenia</a>`
+          : '';
+
+        return `                  <article class="${promotedClass}">
+                    <div>
+                      <div class="schedule-card-top">
+                        <div class="schedule-badges-row">
+                          <span class="${cityClass}"><i class="fas fa-map-pin"></i> ${escapeHtml(ev.miasto)}</span>
+                          ${starBadge}
+                        </div>
+                        <div class="event-styles-tags">${stylesTags}</div>
+                      </div>
+                      <div class="schedule-card-style">${escapeHtml(ev.miejsce)}${ev.adres ? ` • ${escapeHtml(ev.adres)}` : ''}</div>
+                      <h3 class="schedule-card-title">${escapeHtml(ev.tytul || cleanDesc)}</h3>
+                      <p class="schedule-card-notes">${escapeHtml(cleanDesc)}</p>
+                    </div>
+                    <div class="schedule-card-meta">
+                      <div class="schedule-card-actions">
+                        ${externalLinkBtn}
+                        <a href="${escapeHtml(gpsUrl)}" target="_blank" rel="noopener noreferrer" class="schedule-action-btn">
+                          <i class="fas fa-route"></i> Nawiguj GPS
+                        </a>
+                      </div>
+                    </div>
+                  </article>`;
+      })
+      .join('\n');
+
+    sectionsHtml.push(`              <div class="schedule-day-section" data-event-date="${escapeHtml(dayEntry.date)}">
+                <div class="schedule-day-heading">
+                  <h2><i class="fas fa-fire-alt"></i> ${escapeHtml(headerTitle)}</h2>
+                  <span class="schedule-day-badge">${dayEntry.events.length} ${dayEntry.events.length === 1 ? 'wydarzenie' : 'wydarzeń'}</span>
+                </div>
+                <div class="schedule-cards-list">
+${cardsHtml}
+                </div>
+              </div>`);
+  }
+
+  return {
+    count: totalEvents,
+    html: `<div id="scheduleEventsContainer">\n${sectionsHtml.join('\n')}\n            </div>`,
+  };
+}
+
 function transformPageHtml(rawHtml, pageFile) {
   let html = String(rawHtml || '').replace(/\r\n/g, '\n');
 
@@ -167,6 +367,32 @@ function transformPageHtml(rawHtml, pageFile) {
     /(\s*<script data-cfasync="false" src="assets\/js\/[\s\S]*?<\/script>)+(?:\s*<!-- \[REF-02\][\s\S]*?<\/script>)?/,
     '\n\n' + buildScriptsBlock(pageFile)
   );
+
+  if (pageFile === 'grafik.html') {
+    const classesBlock = buildStaticScheduleClassesBlock();
+    if (classesBlock) {
+      html = html.replace(
+        /<span id="modeCountClasses" class="schedule-mode-count">\d+<\/span>/,
+        `<span id="modeCountClasses" class="schedule-mode-count">${classesBlock.count}</span>`
+      );
+      html = html.replace(
+        /<div id="scheduleClassesContainer">[\s\S]*?<\/div>\s*(?=\s*<\/div>\s*<!-- WIDOK 2: PORÓWNYWARKA CENNIKÓW)/,
+        classesBlock.html + '\n          '
+      );
+    }
+
+    const eventsBlock = buildStaticScheduleEventsBlock();
+    if (eventsBlock) {
+      html = html.replace(
+        /<span id="modeCountEvents" class="schedule-mode-count">\d+<\/span>/,
+        `<span id="modeCountEvents" class="schedule-mode-count">${eventsBlock.count}</span>`
+      );
+      html = html.replace(
+        /<div id="scheduleEventsContainer">[\s\S]*?<\/div>\s*(?=\s*<\/div>\s*<!-- WIDOK 3: ZINTEGROWANA MAPA)/,
+        eventsBlock.html + '\n          '
+      );
+    }
+  }
 
   return html;
 }

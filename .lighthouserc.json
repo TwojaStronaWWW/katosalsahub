@@ -4,6 +4,7 @@
       "staticDistDir": "./katosalsahub.pl",
       "url": [
         "http://localhost/index.html",
+        "http://localhost/grafik.html",
         "http://localhost/salsopedia.html",
         "http://localhost/privacy.html"
       ],

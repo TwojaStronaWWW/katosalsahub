@@ -160,6 +160,7 @@ async function mountWiki() {
     const urlParams = new URLSearchParams(window.location.search);
     const termId = urlParams.get('term');
     if (termId) {
+        updateTermSeoMeta(termId);
         setTimeout(() => scrollToTerm(termId), 400);
     }
     if (urlParams.get('admin') === '1' || window.location.hash === '#admin') {
@@ -976,6 +977,36 @@ function scrollToTerm(id) {
     }
 }
 
+function updateTermSeoMeta(termId, doc = globalThis.document) {
+    if (!doc || !termId || !Array.isArray(AppState.terms)) return false;
+    const found = AppState.terms.find(t => t && t.id === termId);
+    if (!found || !found.term) return false;
+
+    const cleanDef = String(found.definition || '')
+        .replace(/\[([^\][]+)\]/g, '$1')
+        .replace(/\s+/g, ' ')
+        .trim();
+    const shortDesc = cleanDef.length > 152 ? `${cleanDef.slice(0, 149).trim()}...` : cleanDef;
+    const pageTitle = `${found.term} – Salsopedia | Kato Salsa Hub`;
+    const canonicalUrl = `https://katosalsahub.pl/salsopedia.html?term=${encodeURIComponent(found.id)}`;
+
+    doc.title = pageTitle;
+
+    if (typeof doc.querySelector === 'function') {
+        const descMeta = doc.querySelector('meta[name="description"]');
+        if (descMeta && shortDesc) descMeta.setAttribute('content', shortDesc);
+        const ogTitle = doc.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', pageTitle);
+        const ogDesc = doc.querySelector('meta[property="og:description"]');
+        if (ogDesc && shortDesc) ogDesc.setAttribute('content', shortDesc);
+        const ogUrl = doc.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+        const canonicalEl = doc.querySelector('link[rel="canonical"]');
+        if (canonicalEl) canonicalEl.setAttribute('href', canonicalUrl);
+    }
+    return true;
+}
+
 function jumpToTermCard(id) {
     let card = document.getElementById(`card-${id}`);
     if (!card) {
@@ -998,6 +1029,7 @@ function jumpToTermCard(id) {
         if (resetBtn) resetBtn.classList.add('is-hidden');
         renderCurrentView();
     }
+    updateTermSeoMeta(id);
     scrollToTerm(id);
 }
 
@@ -1292,6 +1324,7 @@ if (typeof module !== 'undefined' && module.exports) {
         sortAndFilterTermsByQuery,
         linkifyDefinition,
         buildKeywordEntries,
+        updateTermSeoMeta,
         escapeHtml,
         isSafeHttpUrl
     };

@@ -1,7 +1,7 @@
 ## 1. PRYWATNIE — raport na 08.11.2026
-- **Stan zestawienia na weekend 06–08.11.2026:** **12 pozycji** (2 pt + 9 sb + 1 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **45 pozycji** (pełny horyzont do 2027 r.).
-- **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **2 pozycje**.
+- **Stan zestawienia na weekend 06–08.11.2026:** **14 pozycji** (2 pt + 9 sb + 3 nd).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **48 pozycji** (pełny horyzont do 2027 r.).
+- **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
 - **Nowości w bazie z ostatniego sprawdzenia (08.11 — 0 pozycji, data publikacji nieustalona):**
   - Na dziś nie znalazłem nowych ogłoszeń (wszystkie pozycje w bazie zweryfikowane wcześniej).
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
@@ -19,7 +19,7 @@ W Katowicach w piątek jeszcze bez potwierdzonych ogłoszeń, ale potańczycie w
 W Katowicach czekają warsztaty B Experience w Mil Pasos (Bachata) oraz Urodziny Pedro x Otwarcie Fabryki FloU w Euforma (Fabryka FloU) (Bachata). W regionie parkiety otwierają Częstotańcz (Częstochowa, Salsa On2), Hotel Sahara (Bielsko-Biała, Kizomba), natomiast w Krakowie czekają Overpower Dancers Edition vol.19 w Forum Tańca (Bachata) oraz Twilight Salsa Party w Sabrosa Dance Studio (Salsa) oraz warsztaty Salsa On1 (od zera oraz dla tańczących) w LOFToDANCE (Salsa On1) oraz warsztaty Men Styling – Bachata Solo dla facetów w LOFToDANCE (Bachata) oraz warsztaty ¡A bailar salsa! w LOFToDANCE (Salsa On1/Salsa On2).
 
 🗓️ NIEDZIELA
-W Katowicach czekają KIZLAB SUNDAYS w KIZLAB (Kizomba).
+W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne wydarzenie Cuban Salsa Fiesta vol. 69 (z DJ Loczkiem i motywem kubańskiego gadżetu!) w Wolnych Ludziach przy Mariackiej 2 (Cubana), wieczorem czekają KIZLAB SUNDAYS w KIZLAB (Kizomba), a w Krakowie warsztaty Kizomba & Semba w Szkole Tańca SEMPRE przy ul. Berka Joselewicza 26 (Kizomba/Semba).
 
 ---
 🌴 SALSA KATOWICE – KATO SALSA HUB 🌴
@@ -45,7 +45,9 @@ SOBOTA (07.11): Kraków - LOFToDANCE, warsztaty Men Styling – Bachata Solo dla
 SOBOTA (07.11): Kraków - LOFToDANCE, ¡A bailar salsa! (Salsa On1/Salsa On2)  
 SOBOTA (07.11): Częstochowa - Częstotańcz (Salsa On2)  
 SOBOTA (07.11): Bielsko-Biała - Hotel Sahara (Kizomba)  
+NIEDZIELA (08.11): Katowice - Wolni Ludzie (Cubana)  
 NIEDZIELA (08.11): Katowice - KIZLAB (Kizomba)  
+NIEDZIELA (08.11): Kraków - ul. Berka Joselewicza 26 (Kizomba/Semba)  
 
 ---
 
@@ -79,8 +81,12 @@ NIEDZIELA (08.11): Katowice - KIZLAB (Kizomba)
 🔗 https://onlydanceapp.com/event/8a02904e0bb149ff82b2  
 
 🗓️ NIEDZIELA (08.11):  
+⭐ Katowice: Wolni Ludzie (Cubana)  
+🔗 https://www.facebook.com/events/2483727685486256/  
 ➡️ Katowice: KIZLAB (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  
+➡️ Kraków: ul. Berka Joselewicza 26 (Kizomba/Semba)  
+🔗 https://www.facebook.com/events/945561961682067/  
 
 @wszyscy Do zobaczenia na parkiecie! 💃🕺
 
@@ -148,6 +154,9 @@ NIEDZIELA (08.11): Katowice - KIZLAB (Kizomba)
 🗓️ SOBOTA (28.11.2026)  
 ➡️ Bielsko-Biała: Hotel Sahara, Andrzejki z Pasją w Saharze / impreza taneczna SBKZ w Bielsku! (Salsa)  
 🔗 https://onlydanceapp.com/event/043c87008bf840fda026  
+🗓️ SOBOTA (28.11.2026)  
+➡️ Katowice: La Clave, Świadome rozciąganie i mobilność w tańcu / La Clave Katowic (Salsa/Bachata/Kizomba)  
+🔗 https://airdancia.com/event/swiadome-rozciaganie-i-mobilnosc-w-tancu-la-clave-katowic-katowice/  
 🗓️ WTOREK (01.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1249676614905478/  
@@ -166,9 +175,15 @@ NIEDZIELA (08.11): Katowice - KIZLAB (Kizomba)
 🗓️ SOBOTA (05.12.2026)  
 ➡️ Kraków: Forum Tańca, IMPREZA MIKOŁAJKOWA w Forum Tańca - 5.12 (Salsa)  
 🔗 https://onlydanceapp.com/event/0842578e9fb546dcbcd5  
+🗓️ SOBOTA (05.12.2026)  
+➡️ Katowice: Mil Pasos, ŚWIĄTECZNA BACHATA LADY STYLE – Zajęcia specjalne z Karoliną (Bachata)  
+🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
 🗓️ NIEDZIELA (06.12.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS–Mikołajki (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  
+🗓️ NIEDZIELA (06.12.2026)  
+➡️ Świętochłowice: Inne, 🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅 (Bachata)  
+🔗 https://airdancia.com/event/mikolajkowe-warsztaty-bachata-ladies-swietochlowice/  
 🗓️ SOBOTA (12.12.2026)  
 ➡️ Katowice: Mil Pasos, BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN (Bachata)  
 🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
@@ -237,6 +252,7 @@ NIEDZIELA (08.11): Katowice - KIZLAB (Kizomba)
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą weekendową):**
   - 03.11.2026 (WTOREK): Kraków, Zaraz Wracam Tu — Salsunia (Cubana) -> https://www.facebook.com/events/1083906274387790/ (dzień miniony)
   - 03.11.2026 (WTOREK): Kraków, Salsa House — 🔥 Salsa Ladies Styling z Olą — dołącz do nas! (Salsa) -> https://www.facebook.com/events/1167416399188344/ (dzień miniony)
+  - 05.11.2026 (CZWARTEK): Tychy, Inne — Bachata Sensual Bodymovement & Footwork (Bachata) -> https://airdancia.com/event/bachata-sensual-bodymovement-footwork-tychy/ (dzień miniony)
 - **Wstrzymane / niepewne tropy (poza publikacją do czasu weryfikacji):**
   - Brak niepewnych tropów.
 - **Konflikty danych i zasady ostrożności:**
@@ -247,4 +263,4 @@ NIEDZIELA (08.11): Katowice - KIZLAB (Kizomba)
 - **Kolejne konkretne kroki przy następnym sprawdzeniu:**
   1. Rotacja regionalna: Częstochowa, Zagłębie (Sosnowiec, Dąbrowa Górnicza, Będzin, Czeladź) oraz świeże komunikaty na publicznej stronie FB Kato Salsa Hub.
   2. Weryfikacja dokładnej sali/adresu dla wstrzymanego tropu **REPARTO z Leidel Portuondo (07.11 w Bielsku-Białej)** oraz godzin warsztatów przed imprezą **¡A bailar salsa! (07.11 w LOFToDANCE)**.
-  3. Nie odczytywać ponownie 12 potwierdzonych wydarzeń bieżącego weekendu (06-08.11).
+  3. Nie odczytywać ponownie 14 potwierdzonych wydarzeń bieżącego weekendu (06-08.11).
