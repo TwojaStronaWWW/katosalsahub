@@ -1,74 +1,5 @@
 [
   {
-    "date": "2026-11-08",
-    "events": [
-      {
-        "checked": true,
-        "promote": true,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Wolni Ludzie",
-        "miejsceInne": "Wolni Ludzie (ul. Mariacka 2)",
-        "adres": "ul. Mariacka 2",
-        "lat": 50.2577,
-        "lng": 19.0248,
-        "tytul": "Cuban Salsa Fiesta vol. 69",
-        "opis": "Cuban Salsa Fiesta vol. 69 - KATO SALSA HUB; 15–18 CET; DJ Loczek, motyw: kubański gadżet; ⭐ własne wydarzenie",
-        "opisPubliczny": "Cuban Salsa Fiesta vol. 69",
-        "dateLabel": "NIEDZIELA (08.11.2026)",
-        "endDate": "2026-11-08",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/2483727685486256/",
-        "style": [
-          "Cubana"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "KIZLAB",
-        "miejsceInne": "KIZLAB (ul. Sobieskiego 11)",
-        "adres": "ul. Sobieskiego 11",
-        "lat": 50.2619,
-        "lng": 19.0119,
-        "tytul": "KIZLAB SUNDAYS",
-        "opis": "KIZLAB SUNDAYS - KIZLAB; kolejna ogłoszona edycja, program TBA",
-        "opisPubliczny": "KIZLAB SUNDAYS",
-        "dateLabel": "NIEDZIELA (08.11.2026)",
-        "endDate": "2026-11-08",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1617716113426642/",
-        "style": [
-          "Kizomba"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "ul. Berka Joselewicza 26",
-        "miejsceInne": "ul. Berka Joselewicza 26",
-        "adres": "",
-        "lat": 50.0647,
-        "lng": 19.945,
-        "tytul": "Dołącz na zajęcia Kizomba & Semba !🔥",
-        "opis": "Dołącz na zajęcia Kizomba & Semba !🔥 - 17:00; Szkoła Tańca SEMPRE; nowe w bazie 02.11",
-        "opisPubliczny": "Dołącz na zajęcia Kizomba & Semba !🔥",
-        "dateLabel": "NIEDZIELA (08.11.2026)",
-        "endDate": "2026-11-08",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/945561961682067/",
-        "style": [
-          "Kizomba",
-          "Semba"
-        ]
-      }
-    ]
-  },
-  {
     "date": "2026-11-10",
     "events": [
       {
@@ -92,6 +23,53 @@
           "Salsa",
           "Bachata",
           "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-12",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Świętochłowice",
+        "miastoInne": "",
+        "miejsce": "Górnicza 57",
+        "miejsceInne": "Górnicza 57",
+        "adres": "",
+        "lat": 50.292,
+        "lng": 18.9178,
+        "tytul": "Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet",
+        "opis": "Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet - 18:00; JNdance studio; nowe w bazie 10.11",
+        "opisPubliczny": "Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet",
+        "dateLabel": "CZWARTEK (12.11.2026)",
+        "endDate": "2026-11-12",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1577268101107595/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tychy",
+        "miastoInne": "",
+        "miejsce": "Mohito",
+        "miejsceInne": "Mohito (al. Jana Pawła II 14)",
+        "adres": "al. Jana Pawła II 14",
+        "lat": 50.1121,
+        "lng": 18.9876,
+        "tytul": "Bachata Sensual Bodymovement & Footwork",
+        "opis": "Bachata Sensual Bodymovement & Footwork - 17:30; Szkoła Tańca Mohito Tychy; nowe w bazie 10.11",
+        "opisPubliczny": "Bachata Sensual Bodymovement & Footwork",
+        "dateLabel": "CZWARTEK (12.11.2026)",
+        "endDate": "2026-11-12",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1863784848133909/",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -140,6 +118,50 @@
         "style": [
           "Bachata",
           "Sensual Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (ul. Jana Zamoyskiego 79A/3)",
+        "adres": "ul. Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "🇨🇺 PRAKTIS CUBAN SALSA & SON",
+        "opis": "🇨🇺 PRAKTIS CUBAN SALSA & SON - Salsa House; OnlyDance; nowe w bazie 10.11",
+        "opisPubliczny": "🇨🇺 PRAKTIS CUBAN SALSA & SON",
+        "dateLabel": "PIĄTEK (13.11.2026)",
+        "endDate": "2026-11-13",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/f2d6a2b814974c52b30c",
+        "style": [
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "BLOK BACHATOWY w Forum Tańca! – 13.11",
+        "opis": "BLOK BACHATOWY w Forum Tańca! – 13.11 - 18:15; Forum Tańca; nowe w bazie 10.11",
+        "opisPubliczny": "BLOK BACHATOWY w Forum Tańca! – 13.11",
+        "dateLabel": "PIĄTEK (13.11.2026)",
+        "endDate": "2026-11-13",
+        "soldOut": false,
+        "link": "https://krajownik.pl/krakow/wydarzenia/blok-bachatowy-w-forum-tanca-1311-433604",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
         ]
       }
     ]
@@ -228,6 +250,184 @@
         "endDate": "2026-11-14",
         "soldOut": false,
         "link": "https://www.facebook.com/events/1429729902635413/",
+        "style": [
+          "Salsa"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Demo Experience",
+        "opis": "Demo Experience - LOFToDANCE Kraków; nowe w bazie 02.11",
+        "opisPubliczny": "Demo Experience",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/demo-experience,1301",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8294,
+        "lng": 19.0496,
+        "tytul": "Salsoteka – Cuban Weekend (Salsa • Casino • Timba • Son)",
+        "opis": "Salsoteka – Cuban Weekend (Salsa • Casino • Timba • Son) - 20:00; Szkoła Tańca Corazon; nowe w bazie 03.11",
+        "opisPubliczny": "Salsoteka – Cuban Weekend (Salsa • Casino • Timba • Son)",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1746598119751839/",
+        "style": [
+          "Timba",
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Lunch podczas Sensual Impro Festival Sobota",
+        "opis": "Lunch podczas Sensual Impro Festival Sobota - LOFToDANCE Kraków; nowe w bazie 10.11",
+        "opisPubliczny": "Lunch podczas Sensual Impro Festival Sobota",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/lunch-podczas-sensual-impro-festival-sobota,1205",
+        "style": [
+          "Bachata",
+          "Sensual Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8294,
+        "lng": 19.0496,
+        "tytul": "🇨🇺 CUBAN WEEKEND 🔥 – 14–15 LISTOPADA – Szkoła Tańca Corazon",
+        "opis": "🇨🇺 CUBAN WEEKEND 🔥 – 14–15 LISTOPADA – Szkoła Tańca Corazon - 10:00; Szkoła Tańca Corazon; nowe w bazie 10.11",
+        "opisPubliczny": "🇨🇺 CUBAN WEEKEND 🔥 – 14–15 LISTOPADA – Szkoła Tańca Corazon",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1120432233726857/",
+        "style": [
+          "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-15",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Lunch podczas Sensual Impro Festival Niedziela",
+        "opis": "Lunch podczas Sensual Impro Festival Niedziela - LOFToDANCE Kraków; nowe w bazie 10.11",
+        "opisPubliczny": "Lunch podczas Sensual Impro Festival Niedziela",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/lunch-podczas-sensual-impro-festival-niedziela,1302",
+        "style": [
+          "Bachata",
+          "Sensual Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.2649,
+        "lng": 19.0238,
+        "tytul": "BACHATA – nowy kurs tańca DLA SINGLI I PAR – 15.11.26 – 17:00 – 19:00 NIEDZIELA",
+        "opis": "BACHATA – nowy kurs tańca DLA SINGLI I PAR – 15.11.26 – 17:00 – 19:00 NIEDZIELA - 17:00; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "BACHATA – nowy kurs tańca DLA SINGLI I PAR – 15.11.26 – 17:00 – 19:00 NIEDZIELA",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachata-nowy-kurs-tanca-dla-singli-i-par-15-11-26-17-00-19-00-niedziela-katowice/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Przyspieszony kurs weekendowy – BACHATA OD PODSTAW – 15.11",
+        "opis": "Przyspieszony kurs weekendowy – BACHATA OD PODSTAW – 15.11 - 15:55; Forum Tańca; nowe w bazie 10.11",
+        "opisPubliczny": "Przyspieszony kurs weekendowy – BACHATA OD PODSTAW – 15.11",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://krajownik.pl/krakow/wydarzenia/przyspieszony-kurs-weekendowy-bachata-od-podstaw-1511-433603",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (ul. Jana Zamoyskiego 79A/3)",
+        "adres": "ul. Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "SŁOWORUCH - II EDYCJA // O relacji między ciałem a językiem",
+        "opis": "SŁOWORUCH - II EDYCJA // O relacji między ciałem a językiem - 11:00; Salsa House; nowe w bazie 10.11",
+        "opisPubliczny": "SŁOWORUCH - II EDYCJA // O relacji między ciałem a językiem",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://krajownik.pl/krakow/wydarzenia/sloworuch-ii-edycja-o-relacji-miedzy-cialem-a-jezykiem-434113",
         "style": [
           "Salsa"
         ]
@@ -399,6 +599,29 @@
           "Bachata",
           "Kizomba"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "AllDance",
+        "miejsceInne": "AllDance (ul. 1 Maja 20)",
+        "adres": "ul. 1 Maja 20",
+        "lat": 49.8178,
+        "lng": 19.0457,
+        "tytul": "ANDRZEJKOWE PARTY NEONOWE - PRAKTIS BACHATA/SALSA/KIZOMBA W ALLDANCE",
+        "opis": "ANDRZEJKOWE PARTY NEONOWE -  PRAKTIS BACHATA/SALSA/KIZOMBA W ALLDANCE - 20:00; Szkoła Tańca AllDance - Bielsko-Biała; nowe w bazie 10.11",
+        "opisPubliczny": "ANDRZEJKOWE PARTY NEONOWE -  PRAKTIS BACHATA/SALSA/KIZOMBA W ALLDANCE",
+        "dateLabel": "SOBOTA (21.11.2026)",
+        "endDate": "2026-11-21",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1843986106619903/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
       }
     ]
   },
@@ -445,6 +668,32 @@
         "link": "https://airdancia.com/event/warsztaty-z-bachaty-w-parach-sosnowiec/",
         "style": [
           "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-24",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Piąty Dom",
+        "miejsceInne": "Piąty Dom (ul. Matejki 2)",
+        "adres": "ul. Matejki 2",
+        "lat": 50.2602,
+        "lng": 19.0168,
+        "tytul": "Kizomba w Piątym Domu - SH#76",
+        "opis": "Kizomba w Piątym Domu - SH#76 - SembaHooligans; OnlyDance; nowe w bazie 10.11",
+        "opisPubliczny": "Kizomba w Piątym Domu - SH#76",
+        "dateLabel": "WTOREK (24.11.2026)",
+        "endDate": "2026-11-24",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/8dd4661273e640e38e57",
+        "style": [
+          "Kizomba"
         ]
       }
     ]
@@ -538,6 +787,48 @@
           "Bachata",
           "Kizomba"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Częstotańcz",
+        "miejsceInne": "Częstotańcz (ul. Spółdzielczości 4)",
+        "adres": "ul. Spółdzielczości 4",
+        "lat": 50.7951,
+        "lng": 19.042,
+        "tytul": "🔮✨ ANDRZEJKOWA POTAŃCÓWKA! ✨🔮 WILD WEST WESTERN COUNTRY + CULTURA LATINA",
+        "opis": "🔮✨ ANDRZEJKOWA POTAŃCÓWKA! ✨🔮 WILD WEST WESTERN COUNTRY + CULTURA LATINA - CZĘSTOTAŃCZ - Szkoła Tańca Częstochowa. Znajdź Swój Taniec w Częstochowie.; OnlyDance; nowe w bazie 10.11",
+        "opisPubliczny": "🔮✨ ANDRZEJKOWA POTAŃCÓWKA! ✨🔮 WILD WEST WESTERN COUNTRY + CULTURA LATINA",
+        "dateLabel": "SOBOTA (28.11.2026)",
+        "endDate": "2026-11-28",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/dbcb789d9d934346ad9e",
+        "style": [
+          "Salsa"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Kamienna 12 Kamienna 12",
+        "miejsceInne": "Kamienna 12 Kamienna 12",
+        "adres": "",
+        "lat": 50.0647,
+        "lng": 19.945,
+        "tytul": "BIGGEST LATINO PARTY – KRAKÓW",
+        "opis": "BIGGEST LATINO PARTY – KRAKÓW - Yalla Balagan - Luxury Latino; OnlyDance; nowe w bazie 10.11",
+        "opisPubliczny": "BIGGEST LATINO PARTY – KRAKÓW",
+        "dateLabel": "SOBOTA (28.11.2026)",
+        "endDate": "2026-11-28",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/693195afc5cb418b86b6",
+        "style": [
+          "Bachata"
+        ]
       }
     ]
   },
@@ -563,6 +854,32 @@
         "link": "https://www.facebook.com/events/1249676614905478/",
         "style": [
           "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-12-02",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "MIKOŁAJKOWA NAGRYWKA – Zajęcia specjalne z Izą",
+        "opis": "MIKOŁAJKOWA NAGRYWKA – Zajęcia specjalne z Izą - 18:00–20:00; Mil Pasos Kamienna 4; nowe w bazie 10.11",
+        "opisPubliczny": "MIKOŁAJKOWA NAGRYWKA – Zajęcia specjalne z Izą",
+        "dateLabel": "ŚRODA (02.12.2026)",
+        "endDate": "2026-12-02",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -701,6 +1018,27 @@
         "style": [
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Częstotańcz",
+        "miejsceInne": "Częstotańcz (ul. Spółdzielczości 4)",
+        "adres": "ul. Spółdzielczości 4",
+        "lat": 50.7951,
+        "lng": 19.042,
+        "tytul": "🎅 MIKOŁAJKOWA POTAŃCÓWKA 🎄 WILD WEST WESTERN COUNTRY + CULTURA LATINA w Częstochowie",
+        "opis": "🎅 MIKOŁAJKOWA POTAŃCÓWKA 🎄 WILD WEST WESTERN COUNTRY + CULTURA LATINA w Częstochowie - CZĘSTOTAŃCZ - Szkoła Tańca Częstochowa. Znajdź Swój Taniec w Częstochowie.; OnlyDance; nowe w bazie 10.11",
+        "opisPubliczny": "🎅 MIKOŁAJKOWA POTAŃCÓWKA 🎄 WILD WEST WESTERN COUNTRY + CULTURA LATINA w Częstochowie",
+        "dateLabel": "SOBOTA (05.12.2026)",
+        "endDate": "2026-12-05",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/0bc99cc410234bc5818e",
+        "style": [
+          "Salsa"
+        ]
       }
     ]
   },
@@ -830,6 +1168,32 @@
     ]
   },
   {
+    "date": "2026-12-22",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Piąty Dom",
+        "miejsceInne": "Piąty Dom (ul. Matejki 2)",
+        "adres": "ul. Matejki 2",
+        "lat": 50.2602,
+        "lng": 19.0168,
+        "tytul": "Kizomba w Piątym Domu - SH#77",
+        "opis": "Kizomba w Piątym Domu - SH#77 - SembaHooligans; OnlyDance; nowe w bazie 10.11",
+        "opisPubliczny": "Kizomba w Piątym Domu - SH#77",
+        "dateLabel": "WTOREK (22.12.2026)",
+        "endDate": "2026-12-22",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/9273d6e918024bc9a0be",
+        "style": [
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-12-27",
     "events": [
       {
@@ -926,6 +1290,55 @@
           "Salsa",
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "IMPREZA SYLWESTROWA W MIL PASOS",
+        "opis": "IMPREZA SYLWESTROWA W MIL PASOS - 21:00; Mil Pasos Kamienna 4; nowe w bazie 10.11",
+        "opisPubliczny": "IMPREZA SYLWESTROWA W MIL PASOS",
+        "dateLabel": "CZWARTEK (31.12.2026)",
+        "endDate": "2026-12-31",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-01-02",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Femme Fuego - Lady Styling Lab",
+        "opis": "Femme Fuego - Lady Styling Lab - Magdalena Krzempek; OnlyDance; nowe w bazie 10.11",
+        "opisPubliczny": "Femme Fuego - Lady Styling Lab",
+        "dateLabel": "SOBOTA (02.01.2027)",
+        "endDate": "2027-01-02",
+        "soldOut": false,
+        "link": "https://onlydanceapp.com/event/ZB2IGfCs5l6cyUjRvoJc",
+        "style": [
+          "Bachata"
+        ]
       }
     ]
   },
@@ -951,6 +1364,27 @@
         "link": "https://www.facebook.com/events/1632915284664193/",
         "style": [
           "Salsa On2"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "DARMOWA BACHATA DLA STUDENTÓW Soboty 16:00–18:00 od 9.01.27/ Kliknij „Wezmę udział” i udostępnij!",
+        "opis": "DARMOWA BACHATA DLA STUDENTÓW Soboty 16:00–18:00 od 9.01.27/ Kliknij „Wezmę udział” i udostępnij! - 16:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 10.11",
+        "opisPubliczny": "DARMOWA BACHATA DLA STUDENTÓW Soboty 16:00–18:00 od 9.01.27/ Kliknij „Wezmę udział” i udostępnij!",
+        "dateLabel": "SOBOTA (09.01.2027)",
+        "endDate": "2027-01-09",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -979,6 +1413,33 @@
           "Salsa",
           "Bachata",
           "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-01-19",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tychy",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.1275,
+        "lng": 18.9912,
+        "tytul": "Tychy – Latino Ladies Style – Salsa",
+        "opis": "Tychy – Latino Ladies Style – Salsa, Bachata, Cha cha, tańce latino solo dla kobiet! - 18:30; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "Tychy – Latino Ladies Style – Salsa, Bachata, Cha cha, tańce latino solo dla kobiet!",
+        "dateLabel": "WTOREK (19.01.2027)",
+        "endDate": "2027-01-19",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/tychy-latino-ladies-style-salsa-bachata-cha-cha-tance-latino-solo-dla-kobiet-tychy/",
+        "style": [
+          "Salsa",
+          "Bachata"
         ]
       }
     ]
@@ -1087,6 +1548,60 @@
         "link": "https://onlydanceapp.com/event/323703c89e6c4e9099c7",
         "style": [
           "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-03-09",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tarnowskie Góry",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.4442,
+        "lng": 18.8565,
+        "tytul": "Tarnowskie Góry – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "opis": "Tarnowskie Góry – Bachata i Kizomba – od podstaw – dwa sensualne tańce - 20:30; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "Tarnowskie Góry – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "dateLabel": "WTOREK (09.03.2027)",
+        "endDate": "2027-03-09",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/tarnowskie-gory-bachata-i-kizomba-od-podstaw-dwa-sensualne-tance-tarnowskie-gory/",
+        "style": [
+          "Bachata",
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-03-11",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bytom",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.3484,
+        "lng": 18.9157,
+        "tytul": "Bytom – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "opis": "Bytom – Bachata i Kizomba – od podstaw – dwa sensualne tańce - 17:30; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "Bytom – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "dateLabel": "CZWARTEK (11.03.2027)",
+        "endDate": "2027-03-11",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bytom-bachata-i-kizomba-od-podstaw-dwa-sensualne-tance-bytom-2/",
+        "style": [
+          "Bachata",
+          "Kizomba"
         ]
       }
     ]

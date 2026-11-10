@@ -673,11 +673,14 @@ function rolloverSectionsByDate(sections, todayIso = getTodayIsoDate()) {
 function serializeDatabase(sections) {
     const meta = sections.meta || computeWeekWindow(getTodayIsoDate());
     const weekdayLabel = meta.reportWeekdayFull ? ` (${meta.reportWeekdayFull})` : '';
+    const sanitizePipe = (val) => String(val || '').replace(/\s*\|\s*/g, ' – ').trim();
     const formatRow = (ev) => {
-        const venueField = compactVenueCode(ev);
-        const urlField = compactSourceUrl(ev.url);
-        const notesField = (ev.notes || '').trim();
-        return `${ev.rawDate}|${venueField}|${ev.title}|${ev.styles}|${urlField}|${notesField}`;
+        const venueField = sanitizePipe(compactVenueCode(ev));
+        const titleField = sanitizePipe(ev.title);
+        const stylesField = sanitizePipe(ev.styles);
+        const urlField = sanitizePipe(compactSourceUrl(ev.url));
+        const notesField = sanitizePipe(ev.notes);
+        return `${sanitizePipe(ev.rawDate)}|${venueField}|${titleField}|${stylesField}|${urlField}|${notesField}`;
     };
 
     const lines = [
@@ -1079,10 +1082,10 @@ async function main() {
                 lat: loc.lat,
                 lng: loc.lng,
                 rawVenue: compactVenueCode({ city: loc.city, venue: loc.venue, rawVenue: ev.venueCode || ev.venue }),
-                title: ev.title,
-                styles: ev.styles,
-                url: ev.url,
-                notes: `${ev.notes}; nowe w bazie ${todayIso.slice(8, 10)}.${todayIso.slice(5, 7)}`,
+                title: String(ev.title || '').replace(/\s*\|\s*/g, ' – ').trim(),
+                styles: String(ev.styles || '').replace(/\s*\|\s*/g, ' – ').trim(),
+                url: String(ev.url || '').replace(/\s*\|\s*/g, '').trim(),
+                notes: `${String(ev.notes || '').replace(/\s*\|\s*/g, ' – ').trim()}; nowe w bazie ${todayIso.slice(8, 10)}.${todayIso.slice(5, 7)}`,
                 isKSH: Boolean(ev.isKSH)
             };
 
