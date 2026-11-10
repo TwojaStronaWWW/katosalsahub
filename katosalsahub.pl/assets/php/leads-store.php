@@ -1,6 +1,13 @@
 <?php
 declare(strict_types=1);
 
+foreach (['phar', 'ftp', 'ftps', 'expect'] as $__unsafeWrapper) {
+    if (in_array($__unsafeWrapper, stream_get_wrappers(), true)) {
+        @stream_wrapper_unregister($__unsafeWrapper);
+    }
+}
+unset($__unsafeWrapper);
+
 /**
  * Pobiera zmienną środowiskową z getenv(), $_ENV lub pliku .env poza katalogiem publicznym (ISO 27001)
  */
@@ -87,9 +94,9 @@ function read_leads(bool $draft = false, int $limit = 200): array {
 
         $fileRows = [];
         if (@flock($h, LOCK_SH)) {
-            fgetcsv($h);
+            fgetcsv($h, 0, ',', '"', '');
 
-            while (($row = fgetcsv($h)) !== false) {
+            while (($row = fgetcsv($h, 0, ',', '"', '')) !== false) {
                 $normalized = normalize_lead_row($row);
                 if ($normalized !== null) {
                     array_unshift($fileRows, $normalized);
@@ -141,9 +148,9 @@ function save_lead(array $data, bool $draft = false): void {
         $stat = fstat($fp);
         $isNew = ($stat === false || ($stat['size'] ?? 0) === 0);
         if ($isNew) {
-            fputcsv($fp, ['date', 'time', 'name', 'email', 'message', 'ip_hash', 'phone', 'newsletter']);
+            fputcsv($fp, ['date', 'time', 'name', 'email', 'message', 'ip_hash', 'phone', 'newsletter'], ',', '"', '');
         }
-        fputcsv($fp, $sanitizedRow);
+        fputcsv($fp, $sanitizedRow, ',', '"', '');
         fflush($fp);
         @flock($fp, LOCK_UN);
     }
@@ -181,11 +188,11 @@ function delete_lead_by_id(string $targetId): bool {
 
         if (@flock($fp, LOCK_EX)) {
             rewind($fp);
-            $header = fgetcsv($fp);
+            $header = fgetcsv($fp, 0, ',', '"', '');
             $keptRows = [];
             $foundInFile = false;
 
-            while (($row = fgetcsv($fp)) !== false) {
+            while (($row = fgetcsv($fp, 0, ',', '"', '')) !== false) {
                 if (lead_id($row) === $targetId) {
                     $foundInFile = true;
                     $deleted = true;
@@ -197,9 +204,9 @@ function delete_lead_by_id(string $targetId): bool {
             if ($foundInFile) {
                 ftruncate($fp, 0);
                 rewind($fp);
-                fputcsv($fp, is_array($header) ? $header : ['date', 'time', 'name', 'email', 'message', 'ip_hash', 'phone', 'newsletter']);
+                fputcsv($fp, is_array($header) ? $header : ['date', 'time', 'name', 'email', 'message', 'ip_hash', 'phone', 'newsletter'], ',', '"', '');
                 foreach ($keptRows as $r) {
-                    fputcsv($fp, $r);
+                    fputcsv($fp, $r, ',', '"', '');
                 }
                 fflush($fp);
             }

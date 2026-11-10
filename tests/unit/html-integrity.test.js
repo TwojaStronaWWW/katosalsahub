@@ -110,6 +110,29 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
       assert.match(aiWidgetJs, /setAttribute\s*\(\s*['"]data-nosnippet['"]/, 'Brak atrybutu data-nosnippet na kontenerze widgetu AI');
     });
 
+    it('wszystkie 4 widoki publiczne powinny spełniać standard [REF-02] (kolejność capo.js w <head> oraz Speculation Rules API) i [REF-07] (pojedynczy link llms.txt bez duplikatów)', () => {
+      for (const filePath of [KSH_HTML, GRAFIK_HTML, SALSOPEDIA_HTML, PRIVACY_HTML]) {
+        const pageHtml = fs.readFileSync(filePath, 'utf-8');
+        const baseName = path.basename(filePath);
+
+        const titleIdx = pageHtml.indexOf('<title>');
+        const preconnectIdx = pageHtml.indexOf('rel="preconnect"');
+        const stylesheetIdx = pageHtml.indexOf('rel="stylesheet"');
+        const jsonLdIdx = pageHtml.indexOf('type="application/ld+json"');
+
+        assert.ok(titleIdx > 0 && preconnectIdx > titleIdx, `[REF-02] W ${baseName} <link rel="preconnect"> musi być po <title>`);
+        assert.ok(stylesheetIdx > preconnectIdx, `[REF-02] W ${baseName} <link rel="stylesheet"> musi być po <link rel="preconnect">`);
+        assert.ok(jsonLdIdx > stylesheetIdx, `[REF-02] W ${baseName} blok JSON-LD musi być po arkuszach stylów CSS`);
+
+        const llmsLinks = pageHtml.match(/<link\s+rel="alternate"\s+type="text\/markdown"\s+href="[^"]*llms\.txt"/gi) || [];
+        assert.strictEqual(llmsLinks.length, 1, `[REF-07] W ${baseName} musi znajdować się dokładnie 1 link do llms.txt (znaleziono: ${llmsLinks.length})`);
+
+        assert.match(pageHtml, /<script\s+type="speculationrules">/i, `[REF-02] Brak deklaracji Speculation Rules API w ${baseName}`);
+      }
+
+      assert.match(html, /"eventSchedule":\s*\{[\s\S]*?"repeatFrequency":\s*"P1W"/, 'Brak cyklicznego harmonogramu eventSchedule (P1W) w DanceEvent');
+    });
+
     it('powinien zawierać zaktualizowaną mapę Google My Maps (mid=1cj-CYV4HEEMEKW4Fq65Yyk5gFqp4ecU), widget .map-hub w układzie 4 kafelków 2x2 z nawigacją zawsze na Parking Rekomendowany oraz poprawny plik KML', () => {
       assert.match(html, /mid=1cj-CYV4HEEMEKW4Fq65Yyk5gFqp4ecU/);
       assert.match(html, /href="assets\/css\/sections\.css\?v=[0-9.]+"/i, 'Brak parametru cache-busting ?v= dla sections.css');

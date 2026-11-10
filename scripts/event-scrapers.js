@@ -239,6 +239,63 @@ function decodeHtmlEntities(str = '') {
         .trim();
 }
 
+/**
+ * Schemat Structured Outputs (JSON Schema strict: true) pod ekstrakcję wydarzeń tanecznych
+ * w standardzie OpenRouter / Gemini / OpenAI (`response_format`).
+ */
+const EVENT_EXTRACTION_RESPONSE_FORMAT = Object.freeze({
+    type: 'json_schema',
+    json_schema: {
+        name: 'dance_events_extraction',
+        strict: true,
+        schema: {
+            type: 'object',
+            properties: {
+                events: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            rawDate: { type: 'string', description: 'Data w formacie DD.MM lub DD.MM.YYYY' },
+                            city: { type: 'string', description: 'Miasto wydarzenia (np. Katowice, Kraków, Gliwice)' },
+                            venue: { type: 'string', description: 'Nazwa lokalu lub szkoły tańca' },
+                            title: { type: 'string', description: 'Tytuł wydarzenia tanecznego' },
+                            styles: { type: 'string', description: 'Style tańca oddzielone ukośnikiem (np. Cubana/Timba/Rueda)' },
+                            url: { type: 'string', description: 'Kanoniczny link do wydarzenia' }
+                        },
+                        required: ['rawDate', 'city', 'venue', 'title', 'styles', 'url'],
+                        additionalProperties: false
+                    }
+                }
+            },
+            required: ['events'],
+            additionalProperties: false
+        }
+    }
+});
+
+/**
+ * Bezpieczny parser JSON z mechanizmem Response Healing:
+ * naprawia typowe uszkodzenia bloków JSON-LD i odpowiedzi modeli (markdown fences,
+ * wiszące przecinki przed } / ], nieekranowane znaki sterujące).
+ */
+function parseJsonWithHealing(rawInput) {
+    if (typeof rawInput !== 'string') return null;
+    const trimmed = rawInput.trim();
+    if (!trimmed) return null;
+    try {
+        return JSON.parse(trimmed);
+    } catch {
+        const healed = trimmed
+            .replace(/^```(?:json|ld\+json)?\s*/i, '')
+            .replace(/\s*```$/i, '')
+            .replace(/,\s*([}\]])/g, '$1')
+            .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]+/g, ' ')
+            .trim();
+        return JSON.parse(healed);
+    }
+}
+
 function inferEventStyles(rawText = '') {
     const t = String(rawText || '');
     const found = [];
@@ -494,7 +551,7 @@ function parseKrajownikEventsHtml(html = '', defaultCity = 'Katowice') {
     const ldScripts = [...src.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
     for (const sMatch of ldScripts) {
         try {
-            const parsed = JSON.parse(sMatch[1]);
+            const parsed = parseJsonWithHealing(sMatch[1]);
             const nodes = Array.isArray(parsed)
                 ? parsed
                 : Array.isArray(parsed?.['@graph'])
@@ -619,7 +676,7 @@ function parseSabakiEventsHtml(html = '', defaultCity = 'Katowice') {
     const ldScripts = [...src.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
     for (const sMatch of ldScripts) {
         try {
-            const parsed = JSON.parse(sMatch[1]);
+            const parsed = parseJsonWithHealing(sMatch[1]);
             const list = Array.isArray(parsed?.itemListElement)
                 ? parsed.itemListElement
                 : Array.isArray(parsed)
@@ -936,7 +993,7 @@ async function checkRemoteEventSources(existingDatabaseText = '', todayIso = get
                     const detailHtml = await fetchUrl(ev.url, 6000);
                     const ldMatch = detailHtml.match(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
                     if (ldMatch) {
-                        const ld = JSON.parse(ldMatch[1]);
+                        const ld = parseJsonWithHealing(ldMatch[1]);
                         const locName = decodeHtmlEntities(String(ld.location?.name || ''));
                         const streetAddr = decodeHtmlEntities(String(ld.location?.address?.streetAddress || ''));
                         const combinedAddr = `${locName} ${streetAddr}`.trim();
@@ -975,6 +1032,8 @@ module.exports = {
     deduplicateEvents,
     fetchUrl,
     decodeHtmlEntities,
+    EVENT_EXTRACTION_RESPONSE_FORMAT,
+    parseJsonWithHealing,
     inferEventStyles,
     parseMilPasosEventsHtml,
     parseLoftodanceEventsHtml,

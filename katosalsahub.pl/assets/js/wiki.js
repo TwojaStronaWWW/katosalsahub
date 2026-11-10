@@ -1112,7 +1112,13 @@ function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+let cachedTermsRef = null;
+let cachedKeywordEntries = [];
+
 function buildKeywordEntries(terms) {
+    if (terms === cachedTermsRef && cachedKeywordEntries.length > 0) {
+        return cachedKeywordEntries;
+    }
     const entries = [];
     const seenPhraseLower = new Set();
 
@@ -1127,7 +1133,11 @@ function buildKeywordEntries(terms) {
             phrase: clean,
             lower,
             id: termObj.id,
-            term: termObj.term
+            term: termObj.term,
+            pattern: new RegExp(
+                `(?<![\\p{L}\\p{N}_\\u0000])(${escapeRegex(clean)})(?![\\p{L}\\p{N}_\\u0000])`,
+                'iu'
+            )
         });
     };
 
@@ -1157,6 +1167,8 @@ function buildKeywordEntries(terms) {
     });
 
     entries.sort((a, b) => b.phrase.length - a.phrase.length);
+    cachedTermsRef = terms;
+    cachedKeywordEntries = entries;
     return entries;
 }
 
@@ -1196,7 +1208,7 @@ function linkifyDefinition(rawText, currentItemId = '') {
     for (const entry of entries) {
         if (linkedTargetIds.has(entry.id)) continue;
 
-        const pattern = new RegExp(
+        const pattern = entry.pattern || new RegExp(
             `(?<![\\p{L}\\p{N}_\\u0000])(${escapeRegex(entry.phrase)})(?![\\p{L}\\p{N}_\\u0000])`,
             'iu'
         );

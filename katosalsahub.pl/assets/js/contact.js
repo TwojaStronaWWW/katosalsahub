@@ -121,9 +121,9 @@ document.addEventListener('submit', async function (e) {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        // Anti-bot time and JS validation (safe against fast browser autofill, monotonic clock)
+        // Anti-bot time and JS validation (rzeczywisty czas wypełniania formularza z zegara monotonicznego)
         const rawElapsed = (getMonotonicMs() - pageLoadedAt) / 1000;
-        const elapsedSec = Math.max(2.6, isStrictFiniteNumber(rawElapsed) && rawElapsed >= 0 ? rawElapsed : 0).toFixed(2);
+        const elapsedSec = Math.max(0, isStrictFiniteNumber(rawElapsed) && rawElapsed >= 0 ? rawElapsed : 0).toFixed(2);
         formData.append('submission_seconds', elapsedSec);
         formData.append('js_check', 'passed');
 

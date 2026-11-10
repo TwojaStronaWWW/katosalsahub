@@ -47,7 +47,7 @@ jobs:
           CHANGED_FILES=$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json files --jq '.files[].path')
           echo "Zmienione pliki w PR #${PR_NUMBER}:"
           echo "$CHANGED_FILES"
-          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.gitleaks\.toml|\.github/workflows/(deploy|ai-security-review|dependabot-automerge))'; then
+          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.npmrc|\.gitleaks\.toml|\.githooks/|\.github/workflows/(ci|deploy|weekly-report|ai-security-review|dependabot-automerge))'; then
             echo "::warning::PR od Google Jules modyfikuje chronione pliki CI/CD lub konfigurację sekretów — wymagana ręczna akceptacja właściciela."
             exit 0
           fi
@@ -87,7 +87,7 @@ jobs:
           fi
 
           CHANGED_FILES=$(echo "$PR_JSON" | jq -r '.files[].path')
-          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.gitleaks\.toml|\.github/workflows/(deploy|ai-security-review|dependabot-automerge))'; then
+          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.npmrc|\.gitleaks\.toml|\.githooks/|\.github/workflows/(ci|deploy|weekly-report|ai-security-review|dependabot-automerge))'; then
             echo "::warning::PR #${PR_NUMBER} dotyka chronionych plików CI/CD — pomijam automatyczne scalenie."
             exit 0
           fi

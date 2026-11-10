@@ -21,12 +21,11 @@ jobs:
     env:
       TARGET_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
       MAIN_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
-      DANCE_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
     steps:
       - name: Pobierz aktualną wersję z serwera przez SFTP
         run: |
           sudo apt-get install -y -qq lftp > /dev/null 2>&1
-          mkdir -p backup/katosalsahub backup/dancepuls
+          mkdir -p backup/katosalsahub
           lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
             -p 40022 \
             sftp://${{ secrets.FTP_SERVER }} \
@@ -36,12 +35,11 @@ jobs:
               set net:reconnect-interval-base 3;
               set sftp:auto-confirm yes;
               mirror --parallel=4 --verbose /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }} ./backup/katosalsahub || true;
-              mirror --parallel=4 --verbose /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }} ./backup/dancepuls || true;
               quit
             "
 
       - name: Zapisz backup jako artefakt
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: backup-${{ env.TARGET_BRANCH }}-${{ github.run_number }}
           path: backup/
@@ -58,10 +56,9 @@ jobs:
     env:
       TARGET_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
       MAIN_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'katosalsahub.pl' || 'staging.katosalsahub.pl' }}
-      DANCE_PATH: ${{ (github.event.workflow_run.head_branch || github.ref_name) == 'main' && 'dancepuls.katosalsahub.pl' || 'staging.katosalsahub.pl/dancepuls' }}
     steps:
       - name: Checkout zwalidowanego commita (head_sha)
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
@@ -77,8 +74,7 @@ jobs:
               set net:max-retries 3;
               set net:reconnect-interval-base 3;
               set sftp:auto-confirm yes;
-              mirror -R --parallel=4 --verbose --exclude-glob assets/data/pending_edits.json --exclude-glob assets/data/moderators.json --exclude-glob assets/data/login_attempts.json --exclude-glob assets/data/*.bak --exclude-glob assets/php/rate_limits/rate_*.json --exclude-glob assets/php/leads_*.csv --exclude-glob dancepuls/js/package.json ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
-              put -O /home/platne/serwer417204/public_html/${{ env.DANCE_PATH }}/ ./katosalsahub.pl/dancepuls/.htaccess || true;
+              mirror -R --parallel=4 --verbose --exclude-glob assets/data/pending_edits.json --exclude-glob assets/data/moderators.json --exclude-glob assets/data/login_attempts.json --exclude-glob assets/data/*.bak --exclude-glob assets/php/sessions/* --exclude-glob assets/php/rate_limits/* --exclude-glob assets/php/leads_*.csv --exclude-glob dancepuls/js/package.json ./katosalsahub.pl /home/platne/serwer417204/public_html/${{ env.MAIN_PATH }};
               quit
             "
 

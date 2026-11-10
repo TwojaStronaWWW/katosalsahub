@@ -9,7 +9,7 @@
  * - Warstwa Kolorów oparta o CSS Custom Properties (--tsw-ai-*), dziedzicząca z lokalnego CSS strony,
  *   presetów per site_id lub atrybutów HTML (data-primary, data-accent, data-bg, data-surface)
  * - Komunikacja z centralnym routerem AI na VPS (https://ai.twojastronawww.pl/chat-router.php)
- * - Obsługa 11-modelowej kaskady High-Availability (6 dostawców API) po stronie VPS
+ * - Obsługa 15-modelowej kaskady High-Availability (7 dostawców API) po stronie VPS
  * - Priorytetowe przekazywanie leadów kontaktowych (telefon / e-mail omija cache i wyzwala Ntfy 1-Klik)
  * - Dynamiczne Centrum Wiedzy ze strony i bazy JSON/Wiki (np. Salsopedia) z wyszukiwaniem fleksyjnym
  * - Dwupoziomowy Response Cache z automatyczną inwalidacją po zmianie wersji wiedzy (kbVersion)
@@ -342,6 +342,58 @@ function buildDynamicContext(question, entries) {
   );
 }
 
+const MAX_CACHE_ENTRIES = 50;
+
+/**
+ * Escapuje znaki specjalne HTML (ochrona przed DOM XSS w atrybutach i treści)
+ * @param {string} rawText
+ * @returns {string}
+ */
+function escapeHtml(rawText) {
+  if (rawText === null || rawText === undefined) return '';
+  return String(rawText)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
+ * Sprawdza, czy ruch analityczny powinien zostać pominięty (właściciel strony, testy automatyczne, DNT)
+ * @param {Window} [win]
+ * @returns {boolean}
+ */
+function isOwnerAnalyticsIgnored(win = globalThis.window) {
+  try {
+    const nav = win?.navigator || (typeof navigator !== 'undefined' ? navigator : null);
+    if (nav && (nav.doNotTrack === '1' || nav.webdriver === true)) return true;
+    const loc = win?.location || {};
+    const params = new URLSearchParams(loc.search || '');
+    const toggle = params.get('ignore_analytics');
+    const storage = win?.localStorage;
+    if (toggle === '1' || toggle === 'true') {
+      try {
+        storage?.setItem('tsw_ignore_analytics', '1');
+      } catch (_) {}
+      return true;
+    }
+    if (toggle === '0' || toggle === 'false') {
+      try {
+        storage?.removeItem('tsw_ignore_analytics');
+      } catch (_) {}
+    }
+    if (win?.__TSW_IGNORE_ANALYTICS__ === true) return true;
+    const storedFlag =
+      storage?.getItem('tsw_ignore_analytics') ||
+      storage?.getItem('ksh_ignore_analytics') ||
+      storage?.getItem('umami.disabled');
+    return storedFlag === '1' || storedFlag === 'true';
+  } catch (_) {
+    return false;
+  }
+}
+
 /**
  * Bezpieczny mikro-parser Markdown (100% odporny na XSS)
  * @param {string} rawText
@@ -349,12 +401,7 @@ function buildDynamicContext(question, entries) {
  */
 function formatMarkdown(rawText) {
   if (!rawText) return '';
-  let safe = String(rawText)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  let safe = escapeHtml(rawText);
 
   // Pogrubienia **tekst**
   safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
@@ -362,25 +409,42 @@ function formatMarkdown(rawText) {
   // Kursywa *tekst*
   safe = safe.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
 
-  // Klikalne adresy URL (https://...)
+  const protectedLinks = [];
+  const stashLink = (anchorHtml) => {
+    const token = `\x00TSWLINK${protectedLinks.length}\x00`;
+    protectedLinks.push(anchorHtml);
+    return token;
+  };
+
+  // Linki Markdown [etykieta](https://...)
   safe = safe.replace(
-    /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="tsw-ai-link">$1</a>'
+    /\[([^\]]+)\]\((https?:\/\/[^\s<)]+)\)/g,
+    (_, label, url) => stashLink(`<a href="${url}" target="_blank" rel="noopener noreferrer" class="tsw-ai-link">${label}</a>`)
   );
 
-  // Klikalne adresy e-mail oraz linki wewnętrzne (#kontakt, salsopedia.html, grafik.html, cennik.html, /pakiety)
+  // Klikalne adresy URL (https://..., w tym kanały YouTube/TikTok z @handle)
   safe = safe.replace(
-    /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
-    '<a href="mailto:$1" class="tsw-ai-link">$1</a>'
+    /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g,
+    (url) => stashLink(`<a href="${url}" target="_blank" rel="noopener noreferrer" class="tsw-ai-link">${url}</a>`)
   );
+
+  // Klikalne adresy e-mail (wyłącznie poza URL-ami i z bezpieczną granicą przed znakiem @)
+  safe = safe.replace(
+    /(^|[\s([>])([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g,
+    (_, prefix, email) => prefix + stashLink(`<a href="mailto:${email}" class="tsw-ai-link">${email}</a>`)
+  );
+
+  // Linki wewnętrzne (#kontakt, salsopedia.html, grafik.html, cennik.html)
   safe = safe.replace(
     /(^|\s)(#[a-zA-Z0-9_-]+)\b/g,
-    '$1<a href="$2" class="tsw-ai-link">$2</a>'
+    (_, prefix, hash) => prefix + stashLink(`<a href="${hash}" class="tsw-ai-link">${hash}</a>`)
   );
   safe = safe.replace(
     /(^|[\s(])((?:salsopedia|grafik|cennik|jak-pracuje)\.html(?:#[a-zA-Z0-9_-]+)?)/g,
-    '$1<a href="$2" class="tsw-ai-link">$2</a>'
+    (_, prefix, pageHref) => prefix + stashLink(`<a href="${pageHref}" class="tsw-ai-link">${pageHref}</a>`)
   );
+
+  safe = safe.replace(/\x00TSWLINK(\d+)\x00/g, (_, idx) => protectedLinks[Number(idx)] || '');
 
   const lines = safe.split(/\r?\n/);
   let html = '';
@@ -672,7 +736,7 @@ function getLocalFallbackAnswer(question, siteId, knowledgeEntries = []) {
   }
 
   if (q.includes('ai') || q.includes('czat') || q.includes('bot') || q.includes('asystent') || q.includes('rag')) {
-    return 'Wdrażamy dedykowanych **Asystentów AI z bazą wiedzy firmy (RAG)** zintegrowanych z centralną bramką kaskadową (11 modeli LLM, pamięć podręczna zapytań `< 5 ms`):\n- Koszt wdrożenia: **od 900 PLN netto** (jednorazowa konfiguracja)\n- Działa **24/7**, odpowiada w ułamku sekundy z pamięci podręcznej i korzysta z darmowych pul API\n- Automatycznie przesyła powiadomienia na telefon (z numerem telefonu i e-mailem na samej górze wiadomości), gdy klient zostawi namiar kontaktowy.';
+    return 'Wdrażamy dedykowanych **Asystentów AI z bazą wiedzy firmy (RAG)** zintegrowanych z centralną bramką **15-modelowej kaskady** (15 modeli LLM u 7 dostawców API, pamięć podręczna zapytań `< 5 ms`):\n- Koszt wdrożenia: **od 900 PLN netto** (jednorazowa konfiguracja)\n- Działa **24/7**, odpowiada w ułamku sekundy z pamięci podręcznej i korzysta z darmowych pul API\n- Automatycznie przesyła powiadomienia na telefon (z numerem telefonu i e-mailem na samej górze wiadomości), gdy klient zostawi namiar kontaktowy.';
   }
 
   if (q.includes('współprac') || q.includes('wspolprac') || q.includes('krok') || q.includes('proces') || q.includes('etap') || q.includes('czas') || q.includes('ile trwa') || q.includes('jak wygląda')) {
@@ -776,6 +840,23 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
     return Date.now();
   }
 
+  function pruneResponseCacheEntries(entriesObj) {
+    if (!entriesObj || typeof entriesObj !== 'object' || Array.isArray(entriesObj)) return {};
+    const keys = Object.keys(entriesObj);
+    if (keys.length <= MAX_CACHE_ENTRIES) return entriesObj;
+    keys.sort((a, b) => {
+      const tsA = Number(entriesObj[a]?.ts) || 0;
+      const tsB = Number(entriesObj[b]?.ts) || 0;
+      if (tsA !== tsB) return tsA - tsB;
+      return (Number(entriesObj[a]?.monotonicMs) || 0) - (Number(entriesObj[b]?.monotonicMs) || 0);
+    });
+    const excess = keys.length - MAX_CACHE_ENTRIES;
+    for (let i = 0; i < excess; i++) {
+      delete entriesObj[keys[i]];
+    }
+    return entriesObj;
+  }
+
   function invalidateResponseCache() {
     responseCache = { kbVersion, entries: {} };
     saveResponseCache();
@@ -800,7 +881,7 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
           } else {
             responseCache = {
               kbVersion: parsed.kbVersion || kbVersion,
-              entries: parsed.entries
+              entries: pruneResponseCacheEntries(parsed.entries)
             };
           }
         } else {
@@ -878,6 +959,9 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
       responseCache = { kbVersion, entries: {} };
     }
     responseCache.kbVersion = kbVersion;
+    if (Object.prototype.hasOwnProperty.call(responseCache.entries, normQ)) {
+      delete responseCache.entries[normQ];
+    }
     responseCache.entries[normQ] = {
       answer: String(answer),
       kbVersion,
@@ -885,10 +969,10 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
       ts: Date.now(),
       monotonicMs: getMonotonicTimeMs()
     };
+    pruneResponseCacheEntries(responseCache.entries);
     saveResponseCache();
   }
 
-  
   const placeholderText =
     siteId === 'katosalsahub'
       ? 'Zapytaj o hasło z Salsopedii, style, radio lub eventy...'
@@ -897,6 +981,9 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
       : siteId === 'raricart'
       ? 'Zapytaj o stacje Live Food, pakiety lub wolny termin...'
       : 'Napisz pytanie o ofertę lub wycenę...';
+
+  const safeTitle = escapeHtml(title);
+  const safePlaceholder = escapeHtml(placeholderText);
 
   const root = doc.createElement('div');
   root.id = 'tsw-ai-widget-root';
@@ -907,11 +994,11 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
       <span class="tsw-ai-btn-badge" aria-hidden="true">AI</span>
     </button>
 
-    <div class="tsw-ai-window" id="tswAiWindow" role="dialog" aria-label="${title}">
+    <div class="tsw-ai-window" id="tswAiWindow" role="dialog" aria-label="${safeTitle}">
       <div class="tsw-ai-header">
         <div class="tsw-ai-header-title tsw-ai-title">
           <span class="tsw-ai-status-dot tsw-ai-dot" aria-hidden="true"></span>
-          <span>${title}</span>
+          <span>${safeTitle}</span>
         </div>
         <div class="tsw-ai-header-actions tsw-ai-actions">
           <button type="button" class="tsw-ai-icon-btn" id="tswAiClearBtn" title="Nowa rozmowa" aria-label="Nowa rozmowa">&#x21bb;</button>
@@ -923,7 +1010,7 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
       <div class="tsw-ai-chips" id="tswAiChips"></div>
 
       <form class="tsw-ai-input-bar tsw-ai-form" id="tswAiForm">
-        <input type="text" class="tsw-ai-input" id="tswAiInput" placeholder="${placeholderText}" aria-label="Zadaj pytanie asystentowi" maxlength="500" required autocomplete="off" />
+        <input type="text" class="tsw-ai-input" id="tswAiInput" placeholder="${safePlaceholder}" aria-label="Zadaj pytanie asystentowi" maxlength="500" required autocomplete="off" />
         <button type="button" class="tsw-ai-voice-btn" id="tswAiVoiceBtn" title="Zadaj pytanie głosem (mikrofon)" aria-label="Zadaj pytanie głosem" aria-pressed="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
         </button>
@@ -1166,6 +1253,7 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
 
   function sendAnalyticsBeacon(extra) {
     try {
+      if (isOwnerAnalyticsIgnored(win)) return;
       const nav = win?.navigator || (typeof navigator !== 'undefined' ? navigator : null);
       const loc = win?.location || {};
       const params = new URLSearchParams(loc.search || '');
@@ -1402,7 +1490,13 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
 
   renderInitialView();
 
-  if (win && !win.__TSW_ANALYTICS_ACTIVE__ && (typeof win.navigator?.sendBeacon === 'function' || typeof win.fetch === 'function')) {
+  if (
+    win &&
+    !win.__TSW_ANALYTICS_ACTIVE__ &&
+    !globalThis.__TSW_ANALYTICS_ACTIVE__ &&
+    !isOwnerAnalyticsIgnored(win) &&
+    (typeof win.navigator?.sendBeacon === 'function' || typeof win.fetch === 'function')
+  ) {
     win.__TSW_ANALYTICS_ACTIVE__ = true;
     let lcpMeasured = 0;
     try {
@@ -1410,26 +1504,32 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
         const po = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           if (entries && entries.length > 0) {
-            lcpMeasured = Math.round(entries[entries.length - 1].startTime || 0);
+            const candidate = Math.round(entries[entries.length - 1].startTime || 0);
+            if (candidate >= 50 && candidate <= 8000) {
+              lcpMeasured = candidate;
+            }
           }
         });
         po.observe({ type: 'largest-contentful-paint', buffered: true });
       }
     } catch (_) {}
 
-    setTimeout(() => {
-      sendAnalyticsBeacon(lcpMeasured > 0 ? { type: 'pageview', lcp_ms: lcpMeasured } : { type: 'pageview' });
+    const pvTimer = setTimeout(() => {
+      const validLcp = lcpMeasured >= 50 && lcpMeasured <= 8000;
+      sendAnalyticsBeacon(validLcp ? { type: 'pageview', lcp_ms: lcpMeasured } : { type: 'pageview' });
     }, 600);
+    pvTimer?.unref?.();
 
     win.addEventListener?.('hashchange', () => {
       sendAnalyticsBeacon({ type: 'pageview' });
     });
 
-    setTimeout(() => {
+    const engagedTimer = setTimeout(() => {
       if (doc.visibilityState !== 'hidden') {
         sendAnalyticsBeacon({ type: 'engaged' });
       }
     }, 15000);
+    engagedTimer?.unref?.();
 
     doc.addEventListener?.('click', (e) => {
       const target = e?.target?.closest ? e.target : null;
@@ -1451,7 +1551,12 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
 
     doc.addEventListener?.('submit', (e) => {
       const form = e?.target;
-      if (form && form.id !== 'tsw-ai-form' && (form.id === 'contactForm' || form.classList?.contains?.('contact-form'))) {
+      if (
+        form &&
+        form.id !== 'tswAiForm' &&
+        form.id !== 'tsw-ai-form' &&
+        (form.id === 'contactForm' || form.classList?.contains?.('contact-form'))
+      ) {
         sendAnalyticsBeacon({ type: 'event', event: 'contact_form_submit' });
       }
     });
@@ -1513,8 +1618,11 @@ if (typeof document !== 'undefined') {
 }
 
 const __tswExports = {
+  MAX_CACHE_ENTRIES,
   QUICK_PROMPTS_MAP,
   THEME_PRESETS,
+  escapeHtml,
+  isOwnerAnalyticsIgnored,
   normalizeCacheQuery,
   normalizeSearchText,
   computeKnowledgeVersion,

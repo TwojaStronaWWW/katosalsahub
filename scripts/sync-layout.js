@@ -17,6 +17,10 @@ const KSH_DIR = path.join(ROOT_DIR, 'katosalsahub.pl');
 const ASSET_VERSION = '5.0';
 const HTML_PAGES = ['index.html', 'grafik.html', 'salsopedia.html', 'privacy.html'];
 
+function buildSkipLink() {
+  return `<a href="#app-content" class="skip-link" data-i18n="nav.skipLink">Przejdź do głównej treści</a>`;
+}
+
 function buildNavBar(pageFile) {
   const isHome = pageFile === 'index.html';
   const prefix = isHome ? '' : 'index.html';
@@ -123,6 +127,24 @@ function buildScriptsBlock(_pageFile, version = ASSET_VERSION) {
     `  <script data-cfasync="false" src="assets/js/schedule.js?v=${version}"></script>`,
     `  <script data-cfasync="false" src="assets/js/router.js?v=${version}"></script>`,
     `  <script data-cfasync="false" src="assets/js/ai-widget.js?v=${version}" data-site-id="katosalsahub" data-title="Asystent Kato Salsa Hub" data-kb-url="assets/data/salsopedia.json"></script>`,
+    `  <!-- [REF-02] Speculation Rules API (Web Platform Baseline): natychmiastowa nawigacja 0 ms bez SPA przy najechaniu kursorem -->`,
+    `  <script type="speculationrules">`,
+    `  {`,
+    `    "prerender": [`,
+    `      {`,
+    `        "where": {`,
+    `          "and": [`,
+    `            { "href_matches": "/*" },`,
+    `            { "not": { "href_matches": "/api/*" } },`,
+    `            { "not": { "href_matches": "/assets/php/*" } },`,
+    `            { "not": { "href_matches": "/admin/*" } }`,
+    `          ]`,
+    `        },`,
+    `        "eagerness": "moderate"`,
+    `      }`,
+    `    ]`,
+    `  }`,
+    `  </script>`,
   ];
   return scripts.join('\n');
 }
@@ -131,6 +153,10 @@ function transformPageHtml(rawHtml, pageFile) {
   let html = String(rawHtml || '').replace(/\r\n/g, '\n');
 
   html = html.replace(
+    /<body>(?:\s*<a\s+href="#app-content"\s+class="skip-link"[^>]*>[\s\S]*?<\/a>)?/,
+    `<body>\n  ${buildSkipLink()}`
+  );
+  html = html.replace(
     /href="assets\/css\/([a-z0-9_-]+\.css)(?:\?v=[^"]*)?"/gi,
     `href="assets/css/$1?v=${ASSET_VERSION}"`
   );
@@ -138,7 +164,7 @@ function transformPageHtml(rawHtml, pageFile) {
   html = html.replace(/<footer class="footer">[\s\S]*?<\/footer>/, buildFooter(pageFile));
   html = html.replace(/<div id="cookie-banner"[\s\S]*?<\/div>\s*<\/div>/, buildCookieBanner());
   html = html.replace(
-    /(\s*<script data-cfasync="false" src="assets\/js\/[\s\S]*?<\/script>)+/,
+    /(\s*<script data-cfasync="false" src="assets\/js\/[\s\S]*?<\/script>)+(?:\s*<!-- \[REF-02\][\s\S]*?<\/script>)?/,
     '\n\n' + buildScriptsBlock(pageFile)
   );
 

@@ -40,6 +40,25 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.ok(!fs.existsSync(path.join(ROOT_DIR, 'dancepuls.pl')), 'Stary katalog dancepuls.pl nie powinien już istnieć w głównym katalogu');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'manifest.json')), 'Brak manifest.json (#21)');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'sw.js')), 'Brak sw.js (#21)');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.well-known', 'security.txt')), '[REF-06] Brak katosalsahub.pl/.well-known/security.txt');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'llms.txt')), '[REF-07] Brak katosalsahub.pl/llms.txt');
+
+    const htaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.htaccess'), 'utf-8');
+    assert.match(htaccess, /BROTLI_COMPRESS/, '[REF-01] Brak kompresji BROTLI_COMPRESS w .htaccess');
+    assert.match(htaccess, /DEFLATE/, '[REF-01] Brak kompresji DEFLATE w .htaccess');
+    assert.match(htaccess, /image\/avif/, '[REF-01] Brak typu MIME image/avif w .htaccess');
+
+    const robots = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'robots.txt'), 'utf-8');
+    assert.match(robots, /Allow:\s*\/llms\.txt/, '[REF-07] Brak Allow: /llms.txt w robots.txt');
+    assert.match(robots, /User-agent:\s*OAI-SearchBot/, '[REF-07] Brak jawnej reguły dla OAI-SearchBot w robots.txt');
+    assert.match(robots, /User-agent:\s*PerplexityBot/, '[REF-07] Brak jawnej reguły dla PerplexityBot w robots.txt');
+
+    const securityTxt = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.well-known', 'security.txt'), 'utf-8');
+    assert.match(securityTxt, /Policy:\s*https:\/\/katosalsahub\.pl\/privacy\.html/, '[REF-06] Brak pola Policy w security.txt');
+    const expiresMatch = securityTxt.match(/Expires:\s*([^\r\n]+)/);
+    assert.ok(expiresMatch, '[REF-06] Brak pola Expires w security.txt');
+    const expiresDate = new Date(expiresMatch[1].trim());
+    assert.ok(expiresDate.getTime() > Date.now() + 30 * 24 * 3600 * 1000, '[REF-06] Data Expires w security.txt wygasa za mniej niż 30 dni');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'pull_request_template.md')), 'Brak .github/pull_request_template.md');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'ISSUE_TEMPLATE', 'bug_report.yml')), 'Brak .github/ISSUE_TEMPLATE/bug_report.yml');
     assert.ok(fs.existsSync(path.join(ROOT_DIR, '.github', 'ISSUE_TEMPLATE', 'task.yml')), 'Brak .github/ISSUE_TEMPLATE/task.yml');
@@ -166,7 +185,16 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     function scanDir(dir) {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
-        if (entry.name.startsWith('.git') || entry.name === 'node_modules' || entry.name === 'backup') continue;
+        if (
+          entry.name.startsWith('.git') ||
+          entry.name === 'node_modules' ||
+          entry.name === 'backup'
+        ) {
+          continue;
+        }
+        if (dir === path.join(ROOT_DIR, 'docs') && (entry.name === 'print' || entry.name === 'audits')) {
+          continue;
+        }
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
           scanDir(fullPath);
@@ -182,6 +210,123 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     }
 
     scanDir(ROOT_DIR);
+  });
+
+  it('[P0 Security] żaden plik .php w całym repozytorium nie może zawierać zahardkodowanych hashy haseł (pbkdf2$, $2y$, $2a$, $2b$, $argon2), a wiki.php musi działać w trybie fail-closed', () => {
+    const phpFiles = [];
+    function collectPhpFiles(dir) {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.name.startsWith('.git') || entry.name === 'node_modules' || entry.name === 'backup') continue;
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          collectPhpFiles(fullPath);
+        } else if (entry.name.endsWith('.php')) {
+          phpFiles.push(fullPath);
+        }
+      }
+    }
+
+    collectPhpFiles(ROOT_DIR);
+    assert.ok(phpFiles.length >= 5, 'Oczekiwano co najmniej 5 skryptów PHP do przeskanowania');
+
+    const hardcodedHashRegex = /(?:pbkdf2\$\d+\$[0-9a-fA-F]{8,}|\$2[ayb]\$\d{2}\$[./A-Za-z0-9]{20,}|\$argon2(?:id|i|d)\$v=\d+)/i;
+    for (const phpPath of phpFiles) {
+      const src = fs.readFileSync(phpPath, 'utf-8');
+      assert.doesNotMatch(
+        src,
+        hardcodedHashRegex,
+        `KRYTYCZNE NARUSZENIE P0: Wykryto zahardkodowany hash hasła (pbkdf2$ / $2y$ / $argon2) w pliku ${path.relative(ROOT_DIR, phpPath)}`
+      );
+    }
+
+    const wikiPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'wiki.php'), 'utf-8');
+    assert.match(
+      wikiPhp,
+      /function\s+get_admin_secret\s*\(\s*\)\s*:\s*string[\s\S]*?return\s+'';/,
+      'Funkcja get_admin_secret() w wiki.php musi działać w trybie fail-closed (return ""; przy braku konfiguracji)'
+    );
+  });
+
+  it('[Threat Protection] backend PHP, frontend JS/HTML/WebP/WCAG, serwer deweloperski, .htaccess oraz GitHub Actions powinny spełniać wymagania P0/P1', () => {
+    // 1. Porządek w katalogu głównym i ochrona .npmrc / LF w .githooks
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, '.npmrc')), 'Brak pliku .npmrc');
+    assert.match(fs.readFileSync(path.join(ROOT_DIR, '.npmrc'), 'utf-8'), /ignore-scripts=true/);
+    assert.ok(!fs.existsSync(path.join(ROOT_DIR, 'docs', 'audits')), 'Katalog docs/audits powinien zostać zarchiwizowany poza repozytorium');
+    const rootLooseFiles = fs.readdirSync(ROOT_DIR).filter((f) => /^(Konspekt_|Plakaty_)/i.test(f));
+    assert.strictEqual(rootLooseFiles.length, 0, 'Robocze pliki do druku powinny znajdować się w docs/print/, a nie w katalogu głównym');
+
+    for (const hookFile of ['pre-commit', 'commit-msg']) {
+      const hookRaw = fs.readFileSync(path.join(ROOT_DIR, '.githooks', hookFile), 'utf-8');
+      assert.strictEqual(hookRaw.includes('\r'), false, `Plik .githooks/${hookFile} musi mieć końce linii LF (\\n)`);
+    }
+
+    // 2. Utwardzenie PHP (wrappery strumieni, limit 65536 B / HTTP 413, sesje, CSRF POST logout, WAF L7, 15-min IP Penalty Box, RFC 2047, Ntfy, osTicket HTTPS)
+    for (const scriptName of ['wiki.php', 'contact.php', 'radio.php']) {
+      const phpSrc = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', scriptName), 'utf-8');
+      assert.match(phpSrc, /stream_wrapper_unregister/, `Brak wyrejestrowania niebezpiecznych wrapperów w ${scriptName}`);
+      assert.match(phpSrc, /65536/, `Brak limitu 65536 bajtów ciała żądania w ${scriptName}`);
+      assert.match(phpSrc, /413/, `Brak kodu HTTP 413 dla zbyt dużego ciała żądania w ${scriptName}`);
+    }
+
+    const wikiPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'wiki.php'), 'utf-8');
+    assert.match(wikiPhp, /session_save_path/, 'Brak izolacji katalogu sesji w wiki.php');
+    assert.match(wikiPhp, /session\.use_strict_mode/);
+    assert.match(wikiPhp, /cookie_samesite['"]?\s*,\s*['"]Strict['"]/i);
+    assert.match(wikiPhp, /HTTP_SEC_FETCH_SITE/);
+    assert.match(wikiPhp, /case\s+'logout':[\s\S]{0,400}REQUEST_METHOD[\s\S]{0,400}verify_csrf_token/);
+    assert.match(wikiPhp, /penalize_ip/);
+
+    const contactPhp = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php', 'contact.php'), 'utf-8');
+    assert.match(contactPhp, /HTTP_SEC_FETCH_SITE/);
+    assert.match(contactPhp, /detect_l7_waf_attack/);
+    assert.match(contactPhp, /penalize_ip/);
+    assert.match(contactPhp, /preg_replace\s*\(\s*'\/\[\^0-9\+\\-\s\(\)\]\/'/, 'Numer telefonu w contact.php musi wykluczać \\r\\n (brak \\s w klasie znaków)');
+    assert.match(contactPhp, /=\?UTF-8\?B\?/);
+    assert.match(contactPhp, /NTFY_BASE_URL/);
+    assert.match(contactPhp, /NTFY_TOKEN/);
+    assert.match(contactPhp, /https:\/\/hd\.twojastronawww\.pl\/ticket_hook\.php/);
+    assert.match(contactPhp, /CURLPROTO_HTTPS/);
+
+    // 3. Anti-bot w contact.js, Galeria WebP, Skip-Link WCAG 2.2 AA, serve.js i .htaccess
+    const contactJs = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'contact.js'), 'utf-8');
+    assert.doesNotMatch(contactJs, /Math\.max\s*\(\s*2\.6/, 'contact.js nie może sztucznie zawyżać czasu wypełniania formularza do 2.6s');
+    assert.match(contactJs, /Math\.max\s*\(\s*0\s*,/);
+
+    const indexHtml = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'index.html'), 'utf-8');
+    assert.doesNotMatch(indexHtml, /<img[^>]+wolni-ludzie-0\d\.jpg/i, 'Tagi <img> galerii w index.html powinny używać formatu .webp zamiast .jpg');
+    assert.match(indexHtml, /src="assets\/images\/gallery\/wolni-ludzie-05\.webp"[^>]*loading="lazy"\s+decoding="async"/);
+    assert.match(indexHtml, /class="skip-link"/, 'Brak elementu .skip-link (WCAG 2.2 AA) w index.html');
+
+    const srv = require('../../scripts/serve.js');
+    assert.strictEqual(srv.resolveSafeFilePath('/%2e%2e/%2e%2e/package.json').isAllowed, false, 'Zakodowany URL traversal musi być blokowany');
+    assert.strictEqual(srv.resolveSafeFilePath('/.env').isAllowed, false, 'Plik .env musi być blokowany');
+    assert.strictEqual(srv.resolveSafeFilePath('/.git/HEAD').isAllowed, false, 'Katalog .git musi być blokowany');
+    assert.strictEqual(srv.resolveSafeFilePath('/assets/data/secret_token.json').isAllowed, false, 'Pliki *token*.json muszą być blokowane');
+    assert.strictEqual(srv.resolveSafeFilePath('/assets/data/test.sqlite').isAllowed, false, 'Pliki .sqlite muszą być blokowane');
+    assert.strictEqual(srv.resolveSafeFilePath('/.well-known/security.txt').isAllowed, true, 'Plik RFC 9116 /.well-known/security.txt musi być dozwolony');
+
+    const htaccess = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', '.htaccess'), 'utf-8');
+    assert.match(htaccess, /allow_url_include/, 'Brak reguły PHP2Shell w .htaccess');
+    assert.match(htaccess, /X-Robots-Tag\s+"noindex,\s*nofollow/, 'Brak X-Robots-Tag: noindex dla subdomeny testowej w .htaccess');
+    assert.match(htaccess, /<Files\s+"sw\.js">[\s\S]*?no-cache/i, 'Plik sw.js musi wymuszać Cache-Control: no-cache w .htaccess');
+    assert.match(htaccess, /sqlite/, 'Brak blokady .sqlite w .htaccess');
+
+    // 4. GitHub Actions: brak nieistniejących tagów @v7 oraz utwardzony ai-security-review.yml
+    const wfDir = path.join(ROOT_DIR, '.github', 'workflows');
+    for (const wfFile of fs.readdirSync(wfDir).filter((f) => f.endsWith('.yml'))) {
+      const wfContent = fs.readFileSync(path.join(wfDir, wfFile), 'utf-8');
+      assert.doesNotMatch(wfContent, /@(v7)\b/, `Plik .github/workflows/${wfFile} zawiera nieistniejący tag akcji @v7`);
+    }
+
+    const aiSecWf = fs.readFileSync(path.join(wfDir, 'ai-security-review.yml'), 'utf-8');
+    assert.match(aiSecWf, /author_association/, 'Brak weryfikacji author_association w ai-security-review.yml');
+    assert.match(aiSecWf, /OWNER/);
+    assert.match(aiSecWf, /MEMBER/);
+    assert.match(aiSecWf, /COLLABORATOR/);
+    assert.match(aiSecWf, /katosalsahub\.pl\/\*\*/);
+    assert.match(aiSecWf, /gemini-3\.5-flash/);
+    assert.doesNotMatch(aiSecWf, /cache:\s*['"]?npm['"]?/i, 'ai-security-review.yml nie może używać cache: npm przy braku package-lock.json');
   });
 
   it('ochrona transakcyjna współbieżności powinna obejmować wiki.php (update_json_file + session_write_close), wiki.js (inFlightMutations), sync_engine.js (writeFileAtomically z PID) oraz potoki CI/CD', () => {

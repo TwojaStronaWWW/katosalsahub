@@ -4,6 +4,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { setupMockDom } = require('../helpers/mock-dom.js');
 const {
+  MAX_CACHE_ENTRIES,
+  escapeHtml,
+  isOwnerAnalyticsIgnored,
   formatMarkdown,
   getLocalFallbackAnswer,
   searchKnowledgeEntries,
@@ -313,5 +316,59 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
 
     assert.equal(api.getCachedAnswer('co to jest casino'), null);
     assert.equal(api.getCachedAnswer('dile que no'), null);
+  });
+
+  it('chroni przed DOM XSS w data-title, obsługuje linki YouTube/TikTok ze znakiem @, limituje MAX_CACHE_ENTRIES=50 oraz respektuje isOwnerAnalyticsIgnored i 15-modelową kaskadę', async () => {
+    // 1. Ochrona przed DOM XSS w atrybucie data-title i placeholderze
+    assert.equal(escapeHtml('"><img src=x onerror=alert(1)>'), '&quot;&gt;&lt;img src=x onerror=alert(1)&gt;');
+    const { document: xssDoc, window: xssWin } = setupMockDom(
+      '<script src="assets/js/ai-widget.js" data-site-id="katosalsahub" data-title=\'"><img src=x onerror=alert(1)>\'></script>'
+    );
+    const xssApi = initAiWidget(xssDoc, xssWin, { skipInitialFetch: true });
+    assert.ok(xssApi);
+    assert.equal(xssDoc.querySelectorAll('img[onerror]').length, 0, 'Wstrzyknięty HTML w data-title nie może utworzyć elementu DOM');
+    assert.equal(xssApi.chatForm.id, 'tswAiForm');
+
+    // 2. Linkifier @ dla kanałów YouTube i TikTok (brak psucia URL-i przez mailto:)
+    const socialMd = formatMarkdown(
+      'Subskrybuj https://www.youtube.com/@KatoSalsaHub oraz https://www.tiktok.com/@kato.salsa lub napisz na kontakt@katosalsahub.pl'
+    );
+    assert.ok(socialMd.includes('href="https://www.youtube.com/@KatoSalsaHub"'), 'Link YouTube @handle musi pozostać nienaruszony');
+    assert.ok(socialMd.includes('href="https://www.tiktok.com/@kato.salsa"'), 'Link TikTok @kato.salsa nie może zostać zamieniony na mailto:');
+    assert.ok(!socialMd.includes('mailto:kato.salsa') && !socialMd.includes('mailto:@'), 'Znak @ wewnątrz URL nie może generować mailto:');
+    assert.ok(socialMd.includes('href="mailto:kontakt@katosalsahub.pl"'));
+
+    // 3. Opis 15-modelowej kaskady (7 dostawców API)
+    const cascadeInfo = getLocalFallbackAnswer('Jak działa asystent AI RAG?', 'twojastronawww', []);
+    assert.match(cascadeInfo, /15-modelowej kaskady/);
+    assert.match(cascadeInfo, /15 modeli LLM/);
+
+    // 4. Limit MAX_CACHE_ENTRIES = 50 z ewikcją najstarszych wpisów
+    assert.equal(MAX_CACHE_ENTRIES, 50);
+    const { document: cacheDoc, window: cacheWin } = setupMockDom();
+    let seq = 0;
+    cacheWin.fetch = async () => ({
+      ok: true,
+      json: async () => ({ success: true, answer: `Odpowiedź nr ${++seq}` })
+    });
+    const cacheApi = initAiWidget(cacheDoc, cacheWin, {
+      siteId: 'katosalsahub',
+      skipInitialFetch: true
+    });
+    for (let i = 1; i <= 55; i++) {
+      await cacheApi.sendQuestion(`Unikalne pytanie testowe numer ${i}`);
+    }
+    const rawSavedCache = JSON.parse(cacheWin.localStorage.getItem('tsw_ai_cache_katosalsahub'));
+    assert.equal(Object.keys(rawSavedCache.entries).length, 50, 'Cache odpowiedzi nie może przekroczyć MAX_CACHE_ENTRIES = 50');
+    assert.equal(cacheApi.getCachedAnswer('Unikalne pytanie testowe numer 1'), null, 'Najstarszy wpis powinien zostać usunięty');
+    assert.ok(cacheApi.getCachedAnswer('Unikalne pytanie testowe numer 55'), 'Najnowszy wpis musi pozostać w cache');
+
+    // 5. Ignorowanie analityki właściciela / DNT / WebDriver
+    assert.equal(isOwnerAnalyticsIgnored({ navigator: { doNotTrack: '1' }, location: {} }), true);
+    assert.equal(isOwnerAnalyticsIgnored({ navigator: { webdriver: true }, location: {} }), true);
+    const { window: optOutWin } = setupMockDom();
+    optOutWin.location.search = '?ignore_analytics=1';
+    assert.equal(isOwnerAnalyticsIgnored(optOutWin), true);
+    assert.equal(optOutWin.localStorage.getItem('tsw_ignore_analytics'), '1');
   });
 });

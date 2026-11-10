@@ -41,12 +41,17 @@ describe('Integralność i składnia arkuszy stylów CSS (Kato Salsa Hub & Dance
     }
   });
 
-  it('główne arkusze stylów powinny definiować zmienne CSS (Design Tokens) w :root', () => {
+  it('główne arkusze stylów powinny definiować zmienne CSS (Design Tokens) w :root oraz standardy [REF-03] (color-scheme, scrollbar-gutter, @view-transition, text-wrap)', () => {
     const kshStyle = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/assets/css/style.css'), 'utf-8');
     const dpStyle = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl/dancepuls/css/style.css'), 'utf-8');
 
     assert.match(kshStyle, /:root\s*\{/i);
     assert.match(dpStyle, /:root\s*\{/i);
+    assert.match(kshStyle, /color-scheme:\s*dark\s+light/i, '[REF-03] Brak color-scheme: dark light w style.css');
+    assert.match(kshStyle, /scrollbar-gutter:\s*stable/i, '[REF-03] Brak scrollbar-gutter: stable w style.css');
+    assert.match(kshStyle, /@view-transition\s*\{\s*navigation:\s*auto;\s*\}/i, '[REF-03] Brak @view-transition { navigation: auto; } w style.css');
+    assert.match(kshStyle, /text-wrap:\s*balance/i, '[REF-03] Brak text-wrap: balance w style.css');
+    assert.match(kshStyle, /text-wrap:\s*pretty/i, '[REF-03] Brak text-wrap: pretty w style.css');
   });
 
   it('licznik kategorii .cat-count w wiki.css powinien posiadać flex-shrink: 0 i white-space: nowrap (ochrona przed łamaniem dwucyfrowych liczb w pionie)', () => {

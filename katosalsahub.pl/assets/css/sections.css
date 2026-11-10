@@ -623,30 +623,21 @@ body.radio-playing .radio-wrapper {
 
 /* Radio States - Moved to components.css using body.radio-playing */
 
-/* --- Map Section --- */
-/* Energetic Styles Distinction */
-.style-card.timba,
-.style-card.reggaeton {
-  box-shadow:
-    0 0 0 1px rgba(251,191,36,.4),
-    0 20px 40px rgba(251,191,36,.15);
-}
-
 /* --- Map Section (Interactive Map Hub Widget - 4 Tiles 2x2 Grid) --- */
 .map-hub {
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.045) 0%,
-    rgba(255, 255, 255, 0.015) 100%
+    rgba(255, 255, 255, 0.028) 0%,
+    rgba(255, 255, 255, 0.008) 100%
   );
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   padding: 14px;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   overflow: hidden;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(12px);
 }
 
@@ -812,8 +803,14 @@ body.radio-playing .radio-wrapper {
   min-height: 280px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.42);
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #141622;
+  border: 1px solid rgba(251, 191, 36, 0.22);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.16) 0%, rgba(251, 113, 133, 0.08) 38%, transparent 70%),
+    repeating-radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.07) 0px, rgba(251, 191, 36, 0.07) 1px, transparent 1px, transparent 48px),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    #141622;
+  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px, 100% 100%;
 }
 
 @media (min-width: 640px) {
@@ -1070,6 +1067,7 @@ body.radio-playing .radio-wrapper {
     display: grid;
     grid-template-columns: minmax(0, 1fr); /* Mobile */
     gap: 30px;
+    align-items: start;
     width: 100%;
     min-width: 0;
 }
@@ -1148,6 +1146,202 @@ body.radio-playing .radio-wrapper {
     .kontakt-form {
         padding: 40px;
     }
+}
+
+/* --- Galeria Section (Asymmetric Curated Exhibition) --- */
+.section-galeria {
+    padding: 56px 0;
+}
+
+@media (min-width: 768px) {
+    .section-galeria {
+        padding: 88px 0;
+    }
+}
+
+.section-galeria .container {
+    max-width: 1260px;
+}
+
+.gallery-exhibition-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    align-items: stretch;
+}
+
+@media (min-width: 968px) {
+    .gallery-exhibition-grid {
+        grid-template-columns: minmax(0, 1.06fr) minmax(0, 1.34fr);
+        gap: 22px;
+    }
+}
+
+.gallery-lead-figure,
+.gallery-mosaic-item {
+    position: relative;
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #0c0c12;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-lead-figure {
+    height: 360px;
+    min-height: 360px;
+    max-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+@media (min-width: 968px) {
+    .gallery-lead-figure {
+        height: 538px;
+        min-height: 538px;
+        max-height: 538px;
+    }
+}
+
+.gallery-lead-figure picture,
+.gallery-mosaic-item picture {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.gallery-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 16%;
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-lead-figure .gallery-img {
+    object-position: center 12%;
+}
+
+.gallery-lead-figure:hover .gallery-img,
+.gallery-mosaic-item:hover .gallery-img {
+    transform: scale(1.03);
+}
+
+.gallery-lead-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 28px 22px 20px;
+    background: linear-gradient(180deg, rgba(8, 8, 12, 0) 0%, rgba(8, 8, 12, 0.86) 45%, rgba(8, 8, 12, 0.96) 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gallery-caption-kicker {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--yellow);
+}
+
+.gallery-caption-title {
+    font-size: clamp(1rem, 1.8vw, 1.22rem);
+    line-height: 1.35;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.gallery-mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, 210px);
+    gap: 12px;
+}
+
+@media (min-width: 968px) {
+    .gallery-mosaic-grid {
+        grid-template-rows: repeat(2, 260px);
+        gap: 18px;
+    }
+}
+
+.gallery-mosaic-item {
+    height: 210px;
+    min-height: 210px;
+    max-height: 210px;
+}
+
+@media (min-width: 968px) {
+    .gallery-mosaic-item {
+        height: 260px;
+        min-height: 260px;
+        max-height: 260px;
+    }
+}
+
+.gallery-mosaic-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 18px 14px 12px;
+    background: linear-gradient(180deg, rgba(8, 8, 12, 0) 0%, rgba(8, 8, 12, 0.88) 55%, rgba(8, 8, 12, 0.96) 100%);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.gallery-ledger-bar {
+    margin-top: 22px;
+    padding: 20px 24px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(251, 191, 36, 0.22);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+@media (min-width: 860px) {
+    .gallery-ledger-bar {
+        flex-direction: row;
+        align-items: center;
+        gap: 24px;
+    }
+}
+
+.gallery-ledger-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.gallery-ledger-meta strong {
+    color: var(--yellow);
+    font-size: 0.98rem;
+}
+
+.gallery-ledger-meta p {
+    margin: 0;
+    color: var(--fg-muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.gallery-ledger-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 /* --- FAQ Section (Local SEO & Rich Snippets) --- */

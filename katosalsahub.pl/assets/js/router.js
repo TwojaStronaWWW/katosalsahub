@@ -44,6 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (target) {
                     e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (link.classList.contains('skip-link')) {
+                        if (!target.hasAttribute('tabindex')) {
+                            target.setAttribute('tabindex', '-1');
+                        }
+                        if (typeof target.focus === 'function') {
+                            target.focus({ preventScroll: true });
+                        }
+                    }
                     if (navLinks) navLinks.classList.remove('active');
                     if (burger) burger.classList.remove('active');
                 } else {

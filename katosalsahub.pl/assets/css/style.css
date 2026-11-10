@@ -5,6 +5,9 @@
 
 /* --- Variables --- */
 :root {
+  /* [REF-03] Evergreen Web Standards Baseline */
+  color-scheme: dark light;
+
   /* Midnight Lounge Theme (Lighter & Warmer) */
   --bg: #13141f;       /* Deep warm navy/charcoal instead of pitch black */
   --card: #1e202f;     /* Slightly lighter tint for cards */
@@ -20,6 +23,12 @@
   --blue: #60a5fa;     /* Blue-400 */
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
 /* --- Reset --- */
 *,
 *::before,
@@ -29,9 +38,46 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
   max-width: 100%;
   overflow-x: hidden;
   overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+/* [REF-04] WCAG 2.2 AA Skip Link & Keyboard Focus */
+.skip-link {
+  position: fixed;
+  top: -120px;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.75rem 1.25rem;
+  background: var(--orange);
+  color: #13141f;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 1rem;
+  outline: 3px solid var(--fg);
+  outline-offset: 3px;
 }
 
 body {

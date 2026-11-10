@@ -17,22 +17,12 @@ ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/rate-limit.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.use_strict_mode', '1');
-    ini_set('session.cookie_httponly', '1');
-    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        || (!empty($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443);
-    session_set_cookie_params([
-        'lifetime' => 0,
-        'path' => '/',
-        'secure' => $isSecure,
-        'httponly' => true,
-        'samesite' => 'Strict'
-    ]);
-    @session_start();
+foreach (['phar', 'ftp', 'ftps', 'expect'] as $__unsafeWrapper) {
+    if (in_array($__unsafeWrapper, stream_get_wrappers(), true)) {
+        @stream_wrapper_unregister($__unsafeWrapper);
+    }
 }
+unset($__unsafeWrapper);
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
@@ -41,6 +31,51 @@ header('X-Frame-Options: DENY');
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     http_response_code(200);
     exit;
+}
+
+if (isset($_SERVER['CONTENT_LENGTH']) && (int)$_SERVER['CONTENT_LENGTH'] > 65536) {
+    http_response_code(413);
+    echo json_encode(['success' => false, 'error' => 'Przekroczono dopuszczalny rozmiar żądania (max 64 KB).'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+if (isset($_SERVER['HTTP_SEC_FETCH_SITE']) && strtolower(trim((string)$_SERVER['HTTP_SEC_FETCH_SITE'])) === 'cross-site') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'error' => 'Niedozwolone żądanie międzywitrynowe (Cross-Site Request Blocked).'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+require_once __DIR__ . '/rate-limit.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    $sessionDir = __DIR__ . '/sessions';
+    $sessionHtaccess = "<IfModule mod_authz_core.c>\n    Require all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n    Order allow,deny\n    Deny from all\n</IfModule>\n";
+    if (!is_dir($sessionDir)) {
+        if (@mkdir($sessionDir, 0700, true)) {
+            @file_put_contents($sessionDir . '/.htaccess', $sessionHtaccess, LOCK_EX);
+            @file_put_contents($sessionDir . '/index.html', '', LOCK_EX);
+        }
+    } elseif (!is_file($sessionDir . '/.htaccess')) {
+        @file_put_contents($sessionDir . '/.htaccess', $sessionHtaccess, LOCK_EX);
+    }
+    if (is_dir($sessionDir) && is_writable($sessionDir)) {
+        @session_save_path($sessionDir);
+    }
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.use_only_cookies', '1');
+    ini_set('session.cookie_httponly', '1');
+    ini_set('session.cookie_samesite', 'Strict');
+    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (!empty($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443)
+        || (strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => $isSecure,
+        'httponly' => true,
+        'samesite' => 'Strict'
+    ]);
+    @session_start();
 }
 
 $dataDir = __DIR__ . '/../data';
@@ -75,14 +110,14 @@ function get_env_secret(string $key, string $default = ''): string {
 }
 
 /**
- * Pobiera sekret administratora z getenv(), $_ENV, pliku .env lub jednokierunkowego hasha PBKDF2-SHA256 (Zero Plaintext Secrets in Git)
+ * Pobiera sekret administratora z getenv(), $_ENV lub pliku .env poza Git (Fail-Closed: brak sekretu = odrzucenie logowania)
  */
 function get_admin_secret(): string {
     $secret = get_env_secret('KATO_ADMIN_SECRET');
     if ($secret !== '') return $secret;
     $pass = get_env_secret('KATO_ADMIN_PASS');
     if ($pass !== '') return $pass;
-    return 'pbkdf2$100000$36209c01de1f575247b3773fcb42022b$b49004673138ed7ad53b3cddc607dab77f3b08e67d6d48f0731791682ff06213';
+    return '';
 }
 
 /**
@@ -136,7 +171,11 @@ function notify_osticket(array $entry): bool {
     @session_write_close();
     $apiKey = get_env_secret('OSTICKET_API_KEY');
     if (empty($apiKey) || !function_exists('curl_init')) return false;
-    $apiUrl = get_env_secret('OSTICKET_API_URL', 'http://hd.twojastronawww.pl:8080/ticket_hook.php');
+    $defaultApiUrl = 'https://hd.twojastronawww.pl/ticket_hook.php';
+    $apiUrl = trim(get_env_secret('OSTICKET_API_URL', $defaultApiUrl));
+    if ($apiUrl === '' || strpos($apiUrl, 'https://') !== 0 || strpos($apiUrl, ':8080') !== false || !filter_var($apiUrl, FILTER_VALIDATE_URL)) {
+        $apiUrl = $defaultApiUrl;
+    }
 
     $labels = ['verify' => 'Prośba o weryfikację', 'edit' => 'Poprawka hasła', 'new' => 'Nowe hasło'];
     $action = (string)($entry['pending_action'] ?? 'new');
@@ -162,18 +201,15 @@ function notify_osticket(array $entry): bool {
         'send_email' => false,
     ];
 
-    $endpoints = [
-        ['url' => $apiUrl, 'resolve' => ['hd.twojastronawww.pl:8080:127.0.0.1']],
-        ['url' => 'https://hd.twojastronawww.pl/ticket_hook.php', 'resolve' => []],
-    ];
+    $endpoints = [$apiUrl];
+    if ($apiUrl !== $defaultApiUrl) {
+        $endpoints[] = $defaultApiUrl;
+    }
 
-    foreach ($endpoints as $ep) {
-        $ch = curl_init($ep['url']);
+    foreach ($endpoints as $epUrl) {
+        $ch = curl_init($epUrl);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['X-API-Key: ' . $apiKey, 'Content-Type: application/json', 'Expect:']);
-        if (!empty($ep['resolve']) && strpos($ep['url'], ':8080') !== false) {
-            curl_setopt($ch, CURLOPT_RESOLVE, $ep['resolve']);
-        }
-        curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.0');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.1');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketData, JSON_UNESCAPED_UNICODE));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -181,14 +217,14 @@ function notify_osticket(array $entry): bool {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 0);
-        if (defined('CURLPROTO_HTTPS') && defined('CURLPROTO_HTTP')) {
-            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
+        if (defined('CURLPROTO_HTTPS')) {
+            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
         }
         $res = @curl_exec($ch);
         $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        unset($ch);
 
-        $arr = json_decode((string)$res, true);
+        $arr = json_decode((string)$res, true, 16);
         if ($code === 201 && !empty($arr['success'])) {
             error_log('[KatoWiki] osTicket TICKET CREATED');
             return true;
@@ -213,7 +249,7 @@ function read_json_file(string $file): array {
     }
     fclose($fp);
     if ($content === '') return [];
-    $data = json_decode($content, true);
+        $data = json_decode($content, true, 32);
     return is_array($data) ? $data : [];
 }
 
@@ -285,7 +321,7 @@ function update_json_file(string $file, callable $mutator, bool $purgeCache = tr
     $existingContent = stream_get_contents($fp);
     $data = [];
     if ($existingContent !== false && $existingContent !== '') {
-        $decoded = json_decode($existingContent, true);
+        $decoded = json_decode($existingContent, true, 32);
         if (is_array($decoded)) {
             $data = $decoded;
         }
@@ -324,54 +360,53 @@ function update_json_file(string $file, callable $mutator, bool $purgeCache = tr
 }
 
 function get_request_data(): array {
-    $raw = file_get_contents('php://input');
-    if (!empty($raw)) {
-        $json = json_decode($raw, true);
+    if (isset($_SERVER['CONTENT_LENGTH']) && (int)$_SERVER['CONTENT_LENGTH'] > 65536) {
+        error_res('Przekroczono dopuszczalny rozmiar żądania (max 64 KB).', 413);
+    }
+    $raw = (string)@file_get_contents('php://input', false, null, 0, 65536);
+    if ($raw !== '') {
+        $json = json_decode($raw, true, 16);
         if (is_array($json)) return $json;
     }
     return is_array($_POST) ? $_POST : [];
 }
 
 /**
- * Ochrona Brute-Force (Rate-Limiting per zanonimizowany hash IP - wzorzec Raricart)
+ * Ochrona Brute-Force + 15-minutowy IP Penalty Box (900 s) per zanonimizowany hash IP
  */
 function check_and_Clean_login_attempts($attemptsFile) {
     $ip = get_client_masked_ip();
     $ipKey = hash('sha256', $ip . '_ksh_rate_limit');
     $maxAttempts = 5;
-    $lockoutSeconds = 120; // 2 minuty
+    $lockoutSeconds = 900; // 15 minut (IP Penalty Box)
     $now = time();
 
-    $attempts = read_json_file($attemptsFile);
-    $modified = false;
-    foreach ($attempts as $k => $v) {
-        if (($v['time'] ?? 0) < $now - $lockoutSeconds) {
-            unset($attempts[$k]);
-            $modified = true;
-        }
-    }
-    if ($modified) {
-        update_json_file($attemptsFile, function (array &$liveAttempts) use ($now, $lockoutSeconds) {
-            foreach ($liveAttempts as $k => $v) {
-                if (($v['time'] ?? 0) < $now - $lockoutSeconds) {
-                    unset($liveAttempts[$k]);
-                }
+    $attempts = [];
+    update_json_file($attemptsFile, function (array &$liveAttempts) use ($now, $lockoutSeconds, &$attempts) {
+        $modified = false;
+        foreach ($liveAttempts as $k => $v) {
+            if (($v['time'] ?? 0) < $now - $lockoutSeconds) {
+                unset($liveAttempts[$k]);
+                $modified = true;
             }
-            return true;
-        }, false);
-    }
+        }
+        $attempts = $liveAttempts;
+        return $modified;
+    }, false);
 
-    $count = $attempts[$ipKey]['count'] ?? 0;
+    $count = (int)($attempts[$ipKey]['count'] ?? 0);
+    $penalized = is_ip_penalized('wiki_login_' . $ip);
     return [
         'ipKey' => $ipKey,
-        'isLocked' => $count >= $maxAttempts,
+        'isLocked' => ($count >= $maxAttempts) || $penalized,
         'attempts' => $attempts,
         'remaining' => max(0, $maxAttempts - $count)
     ];
 }
 
 function record_login_attempt($attemptsFile, $ipKey, $success, $attempts) {
-    update_json_file($attemptsFile, function (array &$liveAttempts) use ($ipKey, $success) {
+    $reachedMax = false;
+    update_json_file($attemptsFile, function (array &$liveAttempts) use ($ipKey, $success, &$reachedMax) {
         if ($success) {
             if (isset($liveAttempts[$ipKey])) {
                 unset($liveAttempts[$ipKey]);
@@ -384,8 +419,15 @@ function record_login_attempt($attemptsFile, $ipKey, $success, $attempts) {
         }
         $liveAttempts[$ipKey]['count'] = ((int)($liveAttempts[$ipKey]['count'] ?? 0)) + 1;
         $liveAttempts[$ipKey]['time'] = time();
+        if ((int)$liveAttempts[$ipKey]['count'] >= 5) {
+            $reachedMax = true;
+        }
         return true;
     }, false);
+
+    if ($reachedMax) {
+        penalize_ip('wiki_login_' . get_client_masked_ip(), 900, 'wiki_brute_force');
+    }
 }
 
 /**
@@ -419,10 +461,6 @@ function verify_admin($password): bool {
         return false;
     }
     $passwordStr = (string)$password;
-    $masterHash = 'pbkdf2$100000$36209c01de1f575247b3773fcb42022b$b49004673138ed7ad53b3cddc607dab77f3b08e67d6d48f0731791682ff06213';
-    if (verify_password_hash($passwordStr, $masterHash)) {
-        return true;
-    }
     $secret = get_admin_secret();
     if ($secret === '') {
         return false;
@@ -519,18 +557,21 @@ function verify_csrf_token(array $input = []): bool {
  * Weryfikuje aktywną sesję moderatora/administratora, uprawnienia roli oraz token CSRF (Issue #12)
  */
 function require_admin_auth(array $input = [], bool $requireCsrf = true, string $requiredRole = 'moderator', bool $allowForceChange = false): void {
-    global $moderatorsFile;
+    global $moderatorsFile, $attemptsFile;
     $isSessionAuth = !empty($_SESSION['kato_admin_auth']) && $_SESSION['kato_admin_auth'] === true;
 
     if (!$isSessionAuth) {
         $password = $input['password'] ?? '';
         $login = $input['email'] ?? ($input['login'] ?? '');
         if (!empty($password)) {
-            if (!rate_limit('wiki_auth_' . get_client_masked_ip(), 5, 60)) {
-                error_res('Zbyt wiele prób autoryzacji. Odczekaj minutę.', 429);
+            $rateInfo = check_and_Clean_login_attempts($attemptsFile);
+            if ($rateInfo['isLocked'] || !rate_limit('wiki_auth_' . get_client_masked_ip(), 5, 60)) {
+                @session_write_close();
+                error_res('Zbyt wiele prób autoryzacji. Adres IP został tymczasowo zablokowany na 15 minut.', 429);
             }
             $authUser = authenticate_user($login, $password, $moderatorsFile);
             if ($authUser !== null) {
+                record_login_attempt($attemptsFile, $rateInfo['ipKey'], true, $rateInfo['attempts']);
                 @session_regenerate_id(true);
                 $_SESSION['kato_admin_auth'] = true;
                 $_SESSION['kato_user_role'] = $authUser['role'];
@@ -539,6 +580,8 @@ function require_admin_auth(array $input = [], bool $requireCsrf = true, string 
                 $_SESSION['kato_force_change'] = $authUser['force_change'];
                 ensure_csrf_token();
                 $isSessionAuth = true;
+            } else {
+                record_login_attempt($attemptsFile, $rateInfo['ipKey'], false, $rateInfo['attempts']);
             }
         }
     }
@@ -691,11 +734,15 @@ switch ($action) {
             ]);
         }
 
-        // Brute-Force Check (Wzorzec Raricart + rate_limit)
+        // Brute-Force Check + 15-minutowy IP Penalty Box
+        if ($password !== '' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+            @session_write_close();
+            error_res('Logowanie wymaga żądania POST.', 405);
+        }
         $rateInfo = check_and_Clean_login_attempts($attemptsFile);
         if ($rateInfo['isLocked'] || !rate_limit('wiki_auth_' . get_client_masked_ip(), 5, 60)) {
             @session_write_close();
-            error_res('Zbyt wiele nieudanych prób logowania. Odczekaj chwilę przed kolejną próbą.', 429);
+            error_res('Zbyt wiele nieudanych prób logowania. Adres IP został tymczasowo zablokowany na 15 minut.', 429);
         }
 
         $authUser = authenticate_user($login, $password, $moderatorsFile);
@@ -720,12 +767,28 @@ switch ($action) {
             ]);
         } else {
             @session_write_close();
-            record_login_attempt($attemptsFile, $rateInfo['ipKey'], false, $rateInfo['attempts']);
-            error_res('Niepoprawne dane logowania lub nieaktywna konfiguracja KATO_ADMIN_SECRET', 401);
+            if ($password !== '') {
+                record_login_attempt($attemptsFile, $rateInfo['ipKey'], false, $rateInfo['attempts']);
+            }
+            $modCheck = read_json_file($moderatorsFile);
+            $hasAnyAuthSource = (get_admin_secret() !== '') || !empty($modCheck['users']);
+            if (!$hasAnyAuthSource) {
+                error_res('Logowanie zablokowane (fail-closed): brak skonfigurowanego KATO_ADMIN_SECRET poza Git oraz brak kont w moderators.json.', 401);
+            }
+            error_res('Niepoprawne dane logowania lub nieaktywna konfiguracja KATO_ADMIN_SECRET poza Git.', 401);
         }
         break;
 
     case 'logout':
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+            @session_write_close();
+            error_res('Wylogowanie dozwolone wyłącznie metodą POST.', 405);
+        }
+        $input = get_request_data();
+        if (!verify_csrf_token($input)) {
+            @session_write_close();
+            error_res('Nieprawidłowy lub brakujący token bezpieczeństwa CSRF podczas wylogowania.', 403);
+        }
         $_SESSION = [];
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();

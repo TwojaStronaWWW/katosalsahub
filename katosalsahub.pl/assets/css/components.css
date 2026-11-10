@@ -464,7 +464,7 @@ a:focus-visible:not(.btn) {
     gap: 12px;
     margin: 16px 0 20px;
     font-size: 0.88rem;
-    color: var(--fg-muted);
+    color: #cbd5e1;
     line-height: 1.5;
 }
 

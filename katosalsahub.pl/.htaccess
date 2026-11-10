@@ -1,8 +1,19 @@
 Options -Indexes
 
-# Kanoniczne przekierowanie 301 z www na domenę bez www (eliminacja duplikatów w Google)
+# Kanoniczne przekierowanie 301 z www na domenę bez www oraz tarcza WAF / PHP2Shell (ISO 27001)
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Ochrona przed atakami PHP2Shell, CGI Argument Injection, Stream Wrapperami i Null-Byte w QUERY_STRING
+  RewriteCond %{QUERY_STRING} (?:^|&)(?:auto_prepend_file|auto_append_file|allow_url_include|allow_url_fopen|disable_functions|open_basedir)= [NC,OR]
+  RewriteCond %{QUERY_STRING} (?:php|phar|expect|data|zip|glob|file):// [NC,OR]
+  RewriteCond %{QUERY_STRING} (?:%00|%2500|\.\./|\.\.\\|%2e%2e) [NC,OR]
+  RewriteCond %{QUERY_STRING} (?:base64_(?:en|de)code|eval\(|GLOBALS\[|_REQUEST\[) [NC]
+  RewriteRule ^ - [F,L]
+
+  # Blokada ukrytych plików i katalogów z kropką (z wyjątkiem RFC 9116 /.well-known/)
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
   RewriteCond %{HTTP_HOST} ^www\.katosalsahub\.pl$ [NC]
   RewriteRule ^(.*)$ https://katosalsahub.pl/$1 [R=301,L]
   RewriteRule ^zdjecia/?$ https://photos.app.goo.gl/faiU7NhFAgpTEPRt9 [R=302,L,NC]
@@ -17,15 +28,32 @@ AddType 'application/manifest+json; charset=UTF-8' webmanifest
 AddType 'text/markdown; charset=UTF-8' md
 AddType 'application/vnd.google-earth.kml+xml; charset=UTF-8' kml
 AddType 'image/webp' webp
+AddType 'image/avif' avif
+
+# [REF-01] Kompresja zasobów tekstowych i danych strukturalnych (mod_brotli + mod_deflate)
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css application/javascript application/json application/manifest+json text/markdown application/vnd.google-earth.kml+xml image/svg+xml application/xml
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json application/manifest+json text/markdown application/vnd.google-earth.kml+xml image/svg+xml application/xml
+</IfModule>
+
+# Ochrona przed indeksowaniem subdomeny stagingowej / testowej (test.katosalsahub.pl, staging.katosalsahub.pl)
+<IfModule mod_setenvif.c>
+  SetEnvIfNoCase Host "^(test|staging)\." IS_STAGING_HOST=1
+</IfModule>
 
 # Nagłówki bezpieczeństwa OWASP / ISO 27001 (microphone=(self) dla dyktowania głosowego w Asystencie AI)
 <IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
   Header always set Cross-Origin-Resource-Policy "same-site"
+  Header always set Content-Security-Policy "frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
   Header always set Permissions-Policy "geolocation=(), microphone=(self), camera=()"
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive" env=IS_STAGING_HOST
 </IfModule>
 
 # Wyłączenie wyświetlania błędów PHP na środowisku produkcyjnym (ISO 27001)
@@ -34,8 +62,8 @@ AddType 'image/webp' webp
   php_flag log_errors On
 </IfModule>
 
-# Blokada bezpośredniego dostępu HTTP do kolejki moderacji, kont moderatorów, kopii zapasowych i plików środowiskowych
-<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|orig|psd|sh|sql|sw[op]|tmp)|~|pending_edits\.json|moderators\.json|login_attempts\.json|\.env.*)$">
+# Blokada bezpośredniego dostępu HTTP do baz SQLite/DB, kluczy kryptograficznych, tokenów, kolejek moderacji i plików środowiskowych
+<FilesMatch "(^#.*#|\.(bak|conf|csv|db|dist|fla|in[ci]|key|kdbx|lock|log|orig|pem|psd|sh|sql|sqlite|sqlite3|sw[op]|tmp)|~|(?:pending_edits|moderators|login_attempts|.*token.*|package(?:-lock)?|composer)\.json|\.env.*|\.npmrc|\.gitleaks\.toml)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
@@ -45,9 +73,18 @@ AddType 'image/webp' webp
   </IfModule>
 </FilesMatch>
 
-# Walidacja świeżości dla Service Workera, widoków HTML, arkuszy CSS/JS i dynamicznej bazy Salsopedii (bez no-store pogarszającego TTFB dla Googlebota)
+# Polityka Cache-Control: agresywny cache dla wersjonowanych CSS/JS (?v=X.Y) i obrazów, walidacja świeżości dla HTML/JSON oraz brak cache dla Service Workera (sw.js)
 <IfModule mod_headers.c>
-  <FilesMatch "^(sw\.js|.*\.(html|css|js)|salsopedia\.json)$">
+  <FilesMatch "\.(avif|webp|png|jpe?g|gif|svg|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.(html|json|webmanifest|xml|kml|md|txt)$">
     Header set Cache-Control "no-cache, must-revalidate"
   </FilesMatch>
+  <Files "sw.js">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+  </Files>
 </IfModule>

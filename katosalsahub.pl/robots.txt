@@ -1,3 +1,16 @@
+# [REF-07] Jawny dostęp dla wyszukiwarek AI (GEO: ChatGPT Search, Perplexity, Claude, Google AI Overviews)
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+Allow: /llms.txt
+Disallow: /assets/php/
+Disallow: /assets/data/pending_edits.json
+Disallow: /dancepuls/
+
 User-agent: *
 Allow: /
 Allow: /llms.txt

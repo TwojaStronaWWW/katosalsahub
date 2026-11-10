@@ -28,6 +28,29 @@
 /* ========================================
    TYPOGRAPHY
    ======================================== */
+/* [REF-04] WCAG 2.2 AA Skip Link */
+.skip-link {
+    position: fixed;
+    top: -120px;
+    left: 1rem;
+    z-index: 10000;
+    padding: 0.75rem 1.25rem;
+    background: var(--cuban-red);
+    color: var(--cuban-white);
+    font-weight: 700;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    box-shadow: var(--hover-shadow);
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+    top: 1rem;
+    outline: 3px solid var(--cuban-yellow);
+    outline-offset: 3px;
+}
+
 body {
 	font-family: 'Open Sans', sans-serif;
 	max-width: 1600px;

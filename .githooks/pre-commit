@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 # Pre-commit hook dla projektu Kato Salsa Hub & DancePuls
-# Wzorzec jakościowy Enterprise Template
+# Wzorzec jakościowy Enterprise Template (ISO 27001 Threat Protection)
 
 set -e
 
 echo "🔍 [pre-commit] Uruchamianie lokalnej bramy jakościowej (Quality Gate)..."
 
-# 1. Blokada przypadkowego commitowania sekretów (.env, config/secrets.php, .htpasswd, .bak)
-if git diff --cached --name-only | grep -E "(^|/)\.env(\..+)?$|config/secrets\.php|\.htpasswd|\.bak$" | grep -v "\.env\.example$"; then
-  echo "❌ [pre-commit] Wykryto plik z wrażliwymi sekretami lub kopią zapasową w indeksie Git!"
+# 1. Blokada przypadkowego commitowania sekretów, baz danych, profili przeglądarek i artefaktów roboczych
+FORBIDDEN_REGEX="(^|/)(\.env(\..*)?|config/secrets\.php|\.htpasswd)$|^docs/(audits|print)/|(^|/)\.chrome-[^/]+/|\.(pem|key|kdbx|bak)$|\.sqlite[0-9a-z_-]*$|(^|/)[^/]*token[^/]*\.json$"
+
+if git diff --cached --name-only | grep -E "$FORBIDDEN_REGEX" | grep -vE "(^|/)\.env\.example$"; then
+  echo "❌ [pre-commit] Wykryto zabroniony plik (sekret, klucz, baza danych lub artefakt roboczy) w indeksie Git!"
   echo "Usuń plik z indeksu poleceniem: git reset HEAD <plik>"
   exit 1
 fi

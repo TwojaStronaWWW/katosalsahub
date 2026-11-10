@@ -2,11 +2,22 @@
 node_modules/
 package-lock.json
 
-# Environment variables & secrets
+# Environment variables, keys & secrets (ISO 27001 / KeePass-First)
 .env
-.env.*
+.env*
 !.env.example
 *.local.php
+*.pem
+*.key
+*.kdbx
+*.sqlite*
+*.db
+*token*.json
+.chrome-*/
+
+# Working audit & print artifacts (kept out of Git)
+docs/audits/
+docs/print/
 
 # Test coverage & builds
 coverage/
@@ -17,12 +28,14 @@ dist/
 api/sessions/*
 api/rate_limits/*.json
 **/rate_limits/rate_*.json
+**/rate_limits/*.json
+katosalsahub.pl/assets/php/sessions/
+katosalsahub.pl/assets/php/leads_*.csv
 api/leads_*.csv
 katosalsahub.pl/assets/data/moderators.json
 katosalsahub.pl/assets/data/login_attempts.json
 *.bak
 *.log
-*.bak
 *.tmp
 npm-debug.log*
 smoke-diagnostics/

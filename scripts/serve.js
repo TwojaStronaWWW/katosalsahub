@@ -44,35 +44,54 @@ const SECURITY_HEADERS = {
   'Referrer-Policy': 'strict-origin-when-cross-origin',
 };
 
-const BLOCKED_FILE_PATTERN = /(^|[\/\\])(\.env.*|\.htaccess|\.git.*|pending_edits\.json|moderators\.json|login_attempts\.json|.*\.(php|bak|tmp|log|sql|sh|swp))$/i;
+const MAX_BODY_BYTES = 65536;
+
+const BLOCKED_FILE_PATTERN =
+  /(^|[\/\\])(pending_edits\.json|moderators\.json|login_attempts\.json|[^\/\\]*token[^\/\\]*\.json|package(?:-lock)?\.json|composer\.(?:json|lock)|sessions|rate_limits|.*\.(?:php\d*|phtml|phar|bak|tmp|log|sql|sqlite\d*|db|pem|key|kdbx|csv|lock|sh|sw[op]|conf|ini|dist|orig))$/i;
 
 function resolveSafeFilePath(rawInputUrl = '/', customBaseDir = null) {
+  const rawWithoutQuery = String(rawInputUrl || '/').split('?')[0].split('#')[0];
+  if (rawWithoutQuery.includes('\0') || /%00/i.test(rawWithoutQuery)) {
+    return { filePath: '', isAllowed: false, isMalformed: true };
+  }
+
   let decodedUrl;
   try {
-    decodedUrl = decodeURI(String(rawInputUrl || '/').split('?')[0]);
+    decodedUrl = decodeURIComponent(rawWithoutQuery);
   } catch {
     return { filePath: '', isAllowed: false, isMalformed: true };
   }
 
-  let targetBase = customBaseDir ? path.resolve(customBaseDir) : KSH_DIR;
-  let relPath = decodedUrl;
+  if (decodedUrl.includes('\0')) {
+    return { filePath: '', isAllowed: false, isMalformed: true };
+  }
 
-  if (!customBaseDir && decodedUrl.startsWith('/dancepuls/data/')) {
+  const normalizedUrl = decodedUrl.replace(/\\/g, '/');
+  const segments = normalizedUrl.split('/').filter(Boolean);
+  const hasTraversalAttempt = segments.some((seg) => seg === '..');
+  const hasBlockedDotSegment = segments.some(
+    (seg, idx) => seg.startsWith('.') && !(idx === 0 && seg === '.well-known')
+  );
+
+  let targetBase = customBaseDir ? path.resolve(customBaseDir) : KSH_DIR;
+  let relPath = normalizedUrl;
+
+  if (!customBaseDir && normalizedUrl.startsWith('/dancepuls/data/')) {
     targetBase = path.join(KSH_DIR, 'assets', 'data');
-    relPath = decodedUrl.replace(/^\/dancepuls\/data\//, '');
-  } else if (!customBaseDir && (decodedUrl === '/dancepuls' || decodedUrl.startsWith('/dancepuls/'))) {
+    relPath = normalizedUrl.replace(/^\/dancepuls\/data\//, '');
+  } else if (!customBaseDir && (normalizedUrl === '/dancepuls' || normalizedUrl.startsWith('/dancepuls/'))) {
     targetBase = DANCEPULS_DIR;
-    relPath = decodedUrl.replace(/^\/dancepuls(\/)?/, '') || 'index.html';
+    relPath = normalizedUrl.replace(/^\/dancepuls(\/)?/, '') || 'index.html';
   } else if (relPath === '/' || relPath === '') {
     relPath = 'index.html';
   }
 
-  const hasTraversalAttempt = /(^|[\/\\])\.\.([\/\\]|$)/.test(decodedUrl);
   const relativeTarget = relPath.replace(/^[\/\\]+/, '');
   const filePath = path.resolve(targetBase, relativeTarget);
 
   const withinBase =
     !hasTraversalAttempt &&
+    !hasBlockedDotSegment &&
     (filePath === targetBase || filePath.startsWith(targetBase + path.sep));
 
   const isSensitiveBlocked = BLOCKED_FILE_PATTERN.test(filePath);
@@ -226,9 +245,26 @@ function handleLocalWikiApi(req, res) {
   let sid = cookies.KSH_DEV_SID || '';
   let session = sid ? localSessions.get(sid) : null;
 
+  const contentLength = parseInt(String(req.headers['content-length'] || '0'), 10);
+  if (contentLength > MAX_BODY_BYTES) {
+    return sendJson({ success: false, error: 'Przekroczono maksymalny rozmiar żądania (64 KB).' }, 413);
+  }
+
   let bodyStr = '';
-  req.on('data', chunk => { bodyStr += chunk; });
+  let bodyBytes = 0;
+  let abortedTooLarge = false;
+  req.on('data', chunk => {
+    bodyBytes += Buffer.byteLength(chunk);
+    if (bodyBytes > MAX_BODY_BYTES) {
+      abortedTooLarge = true;
+      sendJson({ success: false, error: 'Przekroczono maksymalny rozmiar żądania (64 KB).' }, 413);
+      req.destroy();
+      return;
+    }
+    bodyStr += chunk;
+  });
   req.on('end', () => {
+    if (abortedTooLarge) return;
     let input = {};
     try {
       if (bodyStr) input = JSON.parse(bodyStr);
@@ -281,6 +317,17 @@ function handleLocalWikiApi(req, res) {
       return sendJson({ success: false, error: 'Niepoprawne dane logowania.' }, 401);
     }
     if (action === 'logout') {
+      if (req.method !== 'POST') {
+        return sendJson({ success: false, error: 'Wylogowanie wymaga metody POST.' }, 405);
+      }
+      if (session && session.csrf_token) {
+        const providedCsrf = String(req.headers['x-csrf-token'] || input.csrf_token || '');
+        const expectedBuf = Buffer.from(session.csrf_token);
+        const providedBuf = Buffer.from(providedCsrf);
+        if (expectedBuf.length !== providedBuf.length || !crypto.timingSafeEqual(expectedBuf, providedBuf)) {
+          return sendJson({ success: false, error: 'Nieprawidłowy token bezpieczeństwa CSRF.' }, 403);
+        }
+      }
       if (sid) localSessions.delete(sid);
       return sendJson({ success: true, authenticated: false });
     }
@@ -552,14 +599,29 @@ function handleLocalContactApi(req, res) {
   };
 
   if (req.method !== 'POST') {
-    return sendJson({ success: false, message: 'Brak danych wejściowych' });
+    return sendJson({ success: false, message: 'Brak danych wejściowych' }, 405);
+  }
+
+  const contentLength = parseInt(String(req.headers['content-length'] || '0'), 10);
+  if (contentLength > MAX_BODY_BYTES) {
+    return sendJson({ success: false, message: 'Przekroczono maksymalny rozmiar wiadomości (64 KB).' }, 413);
   }
 
   let bodyStr = '';
+  let bodyBytes = 0;
+  let abortedTooLarge = false;
   req.on('data', (chunk) => {
+    bodyBytes += Buffer.byteLength(chunk);
+    if (bodyBytes > MAX_BODY_BYTES) {
+      abortedTooLarge = true;
+      sendJson({ success: false, message: 'Przekroczono maksymalny rozmiar wiadomości (64 KB).' }, 413);
+      req.destroy();
+      return;
+    }
     bodyStr += chunk;
   });
   req.on('end', () => {
+    if (abortedTooLarge) return;
     const input = parseMultipartOrUrlEncoded(bodyStr, String(req.headers['content-type'] || ''));
     if (input.hp_chk) {
       return sendJson({ success: true, message: 'Wiadomość wysłana pomyślnie!' });

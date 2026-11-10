@@ -87,12 +87,53 @@
   const ANALYTICS_ENDPOINT = 'https://ai.twojastronawww.pl/analytics';
   const SITE_ID = 'katosalsahub';
 
+  function isOwnerAnalyticsIgnored() {
+    try {
+      if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.webdriver === true) {
+        return true;
+      }
+      if (window.location && window.location.search) {
+        const params = new URLSearchParams(window.location.search);
+        const toggle = params.get('ignore_analytics') ?? params.get('tsw_ignore');
+        if (toggle === '1' || toggle === 'true') {
+          try { localStorage.setItem('tsw_ignore_analytics', '1'); } catch {}
+          return true;
+        }
+        if (toggle === '0' || toggle === 'false') {
+          try { localStorage.removeItem('tsw_ignore_analytics'); } catch {}
+        }
+      }
+      if (window.__TSW_IGNORE_ANALYTICS__ === true) {
+        return true;
+      }
+      if (
+        localStorage.getItem('tsw_ignore_analytics') === '1' ||
+        localStorage.getItem('ksh_ignore_analytics') === '1' ||
+        localStorage.getItem('umami.disabled') === '1'
+      ) {
+        return true;
+      }
+    } catch {
+      // Ignoruj błędy dostępu do storage w trybie prywatnym
+    }
+    return false;
+  }
+
   function sendAnalyticsBeacon(payload) {
-    if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
+    if (isOwnerAnalyticsIgnored()) {
       return;
     }
     try {
       const body = JSON.stringify({ site_id: SITE_ID, ...payload });
+      if (navigator.sendBeacon && typeof navigator.sendBeacon === 'function') {
+        try {
+          if (navigator.sendBeacon(ANALYTICS_ENDPOINT, body)) {
+            return;
+          }
+        } catch {
+          // Fallback do fetch keepalive
+        }
+      }
       if (typeof fetch === 'function') {
         fetch(ANALYTICS_ENDPOINT, {
           method: 'POST',
@@ -100,6 +141,7 @@
           body,
           keepalive: true,
           mode: 'cors',
+          credentials: 'omit',
         }).catch(() => {});
       }
     } catch {
@@ -107,6 +149,10 @@
     }
   }
 
+  // Rejestracja pojedynczego koordynatora analityki (zapobiega podwójnemu zliczaniu przez ai-widget.js)
+  if (window.__TSW_ANALYTICS_ACTIVE__) {
+    return;
+  }
   window.__TSW_ANALYTICS_ACTIVE__ = true;
 
   let lcpMeasured = 0;
@@ -124,12 +170,22 @@
     // Brak wsparcia PerformanceObserver
   }
 
+  let lastTrackedPath = '';
+  let lastTrackedAt = 0;
+
   function trackCookielessPageview(pagePath, includeLcp) {
-    if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
+    if (isOwnerAnalyticsIgnored()) {
       return;
     }
 
     const rawPath = pagePath || (window.location.pathname + (window.location.hash || ''));
+    const now = Date.now();
+    if (rawPath === lastTrackedPath && now - lastTrackedAt < 1000) {
+      return;
+    }
+    lastTrackedPath = rawPath;
+    lastTrackedAt = now;
+
     let utmSource = '';
     let searchTerm = '';
     try {
@@ -147,7 +203,7 @@
       utm_source: utmSource,
       term: searchTerm,
     };
-    if (includeLcp && lcpMeasured > 0) {
+    if (includeLcp && lcpMeasured >= 50 && lcpMeasured <= 8000) {
       payload.lcp_ms = lcpMeasured;
     }
     sendAnalyticsBeacon(payload);
@@ -182,6 +238,10 @@
   }, 15000);
 
   document.addEventListener('page:loaded', (e) => {
+    // Pomijamy zdarzenie inicjalne z router.js (initial: true), aby nie duplikować pierwszego pageview z LCP
+    if (e && e.detail && e.detail.initial) {
+      return;
+    }
     const targetPath = (e && e.detail && e.detail.url) || window.location.pathname;
     trackCookielessPageview(targetPath, false);
   });
@@ -208,21 +268,18 @@
     if (radioBtn) {
       sendAnalyticsBeacon({ type: 'event', event: 'radio_play' });
     }
-    const chatBtn = target.closest('.tsw-ai-btn');
-    if (chatBtn) {
-      sendAnalyticsBeacon({ type: 'event', event: 'chat_open' });
-    }
-    const chipBtn = target.closest('.tsw-ai-chip');
-    if (chipBtn) {
-      sendAnalyticsBeacon({ type: 'event', event: 'quick_prompt_click' });
-    }
+    // Zdarzenia chat_open oraz quick_prompt_click są raportowane bezpośrednio przez ai-widget.js (zero duplikacji)
   });
 
   document.addEventListener('submit', (e) => {
     const form = e.target;
-    if (form && form.id !== 'tsw-ai-form' && (form.id === 'contactForm' || (form.classList && form.classList.contains('contact-form')))) {
+    if (
+      form &&
+      form.id !== 'tswAiForm' &&
+      form.id !== 'tsw-ai-form' &&
+      (form.id === 'contactForm' || (form.classList && form.classList.contains('contact-form')))
+    ) {
       sendAnalyticsBeacon({ type: 'event', event: 'contact_form_submit' });
     }
   });
 })();
-
