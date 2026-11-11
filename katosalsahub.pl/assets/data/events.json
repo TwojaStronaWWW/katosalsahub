@@ -1,33 +1,5 @@
 [
   {
-    "date": "2026-11-10",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Mil Pasos",
-        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
-        "adres": "ul. Kamienna 4",
-        "lat": 50.2569,
-        "lng": 19.0121,
-        "tytul": "Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)",
-        "opis": "Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości) - 22:00; Mil Pasos Kamienna 4; nowe w bazie 20.10",
-        "opisPubliczny": "Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)",
-        "dateLabel": "WTOREK (10.11.2026)",
-        "endDate": "2026-11-10",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/2002548047123998/",
-        "style": [
-          "Salsa",
-          "Bachata",
-          "Kizomba"
-        ]
-      }
-    ]
-  },
-  {
     "date": "2026-11-12",
     "events": [
       {
@@ -162,6 +134,27 @@
           "Salsa",
           "Bachata",
           "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.2649,
+        "lng": 19.0238,
+        "tytul": "Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!",
+        "opis": "Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem! - 21:00; Inne; AirDancia; nowe w bazie 11.11",
+        "opisPubliczny": "Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!",
+        "dateLabel": "PIĄTEK (13.11.2026)",
+        "endDate": "2026-11-13",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/",
+        "style": [
+          "Bachata"
         ]
       }
     ]
@@ -833,6 +826,32 @@
     ]
   },
   {
+    "date": "2026-11-29",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Gliwice",
+        "miastoInne": "",
+        "miejsce": "Mohito",
+        "miejsceInne": "Mohito (ul. Zwycięstwa 52A)",
+        "adres": "ul. Zwycięstwa 52A",
+        "lat": 50.2974,
+        "lng": 18.6746,
+        "tytul": "BACHAZOUK",
+        "opis": "BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN. - 13:00; Mohito; AirDancia; nowe w bazie 11.11",
+        "opisPubliczny": "BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN.",
+        "dateLabel": "NIEDZIELA (29.11.2026)",
+        "endDate": "2026-11-29",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachazouk-kombinacje-zajecia-specjalne-w-mohito-gliwice-poziom-open-gliwice/",
+        "style": [
+          "Bachata"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-12-01",
     "events": [
       {
@@ -1308,6 +1327,52 @@
         "endDate": "2026-12-31",
         "soldOut": false,
         "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Gliwice",
+        "miastoInne": "",
+        "miejsce": "Mohito",
+        "miejsceInne": "Mohito (ul. Zwycięstwa 52A)",
+        "adres": "ul. Zwycięstwa 52A",
+        "lat": 50.2974,
+        "lng": 18.6746,
+        "tytul": "TANECZNY SYLWESTER W SZKOLE TAŃCA MOHITO GLIWICE – BACHATA SALSA KIZOMBA UŻYTKOWY",
+        "opis": "TANECZNY SYLWESTER W SZKOLE TAŃCA MOHITO GLIWICE – BACHATA SALSA KIZOMBA UŻYTKOWY - 20:00; Mohito; AirDancia; nowe w bazie 11.11",
+        "opisPubliczny": "TANECZNY SYLWESTER W SZKOLE TAŃCA MOHITO GLIWICE – BACHATA SALSA KIZOMBA UŻYTKOWY",
+        "dateLabel": "CZWARTEK (31.12.2026)",
+        "endDate": "2026-12-31",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/taneczny-sylwester-w-szkole-tanca-mohito-gliwice-bachata-salsa-kizomba-uzytkowy-gliwice/",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Siewierz",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.4701,
+        "lng": 19.2291,
+        "tytul": "🌟SYLWESTER W BELEZIE 🌟",
+        "opis": "🌟SYLWESTER W BELEZIE 🌟 - 21:00; Inne; AirDancia; nowe w bazie 11.11",
+        "opisPubliczny": "🌟SYLWESTER W BELEZIE 🌟",
+        "dateLabel": "CZWARTEK (31.12.2026)",
+        "endDate": "2026-12-31",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/sylwester-w-belezie-siewierz/",
         "style": [
           "Salsa",
           "Bachata",

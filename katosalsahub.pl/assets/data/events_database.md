@@ -1,5 +1,5 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 10.11.2026 (Wtorek)
+Ostatnia aktualizacja: 11.11.2026 (Środa)
 
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach czekają warsztaty LVL UP z Danielem Rojewskim w Mil Pasos (Bachata). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro).
@@ -11,6 +11,7 @@ NIEDZIELA|Na razie brak potwierdzonych ogłoszeń.
 13–15.11|LO|Sensual Impro Festival|Bachata/Sensual Impro|F:1288385083316354|01.10 oficjalne sklep.loftodance.pl/wydarzenie/sensual-impro-festival-2026,1215 potwierdza 13–15.11
 13.11|Kraków,Salsa House|🇨🇺 PRAKTIS CUBAN SALSA & SON|Cubana|O:f2d6a2b814974c52b30c|Salsa House; OnlyDance; nowe w bazie 10.11
 13.11|FT|BLOK BACHATOWY w Forum Tańca! – 13.11|Salsa/Bachata/Kizomba|https://krajownik.pl/krakow/wydarzenia/blok-bachatowy-w-forum-tanca-1311-433604|18:15; Forum Tańca; nowe w bazie 10.11
+13.11|Katowice,Inne|Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!|Bachata|https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/|21:00; Inne; AirDancia; nowe w bazie 11.11
 14.11|MP|LVL UP z Mają Modliszewską,warsztaty|Bachata|F:1388826706219080|16–19; Mil Pasos; uzupełniono bezpośredni link FB 20.10
 14.11|LC|Bachata Social Club – impreza 100% social (Hits & Chill Edition)|Bachata|F:28393357210359838|22:00–03:00; La Clave Chorzowska 11; nowe w bazie 20.10
 14.11|Kraków,Frenzy (ul. Borowickiej 1),Iwony Borowickiej1|FrenzyShot Urban Kiz Party|Urban Kiz/Kizomba|O:pF0Xk4mNPfROoMs5LcL7|19:00; Frenzy Kraków; nowe w bazie 20.10
@@ -25,7 +26,7 @@ NIEDZIELA|Na razie brak potwierdzonych ogłoszeń.
 15.11|Kraków,Salsa House|SŁOWORUCH - II EDYCJA // O relacji między ciałem a językiem|Salsa|https://krajownik.pl/krakow/wydarzenia/sloworuch-ii-edycja-o-relacji-miedzy-cialem-a-jezykiem-434113|11:00; Salsa House; nowe w bazie 10.11
 
 ## PN–CZ BIEŻĄCEGO TYGODNIA
-10.11|MP|Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)|Salsa/Bachata/Kizomba|F:2002548047123998|22:00; Mil Pasos Kamienna 4; nowe w bazie 20.10
+10.11|MP|Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)|Salsa/Bachata/Kizomba|F:2002548047123998|22:00; Mil Pasos Kamienna 4; nowe w bazie 20.10; dzień miniony
 12.11|Świętochłowice,Górnicza 57|Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet|Bachata|F:1577268101107595|18:00; JNdance studio; nowe w bazie 10.11
 12.11|Tychy,Mohito|Bachata Sensual Bodymovement & Footwork|Bachata|F:1863784848133909|17:30; Szkoła Tańca Mohito Tychy; nowe w bazie 10.11
 
@@ -47,6 +48,7 @@ NIEDZIELA|Na razie brak potwierdzonych ogłoszeń.
 28.11|LC|Świadome rozciąganie i mobilność w tańcu / La Clave Katowic|Salsa/Bachata/Kizomba|https://airdancia.com/event/swiadome-rozciaganie-i-mobilnosc-w-tancu-la-clave-katowic-katowice/|15:30; La Clave; AirDancia; nowe w bazie 02.11
 28.11|Katowice,Częstotańcz|🔮✨ ANDRZEJKOWA POTAŃCÓWKA! ✨🔮 WILD WEST WESTERN COUNTRY + CULTURA LATINA|Salsa|O:dbcb789d9d934346ad9e|CZĘSTOTAŃCZ - Szkoła Tańca Częstochowa. Znajdź Swój Taniec w Częstochowie.; OnlyDance; nowe w bazie 10.11
 28.11|Kraków,Kamienna 12 Kamienna 12|BIGGEST LATINO PARTY – KRAKÓW|Bachata|O:693195afc5cb418b86b6|Yalla Balagan - Luxury Latino; OnlyDance; nowe w bazie 10.11
+29.11|Gliwice,Mohito|BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN.|Bachata|https://airdancia.com/event/bachazouk-kombinacje-zajecia-specjalne-w-mohito-gliwice-poziom-open-gliwice/|13:00; Mohito; AirDancia; nowe w bazie 11.11
 01.12|ZW|Salsunia|Cubana|F:1249676614905478|VivaSalsa
 02.12|MP|MIKOŁAJKOWA NAGRYWKA – Zajęcia specjalne z Izą|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|18:00–20:00; Mil Pasos Kamienna 4; nowe w bazie 10.11
 03–06.12|Hucisko,Orle Gniazdo20,woj.śląskie|FeelTheFlow|Bachata|https://airdancia.com/event/jesienny-feeltheflow-3-6-12-2026-blindpassy-w-sprzedazy-hucisko/|FeeltheSalsa/Damian Ratajczak
@@ -67,6 +69,8 @@ NIEDZIELA|Na razie brak potwierdzonych ogłoszeń.
 31.12|LO|Sylwester|Bachata/Sensual Impro|F:1580412003488974|LOFToDANCE; uzupełniono bezpośredni link FB 20.10
 31.12|FT|Sylwester|Salsa/Bachata|F:28088603620764646|20:00; Forum Tańca; uzupełniono bezpośredni link FB 24.10
 31.12|MP|IMPREZA SYLWESTROWA W MIL PASOS|Salsa/Bachata/Kizomba|https://www.milpasoskatowice.pl/?page=wydarzenia|21:00; Mil Pasos Kamienna 4; nowe w bazie 10.11
+31.12|Gliwice,Mohito|TANECZNY SYLWESTER W SZKOLE TAŃCA MOHITO GLIWICE – BACHATA SALSA KIZOMBA UŻYTKOWY|Salsa/Bachata/Kizomba|https://airdancia.com/event/taneczny-sylwester-w-szkole-tanca-mohito-gliwice-bachata-salsa-kizomba-uzytkowy-gliwice/|20:00; Mohito; AirDancia; nowe w bazie 11.11
+31.12|Siewierz,Inne|🌟SYLWESTER W BELEZIE 🌟|Salsa/Bachata/Kizomba|https://airdancia.com/event/sylwester-w-belezie-siewierz/|21:00; Inne; AirDancia; nowe w bazie 11.11
 02.01.2027|FT|Femme Fuego - Lady Styling Lab|Bachata|O:ZB2IGfCs5l6cyUjRvoJc|Magdalena Krzempek; OnlyDance; nowe w bazie 10.11
 09.01.2027|Częstochowa,Częstotańcz,Spółdzielczości4|warsztaty Mambo New York Style On2|Salsa On2|F:1632915284664193|Częstotańcz; nowe w bazie 20.10
 09.01.2027|MP|DARMOWA BACHATA DLA STUDENTÓW Soboty 16:00–18:00 od 9.01.27/ Kliknij „Wezmę udział” i udostępnij!|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|16:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 10.11

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-21",
+  "updatedAt": "2026-11-11",
   "city": "Katowice",
   "description": "Wspólny grafik katowickich szkół tańca (La Clave ul. Chorzowska 11, Good Mood ul. Paderewskiego 35 & Gravitacja ul. Gliwicka 44, Mil Pasos ul. Kamienna 4) z ustandaryzowaną 5-stopniową skalą poziomów zaawansowania KSH.",
   "levelStandard": [
@@ -136,7 +136,7 @@
       "facebook": "https://www.facebook.com/goodmoodkatowice",
       "salsopediaId": "term_school_13",
       "sourceType": "Google Sheets Live CSV (Paderewskiego gid=0 + Gliwicka gid=409650056)",
-      "sourceUpdatedAt": "2026-10-19",
+      "sourceUpdatedAt": "2026-11-11",
       "multisport": true,
       "medicover": true,
       "badgeClass": "school-badge--gm",
@@ -485,7 +485,7 @@
       "styleCategory": "solo",
       "styleLabel": "West Coast Swing",
       "title": "West Coast Swing – Gr. Od Podstaw (Nowy Nabór!)",
-      "levelCode": "P0",
+      "levelCode": "OPEN",
       "levelLabel": "P0 • Od podstaw (Start 19.10)",
       "room": "Sala Swayze (Paderewskiego 35)",
       "instructors": [
@@ -528,7 +528,7 @@
       "styleCategory": "kizomba",
       "styleLabel": "Zouk Brazylijski",
       "title": "Zouk Brazylijski – Gr. Od Podstaw",
-      "levelCode": "P0",
+      "levelCode": "OPEN",
       "levelLabel": "P0 • Od podstaw (Start 21.09)",
       "room": "Sala Swayze (Paderewskiego 35)",
       "instructors": [
@@ -1072,7 +1072,7 @@
       "styleCategory": "solo",
       "styleLabel": "Bachata Ladies Styling",
       "title": "Bachata Ladies Styling – Technika, Body Movement & Choreo",
-      "levelCode": "S1",
+      "levelCode": "P0",
       "levelLabel": "S1 • Śr.-Zaaw. Ladies",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
@@ -1547,7 +1547,7 @@
       "styleCategory": "solo",
       "styleLabel": "Bachata Solo Ladies",
       "title": "Bachata Solo Ladies – Gr. Podstawowa Tańcząca",
-      "levelCode": "P1",
+      "levelCode": "OPEN",
       "levelLabel": "P1 • Podstawowa Tańcząca",
       "room": "Sala Monroe (Paderewskiego 35)",
       "instructors": [
@@ -1632,7 +1632,7 @@
       "styleCategory": "bachata",
       "styleLabel": "Bachata w Parach",
       "title": "Bachata w Parach – Gr. Podstawowa Tańcząca (2x45 min)",
-      "levelCode": "P1",
+      "levelCode": "OPEN",
       "levelLabel": "P1 • Podstawowa Tańcząca",
       "room": "Sala Swayze (Paderewskiego 35)",
       "instructors": [
@@ -3023,9 +3023,9 @@
   ],
   "sourcesMeta": {
     "gm": {
-      "paderewskiegoSha256": "236be8600eba1a90",
+      "paderewskiegoSha256": "395c16b970014c86",
       "gliwickaSha256": "1c4e4770c5dc4383",
-      "liveCellsCount": 87
+      "liveCellsCount": 91
     },
     "lc": {
       "day_1": {
@@ -3062,8 +3062,8 @@
     },
     "mp": {
       "imageCount": 8,
-      "urlsFingerprint": "8d1307ea025226e3",
-      "pricingSha256": "8d1307ea025226e3"
+      "urlsFingerprint": "a1cd551e801b1f16",
+      "pricingSha256": "a1cd551e801b1f16"
     }
   }
 }
