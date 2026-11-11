@@ -156,6 +156,28 @@
         "style": [
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.266,
+        "lng": 19.0188,
+        "tytul": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE!",
+        "opis": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE! - 17:15; La Clave; AirDancia; nowe w bazie 11.11",
+        "opisPubliczny": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE!",
+        "dateLabel": "PIĄTEK (13.11.2026)",
+        "endDate": "2026-11-13",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachata-impro-lukasz-ras-nowe-piatki-w-la-clave-katowice/",
+        "style": [
+          "Bachata",
+          "Impro"
+        ]
       }
     ]
   },

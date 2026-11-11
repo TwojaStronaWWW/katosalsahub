@@ -1,9 +1,10 @@
 ## 1. PRYWATNIE — raport na 11.11.2026
-- **Stan zestawienia na weekend 13–15.11.2026:** **17 pozycji** (5 pt + 8 sb + 4 nd).
+- **Stan zestawienia na weekend 13–15.11.2026:** **18 pozycji** (6 pt + 8 sb + 4 nd).
 - **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **57 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (11.11 — 4 pozycji, data publikacji nieustalona):**
+- **Nowości w bazie z ostatniego sprawdzenia (11.11 — 5 pozycji, data publikacji nieustalona):**
   - **Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!** | 13.11.2026 | Katowice, Inne | Bachata | https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/
+  - **🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE!** | 13.11.2026 | Katowice, La Clave | Bachata/Impro | https://airdancia.com/event/bachata-impro-lukasz-ras-nowe-piatki-w-la-clave-katowice/
   - **BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN.** | 29.11.2026 | Gliwice, Mohito | Bachata | https://airdancia.com/event/bachazouk-kombinacje-zajecia-specjalne-w-mohito-gliwice-poziom-open-gliwice/
   - **TANECZNY SYLWESTER W SZKOLE TAŃCA MOHITO GLIWICE – BACHATA SALSA KIZOMBA UŻYTKOWY** | 31.12.2026 | Gliwice, Mohito | Salsa/Bachata/Kizomba | https://airdancia.com/event/taneczny-sylwester-w-szkole-tanca-mohito-gliwice-bachata-salsa-kizomba-uzytkowy-gliwice/
   - **🌟SYLWESTER W BELEZIE 🌟** | 31.12.2026 | Siewierz, Inne | Salsa/Bachata/Kizomba | https://airdancia.com/event/sylwester-w-belezie-siewierz/
@@ -42,6 +43,7 @@ PIĄTEK (13.11): Kraków - LOFToDANCE (Bachata/Sensual Impro)
 PIĄTEK (13.11): Kraków - Salsa House (Cubana)  
 PIĄTEK (13.11): Kraków - Forum Tańca (Salsa/Bachata/Kizomba)  
 PIĄTEK (13.11): Katowice - Inne (Bachata)  
+PIĄTEK (13.11): Katowice - La Clave (Bachata/Impro)  
 SOBOTA (14.11): Katowice - Mil Pasos (Bachata)  
 SOBOTA (14.11): Katowice - La Clave (Bachata)  
 SOBOTA (14.11): Kraków - Frenzy (ul. Borowickiej 1) (Urban Kiz/Kizomba)  
@@ -71,6 +73,8 @@ NIEDZIELA (15.11): Kraków - Salsa House (Salsa)
 🔗 https://krajownik.pl/krakow/wydarzenia/blok-bachatowy-w-forum-tanca-1311-433604  
 ➡️ Katowice: Inne (Bachata)  
 🔗 https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/  
+➡️ Katowice: La Clave (Bachata/Impro)  
+🔗 https://airdancia.com/event/bachata-impro-lukasz-ras-nowe-piatki-w-la-clave-katowice/  
 
 🗓️ SOBOTA (14.11):  
 ➡️ Katowice: Mil Pasos (Bachata)  
@@ -302,4 +306,4 @@ NIEDZIELA (15.11): Kraków - Salsa House (Salsa)
 - **Kolejne konkretne kroki przy następnym sprawdzeniu:**
   1. Rotacja regionalna: Częstochowa, Zagłębie (Sosnowiec, Dąbrowa Górnicza, Będzin, Czeladź) oraz świeże komunikaty na publicznej stronie FB Kato Salsa Hub.
   2. Weryfikacja dokładnej sali/adresu dla wstrzymanego tropu **REPARTO z Leidel Portuondo (07.11 w Bielsku-Białej)** oraz godzin warsztatów przed imprezą **¡A bailar salsa! (07.11 w LOFToDANCE)**.
-  3. Nie odczytywać ponownie 17 potwierdzonych wydarzeń bieżącego weekendu (13-15.11).
+  3. Nie odczytywać ponownie 18 potwierdzonych wydarzeń bieżącego weekendu (13-15.11).

@@ -12,6 +12,7 @@ NIEDZIELA|Na razie brak potwierdzonych ogłoszeń.
 13.11|Kraków,Salsa House|🇨🇺 PRAKTIS CUBAN SALSA & SON|Cubana|O:f2d6a2b814974c52b30c|Salsa House; OnlyDance; nowe w bazie 10.11
 13.11|FT|BLOK BACHATOWY w Forum Tańca! – 13.11|Salsa/Bachata/Kizomba|https://krajownik.pl/krakow/wydarzenia/blok-bachatowy-w-forum-tanca-1311-433604|18:15; Forum Tańca; nowe w bazie 10.11
 13.11|Katowice,Inne|Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!|Bachata|https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/|21:00; Inne; AirDancia; nowe w bazie 11.11
+13.11|LC|🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE!|Bachata/Impro|https://airdancia.com/event/bachata-impro-lukasz-ras-nowe-piatki-w-la-clave-katowice/|17:15; La Clave; AirDancia; nowe w bazie 11.11
 14.11|MP|LVL UP z Mają Modliszewską,warsztaty|Bachata|F:1388826706219080|16–19; Mil Pasos; uzupełniono bezpośredni link FB 20.10
 14.11|LC|Bachata Social Club – impreza 100% social (Hits & Chill Edition)|Bachata|F:28393357210359838|22:00–03:00; La Clave Chorzowska 11; nowe w bazie 20.10
 14.11|Kraków,Frenzy (ul. Borowickiej 1),Iwony Borowickiej1|FrenzyShot Urban Kiz Party|Urban Kiz/Kizomba|O:pF0Xk4mNPfROoMs5LcL7|19:00; Frenzy Kraków; nowe w bazie 20.10
