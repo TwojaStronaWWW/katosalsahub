@@ -522,8 +522,22 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
         }
         sentences.push(`W Katowicach w ${dayAccusative} jeszcze bez potwierdzonych ogłoszeń, ale potańczycie ${altParts.join(', a ')}.`);
     } else {
-        const katoText = joinPolishList(uniqueFormatted(kato));
-        sentences.push(`W Katowicach czekają ${katoText}.`);
+        const kshEvent = kato.find(e => e.isKSH || e.rawVenue === 'WL' || e.rawVenue === 'TS');
+        if (kshEvent) {
+            const otherKato = kato.filter(e => e !== kshEvent);
+            const kshShort = extractShortEventTitle(kshEvent.title);
+            const isWl = kshEvent.rawVenue === 'WL' || /^Wolni Ludzie$/i.test(kshEvent.venue);
+            const kshLocText = isWl ? 'w lokalu Wolni Ludzie przy ul. Mariackiej 2' : `w ${kshEvent.venue}`;
+            const kshLead = `W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne wydarzenie ${kshShort} ${kshLocText} (${kshEvent.styles})`;
+            if (otherKato.length > 0) {
+                sentences.push(`${kshLead}, a także czekają ${joinPolishList(uniqueFormatted(otherKato))}.`);
+            } else {
+                sentences.push(`${kshLead}.`);
+            }
+        } else {
+            const katoText = joinPolishList(uniqueFormatted(kato));
+            sentences.push(`W Katowicach czekają ${katoText}.`);
+        }
 
         const katoHasCubana = kato.some(e => /cubana|timba|son|casino/i.test(e.styles) && !/warsztat|kurs/i.test(e.title));
         const otherParts = [];
@@ -654,7 +668,12 @@ function rolloverSectionsByDate(sections, todayIso = getTodayIsoDate()) {
         }
     }
 
-    const bySortTs = (a, b) => (a.sortTimestamp || 0) - (b.sortTimestamp || 0);
+    const bySortTs = (a, b) => {
+        const diff = (a.sortTimestamp || 0) - (b.sortTimestamp || 0);
+        if (diff !== 0) return diff;
+        if (Boolean(a.isKSH) !== Boolean(b.isKSH)) return a.isKSH ? -1 : 1;
+        return 0;
+    };
     sections.archive = deduplicateEvents(nextArchive).sort(bySortTs);
     sections.thisWeekMid = deduplicateEvents(nextMid).sort(bySortTs);
     sections.currentWeekend = deduplicateEvents(nextWeekend).sort(bySortTs);
@@ -936,8 +955,75 @@ ${sec6}
 }
 
 /**
+ * Gwarantuje obecność cyklicznego własnego wydarzenia niedzielnego Kato Salsa Hub w Wolnych Ludziach (WL, 15:00–18:00),
+ * jeśli w bieżącym weekendzie po rolowaniu tygodnia nie ma jeszcze dedykowanego wpisu KSH na niedzielę.
+ */
+function ensureWeeklyKshSundayEvent(sections, todayIso = getTodayIsoDate()) {
+    const week = computeWeekWindow(todayIso);
+    const closedSundayHolidays = new Set(['01.11']);
+    if (closedSundayHolidays.has(week.sundayDayMonth)) {
+        return false;
+    }
+
+    const hasSundayKsh = (sections.currentWeekend || []).some(
+        (ev) =>
+            ev &&
+            ev.isoStartDate <= week.sundayIso &&
+            (ev.isoEndDate || ev.isoStartDate) >= week.sundayIso &&
+            Boolean(ev.isKSH || ev.rawVenue === 'WL' || ev.rawVenue === 'TS' || /^Wolni Ludzie$/i.test(ev.venue || ''))
+    );
+    if (hasSundayKsh) return false;
+
+    const history = [...(sections.archive || []), ...(sections.currentWeekend || [])]
+        .filter((ev) => ev && (ev.isKSH || ev.rawVenue === 'WL' || /^Wolni Ludzie$/i.test(ev.venue || '')))
+        .sort((a, b) => (a.sortTimestamp || 0) - (b.sortTimestamp || 0));
+
+    let nextVol = 70;
+    const lastVolEv = [...history].reverse().find((ev) => /vol\.\s*(\d+)/i.test(ev.title || ''));
+    if (lastVolEv) {
+        const volMatch = String(lastVolEv.title || '').match(/vol\.\s*(\d+)/i);
+        const lastVol = parseInt(volMatch[1], 10);
+        const lastMs = Date.parse(lastVolEv.isoStartDate || '');
+        const targetMs = Date.parse(week.sundayIso);
+        const weeksDiff = Number.isFinite(lastMs) && Number.isFinite(targetMs)
+            ? Math.max(1, Math.round((targetMs - lastMs) / (7 * 86400000)))
+            : 1;
+        nextVol = lastVol + weeksDiff;
+    }
+
+    const loc = normalizeLocation('WL');
+    const dateInfo = parseEventDateInfo(week.sundayDayMonth, parseInt(week.sundayIso.slice(0, 4), 10));
+    const monthNum = parseInt(week.sundayIso.slice(5, 7), 10);
+    const tzLabel = monthNum >= 4 && monthNum <= 10 ? 'CEST' : 'CET';
+
+    sections.currentWeekend.push({
+        rawDate: week.sundayDayMonth,
+        isoStartDate: dateInfo.isoStartDate,
+        isoEndDate: dateInfo.isoEndDate,
+        startDayMonth: dateInfo.startDayMonth,
+        weekdayPL: dateInfo.weekdayPL,
+        futureHeaderLabel: dateInfo.futureHeaderLabel,
+        sortTimestamp: dateInfo.sortTimestamp,
+        city: loc.city,
+        venue: loc.venue,
+        address: loc.address,
+        lat: loc.lat,
+        lng: loc.lng,
+        rawVenue: 'WL',
+        title: `Cuban Salsa Fiesta vol. ${nextVol}`,
+        styles: 'Cubana',
+        url: 'https://www.facebook.com/KatoSalsaHub',
+        notes: `KATO SALSA HUB; 15–18 ${tzLabel}; ⭐ własne wydarzenie`,
+        isKSH: true
+    });
+
+    rolloverSectionsByDate(sections, todayIso);
+    return true;
+}
+
+/**
  * Automatyczna synchronizacja bloku JSON-LD Schema.org DanceEvent w index.html i grafik.html
- * na podstawie najbliższego własnego wydarzenia Kato Salsa Hub (isKSH / WL / TS).
+ * oraz sekcji #mapa (Wolni Ludzie) i słownika i18n.js na podstawie najbliższego własnego wydarzenia Kato Salsa Hub.
  */
 function syncDanceEventSchemaInHtml(sections, todayIso = '') {
     const candidates = [
@@ -965,17 +1051,24 @@ function syncDanceEventSchemaInHtml(sections, todayIso = '') {
     const endM = hoursMatch && hoursMatch[4] ? hoursMatch[4] : '00';
 
     const monthNum = parseInt(dateIso.slice(5, 7), 10);
+    const dayNum = parseInt(dateIso.slice(8, 10), 10);
     const isCest = /CEST/i.test(nextEv.notes || '') || (!/CET\b/i.test(nextEv.notes || '') && monthNum >= 4 && monthNum <= 10);
     const tzOffset = isCest ? '+02:00' : '+01:00';
 
     const startDateStr = `${dateIso}T${startH}:${startM}:00${tzOffset}`;
     const endDateStr = `${dateIso}T${endH}:${endM}:00${tzOffset}`;
-    const cleanUrl = String(nextEv.url || 'https://www.facebook.com/KatoSalsaHub/events').replace(/\/+$/, '');
+    const validFromStr = `${dateIso}T00:00:00${tzOffset}`;
+    const cleanUrl = String(nextEv.url || 'https://www.facebook.com/KatoSalsaHub').replace(/\/+$/, '');
     const isStawy = nextEv.rawVenue === 'TS' || /Staw|Kr[aą]g/i.test(nextEv.venue || '');
     const venueLabel = isStawy ? 'Kamienny Krąg – Dolina Trzech Stawów' : 'Wolni Ludzie';
     const fullName = /Wolni Ludzie|Staw/i.test(nextEv.title || '')
         ? `${nextEv.title} (Salsa Katowice)`
         : `${nextEv.title.replace(/\s+(vol\.\s*\d+)/i, ` – ${venueLabel} $1`)} (Salsa Katowice)`;
+
+    const dayMonthStr = nextEv.startDayMonth || `${String(dayNum).padStart(2, '0')}.${String(monthNum).padStart(2, '0')}`;
+    const enMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const enDateStr = `${dayNum} ${enMonths[monthNum - 1] || 'Nov'}`;
+    const cleanTitle = String(nextEv.title || 'Cuban Salsa Fiesta').replace(/\s*🔥.*$/, '').trim();
 
     const htmlTargets = [
         path.join(ROOT_DIR, 'katosalsahub.pl', 'index.html'),
@@ -986,15 +1079,43 @@ function syncDanceEventSchemaInHtml(sections, todayIso = '') {
     for (const htmlPath of htmlTargets) {
         if (!fs.existsSync(htmlPath)) continue;
         const original = fs.readFileSync(htmlPath, 'utf-8');
-        const updated = original.replace(
-            /("@type":\s*"DanceEvent",\s*"name":\s*")([^"]+)("[\s\S]*?"startDate":\s*")([^"]+)("[\s\S]*?"endDate":\s*")([^"]+)("[\s\S]*?"url":\s*")([^"]+)("[\s\S]*?"offers":\s*\{\s*"@type":\s*"Offer",\s*"url":\s*")([^"]+)(")/,
-            `$1${fullName}$3${startDateStr}$5${endDateStr}$7${cleanUrl}$9${cleanUrl}$11`
+        let updated = original.replace(
+            /("@type":\s*"DanceEvent",\s*"name":\s*")([^"]+)("[\s\S]*?"startDate":\s*")([^"]+)("[\s\S]*?"endDate":\s*")([^"]+)("[\s\S]*?"url":\s*")([^"]+)("[\s\S]*?"offers":\s*\{\s*"@type":\s*"Offer",\s*"url":\s*")([^"]+)("[\s\S]*?"validFrom":\s*")([^"]+)(")/,
+            `$1${fullName}$3${startDateStr}$5${endDateStr}$7${cleanUrl}$9${cleanUrl}$11${validFromStr}$13`
         );
+        if (!isStawy) {
+            updated = updated.replace(
+                /(Najbliższa edycja \(<strong>)[^<]+(<\/strong>\): <a href=")[^"]+(" target="_blank" rel="noopener noreferrer"><strong>)[^<]+(<\/strong><\/a>!)/g,
+                `$1${dayMonthStr}$2${cleanUrl}$3${cleanTitle} 🔥🇨🇺$4`
+            );
+        }
         if (updated !== original) {
             writeFileAtomically(htmlPath, updated);
             updatedCount++;
         }
     }
+
+    const i18nPath = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'js', 'i18n.js');
+    if (!isStawy && fs.existsSync(i18nPath)) {
+        const origI18n = fs.readFileSync(i18nPath, 'utf-8');
+        let nextI18n = origI18n
+            .replace(
+                /(Najbliższa edycja \(<strong>)[^<]+(<\/strong>\): <a href=")[^"]+(" target="_blank" rel="noopener noreferrer"><strong>)[^<]+(<\/strong><\/a>!)/g,
+                `$1${dayMonthStr}$2${cleanUrl}$3${cleanTitle} 🔥🇨🇺$4`
+            )
+            .replace(
+                /(Próxima edición \(<strong>)[^<]+(<\/strong>\): <a href=")[^"]+(" target="_blank" rel="noopener noreferrer"><strong>)[^<]+(<\/strong><\/a>!)/g,
+                `$1${dayMonthStr}$2${cleanUrl}$3${cleanTitle} 🔥🇨🇺$4`
+            )
+            .replace(
+                /(Next edition \(<strong>)[^<]+(<\/strong>\): <a href=")[^"]+(" target="_blank" rel="noopener noreferrer"><strong>)[^<]+(<\/strong><\/a>!)/g,
+                `$1${enDateStr}$2${cleanUrl}$3${cleanTitle} 🔥🇨🇺$4`
+            );
+        if (nextI18n !== origI18n) {
+            writeFileAtomically(i18nPath, nextI18n);
+        }
+    }
+
     if (updatedCount > 0) {
         console.log(`   🔄 Zaktualizowano Schema.org DanceEvent (${fullName}) w ${updatedCount} plikach HTML.`);
     }
@@ -1039,6 +1160,7 @@ async function main() {
     const { newSubmissions } = await checkFormSubmissions(dbText, todayIso);
     const sections = parseDatabase(dbText);
     rolloverSectionsByDate(sections, todayIso);
+    ensureWeeklyKshSundayEvent(sections, todayIso);
 
     const shouldScanRemote = !args.includes('--no-remote') && !process.env.CI;
     if (shouldScanRemote || args.includes('--check-remote') || args.includes('--fb')) {
@@ -1159,6 +1281,7 @@ module.exports = {
     getTodayIsoDate,
     computeWeekWindow,
     rolloverSectionsByDate,
+    ensureWeeklyKshSundayEvent,
     serializeDatabase,
     compactSourceUrl,
     compactVenueCode,

@@ -10,6 +10,7 @@ const {
   buildVenueAndStyleLabel,
   computeWeekWindow,
   rolloverSectionsByDate,
+  ensureWeeklyKshSundayEvent,
   serializeDatabase,
   parseDatabase,
   inferEventStyles,
@@ -244,6 +245,13 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       });
       rolloverSectionsByDate(reparsed, '2026-10-30');
       assert.doesNotMatch(reparsed.postNarrative.NIEDZIELA, /Na razie brak potwierdzonych/, 'Placeholder niedzieli musi zostać zastąpiony po dograniu wydarzenia na niedzielę');
+      assert.match(reparsed.postNarrative.NIEDZIELA, /Wolni Ludzie/);
+
+      // Sprawdzenie automatycznego domykania cyklicznej niedzieli KSH w Wolnych Ludziach po rolowaniu tygodnia
+      rolloverSectionsByDate(reparsed, '2026-11-12');
+      const seeded = ensureWeeklyKshSundayEvent(reparsed, '2026-11-12');
+      assert.strictEqual(seeded, true, 'Cykliczna niedziela KSH w Wolnych Ludziach powinna zostać automatycznie dodana na nowy weekend');
+      assert.ok(reparsed.currentWeekend.some(e => e.rawVenue === 'WL' && e.rawDate === '15.11' && e.isKSH));
       assert.match(reparsed.postNarrative.NIEDZIELA, /Wolni Ludzie/);
     });
 

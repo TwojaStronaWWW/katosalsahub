@@ -4,7 +4,7 @@ Ostatnia aktualizacja: 12.11.2026 (Czwartek)
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach czekają warsztaty LVL UP z Danielem Rojewskim w Mil Pasos (Bachata), Darmowy Praktis Bachata dla uczestników zajęć specjalnych z Danielem! (Bachata) oraz 🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI w La Clave (Bachata/Impro). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro), PRAKTIS CUBAN SALSA & SON w Salsa House (Cubana) oraz BLOK BACHATOWY w Forum Tańca (Salsa/Bachata/Kizomba).
 SOBOTA|W Katowicach czekają warsztaty LVL UP z Mają Modliszewską w Mil Pasos (Bachata) oraz Bachata Social Club – impreza 100% social (Hits & Chill Edition) w La Clave (Bachata). W regionie parkiety otwierają DANCE#LOVEit & Corazon (Bielsko-Biała, Cubana), natomiast w Krakowie czekają FrenzyShot Urban Kiz Party w Frenzy (ul. Borowickiej 1) (Urban Kiz/Kizomba), NIKT NIE PYTAŁ w Salsa House (Salsa), Demo Experience w LOFToDANCE (Salsa/Bachata/Kizomba) oraz Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro).
-NIEDZIELA|W Katowicach czekają BACHATA – nowy kurs tańca DLA SINGLI I PAR (Bachata). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro), Przyspieszony kurs weekendowy – BACHATA OD PODSTAW w Forum Tańca (Bachata) oraz SŁOWORUCH - II EDYCJA w Salsa House (Salsa).
+NIEDZIELA|W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne wydarzenie Cuban Salsa Fiesta vol. 70 w lokalu Wolni Ludzie przy ul. Mariackiej 2 (Cubana), a także czekają BACHATA – nowy kurs tańca DLA SINGLI I PAR (Bachata). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro), Przyspieszony kurs weekendowy – BACHATA OD PODSTAW w Forum Tańca (Bachata) oraz SŁOWORUCH - II EDYCJA w Salsa House (Salsa).
 
 ## BIEŻĄCY WEEKEND (13–15.11.2026)
 13.11|MP|LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty|Bachata|F:4591812061145684|18:00–20:55 z opisu; Mil Pasos; uzupełniono bezpośredni link FB 20.10
@@ -21,6 +21,7 @@ NIEDZIELA|W Katowicach czekają BACHATA – nowy kurs tańca DLA SINGLI I PAR (B
 14.11|DL|Salsoteka – Cuban Weekend (Salsa • Casino • Timba • Son)|Timba/Cubana|F:1746598119751839|20:00; Szkoła Tańca Corazon; nowe w bazie 03.11
 14.11|LO|Lunch podczas Sensual Impro Festival Sobota|Bachata/Sensual Impro|https://sklep.loftodance.pl/wydarzenie/lunch-podczas-sensual-impro-festival-sobota,1205|LOFToDANCE Kraków; nowe w bazie 10.11
 14.11|DL|CUBAN WEEKEND 🔥 – 14–15 LISTOPADA – Szkoła Tańca Corazon|Cubana|F:1120432233726857|10:00; Szkoła Tańca Corazon; nowe w bazie 10.11
+15.11|WL|Cuban Salsa Fiesta vol. 70|Cubana|https://www.facebook.com/KatoSalsaHub|KATO SALSA HUB; 15–18 CET; ⭐ własne wydarzenie
 15.11|LO|Lunch podczas Sensual Impro Festival Niedziela|Bachata/Sensual Impro|https://sklep.loftodance.pl/wydarzenie/lunch-podczas-sensual-impro-festival-niedziela,1302|LOFToDANCE Kraków; nowe w bazie 10.11
 15.11|Katowice,Inne|BACHATA – nowy kurs tańca DLA SINGLI I PAR – 15.11.26 – 17:00 – 19:00 NIEDZIELA|Bachata|https://airdancia.com/event/bachata-nowy-kurs-tanca-dla-singli-i-par-15-11-26-17-00-19-00-niedziela-katowice/|17:00; Inne; AirDancia; nowe w bazie 10.11
 15.11|FT|Przyspieszony kurs weekendowy – BACHATA OD PODSTAW – 15.11|Bachata|https://krajownik.pl/krakow/wydarzenia/przyspieszony-kurs-weekendowy-bachata-od-podstaw-1511-433603|15:55; Forum Tańca; nowe w bazie 10.11

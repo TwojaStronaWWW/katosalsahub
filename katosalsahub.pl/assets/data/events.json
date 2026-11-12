@@ -364,6 +364,27 @@
     "events": [
       {
         "checked": true,
+        "promote": true,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Wolni Ludzie",
+        "miejsceInne": "Wolni Ludzie (ul. Mariacka 2)",
+        "adres": "ul. Mariacka 2",
+        "lat": 50.2577,
+        "lng": 19.0248,
+        "tytul": "Cuban Salsa Fiesta vol. 70",
+        "opis": "Cuban Salsa Fiesta vol. 70 - KATO SALSA HUB; 15–18 CET; ⭐ własne wydarzenie",
+        "opisPubliczny": "Cuban Salsa Fiesta vol. 70",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://www.facebook.com/KatoSalsaHub",
+        "style": [
+          "Cubana"
+        ]
+      },
+      {
+        "checked": true,
         "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
