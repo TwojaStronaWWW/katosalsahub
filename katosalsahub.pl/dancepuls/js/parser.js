@@ -1,5 +1,5 @@
-import { parsujDateFB, formatujDatePL, toYMD } from './utils.js';
-import { miejscaWgMiasta, adresyMap, adresMiastoSztywne, styleKeywords } from './config.js';
+import { parsujDateFB, formatujDatePL, toYMD } from './utils.js?v=5.1';
+import { miejscaWgMiasta, adresyMap, adresMiastoSztywne, styleKeywords } from './config.js?v=5.1';
 
 /**
  * Zwraca kanoniczny klucz deduplikacji dla adresu URL wydarzenia (np. fb:891329324066083).

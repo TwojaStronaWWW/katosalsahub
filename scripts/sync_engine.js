@@ -493,12 +493,19 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
         const venueSuffix = isGenericVenue ? '' : ` w ${e.venue}`;
         const isWorkshop = /warsztat|kurs|zaj[eę]cia|masterclass|crash\s*course/i.test(e.title);
         if (isWorkshop) {
-            return /^warsztaty/i.test(shortName)
+            return /warsztat/i.test(shortName)
                 ? `${shortName}${venueSuffix} (${e.styles})`
                 : `warsztaty ${shortName}${venueSuffix} (${e.styles})`;
         }
         return `${shortName}${venueSuffix} (${e.styles})`;
     };
+
+    const dayAccusativeMap = {
+        'piątek': 'piątek',
+        'sobota': 'sobotę',
+        'niedziela': 'niedzielę'
+    };
+    const dayAccusative = dayAccusativeMap[String(dayName || '').toLowerCase()] || String(dayName || '').toLowerCase();
 
     const sentences = [];
 
@@ -511,7 +518,7 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
         if (krakow.length > 0) {
             altParts.push(`w Krakowie na ${joinPolishList(krakow.map(formatItem))}`);
         }
-        sentences.push(`W Katowicach w ${dayName.toLowerCase()} jeszcze bez potwierdzonych ogłoszeń, ale potańczycie ${altParts.join(', a ')}.`);
+        sentences.push(`W Katowicach w ${dayAccusative} jeszcze bez potwierdzonych ogłoszeń, ale potańczycie ${altParts.join(', a ')}.`);
     } else {
         const katoText = joinPolishList(kato.map(formatItem));
         sentences.push(`W Katowicach czekają ${katoText}.`);
@@ -660,6 +667,10 @@ function rolloverSectionsByDate(sections, todayIso = getTodayIsoDate()) {
     const fridayEvents = sections.currentWeekend.filter(e => e.weekdayPL === 'PIĄTEK');
     const saturdayEvents = sections.currentWeekend.filter(e => e.weekdayPL === 'SOBOTA');
     const sundayEvents = sections.currentWeekend.filter(e => e.weekdayPL === 'NIEDZIELA');
+    const continuingSundayEvents = sections.currentWeekend.filter(
+        e => e.weekdayPL !== 'NIEDZIELA' && e.isoStartDate <= week.sundayIso && (e.isoEndDate || e.isoStartDate) >= week.sundayIso
+    );
+    const effectiveSundayEvents = sundayEvents.length > 0 ? sundayEvents : continuingSundayEvents;
 
     if (!sections.postNarrative) {
         sections.postNarrative = { PIĄTEK: '', SOBOTA: '', NIEDZIELA: '' };
@@ -682,8 +693,8 @@ function rolloverSectionsByDate(sections, todayIso = getTodayIsoDate()) {
     if (shouldRefreshDayNarrative(sections.postNarrative.SOBOTA, saturdayEvents)) {
         sections.postNarrative.SOBOTA = buildNaturalDayNarrative(saturdayEvents, 'sobota');
     }
-    if (shouldRefreshDayNarrative(sections.postNarrative.NIEDZIELA, sundayEvents)) {
-        sections.postNarrative.NIEDZIELA = buildNaturalDayNarrative(sundayEvents, 'niedziela');
+    if (shouldRefreshDayNarrative(sections.postNarrative.NIEDZIELA, effectiveSundayEvents)) {
+        sections.postNarrative.NIEDZIELA = buildNaturalDayNarrative(effectiveSundayEvents, 'niedziela');
     }
 
     return sections;

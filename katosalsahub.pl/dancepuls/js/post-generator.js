@@ -1,4 +1,4 @@
-import { parsujDateFB, formatujDatePL } from './utils.js?v=20261020_v3'
+import { parsujDateFB, formatujDatePL } from './utils.js?v=5.1'
 
 // --- INBOX HELPER ---
 
@@ -613,15 +613,24 @@ export async function zaladujRaportKSH(silent = true) {
 		}
 		if (sec2) {
 			const postEl = document.getElementById('post-opis')
-			if (postEl) postEl.value = formatMainPostBoldings(sec2)
+			if (postEl) {
+				postEl.value = formatMainPostBoldings(sec2)
+				postEl.scrollTop = 0
+			}
 		}
 		if (sec4) {
 			const wynikEl = document.getElementById('wynik')
-			if (wynikEl) wynikEl.value = stripMathBoldUnicode(ensureFullCommentFooter(sec4))
+			if (wynikEl) {
+				wynikEl.value = stripMathBoldUnicode(ensureFullCommentFooter(sec4))
+				wynikEl.scrollTop = 0
+			}
 		}
 		if (sec5) {
 			const przyszleEl = document.getElementById('wynik-przyszle')
-			if (przyszleEl) przyszleEl.value = stripMathBoldUnicode(ensureFullCommentFooter(sec5))
+			if (przyszleEl) {
+				przyszleEl.value = stripMathBoldUnicode(ensureFullCommentFooter(sec5))
+				przyszleEl.scrollTop = 0
+			}
 		}
 		if (sec3) {
 			const cleanSec3 = stripMathBoldUnicode(sec3)

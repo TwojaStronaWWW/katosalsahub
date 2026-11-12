@@ -4,7 +4,7 @@ Ostatnia aktualizacja: 12.11.2026 (Czwartek)
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach czekają warsztaty LVL UP z Danielem Rojewskim w Mil Pasos (Bachata). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro), PRAKTIS CUBAN SALSA & SON w Salsa House (Cubana) oraz BLOK BACHATOWY w Forum Tańca (Bachata).
 SOBOTA|W Katowicach czekają warsztaty LVL UP z Mają Modliszewską w Mil Pasos (Bachata) oraz Bachata Social Club – impreza 100% social (Hits & Chill Edition) w La Clave (Bachata). W regionie parkiety otwierają DANCE#LOVEit & Corazon (Bielsko-Biała, Cubana), natomiast w Krakowie czekają FrenzyShot Urban Kiz Party w Frenzy (ul. Borowickiej 1) (Urban Kiz/Kizomba), NIKT NIE PYTAŁ w Salsa House (Salsa) oraz Demo Experience w LOFToDANCE (Salsa/Bachata/Kizomba).
-NIEDZIELA|Na razie brak potwierdzonych ogłoszeń.
+NIEDZIELA|W Katowicach w niedzielę jeszcze bez potwierdzonych ogłoszeń, ale potańczycie w Bielsku-Białej na Cuban Weekend – warsztaty w DANCE#LOVEit & Corazon (Cubana), a w Krakowie na Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro).
 
 ## BIEŻĄCY WEEKEND (13–15.11.2026)
 13.11|MP|LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty|Bachata|F:4591812061145684|18:00–20:55 z opisu; Mil Pasos; uzupełniono bezpośredni link FB 20.10
