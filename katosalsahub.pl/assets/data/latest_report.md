@@ -1,13 +1,9 @@
-## 1. PRYWATNIE — raport na 11.11.2026
+## 1. PRYWATNIE — raport na 12.11.2026
 - **Stan zestawienia na weekend 13–15.11.2026:** **18 pozycji** (6 pt + 8 sb + 4 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **57 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **58 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (11.11 — 5 pozycji, data publikacji nieustalona):**
-  - **Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!** | 13.11.2026 | Katowice, Inne | Bachata | https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/
-  - **🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE!** | 13.11.2026 | Katowice, La Clave | Bachata/Impro | https://airdancia.com/event/bachata-impro-lukasz-ras-nowe-piatki-w-la-clave-katowice/
-  - **BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN.** | 29.11.2026 | Gliwice, Mohito | Bachata | https://airdancia.com/event/bachazouk-kombinacje-zajecia-specjalne-w-mohito-gliwice-poziom-open-gliwice/
-  - **TANECZNY SYLWESTER W SZKOLE TAŃCA MOHITO GLIWICE – BACHATA SALSA KIZOMBA UŻYTKOWY** | 31.12.2026 | Gliwice, Mohito | Salsa/Bachata/Kizomba | https://airdancia.com/event/taneczny-sylwester-w-szkole-tanca-mohito-gliwice-bachata-salsa-kizomba-uzytkowy-gliwice/
-  - **🌟SYLWESTER W BELEZIE 🌟** | 31.12.2026 | Siewierz, Inne | Salsa/Bachata/Kizomba | https://airdancia.com/event/sylwester-w-belezie-siewierz/
+- **Nowości w bazie z ostatniego sprawdzenia (12.11 — 1 pozycji, data publikacji nieustalona):**
+  - **Impreza OVERPOWER DANCERS EDITION vol. 19 – 21.11** | 21.11.2026 | Kraków, Forum Tańca | Salsa/Bachata | https://www.facebook.com/events/1447688040844284/
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
@@ -137,6 +133,9 @@ NIEDZIELA (15.11): Kraków - Salsa House (Salsa)
 🗓️ SOBOTA (21.11.2026)  
 ➡️ Bielsko-Biała: AllDance, ANDRZEJKOWE PARTY NEONOWE -  PRAKTIS BACHATA/SALSA/KIZOMBA W ALLDANCE (Salsa/Bachata/Kizomba)  
 🔗 https://www.facebook.com/events/1843986106619903/  
+🗓️ SOBOTA (21.11.2026)  
+➡️ Kraków: Forum Tańca, Impreza OVERPOWER DANCERS EDITION vol. 19 – 21.11 (Salsa/Bachata)  
+🔗 https://www.facebook.com/events/1447688040844284/  
 🗓️ NIEDZIELA (22.11.2026)  
 ➡️ Katowice: KIZLAB, KIZLAB SUNDAYS (Kizomba)  
 🔗 https://www.facebook.com/events/1617716113426642/  

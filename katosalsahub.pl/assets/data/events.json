@@ -637,6 +637,28 @@
           "Bachata",
           "Kizomba"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Impreza OVERPOWER DANCERS EDITION vol. 19 – 21.11",
+        "opis": "Impreza OVERPOWER DANCERS EDITION vol. 19 – 21.11 - 20:30; Forum Tańca; nowe w bazie 12.11",
+        "opisPubliczny": "Impreza OVERPOWER DANCERS EDITION vol. 19 – 21.11",
+        "dateLabel": "SOBOTA (21.11.2026)",
+        "endDate": "2026-11-21",
+        "soldOut": false,
+        "link": "https://www.facebook.com/events/1447688040844284/",
+        "style": [
+          "Salsa",
+          "Bachata"
+        ]
       }
     ]
   },

@@ -1,5 +1,5 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 11.11.2026 (Środa)
+Ostatnia aktualizacja: 12.11.2026 (Czwartek)
 
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach czekają warsztaty LVL UP z Danielem Rojewskim w Mil Pasos (Bachata). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro).
@@ -40,6 +40,7 @@ NIEDZIELA|Na razie brak potwierdzonych ogłoszeń.
 21.11|GR|Dance++ Kizomba Fusion Party|Kizomba|F:1368901197951496|20–03; FB odczytany; save the date, program jeszcze nieogłoszony
 21.11|MP|SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA|Salsa/Bachata/Kizomba|https://www.milpasoskatowice.pl/?page=wydarzenia|13:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 30.10
 21.11|Bielsko-Biała,AllDance|ANDRZEJKOWE PARTY NEONOWE -  PRAKTIS BACHATA/SALSA/KIZOMBA W ALLDANCE|Salsa/Bachata/Kizomba|F:1843986106619903|20:00; Szkoła Tańca AllDance - Bielsko-Biała; nowe w bazie 10.11
+21.11|FT|Impreza OVERPOWER DANCERS EDITION vol. 19 – 21.11|Salsa/Bachata|F:1447688040844284|20:30; Forum Tańca; nowe w bazie 12.11
 22.11|KL|KIZLAB SUNDAYS|Kizomba|F:1617716113426642|KIZLAB; kolejna ogłoszona edycja, program TBA
 22.11|Sosnowiec|Warsztaty z bachaty w parach|Bachata|https://airdancia.com/event/warsztaty-z-bachaty-w-parach-sosnowiec/|16:00; Sosnowiec; nowe w bazie 20.10
 24.11|Katowice,Piąty Dom|Kizomba w Piątym Domu - SH#76|Kizomba|O:8dd4661273e640e38e57|SembaHooligans; OnlyDance; nowe w bazie 10.11
