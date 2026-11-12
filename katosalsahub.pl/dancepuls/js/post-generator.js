@@ -193,7 +193,7 @@ const MATH_BOLD_TO_PLAIN_PAIRS = [
 ]
 
 export function stripMathBoldUnicode(text) {
-	let out = String(text || '')
+	let out = String(text || '').replace(/[\u{1F1E6}-\u{1F1FF}]{2}\s*/gu, '')
 	for (const [boldSeq, plainChar] of MATH_BOLD_TO_PLAIN_PAIRS) {
 		if (out.includes(boldSeq)) {
 			out = out.split(boldSeq).join(plainChar)
@@ -443,9 +443,12 @@ export function generujPost() {
 			activeInDay.forEach(ev => {
 				const key = `${ev.miasto.toLowerCase()}::${ev.miejsce.toLowerCase()}`
 				const count = venueCounts.get(key) || 1
+				const isGenericVenue = /^inne$/i.test(String(ev.miejsce || '').trim())
 				const miejsceLabel =
-					count > 1 && ev.tytul && !ev.miejsce.toLowerCase().includes(ev.tytul.toLowerCase())
-						? `${ev.miejsce}, ${ev.tytul}`
+					(count > 1 || isGenericVenue) && ev.tytul && !ev.miejsce.toLowerCase().includes(ev.tytul.toLowerCase())
+						? isGenericVenue
+							? ev.tytul
+							: `${ev.miejsce}, ${ev.tytul}`
 						: ev.miejsce
 
 				const prefix = ev.promote ? '⭐ ' : '➡️ '
@@ -614,20 +617,21 @@ export async function zaladujRaportKSH(silent = true) {
 		}
 		if (sec4) {
 			const wynikEl = document.getElementById('wynik')
-			if (wynikEl) wynikEl.value = ensureFullCommentFooter(sec4)
+			if (wynikEl) wynikEl.value = stripMathBoldUnicode(ensureFullCommentFooter(sec4))
 		}
 		if (sec5) {
 			const przyszleEl = document.getElementById('wynik-przyszle')
-			if (przyszleEl) przyszleEl.value = ensureFullCommentFooter(sec5)
+			if (przyszleEl) przyszleEl.value = stripMathBoldUnicode(ensureFullCommentFooter(sec5))
 		}
 		if (sec3) {
-			window.latestPollText = sec3
+			const cleanSec3 = stripMathBoldUnicode(sec3)
+			window.latestPollText = cleanSec3
 			const ankietaEl = document.getElementById('wynik-ankieta')
-			if (ankietaEl) ankietaEl.value = sec3
-			renderPollButtons(sec3)
+			if (ankietaEl) ankietaEl.value = cleanSec3
+			renderPollButtons(cleanSec3)
 			const counterEl = document.getElementById('event-counter')
 			if (counterEl) {
-				const pollCount = sec3
+				const pollCount = cleanSec3
 					.trim()
 					.split('\n')
 					.filter(l => l.trim()).length

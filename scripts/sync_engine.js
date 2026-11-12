@@ -76,7 +76,7 @@ const MATH_BOLD_TO_PLAIN_PAIRS = [
 ];
 
 function stripMathBoldUnicode(text) {
-    let out = String(text || '');
+    let out = String(text || '').replace(/[\u{1F1E6}-\u{1F1FF}]{2}\s*/gu, '');
     for (const [boldSeq, plainChar] of MATH_BOLD_TO_PLAIN_PAIRS) {
         if (out.includes(boldSeq)) {
             out = out.split(boldSeq).join(plainChar);
@@ -94,10 +94,11 @@ function toBoldUnicode(text) {
  */
 function buildVenueAndStyleLabel(event, sameDayVenueCount = 1) {
     let venuePart = event.venue;
-    if (sameDayVenueCount > 1 && event.title) {
+    const isGenericVenue = /^inne$/i.test(String(venuePart || '').trim());
+    if ((sameDayVenueCount > 1 || isGenericVenue) && event.title) {
         const shortTitle = extractShortEventTitle(event.title);
         if (shortTitle && !venuePart.toLowerCase().includes(shortTitle.toLowerCase())) {
-            venuePart = `${venuePart}, ${shortTitle}`;
+            venuePart = isGenericVenue ? shortTitle : `${venuePart}, ${shortTitle}`;
         }
     }
     const isSoldOut = Boolean(event.notes && /wyprzedane/i.test(event.notes));
@@ -481,15 +482,22 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
     const region = dayEvents.filter(e => e.city !== 'Katowice' && e.city !== 'Kraków');
     const krakow = dayEvents.filter(e => e.city === 'Kraków');
 
+    const joinPolishList = (items) => {
+        if (items.length <= 1) return items[0] || '';
+        return `${items.slice(0, -1).join(', ')} oraz ${items[items.length - 1]}`;
+    };
+
     const formatItem = (e) => {
         const shortName = extractShortEventTitle(e.title);
+        const isGenericVenue = /^inne$/i.test(String(e.venue || '').trim());
+        const venueSuffix = isGenericVenue ? '' : ` w ${e.venue}`;
         const isWorkshop = /warsztat|kurs|zaj[eę]cia|masterclass|crash\s*course/i.test(e.title);
         if (isWorkshop) {
             return /^warsztaty/i.test(shortName)
-                ? `${shortName} w ${e.venue} (${e.styles})`
-                : `warsztaty ${shortName} w ${e.venue} (${e.styles})`;
+                ? `${shortName}${venueSuffix} (${e.styles})`
+                : `warsztaty ${shortName}${venueSuffix} (${e.styles})`;
         }
-        return `${shortName} w ${e.venue} (${e.styles})`;
+        return `${shortName}${venueSuffix} (${e.styles})`;
     };
 
     const sentences = [];
@@ -497,29 +505,31 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
     if (kato.length === 0) {
         const altParts = [];
         if (region.length > 0) {
-            altParts.push(region.map(r => `${cityInLocative(r.city)} na ${formatItem(r)}`).join(', '));
+            const uniqueRegion = Array.from(new Map(region.map(r => [`${r.city}::${r.venue}`, r])).values());
+            altParts.push(uniqueRegion.map(r => `${cityInLocative(r.city)} na ${formatItem(r)}`).join(', '));
         }
         if (krakow.length > 0) {
-            altParts.push(`w Krakowie na ${krakow.map(formatItem).join(' oraz ')}`);
+            altParts.push(`w Krakowie na ${joinPolishList(krakow.map(formatItem))}`);
         }
         sentences.push(`W Katowicach w ${dayName.toLowerCase()} jeszcze bez potwierdzonych ogłoszeń, ale potańczycie ${altParts.join(', a ')}.`);
     } else {
-        const katoText = kato.map(formatItem).join(' oraz ');
+        const katoText = joinPolishList(kato.map(formatItem));
         sentences.push(`W Katowicach czekają ${katoText}.`);
 
         const katoHasCubana = kato.some(e => /cubana|timba|son|casino/i.test(e.styles) && !/warsztat|kurs/i.test(e.title));
         const otherParts = [];
         if (region.length > 0) {
-            const cities = Array.from(new Set(region.map(r => r.city)));
-            const regText = region.slice(0, 3).map(r => `${r.venue} (${r.city}, ${r.styles})`).join(', ');
-            otherParts.push(`w regionie parkiety otwierają ${regText}${region.length > 3 ? ` (łącznie ${cities.join(', ')})` : ''}`);
+            const uniqueRegion = Array.from(new Map(region.map(r => [`${r.city}::${r.venue}`, r])).values());
+            const cities = Array.from(new Set(uniqueRegion.map(r => r.city)));
+            const regText = uniqueRegion.slice(0, 3).map(r => `${r.venue} (${r.city}, ${r.styles})`).join(', ');
+            otherParts.push(`w regionie parkiety otwierają ${regText}${uniqueRegion.length > 3 ? ` (łącznie ${cities.join(', ')})` : ''}`);
         }
         if (krakow.length > 0) {
             const krakowCubana = krakow.find(e => /cubana|son/i.test(e.styles));
-            if (!katoHasCubana && krakowCubana) {
+            if (!katoHasCubana && krakowCubana && krakow.length <= 2) {
                 otherParts.push(`na wieczorną salsę cubana lub son możecie też wyskoczyć do Krakowa (${krakow.map(k => `${k.venue} – ${extractShortEventTitle(k.title)}`).join(', ')})`);
             } else {
-                otherParts.push(`w Krakowie czekają ${krakow.map(formatItem).join(' oraz ')}`);
+                otherParts.push(`w Krakowie czekają ${joinPolishList(krakow.map(formatItem))}`);
             }
         }
         if (otherParts.length > 0) {
@@ -654,13 +664,25 @@ function rolloverSectionsByDate(sections, todayIso = getTodayIsoDate()) {
     if (!sections.postNarrative) {
         sections.postNarrative = { PIĄTEK: '', SOBOTA: '', NIEDZIELA: '' };
     }
-    if (!sections.postNarrative.PIĄTEK) {
+    const shouldRefreshDayNarrative = (currentText, dayEvents) => {
+        const trimmed = String(currentText || '').trim();
+        if (!trimmed) return true;
+        if (dayEvents.length === 0) {
+            return !/^na razie brak potwierdzonych/i.test(trimmed);
+        }
+        if (/^na razie brak potwierdzonych/i.test(trimmed)) return true;
+        return dayEvents.some(ev => {
+            const checkToken = /^inne$/i.test(ev.venue) ? extractShortEventTitle(ev.title) : ev.venue;
+            return checkToken && !trimmed.toLowerCase().includes(checkToken.toLowerCase());
+        });
+    };
+    if (shouldRefreshDayNarrative(sections.postNarrative.PIĄTEK, fridayEvents)) {
         sections.postNarrative.PIĄTEK = buildNaturalDayNarrative(fridayEvents, 'piątek');
     }
-    if (!sections.postNarrative.SOBOTA) {
+    if (shouldRefreshDayNarrative(sections.postNarrative.SOBOTA, saturdayEvents)) {
         sections.postNarrative.SOBOTA = buildNaturalDayNarrative(saturdayEvents, 'sobota');
     }
-    if (!sections.postNarrative.NIEDZIELA) {
+    if (shouldRefreshDayNarrative(sections.postNarrative.NIEDZIELA, sundayEvents)) {
         sections.postNarrative.NIEDZIELA = buildNaturalDayNarrative(sundayEvents, 'niedziela');
     }
 
@@ -836,8 +858,9 @@ ${MAIN_POST_FOOTER}`;
     (sections.future || []).forEach(e => {
         const mark = e.isKSH ? '⭐' : '➡️';
         const headerLabel = e.futureHeaderLabel || parseEventDateInfo(e.rawDate).futureHeaderLabel;
+        const venuePrefix = /^inne$/i.test(String(e.venue || '').trim()) ? '' : `${e.venue}, `;
         sec5Lines.push(`🗓️ ${headerLabel}  `);
-        sec5Lines.push(`${mark} ${e.city}: ${e.venue}, ${e.title} (${e.styles})  `);
+        sec5Lines.push(`${mark} ${e.city}: ${venuePrefix}${e.title} (${e.styles})  `);
         sec5Lines.push(`🔗 ${e.url}  `);
     });
     sec5Lines.push('');

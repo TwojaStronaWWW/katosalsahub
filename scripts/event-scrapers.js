@@ -114,8 +114,15 @@ function parseEventDateInfo(rawDate, defaultYear = 2026) {
 
 function extractShortEventTitle(title) {
     if (!title || typeof title !== 'string') return '';
-    const firstPart = title.split(',')[0].trim();
-    return firstPart.replace(/\s+/g, ' ');
+    const cleaned = title
+        .replace(/[\u{1F1E6}-\u{1F1FF}]{2}\s*/gu, '')
+        .split(/\s*(?:,|\/\/|\|)\s*/)[0]
+        .replace(/\s*[–—-]\s*\d{1,2}(?:[–-]\d{1,2})?\s+(?:stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|września|października|listopada|grudnia)\b.*$/i, '')
+        .replace(/\s*[–—-]\s*\d{1,2}\.\d{1,2}(?:\.\d{2,4})?\b.*$/i, '')
+        .replace(/\s*[–—-]\s*(?:szko[lł]a\s+ta[nń]ca|studio\s+ta[nń]ca)\b.*$/i, '')
+        .replace(/\s+w\s+(?:forum\s+ta[nń]ca|mil\s+pasos|la\s+clave|sabrosa|loftodance|salsa\s+house)!?$/i, '')
+        .trim();
+    return cleaned.replace(/\s+/g, ' ');
 }
 
 function deduplicateEvents(events) {
@@ -344,7 +351,7 @@ function parseMilPasosEventsHtml(html = '') {
         const startTime = rangeMatch[3];
         const endTime = rangeMatch[5] || '';
         const rawTitle = lines[i - 1] || 'Wydarzenie w Mil Pasos';
-        if (/\b(zaj[eę]cia\s+regularne|zapisy\s+na\s+kurs|kurs\s+od\s+zera|darmowe\s+zaj[eę]cia\s+pokazowe)\b/i.test(rawTitle)) {
+        if (/\b(zaj[eę]cia\s+regularne|zapisy\s+na\s+kurs|kurs\s+od\s+zera|darmowe\s+zaj[eę]cia\s+pokazowe|darmowa\s+bachata\s+dla\s+student[oó]w\s+soboty)\b/i.test(rawTitle)) {
             continue;
         }
         const cleanTitle = rawTitle
@@ -391,6 +398,9 @@ function parseLoftodanceEventsHtml(html = '') {
         const dayMonth = dateMatch[1];
         const year = parseInt(dateMatch[2], 10);
         const rawTitle = dateMatch[3].replace(/\s*Zobacz szczegóły.*$/i, '').trim();
+        if (/\b(lunch|obiad|catering|wy[zż]ywienie|nocleg|pok[oó]j|voucher|karta\s+podarunkowa)\b/i.test(rawTitle)) {
+            continue;
+        }
         const rawDate = year === 2026 ? dayMonth : `${dayMonth}.${year}`;
         const dateInfo = parseEventDateInfo(rawDate, year);
         const styles = inferEventStyles(rawTitle);
@@ -542,7 +552,7 @@ function parseKrajownikEventsHtml(html = '', defaultCity = 'Katowice') {
     };
 
     const danceRegex = /\b(sals[ayę]|bachat[ayę]|kizomb[ayę]|cuban[ay]?|timbeando|timb[ay]|rueda|son\s+cubano|urbankiz|urban\s*kiz|sensual\s+impro|habana|la\s+clave|mil\s+pasos|good\s*mood|gravitacja|sabrosa|forum\s+ta[nń]ca|loftodance|danceloveit|alldance|pachanguero|havana\s+dance|kizlab|teatro\s+cubano)\b/i;
-    const excludeRegex = /\b(salsation|zumba\s+kids|zouk\s+solo|west\s+coast\s+swing|zaj[eę]cia\s+regularne|kurs\s+regularny|kursy?\s+ta[nń]ca\s+od\s+zera|od\s+zera\s+z\s+|3x45min|w\s+parach\s+od\s+podstaw|solo\s+footwork\s*&\s*styling\s+z\s+klaudi|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
+    const excludeRegex = /\b(salsation|zumba\s+kids|zouk\s+solo|west\s+coast\s+swing|zaj[eę]cia\s+regularne|kurs\s+regularny|kursy?\s+ta[nń]ca\s+od\s+zera|od\s+zera\s+z\s+|3x45min|w\s+parach\s+od\s+podstaw|kurs\s+weekendowy.*od\s+podstaw|solo\s+footwork\s*&\s*styling\s+z\s+klaudi|s[lł]oworuch|o\s+relacji\s+mi[eę]dzy\s+cia[lł]em|szydełkow|szydelkow|joga|koncert\s+metal|behemoth|erykah\s+badu|targi\s+ksi[aą][zż]ki)\b/i;
 
     const matches = [...src.matchAll(/href=["']([^"']*\/wydarzenia\/[a-z0-9-]+-\d+)["'][^>]*>([\s\S]*?)<\/a>/gi)];
     const results = [];
@@ -799,6 +809,14 @@ function parseOnlyDanceEventsHtml(html = '', defaultCity = 'Katowice') {
         else if (/feeltheflow/i.test(combined)) resolvedCity = 'Hucisko';
         else if (/\btychy\b|mohito\s+tychy/i.test(combined)) resolvedCity = 'Tychy';
         else if (/\bgliwice\b|gliwickie|mohito\s+gliwice/i.test(combined)) resolvedCity = 'Gliwice';
+        else if (/cz[eę]stochow|cz[eę]stota[nń]cz|este\s+loco/i.test(combined)) resolvedCity = 'Częstochowa';
+        else if (/\brybnik|pachanguero|havana\s+dance/i.test(combined)) resolvedCity = 'Rybnik';
+        else if (/\bsosnowiec\b/i.test(combined)) resolvedCity = 'Sosnowiec';
+        else if (/\bbytom\b|w\s+starym\s+kinie/i.test(combined)) resolvedCity = 'Bytom';
+        else if (/\bchorz[oó]w\b/i.test(combined)) resolvedCity = 'Chorzów';
+        else if (/\bsiewierz\b|beleza/i.test(combined)) resolvedCity = 'Siewierz';
+        else if (/piekary|hubertus/i.test(combined)) resolvedCity = 'Piekary Śląskie';
+        else if (/tarnowskie\s+g[oó]ry/i.test(combined)) resolvedCity = 'Tarnowskie Góry';
         else if (/bielsko|bielsku|alldance|sahar[ay]|danceloveit|corazon/i.test(combined)) resolvedCity = 'Bielsko-Biała';
         else if (/krak[oó]w|cracow|cracovia|forum\s+ta[nń]ca|sabrosa|loftodance|vivasalsa|teatro\s+cubano|panorama|frenzyshot/i.test(combined)) resolvedCity = 'Kraków';
 
@@ -854,7 +872,7 @@ function parseAirdanciaEventsHtml(html = '', defaultCity = 'Katowice') {
         const dateInfo = parseEventDateInfo(rawDate, year);
 
         const rawTitle = decodeHtmlEntities(titleRaw.replace(/<[^>]+>/g, '').trim());
-        if (/\b(zaj[eę]cia\s+regularne|leading\s*&\s*following\s*[–-]\s*zaj[eę]cia\s+dla\s+ta[nń]cz[aą]cych)\b/i.test(rawTitle)) {
+        if (/\b(zaj[eę]cia\s+regularne|nowy\s+kurs\s+ta[nń]ca|nowe\s+pi[aą]tki\s+w\s+la\s+clave|dla\s+uczestnik[oó]w\s+zaj[eę][cć]\s+specjalnych|kurs\s+od\s+podstaw|od\s+podstaw\s*[–-]\s*dwa\s+sensualne|latino\s+ladies\s+style\s*[–-]\s*salsa|leading\s*&\s*following\s*[–-]\s*zaj[eę]cia\s+dla\s+ta[nń]cz[aą]cych)\b/i.test(rawTitle)) {
             continue;
         }
         const resolvedCity = decodeHtmlEntities((cityRaw || defaultCity).replace(/<[^>]+>/g, '').trim()) || defaultCity;

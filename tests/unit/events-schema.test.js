@@ -87,6 +87,14 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       assert.strictEqual(tkLoc.city, 'Katowice');
       assert.strictEqual(tkLoc.venue, 'Taneczna Kompania');
       assert.match(tkLoc.address, /Kościuszki 227/);
+
+      const czestoLoc = normalizeLocation('Katowice,Częstotańcz');
+      assert.strictEqual(czestoLoc.city, 'Częstochowa');
+      assert.strictEqual(czestoLoc.venue, 'Częstotańcz');
+
+      const kamiennaLoc = normalizeLocation('Kraków,Kamienna 12 Kamienna 12');
+      assert.strictEqual(kamiennaLoc.city, 'Kraków');
+      assert.strictEqual(kamiennaLoc.venue, 'Kamienna 12');
     });
 
     it('funkcje expandSourceUrl, parseEventDateInfo oraz buildVenueAndStyleLabel powinny działać zgodnie ze specyfikacją KSH', () => {
@@ -109,6 +117,12 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
 
       const multiVenueLabel = buildVenueAndStyleLabel({ venue: 'La Clave', title: 'TIMBEANDO LIVE MUSIC,warsztaty', styles: 'Timba/Cubana' }, 2);
       assert.strictEqual(multiVenueLabel, 'La Clave, TIMBEANDO LIVE MUSIC (Timba/Cubana)');
+
+      const genericVenueLabel = buildVenueAndStyleLabel({ venue: 'Inne', title: 'Warsztaty z bachaty w parach', styles: 'Bachata' }, 1);
+      assert.strictEqual(genericVenueLabel, 'Warsztaty z bachaty w parach (Bachata)');
+
+      const flagTitleLabel = buildVenueAndStyleLabel({ venue: 'DANCE#LOVEit & Corazon', title: '🇨🇺 CUBAN WEEKEND 🔥 – 14–15 LISTOPADA – Szkoła Tańca Corazon', styles: 'Cubana' }, 2);
+      assert.strictEqual(flagTitleLabel, 'DANCE#LOVEit & Corazon, CUBAN WEEKEND 🔥 (Cubana)');
     });
 
     it('plik latest_report.md powinien zawierać wszystkie 6 sekcji raportu KSH i rozwinięte linki', () => {
@@ -212,6 +226,25 @@ describe('Walidacja schematu baz danych (DancePuls Events & Kato Salsa Hub Salso
       const reparsed = parseDatabase(serialized);
       assert.strictEqual(reparsed.meta.weekendShort, '30.10-01.11');
       assert.strictEqual(reparsed.currentWeekend.length, 1);
+
+      // Sprawdzenie, że dopisanie wydarzenia na niedzielę odświeża placeholder "Na razie brak potwierdzonych ogłoszeń."
+      reparsed.future.push({
+        rawDate: '01.11',
+        isoStartDate: '2026-11-01',
+        isoEndDate: '2026-11-01',
+        startDayMonth: '01.11',
+        weekdayPL: 'NIEDZIELA',
+        futureHeaderLabel: 'NIEDZIELA (01.11.2026)',
+        sortTimestamp: Date.UTC(2026, 10, 1, 12, 0, 0),
+        city: 'Katowice',
+        venue: 'Wolni Ludzie',
+        title: 'Salsa Habana Picante',
+        styles: 'Cubana',
+        url: 'https://www.facebook.com/events/999999999/'
+      });
+      rolloverSectionsByDate(reparsed, '2026-10-30');
+      assert.doesNotMatch(reparsed.postNarrative.NIEDZIELA, /Na razie brak potwierdzonych/, 'Placeholder niedzieli musi zostać zastąpiony po dograniu wydarzenia na niedzielę');
+      assert.match(reparsed.postNarrative.NIEDZIELA, /Wolni Ludzie/);
     });
 
     it('formatMainPostBoldings oraz normalizeTextForFacebookClipboard zachowują naturalną czcionkę, akapity i nie rozbijają par surogatowych emoji (📍📅👉)', async () => {

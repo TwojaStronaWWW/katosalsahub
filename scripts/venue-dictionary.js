@@ -38,7 +38,7 @@ const KNOWN_VENUES_GEO = [
     { match: /havana\s+dance/i, city: 'Rybnik', venue: 'Havana Dance Studio', address: 'ul. Jana Kotucza 36', lat: 50.1014, lng: 18.5365 },
     { match: /este\s+loco/i, city: 'Częstochowa', venue: 'Este Loco–Dance with passion', address: 'ul. Dekabrystów 35B', lat: 50.8257, lng: 19.1147 },
     { match: /cz[eę]stota[nń]cz|sp[oó][lł]dzielczo[sś]ci\s*4/i, city: 'Częstochowa', venue: 'Częstotańcz', address: 'ul. Spółdzielczości 4', lat: 50.7951, lng: 19.0420 },
-    { match: /beleza|rynek\s*11\b/i, city: 'Siewierz', venue: 'Beleza', address: 'Rynek 11', lat: 50.4681, lng: 19.2358 },
+    { match: /belez[ayieąę]|rynek\s*11\b/i, city: 'Siewierz', venue: 'Beleza', address: 'Rynek 11', lat: 50.4681, lng: 19.2358 },
     { match: /w\s+starym\s+kinie|alojzjan[oó]w\s*27/i, city: 'Bytom', venue: 'Restauracja W Starym Kinie', address: 'ul. Alojzjanów 27', lat: 50.3484, lng: 18.9157 },
     { match: /alldance|1\s+maja\s*20/i, city: 'Bielsko-Biała', venue: 'AllDance', address: 'ul. 1 Maja 20', lat: 49.8178, lng: 19.0457 },
     { match: /hotel.*sahara|sahara.*bielsko|falista\s*13/i, city: 'Bielsko-Biała', venue: 'Hotel Sahara', address: 'ul. Falista 13', lat: 49.7895, lng: 19.0185 },
@@ -69,6 +69,7 @@ const KNOWN_VENUES_GEO = [
     { match: /salsa\s+house|zamoyskiego\s*79/i, city: 'Kraków', venue: 'Salsa House', address: 'ul. Jana Zamoyskiego 79A/3', lat: 50.0389, lng: 19.9412 },
     { match: /party\s+house|szewska\s*21/i, city: 'Kraków', venue: 'Party House', address: 'ul. Szewska 21', lat: 50.0632, lng: 19.9360 },
     { match: /prominent|kamienna\s*17/i, city: 'Kraków', venue: 'PROMINENT', address: 'ul. Kamienna 17', lat: 50.0752, lng: 19.9398 },
+    { match: /kamienna\s*12|hype\s*park/i, city: 'Kraków', venue: 'Kamienna 12', address: 'ul. Kamienna 12', lat: 50.0742, lng: 19.9404 },
     { match: /loftodance|kamienna\s*2/i, city: 'Kraków', venue: 'LOFToDANCE', address: 'ul. Kamienna 2–4', lat: 50.0736, lng: 19.9412 },
     { match: /stylowa\s+willa|willi\s+styl|dworcowa\s*8|plons\.pl/i, city: 'Świętochłowice', venue: 'Stylowa Willa', address: 'ul. Dworcowa 8', lat: 50.2925, lng: 18.9182 },
     { match: /euforma|fabryka\s+flou/i, city: 'Katowice', venue: 'Euforma (Fabryka FloU)', address: 'ul. Bocheńskiego 69', lat: 50.2682, lng: 18.9721 },
@@ -205,7 +206,11 @@ function normalizeLocation(venueRaw) {
 
     for (const known of KNOWN_VENUES_GEO) {
         if (known.match.test(raw) || known.match.test(venue)) {
-            city = city || known.city;
+            if (known.venue === 'Mohito') {
+                city = city === 'Tychy' || city === 'Gliwice' ? city : known.city;
+            } else {
+                city = known.city || city;
+            }
             if (
                 !venue ||
                 venue === raw ||
@@ -225,6 +230,7 @@ function normalizeLocation(venueRaw) {
     if (/^Orle\s+Gniazdo\d+$/i.test(venue)) {
         venue = 'Orle Gniazdo';
     }
+    venue = String(venue || '').replace(/^(.+?)\s+\1$/i, '$1').trim();
 
     if ((lat === null || lng === null) && city && CITY_DEFAULT_COORDS[city]) {
         lat = CITY_DEFAULT_COORDS[city].lat;
