@@ -131,7 +131,52 @@
         "soldOut": false,
         "link": "https://krajownik.pl/krakow/wydarzenia/blok-bachatowy-w-forum-tanca-1311-433604",
         "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.2649,
+        "lng": 19.0238,
+        "tytul": "Darmowy Praktis Bachata dla uczestników zajęć specjalnych z Danielem!",
+        "opis": "Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem! - 21:00; Inne; AirDancia; nowe w bazie 11.11",
+        "opisPubliczny": "Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!",
+        "dateLabel": "PIĄTEK (13.11.2026)",
+        "endDate": "2026-11-13",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/",
+        "style": [
           "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "La Clave",
+        "miejsceInne": "La Clave (ul. Chorzowska 11)",
+        "adres": "ul. Chorzowska 11",
+        "lat": 50.266,
+        "lng": 19.0188,
+        "tytul": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI",
+        "opis": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE! - 17:15; La Clave; AirDancia; nowe w bazie 11.11",
+        "opisPubliczny": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE!",
+        "dateLabel": "PIĄTEK (13.11.2026)",
+        "endDate": "2026-11-13",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachata-impro-lukasz-ras-nowe-piatki-w-la-clave-katowice/",
+        "style": [
+          "Bachata",
+          "Impro"
         ]
       }
     ]
@@ -272,6 +317,28 @@
       {
         "checked": true,
         "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Sensual Impro Festival",
+        "opis": "Lunch podczas Sensual Impro Festival Sobota - LOFToDANCE Kraków; nowe w bazie 10.11",
+        "opisPubliczny": "Lunch podczas Sensual Impro Festival Sobota",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/lunch-podczas-sensual-impro-festival-sobota,1205",
+        "style": [
+          "Bachata",
+          "Sensual Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
         "miasto": "Bielsko-Biała",
         "miastoInne": "",
         "miejsce": "DANCE#LOVEit & Corazon",
@@ -279,15 +346,105 @@
         "adres": "ul. Grażyńskiego 12",
         "lat": 49.8294,
         "lng": 19.0496,
-        "tytul": "Cuban Weekend – warsztaty",
-        "opis": "Cuban Weekend – warsztaty - 10:00; Szkoła Tańca Corazon; nowe w bazie 10.11",
-        "opisPubliczny": "Cuban Weekend – warsztaty",
-        "dateLabel": "SOBOTA–NIEDZIELA (14–15.11.2026)",
-        "endDate": "2026-11-15",
+        "tytul": "CUBAN WEEKEND 🔥",
+        "opis": "CUBAN WEEKEND 🔥 – 14–15 LISTOPADA – Szkoła Tańca Corazon - 10:00; Szkoła Tańca Corazon; nowe w bazie 10.11",
+        "opisPubliczny": "CUBAN WEEKEND 🔥 – 14–15 LISTOPADA – Szkoła Tańca Corazon",
+        "dateLabel": "SOBOTA (14.11.2026)",
+        "endDate": "2026-11-14",
         "soldOut": false,
         "link": "https://www.facebook.com/events/1120432233726857/",
         "style": [
           "Cubana"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-11-15",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Sensual Impro Festival",
+        "opis": "Lunch podczas Sensual Impro Festival Niedziela - LOFToDANCE Kraków; nowe w bazie 10.11",
+        "opisPubliczny": "Lunch podczas Sensual Impro Festival Niedziela",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/lunch-podczas-sensual-impro-festival-niedziela,1302",
+        "style": [
+          "Bachata",
+          "Sensual Impro"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.2649,
+        "lng": 19.0238,
+        "tytul": "BACHATA – nowy kurs tańca DLA SINGLI I PAR",
+        "opis": "BACHATA – nowy kurs tańca DLA SINGLI I PAR – 15.11.26 – 17:00 – 19:00 NIEDZIELA - 17:00; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "BACHATA – nowy kurs tańca DLA SINGLI I PAR – 15.11.26 – 17:00 – 19:00 NIEDZIELA",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bachata-nowy-kurs-tanca-dla-singli-i-par-15-11-26-17-00-19-00-niedziela-katowice/",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Forum Tańca",
+        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
+        "adres": "ul. Konopnickiej 29",
+        "lat": 50.0442,
+        "lng": 19.9348,
+        "tytul": "Przyspieszony kurs weekendowy – BACHATA OD PODSTAW",
+        "opis": "Przyspieszony kurs weekendowy – BACHATA OD PODSTAW – 15.11 - 15:55; Forum Tańca; nowe w bazie 10.11",
+        "opisPubliczny": "Przyspieszony kurs weekendowy – BACHATA OD PODSTAW – 15.11",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://krajownik.pl/krakow/wydarzenia/przyspieszony-kurs-weekendowy-bachata-od-podstaw-1511-433603",
+        "style": [
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (ul. Jana Zamoyskiego 79A/3)",
+        "adres": "ul. Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "SŁOWORUCH - II EDYCJA",
+        "opis": "SŁOWORUCH - II EDYCJA // O relacji między ciałem a językiem - 11:00; Salsa House; nowe w bazie 10.11",
+        "opisPubliczny": "SŁOWORUCH - II EDYCJA // O relacji między ciałem a językiem",
+        "dateLabel": "NIEDZIELA (15.11.2026)",
+        "endDate": "2026-11-15",
+        "soldOut": false,
+        "link": "https://krajownik.pl/krakow/wydarzenia/sloworuch-ii-edycja-o-relacji-miedzy-cialem-a-jezykiem-434113",
+        "style": [
+          "Salsa"
         ]
       }
     ]
@@ -445,7 +602,7 @@
         "adres": "ul. Kamienna 4",
         "lat": 50.2569,
         "lng": 19.0121,
-        "tytul": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA",
+        "tytul": "SENSORY EVENING — sensoryczne popołudnie! - 13:00-16:00 -",
         "opis": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA - 13:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 30.10",
         "opisPubliczny": "SENSORY EVENING — sensoryczne popołudnie! 21.11.26 - 13:00-16:00 - SOBOTA",
         "dateLabel": "SOBOTA (21.11.2026)",
@@ -674,8 +831,8 @@
         "miasto": "Częstochowa",
         "miastoInne": "",
         "miejsce": "Częstotańcz",
-        "miejsceInne": "Częstotańcz (Spółdzielczości 4)",
-        "adres": "Spółdzielczości 4",
+        "miejsceInne": "Częstotańcz (ul. Spółdzielczości 4)",
+        "adres": "ul. Spółdzielczości 4",
         "lat": 50.7951,
         "lng": 19.042,
         "tytul": "🔮✨ ANDRZEJKOWA POTAŃCÓWKA! ✨🔮 WILD WEST WESTERN COUNTRY + CULTURA LATINA",
@@ -726,7 +883,7 @@
         "lat": 50.2974,
         "lng": 18.6746,
         "tytul": "BACHAZOUK",
-        "opis": "BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN. - 14:00; Mohito; AirDancia; nowe w bazie 11.11",
+        "opis": "BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN. - 13:00; Mohito; AirDancia; nowe w bazie 11.11",
         "opisPubliczny": "BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN.",
         "dateLabel": "NIEDZIELA (29.11.2026)",
         "endDate": "2026-11-29",
@@ -931,8 +1088,8 @@
         "miasto": "Częstochowa",
         "miastoInne": "",
         "miejsce": "Częstotańcz",
-        "miejsceInne": "Częstotańcz (Spółdzielczości 4)",
-        "adres": "Spółdzielczości 4",
+        "miejsceInne": "Częstotańcz (ul. Spółdzielczości 4)",
+        "adres": "ul. Spółdzielczości 4",
         "lat": 50.7951,
         "lng": 19.042,
         "tytul": "🎅 MIKOŁAJKOWA POTAŃCÓWKA 🎄 WILD WEST WESTERN COUNTRY + CULTURA LATINA w Częstochowie",
@@ -1248,13 +1405,13 @@
         "promote": false,
         "miasto": "Siewierz",
         "miastoInne": "",
-        "miejsce": "Beleza",
-        "miejsceInne": "Beleza (Rynek 11)",
-        "adres": "Rynek 11",
-        "lat": 50.4681,
-        "lng": 19.2358,
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.4701,
+        "lng": 19.2291,
         "tytul": "🌟SYLWESTER W BELEZIE 🌟",
-        "opis": "🌟SYLWESTER W BELEZIE 🌟 - 20:00; Beleza; AirDancia; nowe w bazie 11.11",
+        "opis": "🌟SYLWESTER W BELEZIE 🌟 - 21:00; Inne; AirDancia; nowe w bazie 11.11",
         "opisPubliczny": "🌟SYLWESTER W BELEZIE 🌟",
         "dateLabel": "CZWARTEK (31.12.2026)",
         "endDate": "2026-12-31",
@@ -1317,6 +1474,27 @@
         "style": [
           "Salsa On2"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Mil Pasos",
+        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
+        "adres": "ul. Kamienna 4",
+        "lat": 50.2569,
+        "lng": 19.0121,
+        "tytul": "DARMOWA BACHATA DLA STUDENTÓW Soboty 16:00–18:00 od/ Kliknij „Wezmę udział” i udostępnij!",
+        "opis": "DARMOWA BACHATA DLA STUDENTÓW Soboty 16:00–18:00 od 9.01.27/ Kliknij „Wezmę udział” i udostępnij! - 16:00–16:00; Mil Pasos Kamienna 4; nowe w bazie 10.11",
+        "opisPubliczny": "DARMOWA BACHATA DLA STUDENTÓW Soboty 16:00–18:00 od 9.01.27/ Kliknij „Wezmę udział” i udostępnij!",
+        "dateLabel": "SOBOTA (09.01.2027)",
+        "endDate": "2027-01-09",
+        "soldOut": false,
+        "link": "https://www.milpasoskatowice.pl/?page=wydarzenia",
+        "style": [
+          "Bachata"
+        ]
       }
     ]
   },
@@ -1344,6 +1522,33 @@
           "Salsa",
           "Bachata",
           "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-01-19",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tychy",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.1275,
+        "lng": 18.9912,
+        "tytul": "Tychy – Latino Ladies Style – Salsa",
+        "opis": "Tychy – Latino Ladies Style – Salsa, Bachata, Cha cha, tańce latino solo dla kobiet! - 18:30; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "Tychy – Latino Ladies Style – Salsa, Bachata, Cha cha, tańce latino solo dla kobiet!",
+        "dateLabel": "WTOREK (19.01.2027)",
+        "endDate": "2027-01-19",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/tychy-latino-ladies-style-salsa-bachata-cha-cha-tance-latino-solo-dla-kobiet-tychy/",
+        "style": [
+          "Salsa",
+          "Bachata"
         ]
       }
     ]
@@ -1452,6 +1657,60 @@
         "link": "https://onlydanceapp.com/event/323703c89e6c4e9099c7",
         "style": [
           "Bachata"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-03-09",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Tarnowskie Góry",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.4442,
+        "lng": 18.8565,
+        "tytul": "Tarnowskie Góry – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "opis": "Tarnowskie Góry – Bachata i Kizomba – od podstaw – dwa sensualne tańce - 20:30; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "Tarnowskie Góry – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "dateLabel": "WTOREK (09.03.2027)",
+        "endDate": "2027-03-09",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/tarnowskie-gory-bachata-i-kizomba-od-podstaw-dwa-sensualne-tance-tarnowskie-gory/",
+        "style": [
+          "Bachata",
+          "Kizomba"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2027-03-11",
+    "events": [
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bytom",
+        "miastoInne": "",
+        "miejsce": "Inne",
+        "miejsceInne": "Inne",
+        "adres": "",
+        "lat": 50.3484,
+        "lng": 18.9157,
+        "tytul": "Bytom – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "opis": "Bytom – Bachata i Kizomba – od podstaw – dwa sensualne tańce - 17:30; Inne; AirDancia; nowe w bazie 10.11",
+        "opisPubliczny": "Bytom – Bachata i Kizomba – od podstaw – dwa sensualne tańce",
+        "dateLabel": "CZWARTEK (11.03.2027)",
+        "endDate": "2027-03-11",
+        "soldOut": false,
+        "link": "https://airdancia.com/event/bytom-bachata-i-kizomba-od-podstaw-dwa-sensualne-tance-bytom-2/",
+        "style": [
+          "Bachata",
+          "Kizomba"
         ]
       }
     ]

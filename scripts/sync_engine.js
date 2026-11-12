@@ -493,12 +493,14 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
         const venueSuffix = isGenericVenue ? '' : ` w ${e.venue}`;
         const isWorkshop = /warsztat|kurs|zaj[eę]cia|masterclass|crash\s*course/i.test(e.title);
         if (isWorkshop) {
-            return /warsztat/i.test(shortName)
+            return /warsztat|kurs|zaj[eę]cia/i.test(shortName)
                 ? `${shortName}${venueSuffix} (${e.styles})`
                 : `warsztaty ${shortName}${venueSuffix} (${e.styles})`;
         }
         return `${shortName}${venueSuffix} (${e.styles})`;
     };
+
+    const uniqueFormatted = (arr) => Array.from(new Set(arr.map(formatItem)));
 
     const dayAccusativeMap = {
         'piątek': 'piątek',
@@ -516,11 +518,11 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
             altParts.push(uniqueRegion.map(r => `${cityInLocative(r.city)} na ${formatItem(r)}`).join(', '));
         }
         if (krakow.length > 0) {
-            altParts.push(`w Krakowie na ${joinPolishList(krakow.map(formatItem))}`);
+            altParts.push(`w Krakowie na ${joinPolishList(uniqueFormatted(krakow))}`);
         }
         sentences.push(`W Katowicach w ${dayAccusative} jeszcze bez potwierdzonych ogłoszeń, ale potańczycie ${altParts.join(', a ')}.`);
     } else {
-        const katoText = joinPolishList(kato.map(formatItem));
+        const katoText = joinPolishList(uniqueFormatted(kato));
         sentences.push(`W Katowicach czekają ${katoText}.`);
 
         const katoHasCubana = kato.some(e => /cubana|timba|son|casino/i.test(e.styles) && !/warsztat|kurs/i.test(e.title));
@@ -536,7 +538,7 @@ function buildNaturalDayNarrative(dayEvents, dayName) {
             if (!katoHasCubana && krakowCubana && krakow.length <= 2) {
                 otherParts.push(`na wieczorną salsę cubana lub son możecie też wyskoczyć do Krakowa (${krakow.map(k => `${k.venue} – ${extractShortEventTitle(k.title)}`).join(', ')})`);
             } else {
-                otherParts.push(`w Krakowie czekają ${joinPolishList(krakow.map(formatItem))}`);
+                otherParts.push(`w Krakowie czekają ${joinPolishList(uniqueFormatted(krakow))}`);
             }
         }
         if (otherParts.length > 0) {
