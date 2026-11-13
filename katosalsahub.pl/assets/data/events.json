@@ -1,52 +1,5 @@
 [
   {
-    "date": "2026-11-12",
-    "events": [
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Świętochłowice",
-        "miastoInne": "",
-        "miejsce": "Górnicza 57",
-        "miejsceInne": "Górnicza 57",
-        "adres": "",
-        "lat": 50.292,
-        "lng": 18.9178,
-        "tytul": "Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet",
-        "opis": "Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet - 18:00; JNdance studio; nowe w bazie 10.11",
-        "opisPubliczny": "Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet",
-        "dateLabel": "CZWARTEK (12.11.2026)",
-        "endDate": "2026-11-12",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1577268101107595/",
-        "style": [
-          "Bachata"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Tychy",
-        "miastoInne": "",
-        "miejsce": "Mohito",
-        "miejsceInne": "Mohito (al. Jana Pawła II 14)",
-        "adres": "al. Jana Pawła II 14",
-        "lat": 50.1121,
-        "lng": 18.9876,
-        "tytul": "Bachata Sensual Bodymovement & Footwork",
-        "opis": "Bachata Sensual Bodymovement & Footwork - 17:30; Szkoła Tańca Mohito Tychy; nowe w bazie 10.11",
-        "opisPubliczny": "Bachata Sensual Bodymovement & Footwork",
-        "dateLabel": "CZWARTEK (12.11.2026)",
-        "endDate": "2026-11-12",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/1863784848133909/",
-        "style": [
-          "Bachata"
-        ]
-      }
-    ]
-  },
-  {
     "date": "2026-11-13",
     "events": [
       {

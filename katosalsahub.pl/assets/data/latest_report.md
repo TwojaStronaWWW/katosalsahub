@@ -1,9 +1,9 @@
-## 1. PRYWATNIE — raport na 12.11.2026
+## 1. PRYWATNIE — raport na 13.11.2026
 - **Stan zestawienia na weekend 13–15.11.2026:** **19 pozycji** (6 pt + 8 sb + 5 nd).
 - **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **58 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (12.11 — 1 pozycji, data publikacji nieustalona):**
-  - **Impreza OVERPOWER DANCERS EDITION vol. 19 – 21.11** | 21.11.2026 | Kraków, Forum Tańca | Salsa/Bachata | https://www.facebook.com/events/1447688040844284/
+- **Nowości w bazie z ostatniego sprawdzenia (13.11 — 0 pozycji, data publikacji nieustalona):**
+  - Na dziś nie znalazłem nowych ogłoszeń (wszystkie pozycje w bazie zweryfikowane wcześniej).
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
@@ -296,8 +296,8 @@ NIEDZIELA (15.11): Kraków - Salsa House (Salsa)
 ## 6. PRYWATNIE — pominięcia, wydarzenia pn–cz, konflikty danych i kolejne kroki
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą weekendową):**
   - 10.11.2026 (WTOREK): Katowice, Mil Pasos — Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości) (Salsa/Bachata/Kizomba) -> https://www.facebook.com/events/2002548047123998/ (dzień miniony)
-  - 12.11.2026 (CZWARTEK): Świętochłowice, Górnicza 57 — Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet (Bachata) -> https://www.facebook.com/events/1577268101107595/ (bieżący tydzień poza ankietą weekendową)
-  - 12.11.2026 (CZWARTEK): Tychy, Mohito — Bachata Sensual Bodymovement & Footwork (Bachata) -> https://www.facebook.com/events/1863784848133909/ (bieżący tydzień poza ankietą weekendową)
+  - 12.11.2026 (CZWARTEK): Świętochłowice, Górnicza 57 — Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet (Bachata) -> https://www.facebook.com/events/1577268101107595/ (dzień miniony)
+  - 12.11.2026 (CZWARTEK): Tychy, Mohito — Bachata Sensual Bodymovement & Footwork (Bachata) -> https://www.facebook.com/events/1863784848133909/ (dzień miniony)
 - **Wstrzymane / niepewne tropy (poza publikacją do czasu weryfikacji):**
   - Brak niepewnych tropów.
 - **Konflikty danych i zasady ostrożności:**

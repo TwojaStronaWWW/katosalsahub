@@ -1,5 +1,5 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 12.11.2026 (Czwartek)
+Ostatnia aktualizacja: 13.11.2026 (Piątek)
 
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach czekają warsztaty LVL UP z Danielem Rojewskim w Mil Pasos (Bachata), Darmowy Praktis Bachata dla uczestników zajęć specjalnych z Danielem! (Bachata) oraz 🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI w La Clave (Bachata/Impro). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro), PRAKTIS CUBAN SALSA & SON w Salsa House (Cubana) oraz BLOK BACHATOWY w Forum Tańca (Salsa/Bachata/Kizomba).
@@ -29,8 +29,8 @@ NIEDZIELA|W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne 
 
 ## PN–CZ BIEŻĄCEGO TYGODNIA
 10.11|MP|Latino Social Party vol. 13 (wtorek przed Świętem Niepodległości)|Salsa/Bachata/Kizomba|F:2002548047123998|22:00; Mil Pasos Kamienna 4; nowe w bazie 20.10; dzień miniony
-12.11|Świętochłowice,Górnicza 57|Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet|Bachata|F:1577268101107595|18:00; JNdance studio; nowe w bazie 10.11
-12.11|Tychy,Mohito|Bachata Sensual Bodymovement & Footwork|Bachata|F:1863784848133909|17:30; Szkoła Tańca Mohito Tychy; nowe w bazie 10.11
+12.11|Świętochłowice,Górnicza 57|Dzień otwarty w JNDANCE Bachata w parach tylko dla kobiet|Bachata|F:1577268101107595|18:00; JNdance studio; nowe w bazie 10.11; dzień miniony
+12.11|Tychy,Mohito|Bachata Sensual Bodymovement & Footwork|Bachata|F:1863784848133909|17:30; Szkoła Tańca Mohito Tychy; nowe w bazie 10.11; dzień miniony
 
 ## DALSZE TERMINY (KOLEJNE TYGODNIE)
 17.11|ZW|Salsunia|Cubana|F:2970730173282777|VivaSalsa
