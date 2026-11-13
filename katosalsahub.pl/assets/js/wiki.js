@@ -172,6 +172,16 @@ async function mountWiki() {
     }
 }
 
+async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    try {
+        return await fetch(url, controller ? { ...options, signal: controller.signal } : options);
+    } finally {
+        if (timeoutId) clearTimeout(timeoutId);
+    }
+}
+
 async function postWikiApi(action, payload = {}, includeCsrf = true) {
     const csrf = includeCsrf ? AppState.csrfToken : '';
     const headers = { 'Content-Type': 'application/json' };
@@ -179,12 +189,12 @@ async function postWikiApi(action, payload = {}, includeCsrf = true) {
     const bodyObj = csrf && payload && typeof payload === 'object' && !('csrf_token' in payload)
         ? { csrf_token: csrf, ...payload }
         : payload;
-    const res = await fetch(`${API_URL}?action=${encodeURIComponent(action)}`, {
+    const res = await fetchWithTimeout(`${API_URL}?action=${encodeURIComponent(action)}`, {
         method: 'POST',
         credentials: 'same-origin',
         headers,
         body: JSON.stringify(bodyObj)
-    });
+    }, 8000);
     return { ok: res.ok, data: await res.json() };
 }
 
@@ -243,7 +253,7 @@ async function fetchTerms() {
     try {
         let data = null;
         try {
-            const res = await fetch(API_URL + '?action=list', { credentials: 'same-origin', cache: 'no-store' });
+            const res = await fetchWithTimeout(API_URL + '?action=list', { credentials: 'same-origin', cache: 'no-store' }, 8000);
             if (res.ok) {
                 const json = await res.json();
                 if (Array.isArray(json)) data = json;
@@ -253,7 +263,7 @@ async function fetchTerms() {
         }
 
         if (!data) {
-            const fallbackRes = await fetch(STATIC_FALLBACK_URL, { cache: 'no-store' });
+            const fallbackRes = await fetchWithTimeout(STATIC_FALLBACK_URL, { cache: 'no-store' }, 8000);
             if (fallbackRes.ok) {
                 data = await fallbackRes.json();
             }

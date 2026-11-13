@@ -49,6 +49,7 @@ if (isset($_SERVER['HTTP_SEC_FETCH_SITE']) && strtolower(trim((string)$_SERVER['
 
 require_once __DIR__ . '/rate-limit.php';
 require_once __DIR__ . '/leads-store.php';
+require_once __DIR__ . '/pii-guard.php';
 
 function debug_log(string $message): void {
     error_log('[KatoContact] ' . $message);
@@ -134,9 +135,10 @@ function detect_l7_waf_attack(string $payload): ?string {
     $combined = $payload . "\n" . $decoded;
 
     $signatures = [
-        'xss_script'       => '/<\s*\/?\s*(?:script|iframe|object|embed|svg|math)\b|javascript\s*:|vbscript\s*:|on(?:error|load|click|mouseover|focus|toggle)\s*=/i',
+        'xss_script'       => '/<\s*iframe\b[^>]*\bsrcdoc\s*=|<\s*\/?\s*(?:script|iframe|object|embed|svg|math)\b|mathlive#virtual-keyboard-message|javascript\s*:|vbscript\s*:|on(?:error|load|click|mouseover|focus|toggle)\s*=/i',
         'sqli_payload'     => '/\b(?:union\s+(?:all\s+)?select|select\s+.+\s+from\s+information_schema|drop\s+table|insert\s+into\s+\w+\s+values|benchmark\s*\(|pg_sleep\s*\(|waitfor\s+delay)\b|(?:\'\s*or\s*[\'"]?1[\'"]?\s*=\s*[\'"]?1)/i',
         'path_traversal'   => '/(?:\.\.\/|\.\.\\\\|\/etc\/passwd|\/proc\/self\/|(?:php|phar|expect|zip|data):\/\/|\$\{jndi:)/i',
+        'ssrf_metadata'    => '/(?:169\.254\.169\.254|metadata\.google\.internal|100\.100\.100\.200)/i',
         'prompt_injection' => '/\b(?:ignore\s+(?:all\s+)?previous\s+instructions|system\s+prompt\s+reveal|disregard\s+above\s+instructions)\b/i',
     ];
 
@@ -148,14 +150,15 @@ function detect_l7_waf_attack(string $payload): ?string {
     return null;
 }
 
-// Rzeczywiste IP klienta (z uwzględnieniem Cloudflare Proxy Anycast) i anonimizacja RODO
+// Rzeczywiste IP klienta (z uwzględnieniem Cloudflare Proxy Anycast) i anonimizacja RODO (Zero-PII SHA-256)
 $rawIp = (!empty($_SERVER['HTTP_CF_RAY']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']))
     ? (string)$_SERVER['HTTP_CF_CONNECTING_IP']
     : ($_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');
 $maskedIp = mask_ip((string)$rawIp);
+$ipHash = hash('sha256', $maskedIp);
 
 // Sprawdzenie 15-minutowego IP Penalty Boxa przed dekodowaniem ładunku
-if (is_ip_penalized('contact_waf_' . $maskedIp)) {
+if (is_ip_penalized('contact_waf_' . $ipHash)) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Adres IP jest tymczasowo zablokowany na 15 minut z powodu naruszenia polityki bezpieczeństwa.'], JSON_UNESCAPED_UNICODE);
     exit;
@@ -182,15 +185,15 @@ $wafBuffer = implode("\n", [
 ]);
 $wafRule = detect_l7_waf_attack($wafBuffer);
 if ($wafRule !== null) {
-    penalize_ip('contact_waf_' . $maskedIp, 900, $wafRule);
-    debug_log("WAF L7 BLOCKED ({$wafRule}) -> 15-min Penalty Box for masked IP {$maskedIp}");
+    penalize_ip('contact_waf_' . $ipHash, 900, $wafRule);
+    debug_log("WAF L7 BLOCKED ({$wafRule}) -> 15-min Penalty Box for IP hash " . substr($ipHash, 0, 12));
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Żądanie zablokowane przez zaporę bezpieczeństwa (WAF). Adres IP objęty 15-minutową kwarantanną.'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// 0. Zabezpieczenie Rate Limiting (ISO 27001): maks. 5 zgłoszeń na 60 sekund
-if (!rate_limit('contact_' . $maskedIp, 5, 60)) {
+// 0. Zabezpieczenie Rate Limiting (ISO 27001, Zero-PII SHA-256): maks. 5 zgłoszeń na 60 sekund
+if (!rate_limit('contact_' . $ipHash, 5, 60)) {
     http_response_code(429);
     echo json_encode(['success' => false, 'message' => 'Zbyt wiele prób wysłania wiadomości. Odczekaj chwilę przed kolejną próbą.'], JSON_UNESCAPED_UNICODE);
     exit;
@@ -278,7 +281,7 @@ save_lead([
     'NIE'
 ], false);
 
-// 5. Utworzenie zgłoszenia w osTicket wyłącznie po szyfrowanym kanale HTTPS (CURLPROTO_HTTPS)
+// 5. Utworzenie zgłoszenia w osTicket wyłącznie po szyfrowanym kanale HTTPS (CURLPROTO_HTTPS + SSRF Guard)
 $osTicketApiKey = get_env_secret('OSTICKET_API_KEY');
 $defaultOsTicketUrl = 'https://hd.twojastronawww.pl/ticket_hook.php';
 $configuredApiUrl = trim(get_env_secret('OSTICKET_API_URL', $defaultOsTicketUrl));
@@ -287,7 +290,8 @@ if (
     || strpos($configuredApiUrl, 'https://') !== 0
     || strpos($configuredApiUrl, 'crm.katosalsahub.pl') !== false
     || strpos($configuredApiUrl, ':8080') !== false
-    || !filter_var($configuredApiUrl, FILTER_VALIDATE_URL)
+    || strpos($configuredApiUrl, '169.254.169.254') !== false
+    || !is_safe_ssrf_url($configuredApiUrl)
 ) {
     $configuredApiUrl = $defaultOsTicketUrl;
 }
@@ -314,6 +318,9 @@ if (!empty($osTicketApiKey) && function_exists('curl_init')) {
     }
 
     foreach ($endpoints as $epUrl) {
+        if (!is_safe_ssrf_url($epUrl)) {
+            continue;
+        }
         $ch = curl_init($epUrl);
         curl_setopt_array($ch, [
             CURLOPT_HTTPHEADER     => [
@@ -371,11 +378,16 @@ $fromEmail = 'noreply@katosalsahub.pl';
 $headers = "From: Kato Salsa Hub <{$fromEmail}>\r\nReply-To: {$email}\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n";
 @mail($to, $encodedSubject, $emailContent, $headers, "-f{$fromEmail}");
 
-// 7. Powiadomienie Push Ntfy (obsługa własnej instancji NTFY_BASE_URL + autoryzacji Bearer NTFY_TOKEN)
+// 7. Powiadomienie Push Ntfy (obsługa własnej instancji NTFY_BASE_URL + autoryzacji Bearer NTFY_TOKEN + SSRF Guard)
 $ntfyTopic = trim((string)preg_replace('/[\r\n\0]+/', '', get_env_secret('NTFY_TOPIC')));
 if ($ntfyTopic !== '' && function_exists('curl_init')) {
     $ntfyBaseUrl = rtrim(trim(get_env_secret('NTFY_BASE_URL', 'https://ntfy.sh')), '/');
-    if ($ntfyBaseUrl === '' || strpos($ntfyBaseUrl, 'https://') !== 0 || !filter_var($ntfyBaseUrl, FILTER_VALIDATE_URL)) {
+    if (
+        $ntfyBaseUrl === ''
+        || strpos($ntfyBaseUrl, 'https://') !== 0
+        || strpos($ntfyBaseUrl, '169.254.169.254') !== false
+        || !is_safe_ssrf_url($ntfyBaseUrl)
+    ) {
         $ntfyBaseUrl = 'https://ntfy.sh';
     }
     $ntfyToken = trim((string)preg_replace('/[\r\n\0]+/', '', get_env_secret('NTFY_TOKEN')));

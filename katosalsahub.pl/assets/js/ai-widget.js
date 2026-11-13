@@ -360,6 +360,150 @@ function escapeHtml(rawText) {
 }
 
 /**
+ * Waliduje polski numer PESEL (11 cyfr, wagi [1,3,7,9,1,3,7,9,1,3] mod 10 oraz poprawność miesiąca i dnia).
+ * @param {string} raw
+ * @returns {boolean}
+ */
+function isValidPesel(raw) {
+  const s = String(raw ?? '').replace(/[\s-]+/g, '');
+  if (!/^\d{11}$/.test(s)) return false;
+
+  const month = Number(s.slice(2, 4)) % 20;
+  const day = Number(s.slice(4, 6));
+  if (month < 1 || month > 12 || day < 1 || day > 31) return false;
+
+  const weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
+  let sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += Number(s[i]) * weights[i];
+  }
+  const check = (10 - (sum % 10)) % 10;
+  return check === Number(s[10]);
+}
+
+/**
+ * Maskuje wrażliwe polskie identyfikatory PII (PESEL oraz numer dowodu osobistego po słowie kluczowym)
+ * przed wysyłką zapytania do zewnętrznego routera LLM, zachowując numery telefonów i e-maile dla detektora leadów.
+ * @param {string} text
+ * @returns {string}
+ */
+function maskSensitivePlPii(text) {
+  if (!text) return '';
+  let out = String(text);
+
+  // 1. 11 cyfr bezpośrednio po słowie PESEL (nawet z błędną sumą kontrolną)
+  out = out.replace(/\b(pesel[\s:#=-]{0,10})\d{11}\b/gi, '$1[PESEL-ZAMASKOWANY]');
+
+  // 2. Dowolny 11-cyfrowy ciąg przechodzący deterministyczną sumę kontrolną PESEL (z wykluczeniem +48...)
+  out = out.replace(/(?<![+\d])\b\d{11}\b/g, (match) => (
+    isValidPesel(match) ? '[PESEL-ZAMASKOWANY]' : match
+  ));
+
+  // 3. Seria i numer dowodu osobistego po słowie "dowód" / "seria"
+  out = out.replace(
+    /\b((?:dow[oó]d(?:\s+osobisty)?|nr\s+dowodu|seri[ai])[\s:#=-]{0,12})[A-Z]{3}\s?\d{6}\b/gi,
+    '$1[DOWOD-ZAMASKOWANY]'
+  );
+
+  return out;
+}
+
+/**
+ * [REF-07] Rejestruje imperatywne narzędzie WebMCP (W3C document.modelContext / navigator.modelContext)
+ * umożliwiające natywnym agentom przeglądarkowym zadanie pytania asystentowi AI serwisu.
+ * @param {Document} doc
+ * @param {Object} widgetInstance
+ * @param {string} [siteId='twojastronawww']
+ * @returns {{ supported: boolean, abort?: Function }}
+ */
+function registerWebMcpTools(doc = typeof document !== 'undefined' ? document : null, widgetInstance = null, siteId = 'twojastronawww') {
+  const mc = doc?.modelContext || globalThis.navigator?.modelContext;
+  if (!mc || typeof mc.registerTool !== 'function' || !widgetInstance || typeof widgetInstance.sendQuestion !== 'function') {
+    return { supported: false };
+  }
+
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  try {
+    mc.registerTool(
+      {
+        name: 'ask_site_assistant',
+        description: 'Zadaj pytanie asystentowi AI serwisu o ofertę, cennik, dostępność lub bazę wiedzy.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            question: {
+              type: 'string',
+              description: 'Pytanie do asystenta w języku polskim.'
+            }
+          },
+          required: ['question']
+        },
+        annotations: {
+          readOnlyHint: true,
+          untrustedContentHint: false,
+          consequentialHint: false
+        },
+        async execute(args) {
+          const res = await widgetInstance.sendQuestion(args?.question || '');
+          return JSON.stringify({
+            siteId,
+            answer: res?.answer || '',
+            cached: Boolean(res?.cached)
+          });
+        }
+      },
+      controller ? { signal: controller.signal } : undefined
+    );
+    return {
+      supported: true,
+      abort: () => controller?.abort?.()
+    };
+  } catch (_) {
+    return { supported: false };
+  }
+}
+
+/**
+ * Automatycznie pobiera konfigurację tenanta (assets/data/ai-config.json) w runtime,
+ * gdy obiekt window.__TSW_AI_CONFIG__ nie został wstrzyknięty inline.
+ * @param {Window} [win]
+ * @param {string} [configUrl='assets/data/ai-config.json']
+ * @returns {Promise<Object|null>}
+ */
+async function loadRuntimeAiConfig(
+  win = typeof window !== 'undefined' ? window : globalThis.window,
+  configUrl = 'assets/data/ai-config.json'
+) {
+  if (win?.__TSW_AI_CONFIG__ && typeof win.__TSW_AI_CONFIG__ === 'object' && !Array.isArray(win.__TSW_AI_CONFIG__)) {
+    return win.__TSW_AI_CONFIG__;
+  }
+  const fetchFn = win?.fetch || globalThis.fetch;
+  if (typeof fetchFn !== 'function') return null;
+
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timeoutId = controller ? setTimeout(() => controller.abort(), 4000) : null;
+  if (timeoutId && typeof timeoutId.unref === 'function') timeoutId.unref();
+
+  try {
+    const fetchOpts = { cache: 'no-cache' };
+    if (controller) fetchOpts.signal = controller.signal;
+    const res = await fetchFn(configUrl, fetchOpts);
+    if (!res || !res.ok) return null;
+    const parsed = await res.json();
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      if (win) {
+        win.__TSW_AI_CONFIG__ = parsed;
+      }
+      return parsed;
+    }
+  } catch (_) {
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+  return null;
+}
+
+/**
  * Sprawdza, czy ruch analityczny powinien zostać pominięty (właściciel strony, testy automatyczne, DNT)
  * @param {Window} [win]
  * @returns {boolean}
@@ -507,10 +651,26 @@ function resolveSiteIdContext(explicitSiteId) {
  * @param {Array<Object>} [knowledgeEntries=[]]
  * @returns {string}
  */
-function getLocalFallbackAnswer(question, siteId, knowledgeEntries = []) {
+function getLocalFallbackAnswer(question, siteId, knowledgeEntries = [], customFallbackFaq = null) {
   const resolvedSiteId = resolveSiteIdContext(siteId);
   const q = String(question || '').toLowerCase();
   const qNorm = normalizeSearchText(question);
+
+  // Obsługa niestandardowego fallbackFaq z konfiguracji tenanta (assets/data/ai-config.json)
+  const faqList = Array.isArray(customFallbackFaq)
+    ? customFallbackFaq
+    : (Array.isArray(globalThis.window?.__TSW_AI_CONFIG__?.fallbackFaq) ? globalThis.window.__TSW_AI_CONFIG__.fallbackFaq : null);
+  if (Array.isArray(faqList) && faqList.length > 0 && qNorm) {
+    for (const item of faqList) {
+      if (!item || typeof item.answer !== 'string' || !item.answer.trim()) continue;
+      if (Array.isArray(item.keywords) && item.keywords.some((kw) => kw && qNorm.includes(normalizeSearchText(kw)))) {
+        return item.answer;
+      }
+      if (typeof item.question === 'string' && normalizeSearchText(item.question) === qNorm) {
+        return item.answer;
+      }
+    }
+  }
 
   // ===========================================================================
   // 1. KATO SALSA HUB & SALSOPEDIA
@@ -729,7 +889,39 @@ function getLocalFallbackAnswer(question, siteId, knowledgeEntries = []) {
   }
 
   // ===========================================================================
-  // 4. TWOJASTRONAWWW & SZABLON BAZOWY (Domyślny)
+  // 4. RADAR-P1 (Systemy e-Zdrowia P1 CeZ / NFZ / ZUS / KSeF)
+  // ===========================================================================
+  if (resolvedSiteId === 'radar-p1') {
+    if (qNorm.includes('recept') || qNorm.includes('drr') || qNorm.includes('aptek')) {
+      return (
+        `💊 **Awaria e-Recepty (System P1 — art. 95b i 96 Prawa farmaceutycznego):**\n` +
+        `- **W gabinecie / przychodni:** Lekarz wystawia receptę w postaci papierowej (z numerem PWZ i własnoręcznym podpisem). Jeśli problem dotyczy tylko lokalnego programu gabinetowego, e-Receptę można wystawić przez rządową aplikację https://gabinet.gov.pl.\n` +
+        `- **W aptece:** Recepta papierowa wystawiona w czasie awarii jest realizowana z zachowaniem pełnej refundacji NFZ, a dokument DRR przekazuje się po ustąpieniu awarii P1.`
+      );
+    }
+    if (qNorm.includes('ewus') || qNorm.includes('ubezpiecz') || qNorm.includes('rejestracj')) {
+      return (
+        `🏥 **Awaria eWUŚ w rejestracji (art. 50 ustawy o świadczeniach opieki zdrowotnej):**\n` +
+        `- Brak połączenia z eWUŚ **nigdy nie jest podstawą do odmowy przyjęcia pacjenta**.\n` +
+        `- Prawo do świadczeń NFZ potwierdza się na podstawie dokumentu ubezpieczenia (np. mObywatel / IKP, legitymacja) lub **pisemnego oświadczenia pacjenta**.`
+      );
+    }
+    if (qNorm.includes('ksef') || qNorm.includes('zla') || qNorm.includes('l4') || qNorm.includes('zus') || qNorm.includes('skierowan')) {
+      return (
+        `📋 **Tryb awaryjny e-Skierowań, ZUS e-ZLA oraz KSeF:**\n` +
+        `- **e-Skierowanie (art. 59aa):** Lekarz wystawia skierowanie papierowe, a placówka ma obowiązek wpisać pacjenta na listę oczekujących.\n` +
+        `- **ZUS e-ZLA (L4):** Lekarz wystawia zwolnienie na wydrukowanym wcześniej formularzu z bloczka ZUS ZLA i wprowadza je do PUE ZUS w ciągu **3 dni roboczych** od ustania awarii.\n` +
+        `- **KSeF (offline24 / awaria):** Fakturę z kodem QR przesyła się do KSeF w następnym dniu roboczym (*offline24*) lub w ciągu **7 dni roboczych** po zakończeniu awarii ogłoszonej w BIP MF.`
+      );
+    }
+    return (
+      `📡 Jestem niezależnym informatorem **Radaru Systemów e-Zdrowia (P1 / NFZ / ZUS / KSeF)**.\n` +
+      `Zapytaj mnie o ustawowe procedury awaryjne (**e-Recepta papierowa, e-Skierowanie, oświadczenie eWUŚ, ZUS ZLA z bloczka, KSeF offline24**) lub skontaktuj się z całodobową infolinią **Centrum e-Zdrowia (Helpdesk P1 24/7): tel. 19457**.`
+    );
+  }
+
+  // ===========================================================================
+  // 5. TWOJASTRONAWWW & SZABLON BAZOWY (Domyślny)
   // ===========================================================================
   if (q.includes('wordpress') || q.includes('wtyczk') || q.includes('kod') || q.includes('sql') || q.includes('szybk')) {
     return 'Tworzymy strony w **czystym kodzie (architektura Flat-File)** zamiast ciężkiego WordPressa z dziesiątkami wtyczek:\n- **Waga poniżej 100 KB** i ładowanie **< 0.6s** (Google PageSpeed **95–100/100**)\n- **Brak bazy SQL** = zero ryzyka ataków SQL Injection i awarii po aktualizacjach\n- **100% kodu na własność** w repozytorium Git i brak ukrytych abonamentów.';
@@ -1438,7 +1630,7 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
         ...(controller ? { signal: controller.signal } : {}),
         body: JSON.stringify({
           site_id: siteId,
-          question: trimmed,
+          question: maskSensitivePlPii(trimmed),
           kb_version: kbVersion,
           dynamic_context: dynamicContext,
           history: conversationHistory.slice(-8)
@@ -1562,11 +1754,35 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
     });
   }
 
+  function openAndAsk(promptText) {
+    const cleanPrompt = String(promptText || '').trim();
+    if (!cleanPrompt) return null;
+    if (chatWindow && !chatWindow.classList.contains('tsw-open')) {
+      chatWindow.classList.add('tsw-open');
+      toggleBtn?.setAttribute('aria-expanded', 'true');
+      sendAnalyticsBeacon({ type: 'event', event: 'chat_open' });
+    }
+    sendAnalyticsBeacon({ type: 'event', event: 'quick_prompt_click' });
+    return sendQuestion(cleanPrompt);
+  }
+
+  doc.addEventListener?.('click', (e) => {
+    const target = e?.target?.closest ? e.target.closest('[data-ai-prompt]') : null;
+    if (!target) return;
+    const promptText = target.getAttribute('data-ai-prompt');
+    if (promptText) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      openAndAsk(promptText);
+    }
+  });
+
   if ((kbUrl || kbApiUrl) && knowledgeEntries.length === 0 && !options.skipInitialFetch) {
     refreshKnowledge();
   }
 
-  return {
+  let webMcpHandle = null;
+
+  const instance = {
     root,
     toggleBtn,
     closeBtn,
@@ -1581,6 +1797,8 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
     toggleChat,
     closeChat,
     sendQuestion,
+    openAndAsk,
+    sendAnalyticsBeacon,
     toggleVoiceRecognition,
     stopVoiceRecognition,
     isVoiceListening: () => isListening,
@@ -1593,8 +1811,17 @@ function initAiWidget(doc = document, win = globalThis.window, options = {}) {
     invalidateResponseCache,
     clearCache: () => {
       invalidateResponseCache();
-    }
+    },
+    unregisterWebMcpTools: () => webMcpHandle?.abort?.()
   };
+
+  webMcpHandle = registerWebMcpTools(doc, instance, siteId);
+
+  if (win) {
+    win.TSWAiWidget = instance;
+  }
+
+  return instance;
 }
 
 function autoInitAiWidget() {
@@ -1622,6 +1849,10 @@ const __tswExports = {
   QUICK_PROMPTS_MAP,
   THEME_PRESETS,
   escapeHtml,
+  isValidPesel,
+  maskSensitivePlPii,
+  registerWebMcpTools,
+  loadRuntimeAiConfig,
   isOwnerAnalyticsIgnored,
   normalizeCacheQuery,
   normalizeSearchText,

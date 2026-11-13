@@ -107,6 +107,10 @@ npm run sync
        -d "{\"host\":\"katosalsahub.pl\",\"key\":\"${INDEXNOW_ID}\",\"keyLocation\":\"https://katosalsahub.pl/${INDEXNOW_ID}.txt\",\"urlList\":[\"https://katosalsahub.pl/\",\"https://katosalsahub.pl/grafik.html\",\"https://katosalsahub.pl/salsopedia.html\"]}"
      ```
 
+5. **Standard `[REF-07]` (GEO `/llms.txt` + W3C WebMCP):**
+   - Plik `/llms.txt` w głównym katalogu domeny powiązany w `<head>` (`<link rel="alternate" type="text/markdown" href="llms.txt">`) i dozwolony w `robots.txt` (`Allow: /llms.txt`).
+   - Wsparcie **WebMCP (`document.modelContext` / deklaratywne `toolname="send_contact_inquiry"` na formularzach)** oraz imperatywne narzędzie `ask_site_assistant` (`registerWebMcpTools` w `ai-widget.js`) dla natywnych agentów przeglądarkowych.
+
 ---
 
 ### 5.2 Szablon 1: Stopka SEO na dół każdego wydarzenia na Facebooku

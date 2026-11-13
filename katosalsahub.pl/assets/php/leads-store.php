@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+if (isset($_SERVER['SCRIPT_FILENAME']) && realpath($_SERVER['SCRIPT_FILENAME']) === __FILE__) {
+    http_response_code(403);
+    exit;
+}
+
 foreach (['phar', 'ftp', 'ftps', 'expect'] as $__unsafeWrapper) {
     if (in_array($__unsafeWrapper, stream_get_wrappers(), true)) {
         @stream_wrapper_unregister($__unsafeWrapper);
@@ -237,7 +242,7 @@ function read_json_file(string $file): array {
     }
     fclose($fp);
     if ($content === '') return [];
-    $data = json_decode($content, true);
+    $data = json_decode($content, true, 16);
     return is_array($data) ? $data : [];
 }
 
@@ -266,7 +271,7 @@ function update_json_file(string $file, callable $mutator, bool $purgeCache = tr
     $existingContent = stream_get_contents($fp);
     $data = [];
     if ($existingContent !== false && $existingContent !== '') {
-        $decoded = json_decode($existingContent, true);
+        $decoded = json_decode($existingContent, true, 16);
         if (is_array($decoded)) {
             $data = $decoded;
         }

@@ -118,10 +118,13 @@ async function loadPage(url) {
     // Fade out for transition via CSS class (SoC)
     appContent.classList.add('is-loading');
 
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
+
     try {
         const fetchUrl = url.split('#')[0] || 'index.html';
 
-        const response = await fetch(fetchUrl);
+        const response = await fetch(fetchUrl, controller ? { signal: controller.signal } : {});
         if (token !== navToken) return; // Cancelled by newer navigation check 1
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -174,6 +177,7 @@ async function loadPage(url) {
         console.warn('Navigation fallback:', error);
         window.location.href = url; // Hard fallback
     } finally {
+        if (timeoutId) clearTimeout(timeoutId);
         if (token === navToken) {
             appContent.classList.remove('is-loading');
         }

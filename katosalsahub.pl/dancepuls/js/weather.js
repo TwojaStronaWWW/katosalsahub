@@ -34,21 +34,21 @@ export function initWeather(containerId) {
     let preferredHour = 21; // Default
     
     function render(data) {
-        if (!data.hourly) return;
+        if (!data || !data.hourly) return;
         
         const { time, weathercode, temperature_2m } = data.hourly;
         
         let html = `
-            <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px; justify-content: center; font-size: 0.8em;">
-                <label style="cursor: pointer; ${preferredHour === 18 ? 'font-weight: bold; color: #d35400;' : 'color: #7f8c8d;'}">
-                    <input type="radio" name="w-hour" value="18" ${preferredHour === 18 ? 'checked' : ''} style="display:none"> 18:00
+            <div class="weather-hours">
+                <label class="weather-hour-label${preferredHour === 18 ? ' is-active-18' : ''}">
+                    <input type="radio" name="w-hour" value="18" ${preferredHour === 18 ? 'checked' : ''} class="weather-radio-hidden"> 18:00
                 </label>
                 <span>|</span>
-                <label style="cursor: pointer; ${preferredHour === 21 ? 'font-weight: bold; color: #2c3e50;' : 'color: #7f8c8d;'}">
-                    <input type="radio" name="w-hour" value="21" ${preferredHour === 21 ? 'checked' : ''} style="display:none"> 21:00
+                <label class="weather-hour-label${preferredHour === 21 ? ' is-active-21' : ''}">
+                    <input type="radio" name="w-hour" value="21" ${preferredHour === 21 ? 'checked' : ''} class="weather-radio-hidden"> 21:00
                 </label>
             </div>
-            <div style="display: flex; gap: 8px;">
+            <div class="weather-days">
         `;
         
         // We have 3 days. API returns hourly data sequentially. 
@@ -58,7 +58,7 @@ export function initWeather(containerId) {
         
         const days = ['PIĄ', 'SOB', 'ND'];
         
-        for(let i=0; i<3; i++) {
+        for (let i = 0; i < 3; i++) {
             // Calculate index for the preferred hour
             // Day i start index = i * 24
             const hourIndex = (i * 24) + preferredHour;
@@ -86,13 +86,10 @@ export function initWeather(containerId) {
             else if (code >= 80 && code <= 82) icon = '🌧';
             else if (code >= 95) icon = '⚡';
             
-            // Adjust icon for day if 18:00 still sunny? 
-            // WMO codes are generic, but 0 is clear sky.
-            
             html += `
-                <div style="background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; text-align: center; min-width: 50px;">
-                    <div style="font-size: 0.7em; color: #555; font-weight: bold; margin-bottom: 2px;">${dayName} ${dateLabel}</div>
-                    <div style="font-size: 1.1em; color: #333;">${icon} ${temp}°</div>
+                <div class="weather-day-card">
+                    <div class="weather-day-label">${dayName} ${dateLabel}</div>
+                    <div class="weather-day-temp">${icon} ${temp}°</div>
                 </div>
             `;
         }
@@ -102,19 +99,28 @@ export function initWeather(containerId) {
         // Re-attach listeners because innerHTML wiped them
         container.querySelectorAll('input[name="w-hour"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
-                preferredHour = parseInt(e.target.value);
+                preferredHour = parseInt(e.target.value, 10);
                 render(data);
             });
         });
     }
 
-    fetch(url)
-        .then(r => r.json())
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
+
+    fetch(url, controller ? { signal: controller.signal } : {})
+        .then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        })
         .then(data => {
             render(data);
         })
         .catch(err => {
             console.error('Weather error:', err);
-            container.innerHTML = '<span style="color:red; font-size: 0.8em;">⚠️ Błąd pogody</span>';
+            container.innerHTML = '<span class="weather-error">⚠️ Błąd pogody</span>';
+        })
+        .finally(() => {
+            if (timeoutId) clearTimeout(timeoutId);
         });
 }

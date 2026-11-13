@@ -4,9 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dance Puls - Generator Zestawienia Imprez &amp; Raportów KSH</title>
+  <link rel="stylesheet" href="css/style.css?v=5.1">
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="DancePuls — agregator imprez, warsztatów i festiwali tanecznych (Salsa Cubana, Bachata, Kizomba) oraz generator cyklicznych raportów Kato Salsa Hub.">
-  <title>Dance Puls - Generator Zestawienia Imprez &amp; Raportów KSH</title>
   <link rel="canonical" href="https://katosalsahub.pl/grafik.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pl_PL">
@@ -15,7 +16,6 @@
   <meta property="og:description" content="DancePuls — agregator imprez, warsztatów i festiwali tanecznych (Salsa Cubana, Bachata, Kizomba) oraz generator cyklicznych raportów Kato Salsa Hub.">
   <meta property="og:url" content="https://katosalsahub.pl/grafik.html">
   <meta property="og:image" content="https://katosalsahub.pl/assets/images/hero.png">
-  <link rel="stylesheet" href="css/style.css?v=5.1">
   <link rel="icon" type="image/jpeg" href="https://katosalsahub.pl/assets/images/logo.jpg">
 </head>
 
@@ -40,7 +40,7 @@
     <div class="pulse-main-card">
       <!-- 1. GŁÓWNY POST -->
       <h3 class="section-subtitle">✍️ Główny post:</h3>
-      <textarea id="post-opis" class="textarea-post" rows="16"></textarea>
+      <textarea id="post-opis" class="textarea-post" rows="16" aria-label="Główny post na Facebooka"></textarea>
       <div class="copy-actions-stack">
         <button id="copy-post-btn" type="button" class="btn-copy-post">
           📋 1. KOPIUJ GŁÓWNY POST NA FB
@@ -49,9 +49,9 @@
 
       <!-- 2. KOMENTARZE (TEN WEEKEND) -->
       <h3 class="section-subtitle">📋 Komentarze (Ten Weekend):</h3>
-      <textarea id="wynik" class="textarea-code textarea-comments-wide" rows="18"></textarea>
+      <textarea id="wynik" class="textarea-code textarea-comments-wide" rows="18" aria-label="Komentarze na ten weekend"></textarea>
 
-      <div id="event-counter" class="event-counter">Liczba wgranych wydarzeń: 0</div>
+      <div id="event-counter" class="event-counter" aria-live="polite">Liczba wgranych wydarzeń: 0</div>
 
       <button id="copy-comment1-btn" type="button" class="btn-copy-comment1">
         📋 2. KOPIUJ KOMENTARZE (TEN WEEKEND)
@@ -60,7 +60,7 @@
       <!-- UKRYTE: KOMENTARZE KOLEJNE TYGODNIE + HASHTAGI -->
       <div class="is-hidden">
         <h3 class="section-subtitle">🔮 Sekcja 5 — Komentarz 2 (Kolejne Tygodnie):</h3>
-        <textarea id="wynik-przyszle" class="textarea-code" rows="12"></textarea>
+        <textarea id="wynik-przyszle" class="textarea-code" rows="12" aria-label="Komentarze na kolejne tygodnie"></textarea>
         <button id="copy-comment2-btn" type="button" class="btn-copy-comment2">
           📋 3. KOPIUJ KOMENTARZ 2 — PRZYSZŁOŚĆ (SEKCJA 5)
         </button>

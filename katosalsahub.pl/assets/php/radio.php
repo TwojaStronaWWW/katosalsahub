@@ -43,6 +43,10 @@ if (isset($_SERVER['HTTP_SEC_FETCH_SITE']) && strtolower(trim((string)$_SERVER['
     exit;
 }
 
+if (session_status() === PHP_SESSION_ACTIVE) {
+    @session_write_close();
+}
+
 require_once __DIR__ . '/rate-limit.php';
 
 $rawClientIp = (!empty($_SERVER['HTTP_CF_RAY']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']))
@@ -60,7 +64,7 @@ if (filter_var($cleanClientIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
     $maskedClientIp = '0.0.0.0';
 }
 
-if (!rate_limit('radio_resolve_' . substr(hash('sha256', $maskedClientIp), 0, 16), 30, 60)) {
+if (!rate_limit('radio_resolve_' . hash('sha256', $maskedClientIp), 30, 60)) {
     http_response_code(429);
     echo json_encode([
         'ok'        => true,
@@ -73,7 +77,7 @@ if (!rate_limit('radio_resolve_' . substr(hash('sha256', $maskedClientIp), 0, 16
 $zenoMountUrl = 'https://stream.zeno.fm/g0zpm0pypuhvv?_t=' . round(microtime(true) * 1000);
 $resolvedLocation = null;
 
-if (function_exists('curl_init')) {
+if (function_exists('curl_init') && is_safe_ssrf_url($zenoMountUrl)) {
     $ch = curl_init($zenoMountUrl);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -90,7 +94,8 @@ if (function_exists('curl_init')) {
                 $loc = trim((string)preg_replace('/[\r\n\0]+/', '', substr($headerLine, 9)));
                 if (
                     strpos($loc, 'https://') === 0
-                    && filter_var($loc, FILTER_VALIDATE_URL)
+                    && strpos($loc, '169.254.169.254') === false
+                    && is_safe_ssrf_url($loc)
                     && (stripos($loc, '.surfernetwork.com/') !== false || stripos($loc, '.zeno.fm/') !== false)
                 ) {
                     $resolvedLocation = $loc;

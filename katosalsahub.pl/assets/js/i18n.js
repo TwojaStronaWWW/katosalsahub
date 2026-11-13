@@ -999,7 +999,7 @@ function updateAiWidgetLanguage(doc, safeLang, dict) {
   const clearBtn = doc.getElementById('tswAiClearBtn');
   const closeBtn = doc.getElementById('tswAiCloseBtn');
   const inputEl = doc.getElementById('tswAiInput');
-  const sendBtn = doc.getElementById('tswAiSend');
+  const sendBtn = doc.getElementById('tswAiSendBtn') || doc.getElementById('tswAiSend');
   const chatWindow = doc.getElementById('tswAiWindow');
 
   if (toggleBtn && dict['ai.toggleAria']) toggleBtn.setAttribute('aria-label', dict['ai.toggleAria']);

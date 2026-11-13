@@ -346,4 +346,33 @@ describe('Higiena repozytorium i bezpieczeństwo ISO 27001 (Wzorzec Gal Anonim)'
     assert.match(contactJs, /inFlightContactSubmit/, 'Brak strażnika inFlightContactSubmit w contact.js');
     assert.match(serveJs, /handleLocalContactApi/, 'Brak lokalnego handlera handleLocalContactApi dla /assets/php/contact.php w scripts/serve.js');
   });
+
+  it('[REF-05] wszystkie skrypty PHP powinny wymuszać declare(strict_types=1), głębokość json_decode(..., true, 16), SSRF Guard z blokadą 169.254.169.254, Zero-PII SHA-256 w rate_limit oraz kodowanie RFC 2047', () => {
+    const phpDir = path.join(ROOT_DIR, 'katosalsahub.pl', 'assets', 'php');
+    const phpFiles = ['rate-limit.php', 'leads-store.php', 'contact.php', 'wiki.php', 'radio.php'];
+
+    for (const file of phpFiles) {
+      const src = fs.readFileSync(path.join(phpDir, file), 'utf-8');
+      assert.match(src, /declare\s*\(\s*strict_types\s*=\s*1\s*\)\s*;/, `[REF-05] Brak declare(strict_types=1); w ${file}`);
+
+      const jsonDecodes = src.match(/json_decode\s*\((?:[^()]|\([^()]*\))+\)/g) || [];
+      for (const call of jsonDecodes) {
+        assert.match(call, /,\s*true\s*,\s*16\s*\)$/, `[REF-05] Wywołanie ${call} w ${file} musi wymuszać głębokość 16: json_decode($raw, true, 16)`);
+      }
+    }
+
+    const rateLimitPhp = fs.readFileSync(path.join(phpDir, 'rate-limit.php'), 'utf-8');
+    assert.match(rateLimitPhp, /function\s+is_safe_ssrf_url\s*\(/, '[REF-05] Brak strażnika is_safe_ssrf_url() w rate-limit.php');
+    assert.match(rateLimitPhp, /169\.254\.169\.254/, '[REF-05] Brak blokady adresu metadanych chmurowych 169.254.169.254 w rate-limit.php');
+    assert.match(rateLimitPhp, /preg_replace\s*\(\s*'\/\[\^a-zA-Z\]\/'/, '[REF-05] rate_limit() musi wycinać cyfry IP z prefiksu pliku na dysku (Zero-PII)');
+    assert.match(rateLimitPhp, /hash\s*\(\s*'sha256'\s*,\s*\$key\s*\)/, '[REF-05] rate_limit() musi haszować klucz algorytmem SHA-256');
+
+    for (const endpoint of ['contact.php', 'wiki.php', 'radio.php']) {
+      const src = fs.readFileSync(path.join(phpDir, endpoint), 'utf-8');
+      assert.match(src, /169\.254\.169\.254/, `[REF-05] Brak jawnej blokady SSRF 169.254.169.254 w ${endpoint}`);
+      assert.match(src, /is_safe_ssrf_url\s*\(/, `[REF-05] Brak wywołania is_safe_ssrf_url() w ${endpoint}`);
+      assert.match(src, /@?session_write_close\s*\(\s*\)/, `[REF-05] Brak zwalniania blokady sesji session_write_close() w ${endpoint}`);
+      assert.match(src, /hash\s*\(\s*'sha256'/, `[REF-05] Brak haszowania SHA-256 klucza IP w ${endpoint}`);
+    }
+  });
 });

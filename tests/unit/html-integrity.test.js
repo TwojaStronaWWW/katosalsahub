@@ -129,6 +129,8 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
         assert.strictEqual(llmsLinks.length, 1, `[REF-07] W ${baseName} musi znajdować się dokładnie 1 link do llms.txt (znaleziono: ${llmsLinks.length})`);
 
         assert.match(pageHtml, /<script\s+type="speculationrules">/i, `[REF-02] Brak deklaracji Speculation Rules API w ${baseName}`);
+        assert.match(pageHtml, /"@graph"\s*:\s*\[/, `[REF-08] Dane strukturalne JSON-LD w ${baseName} muszą używać pełnego grafu @graph`);
+        assert.doesNotMatch(pageHtml, /<[a-z0-9-]+[^>]*>\s*0[1-5]\s*<\/[a-z0-9-]+>[\s\S]{0,200}<svg\b/i, `[DR-06] Zakaz jednoczesnej numeracji 01..05 i ikon SVG w tej samej karcie w ${baseName}`);
       }
 
       assert.match(html, /"eventSchedule":\s*\{[\s\S]*?"repeatFrequency":\s*"P1W"/, 'Brak cyklicznego harmonogramu eventSchedule (P1W) w DanceEvent');
@@ -455,7 +457,19 @@ describe('Integralność semantyczna, SEO, RODO i SoC (HTML)', () => {
           /\.onclick\s*=/,
           `Plik katosalsahub.pl/dancepuls/js/${file} używa .onclick zamiast addEventListener`
         );
+        assert.doesNotMatch(
+          withoutComments,
+          /style\s*=\s*["'][^"']+["']/i,
+          `Plik katosalsahub.pl/dancepuls/js/${file} generuje atrybuty inline style="..." w szablonach HTML`
+        );
       }
+
+      const dpCss = fs.readFileSync(path.join(ROOT_DIR, 'katosalsahub.pl', 'dancepuls', 'css', 'style.css'), 'utf-8');
+      assert.match(dpCss, /color-scheme:\s*light\s+dark/, '[REF-03] Brak color-scheme w dancepuls/css/style.css');
+      assert.match(dpCss, /scrollbar-gutter:\s*stable/, '[REF-03] Brak scrollbar-gutter: stable w dancepuls/css/style.css');
+      assert.match(dpCss, /@view-transition\s*\{\s*navigation:\s*auto;\s*\}/, '[REF-03] Brak @view-transition w dancepuls/css/style.css');
+      assert.match(dpCss, /text-wrap:\s*balance/, '[REF-03] Brak text-wrap: balance w dancepuls/css/style.css');
+      assert.match(dpCss, /:focus-visible/, '[REF-04] Brak stylów :focus-visible w dancepuls/css/style.css');
     });
   });
 

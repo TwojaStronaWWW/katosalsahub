@@ -4,6 +4,7 @@
    VARIABLES & RESET
    ======================================== */
 :root {
+    color-scheme: light dark;
     /* 🇨🇺 Cuban Vibes Palette */
     --cuban-red: #D32F2F;        /* Vibrant Red */
     --cuban-blue: #0288D1;       /* Caribbean Blue */
@@ -23,6 +24,29 @@
     --gradient-header: linear-gradient(135deg, var(--cuban-red), #B71C1C);
     --gradient-button: linear-gradient(45deg, var(--cuban-blue), var(--cuban-teal));
     --gradient-orange: linear-gradient(135deg, var(--cuban-orange), #FFCA28);
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+}
+
+h1, h2, h3, h4 {
+    text-wrap: balance;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+:focus-visible {
+    outline: 3px solid var(--cuban-yellow);
+    outline-offset: 2px;
 }
 
 /* ========================================
@@ -1069,6 +1093,66 @@ button:active {
 
 .copy-line {
     margin-bottom: 5px;
+}
+
+.weather-hours {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin-bottom: 5px;
+    justify-content: center;
+    font-size: 0.8em;
+}
+
+.weather-hour-label {
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.weather-hour-label.is-active-18 {
+    font-weight: bold;
+    color: #d35400;
+}
+
+.weather-hour-label.is-active-21 {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.weather-radio-hidden {
+    display: none;
+}
+
+.weather-days {
+    display: flex;
+    gap: 8px;
+}
+
+.weather-day-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    text-align: center;
+    min-width: 50px;
+}
+
+.weather-day-label {
+    font-size: 0.7em;
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.weather-day-temp {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.weather-error {
+    color: #c0392b;
+    font-size: 0.8em;
 }
 
 /* ========================================

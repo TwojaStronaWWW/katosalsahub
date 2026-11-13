@@ -927,14 +927,29 @@ function renderAllScheduleViews(doc = document) {
   updateSidebarCountsAndActivePills(doc);
 }
 
+async function fetchJsonWithTimeout(url, timeoutMs = 8000) {
+  const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const timeoutId = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  try {
+    return await fetch(url, {
+      cache: 'no-cache',
+      ...(controller ? { signal: controller.signal } : {}),
+    });
+  } catch (_) {
+    return null;
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
+
 async function loadScheduleAndEventsData(doc = document) {
   const rootEl = doc.getElementById('scheduleAppRoot');
   if (!rootEl) return;
 
   try {
     const [schedRes, evRes] = await Promise.all([
-      fetch('assets/data/schedule.json', { cache: 'no-cache' }).catch(() => null),
-      fetch('assets/data/events.json', { cache: 'no-cache' }).catch(() => null),
+      fetchJsonWithTimeout('assets/data/schedule.json', 8000),
+      fetchJsonWithTimeout('assets/data/events.json', 8000),
     ]);
 
     if (schedRes && schedRes.ok) {
@@ -953,7 +968,7 @@ async function loadScheduleAndEventsData(doc = document) {
       const evData = await evRes.json();
       scheduleState.eventsDays = Array.isArray(evData) ? evData : [];
     } else {
-      const fallbackRes = await fetch('/dancepuls/data/events.json', { cache: 'no-cache' }).catch(() => null);
+      const fallbackRes = await fetchJsonWithTimeout('/dancepuls/data/events.json', 8000);
       if (fallbackRes && fallbackRes.ok) {
         const evData = await fallbackRes.json();
         scheduleState.eventsDays = Array.isArray(evData) ? evData : [];

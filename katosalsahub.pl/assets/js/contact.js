@@ -149,10 +149,14 @@ document.addEventListener('submit', async function (e) {
             submitBtn.innerHTML = `<span>${ct('contact.sending', 'Wysyłanie...')}</span>`;
         }
 
+        const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        const timeoutId = controller ? setTimeout(() => controller.abort(), 10000) : null;
+
         try {
             const response = await fetch('assets/php/contact.php', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                ...(controller ? { signal: controller.signal } : {})
             });
 
             const rawText = await response.text();
@@ -177,6 +181,7 @@ document.addEventListener('submit', async function (e) {
             console.error('Error:', error);
             showMessage(messageArea, ct('contact.msgNetError', 'Wystąpił błąd połączenia.'), 'error');
         } finally {
+            if (timeoutId) clearTimeout(timeoutId);
             inFlightContactSubmit = false;
             if (submitBtn) {
                 submitBtn.disabled = false;

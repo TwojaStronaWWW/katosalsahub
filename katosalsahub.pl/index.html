@@ -928,7 +928,7 @@
             </div>
           </div>
           <div class="kontakt-form">
-            <form name="contact" id="contactForm" action="assets/php/contact.php" method="POST">
+            <form name="contact" id="contactForm" action="assets/php/contact.php" method="POST" toolname="send_contact_inquiry" tooldescription="Wyślij wiadomość kontaktową lub zapytanie do społeczności i Fundacji Kato Salsa Hub.">
               <input type="hidden" name="form-name" value="contact" />
               <!-- Honeypot field (hidden for users, visible to bots; avoids 'website' name to prevent browser autofill false positives) -->
               <div class="hp-field" aria-hidden="true">
@@ -937,15 +937,15 @@
               </div>
               <div class="form-group">
                 <label for="name" data-i18n="contact.nameLabel">Imię lub pseudonim</label>
-                <input type="text" id="name" name="name" required placeholder="np. Janek, SalsaLover" data-i18n-placeholder="contact.namePh" />
+                <input type="text" id="name" name="name" required placeholder="np. Janek, SalsaLover" data-i18n-placeholder="contact.namePh" toolparamdescription="Imię lub pseudonim nadawcy wiadomości." />
               </div>
               <div class="form-group">
                 <label for="email" data-i18n="contact.emailLabel">Email</label>
-                <input type="email" id="email" name="email" required placeholder="jan@example.com" data-i18n-placeholder="contact.emailPh" />
+                <input type="email" id="email" name="email" required placeholder="jan@example.com" data-i18n-placeholder="contact.emailPh" toolparamdescription="Adres e-mail do kontaktu zwrotnego." />
               </div>
               <div class="form-group">
                 <label for="message" data-i18n="contact.msgLabel">Wiadomość</label>
-                <textarea id="message" name="message" required placeholder="Twoja wiadomość..." data-i18n-placeholder="contact.msgPh" rows="5"></textarea>
+                <textarea id="message" name="message" required placeholder="Twoja wiadomość..." data-i18n-placeholder="contact.msgPh" rows="5" toolparamdescription="Treść pytania lub wiadomości do Kato Salsa Hub."></textarea>
               </div>
               <div class="form-checkbox-group">
                 <input type="checkbox" id="gdpr_consent" name="gdpr_consent" value="1" required />
@@ -1030,7 +1030,8 @@
             { "href_matches": "/*" },
             { "not": { "href_matches": "/api/*" } },
             { "not": { "href_matches": "/assets/php/*" } },
-            { "not": { "href_matches": "/admin/*" } }
+            { "not": { "href_matches": "/admin/*" } },
+            { "not": { "selector_matches": "[aria-hidden=\"true\"], [data-bot-trap]" } }
           ]
         },
         "eagerness": "moderate"

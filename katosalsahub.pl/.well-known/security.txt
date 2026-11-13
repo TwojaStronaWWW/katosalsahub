@@ -2,7 +2,7 @@
 # [REF-06] Standard: https://securitytxt.org/ (RFC 9116)
 
 Contact: mailto:kontakt@katosalsahub.pl
-Expires: 2027-12-31T23:59:00.000Z
+Expires: 2027-12-31T23:59:59.000Z
 Preferred-Languages: pl, en
 Canonical: https://katosalsahub.pl/.well-known/security.txt
 Policy: https://katosalsahub.pl/privacy.html

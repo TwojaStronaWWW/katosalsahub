@@ -8,6 +8,7 @@ User-agent: Applebot-Extended
 Allow: /
 Allow: /llms.txt
 Disallow: /assets/php/
+Disallow: /assets/php/bot-trap.php
 Disallow: /assets/data/pending_edits.json
 Disallow: /dancepuls/
 
@@ -15,6 +16,7 @@ User-agent: *
 Allow: /
 Allow: /llms.txt
 Disallow: /assets/php/
+Disallow: /assets/php/bot-trap.php
 Disallow: /assets/data/pending_edits.json
 Disallow: /dancepuls/
 

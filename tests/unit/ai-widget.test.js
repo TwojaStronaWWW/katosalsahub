@@ -6,6 +6,9 @@ const { setupMockDom } = require('../helpers/mock-dom.js');
 const {
   MAX_CACHE_ENTRIES,
   escapeHtml,
+  isValidPesel,
+  maskSensitivePlPii,
+  registerWebMcpTools,
   isOwnerAnalyticsIgnored,
   formatMarkdown,
   getLocalFallbackAnswer,
@@ -370,5 +373,45 @@ describe('Asystent AI Kato Salsa Hub v3.0 (katosalsahub.pl/assets/js/ai-widget.j
     optOutWin.location.search = '?ignore_analytics=1';
     assert.equal(isOwnerAnalyticsIgnored(optOutWin), true);
     assert.equal(optOutWin.localStorage.getItem('tsw_ignore_analytics'), '1');
+  });
+
+  it('maskuje wrażliwe polskie identyfikatory PII (PESEL i dowód osobisty) przed wysyłką do routera LLM i rejestruje narzędzie WebMCP ask_site_assistant ([REF-07])', async () => {
+    assert.equal(isValidPesel('44051401458'), true);
+    assert.equal(isValidPesel('44051401459'), false);
+
+    const masked = maskSensitivePlPii(
+      'Cześć, mój PESEL: 44051401458, dowód osobisty ABC 123456, a telefon do kontaktu to +48 500 600 700 i mail jan@ksh.pl'
+    );
+    assert.ok(!masked.includes('44051401458'), 'PESEL musi zostać zamaskowany');
+    assert.ok(!masked.includes('ABC 123456'), 'Seria i numer dowodu muszą zostać zamaskowane');
+    assert.ok(masked.includes('[PESEL-ZAMASKOWANY]'));
+    assert.ok(masked.includes('[DOWOD-ZAMASKOWANY]'));
+    assert.ok(masked.includes('+48 500 600 700'), 'Numer telefonu dla leada musi pozostać nienaruszony');
+    assert.ok(masked.includes('jan@ksh.pl'), 'E-mail dla leada musi pozostać nienaruszony');
+
+    const { document, window } = setupMockDom();
+    let registeredTool = null;
+    document.modelContext = {
+      registerTool(def) {
+        registeredTool = def;
+      }
+    };
+
+    const api = initAiWidget(document, window, {
+      siteId: 'katosalsahub',
+      initialKnowledge: REAL_SALSOPEDIA,
+      skipInitialFetch: true
+    });
+    assert.ok(api);
+    assert.ok(registeredTool, 'Narzędzie WebMCP powinno zostać zarejestrowane w document.modelContext');
+    assert.equal(registeredTool.name, 'ask_site_assistant');
+    assert.equal(registeredTool.annotations?.readOnlyHint, true);
+
+    const toolOutputRaw = await registeredTool.execute({ question: 'Co oznacza figura Dile Que No?' });
+    const toolOutput = JSON.parse(toolOutputRaw);
+    assert.equal(toolOutput.siteId, 'katosalsahub');
+    assert.match(toolOutput.answer, /Dile Que No/i);
+
+    assert.equal(registerWebMcpTools(null, null).supported, false);
   });
 });

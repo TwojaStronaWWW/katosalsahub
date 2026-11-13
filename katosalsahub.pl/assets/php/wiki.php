@@ -149,7 +149,15 @@ function error_res(string $msg, int $code = 400): void {
 }
 
 /**
- * Waliduje bezpieczny adres URL HTTP/HTTPS i odrzuca pseudoprotokoły (np. javascript:) oraz cudzysłowy
+ * Koduje nagłówek wiadomości zgodnie ze standardem RFC 2047 UTF-8 Base64 (=?UTF-8?B?...?=) i usuwa CRLF.
+ */
+function encode_rfc2047_header(string $text): string {
+    $clean = trim((string)preg_replace('/[\r\n\0]+/', ' ', $text));
+    return '=?UTF-8?B?' . base64_encode($clean) . '?=';
+}
+
+/**
+ * Waliduje bezpieczny adres URL HTTP/HTTPS i odrzuca pseudoprotokoły (np. javascript:), cudzysłowy oraz adresy SSRF
  */
 function sanitize_http_url($url): string {
     $clean = trim(strip_tags((string)$url));
@@ -158,6 +166,10 @@ function sanitize_http_url($url): string {
         return '';
     }
     if (!filter_var($clean, FILTER_VALIDATE_URL)) {
+        return '';
+    }
+    $host = strtolower(trim((string)parse_url($clean, PHP_URL_HOST), '[]'));
+    if (in_array($host, ['169.254.169.254', '127.0.0.1', 'localhost', '0.0.0.0', '::1', 'metadata.google.internal'], true)) {
         return '';
     }
     return mb_substr($clean, 0, 500);
@@ -173,7 +185,13 @@ function notify_osticket(array $entry): bool {
     if (empty($apiKey) || !function_exists('curl_init')) return false;
     $defaultApiUrl = 'https://hd.twojastronawww.pl/ticket_hook.php';
     $apiUrl = trim(get_env_secret('OSTICKET_API_URL', $defaultApiUrl));
-    if ($apiUrl === '' || strpos($apiUrl, 'https://') !== 0 || strpos($apiUrl, ':8080') !== false || !filter_var($apiUrl, FILTER_VALIDATE_URL)) {
+    if (
+        $apiUrl === ''
+        || strpos($apiUrl, 'https://') !== 0
+        || strpos($apiUrl, ':8080') !== false
+        || strpos($apiUrl, '169.254.169.254') !== false
+        || !is_safe_ssrf_url($apiUrl)
+    ) {
         $apiUrl = $defaultApiUrl;
     }
 
@@ -207,6 +225,9 @@ function notify_osticket(array $entry): bool {
     }
 
     foreach ($endpoints as $epUrl) {
+        if (!is_safe_ssrf_url($epUrl)) {
+            continue;
+        }
         $ch = curl_init($epUrl);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['X-API-Key: ' . $apiKey, 'Content-Type: application/json', 'Expect:']);
         curl_setopt($ch, CURLOPT_USERAGENT, 'KatoSalsaHub-HelpdeskClient/2.1');
@@ -249,7 +270,7 @@ function read_json_file(string $file): array {
     }
     fclose($fp);
     if ($content === '') return [];
-        $data = json_decode($content, true, 32);
+    $data = json_decode($content, true, 16);
     return is_array($data) ? $data : [];
 }
 
@@ -321,7 +342,7 @@ function update_json_file(string $file, callable $mutator, bool $purgeCache = tr
     $existingContent = stream_get_contents($fp);
     $data = [];
     if ($existingContent !== false && $existingContent !== '') {
-        $decoded = json_decode($existingContent, true, 32);
+        $decoded = json_decode($existingContent, true, 16);
         if (is_array($decoded)) {
             $data = $decoded;
         }
@@ -395,7 +416,7 @@ function check_and_Clean_login_attempts($attemptsFile) {
     }, false);
 
     $count = (int)($attempts[$ipKey]['count'] ?? 0);
-    $penalized = is_ip_penalized('wiki_login_' . $ip);
+    $penalized = is_ip_penalized('wiki_login_' . $ipKey);
     return [
         'ipKey' => $ipKey,
         'isLocked' => ($count >= $maxAttempts) || $penalized,
@@ -426,7 +447,7 @@ function record_login_attempt($attemptsFile, $ipKey, $success, $attempts) {
     }, false);
 
     if ($reachedMax) {
-        penalize_ip('wiki_login_' . get_client_masked_ip(), 900, 'wiki_brute_force');
+        penalize_ip('wiki_login_' . $ipKey, 900, 'wiki_brute_force');
     }
 }
 
@@ -565,7 +586,7 @@ function require_admin_auth(array $input = [], bool $requireCsrf = true, string 
         $login = $input['email'] ?? ($input['login'] ?? '');
         if (!empty($password)) {
             $rateInfo = check_and_Clean_login_attempts($attemptsFile);
-            if ($rateInfo['isLocked'] || !rate_limit('wiki_auth_' . get_client_masked_ip(), 5, 60)) {
+            if ($rateInfo['isLocked'] || !rate_limit('wiki_auth_' . hash('sha256', get_client_masked_ip()), 5, 60)) {
                 @session_write_close();
                 error_res('Zbyt wiele prób autoryzacji. Adres IP został tymczasowo zablokowany na 15 minut.', 429);
             }
@@ -740,7 +761,7 @@ switch ($action) {
             error_res('Logowanie wymaga żądania POST.', 405);
         }
         $rateInfo = check_and_Clean_login_attempts($attemptsFile);
-        if ($rateInfo['isLocked'] || !rate_limit('wiki_auth_' . get_client_masked_ip(), 5, 60)) {
+        if ($rateInfo['isLocked'] || !rate_limit('wiki_auth_' . hash('sha256', get_client_masked_ip()), 5, 60)) {
             @session_write_close();
             error_res('Zbyt wiele nieudanych prób logowania. Adres IP został tymczasowo zablokowany na 15 minut.', 429);
         }
@@ -818,7 +839,7 @@ switch ($action) {
         $input = get_request_data();
         if (empty($input)) error_res('Brak danych zgłoszenia');
 
-        if (!rate_limit('wiki_submit_' . get_client_masked_ip(), 10, 60)) {
+        if (!rate_limit('wiki_submit_' . hash('sha256', get_client_masked_ip()), 10, 60)) {
             error_res('Zbyt wiele zgłoszeń w krótkim czasie. Odczekaj chwilę przed wysłaniem kolejnego hasła.', 429);
         }
 

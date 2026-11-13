@@ -49,11 +49,15 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": "https://katosalsahub.pl/privacy.html",
-    "url": "https://katosalsahub.pl/privacy.html",
-    "name": "Polityka Prywatności - Kato Salsa Hub",
-    "inLanguage": "pl-PL"
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://katosalsahub.pl/privacy.html",
+        "url": "https://katosalsahub.pl/privacy.html",
+        "name": "Polityka Prywatności - Kato Salsa Hub",
+        "inLanguage": "pl-PL"
+      }
+    ]
   }
   </script>
 </head>
@@ -197,7 +201,8 @@
             { "href_matches": "/*" },
             { "not": { "href_matches": "/api/*" } },
             { "not": { "href_matches": "/assets/php/*" } },
-            { "not": { "href_matches": "/admin/*" } }
+            { "not": { "href_matches": "/admin/*" } },
+            { "not": { "selector_matches": "[aria-hidden=\"true\"], [data-bot-trap]" } }
           ]
         },
         "eagerness": "moderate"
