@@ -1149,6 +1149,27 @@
         "style": [
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Salsa On1 od zera!",
+        "opis": "Salsa On1 od zera! - LOFToDANCE Kraków; nowe w bazie 13.11",
+        "opisPubliczny": "Salsa On1 od zera!",
+        "dateLabel": "SOBOTA (12.12.2026)",
+        "endDate": "2026-12-12",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287",
+        "style": [
+          "Salsa On1"
+        ]
       }
     ]
   },

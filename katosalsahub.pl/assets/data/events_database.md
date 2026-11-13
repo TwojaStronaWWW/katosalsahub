@@ -64,6 +64,7 @@ NIEDZIELA|W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne 
 06.12|KL|KIZLAB SUNDAYS–Mikołajki|Kizomba|F:1617716113426642|KIZLAB; edycja mikołajkowa, program TBA
 06.12|Świętochłowice,Inne|🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅|Bachata|https://airdancia.com/event/mikolajkowe-warsztaty-bachata-ladies-swietochlowice/|16:00; Inne; AirDancia; nowe w bazie 02.11
 12.12|MP|BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|16:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 30.10
+12.12|LO|Salsa On1 od zera!|Salsa On1|https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287|LOFToDANCE Kraków; nowe w bazie 13.11
 15.12|ZW|Salsunia|Cubana|F:1105058955723288|VivaSalsa
 20.12|KL|KIZLAB SUNDAYS|Kizomba|F:1617716113426642|KIZLAB; kolejna ogłoszona edycja, program TBA
 22.12|Katowice,Piąty Dom|Kizomba w Piątym Domu - SH#77|Kizomba|O:9273d6e918024bc9a0be|SembaHooligans; OnlyDance; nowe w bazie 10.11

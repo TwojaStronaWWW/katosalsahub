@@ -1,9 +1,9 @@
 ## 1. PRYWATNIE — raport na 13.11.2026
 - **Stan zestawienia na weekend 13–15.11.2026:** **19 pozycji** (6 pt + 8 sb + 5 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **58 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **59 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (13.11 — 0 pozycji, data publikacji nieustalona):**
-  - Na dziś nie znalazłem nowych ogłoszeń (wszystkie pozycje w bazie zweryfikowane wcześniej).
+- **Nowości w bazie z ostatniego sprawdzenia (13.11 — 1 pozycji, data publikacji nieustalona):**
+  - **Salsa On1 od zera!** | 12.12.2026 | Kraków, LOFToDANCE | Salsa On1 | https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
@@ -205,6 +205,9 @@ NIEDZIELA (15.11): Kraków - Salsa House (Salsa)
 🗓️ SOBOTA (12.12.2026)  
 ➡️ Katowice: Mil Pasos, BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN (Bachata)  
 🔗 https://www.milpasoskatowice.pl/?page=wydarzenia  
+🗓️ SOBOTA (12.12.2026)  
+➡️ Kraków: LOFToDANCE, Salsa On1 od zera! (Salsa On1)  
+🔗 https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287  
 🗓️ WTOREK (15.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1105058955723288/  
