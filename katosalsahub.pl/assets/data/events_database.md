@@ -1,5 +1,5 @@
 # Baza Wydarzeń Kato Salsa Hub & DancePuls
-Ostatnia aktualizacja: 13.11.2026 (Piątek)
+Ostatnia aktualizacja: 14.11.2026 (Sobota)
 
 ## OPIS POSTA (SEKCJA 2)
 PIĄTEK|W Katowicach czekają warsztaty LVL UP z Danielem Rojewskim w Mil Pasos (Bachata), Darmowy Praktis Bachata dla uczestników zajęć specjalnych z Danielem! (Bachata) oraz 🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI w La Clave (Bachata/Impro). W Krakowie czekają Sensual Impro Festival w LOFToDANCE (Bachata/Sensual Impro), PRAKTIS CUBAN SALSA & SON w Salsa House (Cubana) oraz BLOK BACHATOWY w Forum Tańca (Salsa/Bachata/Kizomba).
@@ -51,6 +51,9 @@ NIEDZIELA|W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne 
 28.11|LC|Świadome rozciąganie i mobilność w tańcu / La Clave Katowic|Salsa/Bachata/Kizomba|https://airdancia.com/event/swiadome-rozciaganie-i-mobilnosc-w-tancu-la-clave-katowic-katowice/|15:30; La Clave; AirDancia; nowe w bazie 02.11
 28.11|Częstochowa,Częstotańcz|🔮✨ ANDRZEJKOWA POTAŃCÓWKA! ✨🔮 WILD WEST WESTERN COUNTRY + CULTURA LATINA|Salsa|O:dbcb789d9d934346ad9e|CZĘSTOTAŃCZ - Szkoła Tańca Częstochowa. Znajdź Swój Taniec w Częstochowie.; OnlyDance; nowe w bazie 10.11
 28.11|Kraków,Kamienna 12|BIGGEST LATINO PARTY – KRAKÓW|Bachata|O:693195afc5cb418b86b6|Yalla Balagan - Luxury Latino; OnlyDance; nowe w bazie 10.11
+28.11|DL|🔮 Tańce, czary i hulanki, czyli Andrzejkowe Salsa & Bachata Party – 28.11 – Szkoła Tańca Corazon|Salsa/Bachata|https://krajownik.pl/bielsko-biala/wydarzenia/tance-czary-i-hulanki-czyli-andrzejkowe-salsa-bachata-party-2811-szkola-tanca-corazon-445829|21:00; DANCE#LOVEit & Corazon; nowe w bazie 14.11
+28.11|Kraków,Salsa House|CERTYFIKOWANY KURS IZOLACJI CIAŁA – Kraków 2026|Salsa|https://krajownik.pl/krakow/wydarzenia/certyfikowany-kurs-izolacji-ciala-krakow-2026-139197|11:00; Salsa House; nowe w bazie 14.11
+28.11|GM|⭐️ZOUK HAPPENS by Sporki⭐️ - 🔮Andrzejki!🕯️🔮🕯️|Salsa/Bachata/Kizomba|https://krajownik.pl/katowice/wydarzenia/zouk-happens-by-sporki-andrzejki-424712|18:00; Good Mood; nowe w bazie 14.11
 29.11|Gliwice,Mohito|BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN.|Bachata|https://airdancia.com/event/bachazouk-kombinacje-zajecia-specjalne-w-mohito-gliwice-poziom-open-gliwice/|13:00; Mohito; AirDancia; nowe w bazie 11.11
 01.12|ZW|Salsunia|Cubana|F:1249676614905478|VivaSalsa
 02.12|MP|MIKOŁAJKOWA NAGRYWKA – Zajęcia specjalne z Izą|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|18:00–20:00; Mil Pasos Kamienna 4; nowe w bazie 10.11
@@ -65,6 +68,7 @@ NIEDZIELA|W Katowicach po południu (15:00–18:00) zapraszamy na nasze własne 
 06.12|Świętochłowice,Inne|🎅 MIKOŁAJKOWE WARSZTATY BACHATA LADIES 🎅|Bachata|https://airdancia.com/event/mikolajkowe-warsztaty-bachata-ladies-swietochlowice/|16:00; Inne; AirDancia; nowe w bazie 02.11
 12.12|MP|BACHATA – ZAJĘCIA SPECJALNE Z MAJKIEM & MIŚKĄ! POZIOM OPEN|Bachata|https://www.milpasoskatowice.pl/?page=wydarzenia|16:00–19:00; Mil Pasos Kamienna 4; nowe w bazie 30.10
 12.12|LO|Salsa On1 od zera!|Salsa On1|https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287|LOFToDANCE Kraków; nowe w bazie 13.11
+12.12|LO|Salsa On1 dla tańczących|Salsa On1|https://sklep.loftodance.pl/wydarzenie/salsa-on1-dla-tanczacych,1288|LOFToDANCE Kraków; nowe w bazie 14.11
 15.12|ZW|Salsunia|Cubana|F:1105058955723288|VivaSalsa
 20.12|KL|KIZLAB SUNDAYS|Kizomba|F:1617716113426642|KIZLAB; kolejna ogłoszona edycja, program TBA
 22.12|Katowice,Piąty Dom|Kizomba w Piątym Domu - SH#77|Kizomba|O:9273d6e918024bc9a0be|SembaHooligans; OnlyDance; nowe w bazie 10.11

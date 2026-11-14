@@ -1,9 +1,12 @@
-## 1. PRYWATNIE — raport na 13.11.2026
+## 1. PRYWATNIE — raport na 14.11.2026
 - **Stan zestawienia na weekend 13–15.11.2026:** **19 pozycji** (6 pt + 8 sb + 5 nd).
-- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **59 pozycji** (pełny horyzont do 2027 r.).
+- **Zapowiedzi na kolejne tygodnie (Komentarz 2):** **63 pozycji** (pełny horyzont do 2027 r.).
 - **Wydarzenia pn–cz bieżącego tygodnia (poza ankietą):** **3 pozycje**.
-- **Nowości w bazie z ostatniego sprawdzenia (13.11 — 1 pozycji, data publikacji nieustalona):**
-  - **Salsa On1 od zera!** | 12.12.2026 | Kraków, LOFToDANCE | Salsa On1 | https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287
+- **Nowości w bazie z ostatniego sprawdzenia (14.11 — 4 pozycji, data publikacji nieustalona):**
+  - **🔮 Tańce, czary i hulanki, czyli Andrzejkowe Salsa & Bachata Party – 28.11 – Szkoła Tańca Corazon** | 28.11.2026 | Bielsko-Biała, DANCE#LOVEit & Corazon | Salsa/Bachata | https://krajownik.pl/bielsko-biala/wydarzenia/tance-czary-i-hulanki-czyli-andrzejkowe-salsa-bachata-party-2811-szkola-tanca-corazon-445829
+  - **CERTYFIKOWANY KURS IZOLACJI CIAŁA – Kraków 2026** | 28.11.2026 | Kraków, Salsa House | Salsa | https://krajownik.pl/krakow/wydarzenia/certyfikowany-kurs-izolacji-ciala-krakow-2026-139197
+  - **⭐️ZOUK HAPPENS by Sporki⭐️ - 🔮Andrzejki!🕯️🔮🕯️** | 28.11.2026 | Katowice, Good Mood | Salsa/Bachata/Kizomba | https://krajownik.pl/katowice/wydarzenia/zouk-happens-by-sporki-andrzejki-424712
+  - **Salsa On1 dla tańczących** | 12.12.2026 | Kraków, LOFToDANCE | Salsa On1 | https://sklep.loftodance.pl/wydarzenie/salsa-on1-dla-tanczacych,1288
 - **Zgłoszenia z formularza Google KSH (CSV):** brak nowych zgłoszeń spoza bazy.
 - **Faktycznie wykonana praca i ulepszenia:** Zsynchronizowano jednolitą bazę `events_database.md`, rozwinięto wszystkie skróty identyfikatorów `F:ID` i `O:ID` do pełnych linków, rozróżniono krótką nazwą imprezy wydarzenia występujące tego samego dnia w tym samym klubie (La Clave, DANCE#LOVEit, Forum Tańca, LOFToDANCE) oraz wygenerowano plik `events.json` i podgląd 6 sekcji w interfejsie DancePuls.
 
@@ -166,6 +169,15 @@ NIEDZIELA (15.11): Kraków - Salsa House (Salsa)
 🗓️ SOBOTA (28.11.2026)  
 ➡️ Kraków: Kamienna 12, BIGGEST LATINO PARTY – KRAKÓW (Bachata)  
 🔗 https://onlydanceapp.com/event/693195afc5cb418b86b6  
+🗓️ SOBOTA (28.11.2026)  
+➡️ Bielsko-Biała: DANCE#LOVEit & Corazon, 🔮 Tańce, czary i hulanki, czyli Andrzejkowe Salsa & Bachata Party – 28.11 – Szkoła Tańca Corazon (Salsa/Bachata)  
+🔗 https://krajownik.pl/bielsko-biala/wydarzenia/tance-czary-i-hulanki-czyli-andrzejkowe-salsa-bachata-party-2811-szkola-tanca-corazon-445829  
+🗓️ SOBOTA (28.11.2026)  
+➡️ Kraków: Salsa House, CERTYFIKOWANY KURS IZOLACJI CIAŁA – Kraków 2026 (Salsa)  
+🔗 https://krajownik.pl/krakow/wydarzenia/certyfikowany-kurs-izolacji-ciala-krakow-2026-139197  
+🗓️ SOBOTA (28.11.2026)  
+➡️ Katowice: Good Mood, ⭐️ZOUK HAPPENS by Sporki⭐️ - 🔮Andrzejki!🕯️🔮🕯️ (Salsa/Bachata/Kizomba)  
+🔗 https://krajownik.pl/katowice/wydarzenia/zouk-happens-by-sporki-andrzejki-424712  
 🗓️ NIEDZIELA (29.11.2026)  
 ➡️ Gliwice: Mohito, BACHAZOUK, KOMBINACJE 🌊 – zajęcia specjalne w Mohito Gliwice! Poziom OPEN. (Bachata)  
 🔗 https://airdancia.com/event/bachazouk-kombinacje-zajecia-specjalne-w-mohito-gliwice-poziom-open-gliwice/  
@@ -208,6 +220,9 @@ NIEDZIELA (15.11): Kraków - Salsa House (Salsa)
 🗓️ SOBOTA (12.12.2026)  
 ➡️ Kraków: LOFToDANCE, Salsa On1 od zera! (Salsa On1)  
 🔗 https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287  
+🗓️ SOBOTA (12.12.2026)  
+➡️ Kraków: LOFToDANCE, Salsa On1 dla tańczących (Salsa On1)  
+🔗 https://sklep.loftodance.pl/wydarzenie/salsa-on1-dla-tanczacych,1288  
 🗓️ WTOREK (15.12.2026)  
 ➡️ Kraków: Zaraz Wracam Tu, Salsunia (Cubana)  
 🔗 https://www.facebook.com/events/1105058955723288/  

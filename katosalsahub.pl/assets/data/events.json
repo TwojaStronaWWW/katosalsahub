@@ -5,27 +5,6 @@
       {
         "checked": true,
         "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Mil Pasos",
-        "miejsceInne": "Mil Pasos (ul. Kamienna 4)",
-        "adres": "ul. Kamienna 4",
-        "lat": 50.2569,
-        "lng": 19.0121,
-        "tytul": "LVL UP z Danielem Rojewskim",
-        "opis": "LVL UP z Danielem Rojewskim,Men Styling i Footwork,warsztaty - 18:00–20:55 z opisu; Mil Pasos; uzupełniono bezpośredni link FB 20.10",
-        "opisPubliczny": "LVL UP z Danielem Rojewskim, Men Styling i Footwork, warsztaty",
-        "dateLabel": "PIĄTEK (13.11.2026)",
-        "endDate": "2026-11-13",
-        "soldOut": false,
-        "link": "https://www.facebook.com/events/4591812061145684/",
-        "style": [
-          "Bachata"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
         "miasto": "Kraków",
         "miastoInne": "",
         "miejsce": "LOFToDANCE",
@@ -43,93 +22,6 @@
         "style": [
           "Bachata",
           "Sensual Impro"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Salsa House",
-        "miejsceInne": "Salsa House (ul. Jana Zamoyskiego 79A/3)",
-        "adres": "ul. Jana Zamoyskiego 79A/3",
-        "lat": 50.0389,
-        "lng": 19.9412,
-        "tytul": "PRAKTIS CUBAN SALSA & SON",
-        "opis": "PRAKTIS CUBAN SALSA & SON - Salsa House; OnlyDance; nowe w bazie 10.11",
-        "opisPubliczny": "PRAKTIS CUBAN SALSA & SON",
-        "dateLabel": "PIĄTEK (13.11.2026)",
-        "endDate": "2026-11-13",
-        "soldOut": false,
-        "link": "https://onlydanceapp.com/event/f2d6a2b814974c52b30c",
-        "style": [
-          "Cubana"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Kraków",
-        "miastoInne": "",
-        "miejsce": "Forum Tańca",
-        "miejsceInne": "Forum Tańca (ul. Konopnickiej 29)",
-        "adres": "ul. Konopnickiej 29",
-        "lat": 50.0442,
-        "lng": 19.9348,
-        "tytul": "BLOK BACHATOWY",
-        "opis": "BLOK BACHATOWY w Forum Tańca! – 13.11 - 18:15; Forum Tańca; nowe w bazie 10.11",
-        "opisPubliczny": "BLOK BACHATOWY w Forum Tańca! – 13.11",
-        "dateLabel": "PIĄTEK (13.11.2026)",
-        "endDate": "2026-11-13",
-        "soldOut": false,
-        "link": "https://krajownik.pl/krakow/wydarzenia/blok-bachatowy-w-forum-tanca-1311-433604",
-        "style": [
-          "Salsa",
-          "Bachata",
-          "Kizomba"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "Inne",
-        "miejsceInne": "Inne",
-        "adres": "",
-        "lat": 50.2649,
-        "lng": 19.0238,
-        "tytul": "Darmowy Praktis Bachata dla uczestników zajęć specjalnych z Danielem!",
-        "opis": "Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem! - 21:00; Inne; AirDancia; nowe w bazie 11.11",
-        "opisPubliczny": "Darmowy Praktis Bachata 13.11.26 dla uczestników zajęć specjalnych z Danielem!",
-        "dateLabel": "PIĄTEK (13.11.2026)",
-        "endDate": "2026-11-13",
-        "soldOut": false,
-        "link": "https://airdancia.com/event/darmowy-praktis-bachata-13-11-26-dla-uczestnikow-zajec-specjalnych-z-danielem-katowice/",
-        "style": [
-          "Bachata"
-        ]
-      },
-      {
-        "checked": true,
-        "promote": false,
-        "miasto": "Katowice",
-        "miastoInne": "",
-        "miejsce": "La Clave",
-        "miejsceInne": "La Clave (ul. Chorzowska 11)",
-        "adres": "ul. Chorzowska 11",
-        "lat": 50.266,
-        "lng": 19.0188,
-        "tytul": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI",
-        "opis": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE! - 17:15; La Clave; AirDancia; nowe w bazie 11.11",
-        "opisPubliczny": "🔥 BACHATA & IMPRO 🔥 ŁUKASZ RAŚ – NOWE PIĄTKI W LA CLAVE!",
-        "dateLabel": "PIĄTEK (13.11.2026)",
-        "endDate": "2026-11-13",
-        "soldOut": false,
-        "link": "https://airdancia.com/event/bachata-impro-lukasz-ras-nowe-piatki-w-la-clave-katowice/",
-        "style": [
-          "Bachata",
-          "Impro"
         ]
       }
     ]
@@ -840,6 +732,72 @@
         "style": [
           "Bachata"
         ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Bielsko-Biała",
+        "miastoInne": "",
+        "miejsce": "DANCE#LOVEit & Corazon",
+        "miejsceInne": "DANCE#LOVEit & Corazon (ul. Grażyńskiego 12)",
+        "adres": "ul. Grażyńskiego 12",
+        "lat": 49.8294,
+        "lng": 19.0496,
+        "tytul": "🔮 Tańce",
+        "opis": "🔮 Tańce, czary i hulanki, czyli Andrzejkowe Salsa & Bachata Party – 28.11 – Szkoła Tańca Corazon - 21:00; DANCE#LOVEit & Corazon; nowe w bazie 14.11",
+        "opisPubliczny": "🔮 Tańce, czary i hulanki, czyli Andrzejkowe Salsa & Bachata Party – 28.11 – Szkoła Tańca Corazon",
+        "dateLabel": "SOBOTA (28.11.2026)",
+        "endDate": "2026-11-28",
+        "soldOut": false,
+        "link": "https://krajownik.pl/bielsko-biala/wydarzenia/tance-czary-i-hulanki-czyli-andrzejkowe-salsa-bachata-party-2811-szkola-tanca-corazon-445829",
+        "style": [
+          "Salsa",
+          "Bachata"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "Salsa House",
+        "miejsceInne": "Salsa House (ul. Jana Zamoyskiego 79A/3)",
+        "adres": "ul. Jana Zamoyskiego 79A/3",
+        "lat": 50.0389,
+        "lng": 19.9412,
+        "tytul": "CERTYFIKOWANY KURS IZOLACJI CIAŁA – Kraków 2026",
+        "opis": "CERTYFIKOWANY KURS IZOLACJI CIAŁA – Kraków 2026 - 11:00; Salsa House; nowe w bazie 14.11",
+        "opisPubliczny": "CERTYFIKOWANY KURS IZOLACJI CIAŁA – Kraków 2026",
+        "dateLabel": "SOBOTA (28.11.2026)",
+        "endDate": "2026-11-28",
+        "soldOut": false,
+        "link": "https://krajownik.pl/krakow/wydarzenia/certyfikowany-kurs-izolacji-ciala-krakow-2026-139197",
+        "style": [
+          "Salsa"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Katowice",
+        "miastoInne": "",
+        "miejsce": "Good Mood",
+        "miejsceInne": "Good Mood (ul. Paderewskiego 35)",
+        "adres": "ul. Paderewskiego 35",
+        "lat": 50.2536,
+        "lng": 19.0399,
+        "tytul": "⭐️ZOUK HAPPENS by Sporki⭐️ - 🔮Andrzejki!🕯️🔮🕯️",
+        "opis": "⭐️ZOUK HAPPENS by Sporki⭐️ - 🔮Andrzejki!🕯️🔮🕯️ - 18:00; Good Mood; nowe w bazie 14.11",
+        "opisPubliczny": "⭐️ZOUK HAPPENS by Sporki⭐️ - 🔮Andrzejki!🕯️🔮🕯️",
+        "dateLabel": "SOBOTA (28.11.2026)",
+        "endDate": "2026-11-28",
+        "soldOut": false,
+        "link": "https://krajownik.pl/katowice/wydarzenia/zouk-happens-by-sporki-andrzejki-424712",
+        "style": [
+          "Salsa",
+          "Bachata",
+          "Kizomba"
+        ]
       }
     ]
   },
@@ -1167,6 +1125,27 @@
         "endDate": "2026-12-12",
         "soldOut": false,
         "link": "https://sklep.loftodance.pl/wydarzenie/salsa-on1-od-zera,1287",
+        "style": [
+          "Salsa On1"
+        ]
+      },
+      {
+        "checked": true,
+        "promote": false,
+        "miasto": "Kraków",
+        "miastoInne": "",
+        "miejsce": "LOFToDANCE",
+        "miejsceInne": "LOFToDANCE (ul. Kamienna 2–4)",
+        "adres": "ul. Kamienna 2–4",
+        "lat": 50.0736,
+        "lng": 19.9412,
+        "tytul": "Salsa On1 dla tańczących",
+        "opis": "Salsa On1 dla tańczących - LOFToDANCE Kraków; nowe w bazie 14.11",
+        "opisPubliczny": "Salsa On1 dla tańczących",
+        "dateLabel": "SOBOTA (12.12.2026)",
+        "endDate": "2026-12-12",
+        "soldOut": false,
+        "link": "https://sklep.loftodance.pl/wydarzenie/salsa-on1-dla-tanczacych,1288",
         "style": [
           "Salsa On1"
         ]
